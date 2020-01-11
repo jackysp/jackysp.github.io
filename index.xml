@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mini How</title>
+    <link>https://www.minifish.org/</link>
+    <description>Recent content on Mini How</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 16 Sep 2019 13:24:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.minifish.org/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>使用 delve 调试 Golang 程序</title>
+      <link>https://www.minifish.org/posts/dlv/</link>
+      <pubDate>Mon, 16 Sep 2019 13:24:00 +0800</pubDate>
+      
+      <guid>https://www.minifish.org/posts/dlv/</guid>
+      <description>背景 一开始写 Golang 的时候，就一直想找一个方便的 debug 工具，当时看到过用 gdb 来 debug 的文档，也用过 delve。但是都觉得不好用。后来，经人指点，又用回了 print 大法。。。
+这两天调试 go test，test 按 package 来跑的时候总会 hang 住，一时没想到合适的方法，就又想起 delve 来。试用了一下，比原来成熟了很多。
+用法 dlv attach ${pid} 是我最常用的用法，attach 上之后就可以用类似 gdb 的调试方法，可以用 help 来查看具体命令。
+(dlv) help The following commands are available: args ------------------------ Print function arguments. break (alias: b) ------------ Sets a breakpoint. breakpoints (alias: bp) ----- Print out info for active breakpoints. call ------------------------ Resumes process, injecting a function call (EXPERIMENTAL!</description>
+    </item>
+    
+    <item>
+      <title>Golang panic 的实时性是怎样的</title>
+      <link>https://www.minifish.org/posts/golang-panic/</link>
+      <pubDate>Thu, 26 Jul 2018 14:24:00 +0800</pubDate>
+      
+      <guid>https://www.minifish.org/posts/golang-panic/</guid>
+      <description>先看下面这段代码，
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;os&amp;#34; &amp;#34;runtime&amp;#34; &amp;#34;time&amp;#34; ) func main() { runtime.GOMAXPROCS(2) a := make(map[int]int) go func() { i := 0 for { a[1] = i i++ time.Sleep(1000) } }() for { if a[1] &amp;gt; 1000000 { fmt.Println(a[1]) os.Exit(1) } } } 编译完之后，运行，会得到下面的错误（前提你的机器有 2 个及以上的核），
+fatal error: concurrent map read and map write goroutine 1 [running]: runtime.throw(0x10c3e05, 0x21) /usr/local/Cellar/go/1.10.3/libexec/src/runtime/panic.go:616 +0x81 fp=0xc42004bf00 sp=0xc42004bee0 pc=0x10263f1 runtime.mapaccess1_fast64(0x10a5b60, 0xc42007e180, 0x1, 0xc42008e048) /usr/local/Cellar/go/1.10.3/libexec/src/runtime/hashmap_fast.go:101 +0x197 fp=0xc42004bf28 sp=0xc42004bf00 pc=0x1008d27 main.</description>
+    </item>
+    
+    <item>
+      <title>如何使用 HAProxy 测试 CockroachDB</title>
+      <link>https://www.minifish.org/posts/haproxy/</link>
+      <pubDate>Tue, 10 Jul 2018 15:07:00 +0800</pubDate>
+      
+      <guid>https://www.minifish.org/posts/haproxy/</guid>
+      <description>安装 HAProxy yum install haproxy 对 CentOS 7 有效。安装之后，即可使用 systemctl start haproxy 来启动服务了。但是先别急。
+配置 HAProxy 在 /etc/haproxy/haproxy.cfg 里写入以下内容。
+global # global 的内容基本固定，也比较好理解。 log 127.0.0.1 local2 maxconn 4096 user haproxy group haproxy chroot /var/lib/haproxy daemon pidfile /var/run/haproxy.pid stats socket /var/run/haproxy.sock # Make sock file for haproxy nbproc 40 # 启动 40 个进程并发转发，高版本可以用 nbthread，改为线程化。 defaults # 这部分都是抄的，option 不是很明白。 log global mode http option tcplog option dontlognull retries 3 option redispatch maxconn 1024 timeout connect 5000ms timeout client 50000ms timeout server 50000ms listen cdb_cluster 0.</description>
+    </item>
+    
+    <item>
+      <title>如何用 Benchmarksql 测试 CockroachDB 性能</title>
+      <link>https://www.minifish.org/posts/cockroachdb-tpcc/</link>
+      <pubDate>Fri, 06 Jul 2018 21:21:00 +0800</pubDate>
+      
+      <guid>https://www.minifish.org/posts/cockroachdb-tpcc/</guid>
+      <description>为什么要测 TPC-C 首先，TPC-C 才是事实上的 OLTP Benchmark 标准。其本身是一套规范，任何数据库都可以公布其在该标准下的测试的结果，所以也就没有什么挑工具毛病的问题了。
+其次，TPC-C 本身更贴近真实场景，其本身是有一个交易模型在里面。在这个交易模型的流程里，即存在高频的简单交易语句，也存在低频的库存查询语句。所以，其本身对数据库的考验更加全面且实用。
+CockroachDB 测试 TPC-C CockroachDB 在今年公布了其 TPC-C 性能。不过，非常遗憾的是，它没有用公认的数据库业界实现了 TPC-C 标准的工具来测试。而是使用了自家实现的一套 TPC-C 工具来测试的。其规范程度没有得到认可。在其官方发布的白皮书中，也提到这套 TPC-C 不能与 TPC-C 标准进行比较。
+所以，在这里，本人想到用业界认可度高的工具进行测试。这里选择了 Benchmarksql 最新版 5.0。
+Benchmarksql 5.0 支持 PostgreSQL 协议、Oracle 协议以及 MySQL 协议（MySQL 协议在代码上是支持的，只是作者没有充分测试，因此，官方文档中没有提 MySQL）。其中，PostgreSQL 协议是 CockroachDB 支持的。
+测试准备 在准备好 Benchmarksql 的代码后，先别急于测试。这里有三个主要的坑，需要先处理一下。
+ CockroachDB 不支持后加主键。因此，需要在建表语句中先将主键一同创建好。具体，可以在 Benchmarksql 代码跟目录下的 run 文件夹下，创建 sql.cdb 文件夹，在其中拷贝来自同一级的 sql.common 文件夹下的 tableCreates.sql 和 indexCreates.sql 到 sql.cdb 中。然后将 indexCreates 里的 primary key 移到 tableCreates.sql 里的建表语句中。具体怎么在建表的同时定义索引，这个就请 Google 数据库文档的语法吧。 CockroachDB 是一个&amp;quot;强类型&amp;quot;数据库。这个说法是我自己想的。它有个比较奇怪的行为，就是当你用一个不同类型相加时（比如 int + float），它会报错说，&amp;ldquo;InternalError: unsupported binary operator: + &amp;rdquo;。一般数据库都不会这样，大多数的做法是，做一些隐式的转换。或者说，对写 SQL 的人容忍度非常高。但是 CockroachDB 就别具一格，不指定类型就是报错。这样很大程度上减少了内部实现里类型推倒的负担。 这个行为在 Benchmarksql 里的就成了没法正常跑完测试。解决方案就是，在报错的位置加上需要的类型，比如 update t set i = i + ?</description>
+    </item>
+    
+    <item>
+      <title>如何用 Sysbench 测试 CockroachDB 性能</title>
+      <link>https://www.minifish.org/posts/cockroachdb-sysbench/</link>
+      <pubDate>Mon, 11 Jun 2018 13:50:00 +0800</pubDate>
+      
+      <guid>https://www.minifish.org/posts/cockroachdb-sysbench/</guid>
+      <description>为 Sysbench 编译 pgsql 的支持 CockroachDB 使用的是 PostgreSQL 协议，如果想使用 Sysbench 进行测试，则需要 Sysbench 支持 pg 协议。Sysbench 本身已经支持了 pg 协议，只是在编译的时候默认不开启。 通过以下命令即可配置开启：
+./configure --with-pgsql 当然，前期工作需要下载 Sysbench 的源代码，以及安装 pg 的一些编译所需要的头文件（yum 或者 sudo 就可以了）。
+测试 测试方式跟测试 MySQL/Postgres 没有差别，增删改查想测哪个都可以。唯一需要注意的是，将 auto_inc 置为 off。 因为 CockroachDB 的 auto increment 行为跟 pg 是不一样的，它会生成一个唯一的 id，但是不保证连续、自增。这样在插入数据的时候是没问题的。 但是，在删、改、查中，由于所有 SQL 都是通过 id 为条件进行的删、改、查，因此，会出现找不到数据的情况。
+即：
+当 auto_inc = on (on 为 Sysbench 默认值) 时
+表结构
+CREATE TABLE sbtest1 ( id INT NOT NULL DEFAULT unique_rowid(), k INTEGER NOT NULL DEFAULT 0:::INT, c STRING(120) NOT NULL DEFAULT &amp;#39;&amp;#39;:::STRING, pad STRING(60) NOT NULL DEFAULT &amp;#39;&amp;#39;:::STRING, CONSTRAINT &amp;#34;&amp;#34;primary&amp;#34;&amp;#34; PRIMARY KEY (id ASC), INDEX k_1 (k ASC), FAMILY &amp;#34;&amp;#34;primary&amp;#34;&amp;#34; (id, k, c, pad) ) 数据</description>
+    </item>
+    
+    <item>
+      <title>如何看待 CMU DB Group 的 OLTP-Bench</title>
+      <link>https://www.minifish.org/posts/oltp-bench/</link>
+      <pubDate>Fri, 23 Feb 2018 22:21:06 +0800</pubDate>
+      
+      <guid>https://www.minifish.org/posts/oltp-bench/</guid>
+      <description>OLTP-Bench 介绍 OLTP-Bench 是 CMU 的 DB Group 开源的一套针对 OLTP 场景的 Benchmark 工具平台。设计初衷是提供一个简单易用、容易扩展的测试平台。
+它通过 jdbc 接口连接数据库，支持的测试集有：
+ TPC-C Wikipedia Synthetic Resource Stresser Twitter Epinions.com TATP AuctionMark SEATS YCSB JPAB (Hibernate) CH-benCHmark Voter (Japanese &amp;ldquo;American Idol&amp;rdquo;) SIBench (Snapshot Isolation) SmallBank LinkBench  项目详细介绍在这里， github 页面在这里。
+项目介绍页里有作者们在这个项目发表的 3 篇论文，其中 2013 年的是最重要的一篇，该篇也在 github 页面上给了链接。
+从 github 页面上看，该工程的关注度不算高，近期也不算活跃。 issue 和 pr 大多来自 cmu 内部。
+OLTP-Bench: An Extensible Testbed for Benchmarking Relational Databases 这篇《 OLTP-Bench: An Extensible Testbed for Benchmarking Relational Databases 》论文可以看作是该项目的最详细介绍。</description>
+    </item>
+    
+    <item>
+      <title>如何在 VS Code 里用等宽字体</title>
+      <link>https://www.minifish.org/posts/font/</link>
+      <pubDate>Tue, 26 Dec 2017 22:21:06 +0800</pubDate>
+      
+      <guid>https://www.minifish.org/posts/font/</guid>
+      <description>背景 微软的 VS Code 里设置的英文字体是等宽的，中文不是。
+方法  下载安装这里的字体，该字体结合了思源黑体，据说标点也是严格对齐的。 使用这里的方法设置 VS Code 。  PS: 确实是对齐的，就是英文显示有点儿窄。</description>
+    </item>
+    
+    <item>
+      <title>如何理解 F1 的 schema change</title>
+      <link>https://www.minifish.org/posts/f1/</link>
+      <pubDate>Mon, 25 Dec 2017 22:21:06 +0800</pubDate>
+      
+      <guid>https://www.minifish.org/posts/f1/</guid>
+      <description>背景 F1 的 DDL 论文是 TiDB 的 DDL 实现的基础，F1 的论文主体有两篇，一篇总体介绍 F1 的 DDL ，另一篇专门介绍 DDL 的 schema change 方法。个人认为，第二篇才是关键，也是我看的比较糊涂的。 这里有一篇对于其第二篇论文的介绍，贴在这里有助于理解。
+理解 在线 DDL 概念 这里讲的 DDL 都是指的在线的 DDL 。在线 DDL 的概念来自于 MySQL ，PostgreSQL 之类的数据库应该是不支持的。这一概念也非常的模糊，区分就在于在做 DDL 的时候是不是要加排他锁，来阻塞住事务。所以，所有的数据库都可以做在线 DDL ，就看是否愿意花力气去做了。对于传统业务，由于不是那么强调 7*24 也就可以挑个夜深人静，甚至就是维护的时间去做 DDL ，就算有几个用户在使用服务，大不了他们稍卡一下。而现代互联网对维护时间卡得很严，也就对这种不阻塞的 DDL 有更高的需求，最最互联网式的数据库 MySQL 就率先支持了这类操作。实现方式大多是采用复制一份新的 schema 的表，然后，期间对表的操作同时发到新旧两个表上去。
+MySQL 支持的在线 DDL 可以看这个网页。基本就是两类，对索引的操作和对列的操作。这里解答了我的一个疑惑，为什么 TiDB 里实现的解释总是拿添加索引来举例？
+F1 的方法 以之前做类似 Aurora 的经验，这一块问题非常多，如果只做离线的 DDL 大可不必这么麻烦。按照 F1 的论文，它通过
+(reorganization) absent -&amp;gt; delete only -&amp;gt; write only ---------------&amp;gt; public 这样一系列状态变化来完成一个 DDL ，其中的约定是，每个节点都通过这四个状态，节点通过接受命令来进入下一状态。每个状态在所有节点里出现的时间最长不超过两个租约时间，怎么保证呢？通过下面这个规则，如果节点接收到上个状态转换的命令后太长时间没收到下个命令，也就是某个状态超过了两个租约时间，意味着自己接受指令太迟了，该节点就拒绝提供服务挂掉。</description>
+    </item>
+    
+    <item>
+      <title>如何理解 CAP 定理</title>
+      <link>https://www.minifish.org/posts/cap/</link>
+      <pubDate>Wed, 20 Dec 2017 22:21:06 +0800</pubDate>
+      
+      <guid>https://www.minifish.org/posts/cap/</guid>
+      <description>背景 CAP 定理也是近些年最热的定理之一了，谈分布式必扯 CAP 。但是我觉得没有理解透彻，于是就想写一篇 blog 来记录下自己的理解。有新的理解会更新内容。
+理解 读了下这篇文献的第一部分。
+ The CAP theorem [Bre12] says that you can only have two of the three desirable properties of:
+ C: Consistency, which we can think of as serializability for this discussion; A: 100% availability, for both reads and updates; P: tolerance to network partitions.  This leads to three kinds of systems: CA, CP and AP, based on what letter you leave out.</description>
+    </item>
+    
+    <item>
+      <title>如何在 travis ci 里执行 git push</title>
+      <link>https://www.minifish.org/posts/travis-git-push/</link>
+      <pubDate>Mon, 16 Oct 2017 22:21:06 +0800</pubDate>
+      
+      <guid>https://www.minifish.org/posts/travis-git-push/</guid>
+      <description>背景 Travis ci 一般用来自动化的跑下测试，而不需要将跑出来的内容更新回 repo 。本文介绍了怎么将 travis 的结果进行自动提交。
+过程 基本过程参考了这个gist。
+为了避免翻墙，将它的 .travis.yml 贴在下面。
+language: ruby rvm: - 2.0.0 env: global: - USER=&amp;#34;username&amp;#34; - EMAIL=&amp;#34;username@mail.com&amp;#34; - REPO=&amp;#34;name of target repo&amp;#34; - FILES=&amp;#34;README.md foo.txt bar.txt&amp;#34; - GH_REPO=&amp;#34;github.com/${USER}/${REPO}.git&amp;#34; - secure: &amp;#34;put travis gem output here =&amp;gt; http://docs.travis-ci.com/user/encryption-keys/&amp;#34; script: - ruby test.rb after_success: - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT) - git clone git://${GH_REPO} - mv -f ${FILES} ${REPO} - cd ${REPO} - git remote - git config user.</description>
+    </item>
+    
+    <item>
+      <title>如何在 TiDB 上实现 MySQL X Protocol&#34;</title>
+      <link>https://www.minifish.org/posts/mysqlx-protocol/</link>
+      <pubDate>Wed, 16 Aug 2017 22:21:06 +0800</pubDate>
+      
+      <guid>https://www.minifish.org/posts/mysqlx-protocol/</guid>
+      <description>MySQL 的一些文档  客户端使用指南 MySQL Shell User Guide 服务端配置指南 Using MySQL as a Document Store 应用开发接口指南 X DevAPI User Guide 服务端内部实现介绍 X Protocol.  实现原理  客户端与服务端之间靠 tcp 通信，协议使用了 protobuf 。 服务端接收到消息后，把消息解码后分析。协议中包含了 namespace 这样一个概念，具体是指，如果 namespace 为空或者 &amp;ldquo;sql&amp;rdquo; ，则消息内容按照 sql 语句来执行，如果为 &amp;ldquo;xplugin&amp;rdquo; 、 &amp;ldquo;mysqlx&amp;rdquo; 则消息按照其他方式来处理。其他方式又可分为：  管理命令 CRUD 操作   &amp;ldquo;xplugin&amp;rdquo; 和 &amp;ldquo;mysqlx&amp;rdquo; 作用完全相同，后者是前者的新名字，为了保持兼容暂时没有去掉前者。 &amp;ldquo;mysqlx&amp;rdquo; 的消息除了个别如 kill_client 这样的明显的命令内容外，都是用拼 sql 的方式，转给服务端进行处理。也就是大部分也变成了 namespace 为 &amp;ldquo;sql&amp;rdquo; 的形式。  实现步骤  给 TiDB 启动一个新的 server 。需要相关的配置参数， ip 、 port 、 socket 之类的东西。 实现消息通讯的读和写功能。 需要为这个新 server 写一个建立连接的过程，包括认证等内容，过程要遵循协议。为了得到协议内容，可使用 tcpdump 来抓取 MySQL 与客户端的消息内容。再结合对 MySQL 源代码的理解来实现这个过程。 server 中要包含原 TiDB server 的 Query Context 等内容，因为主要还是要转成 sql 去执行。 实现对消息的解码处理。虽然只有一句话，但是包含的工作量巨大。    </description>
+    </item>
+    
+    <item>
+      <title>如何作为虚拟化主机安装 CentOS</title>
+      <link>https://www.minifish.org/posts/centos6-install/</link>
+      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
+      
+      <guid>https://www.minifish.org/posts/centos6-install/</guid>
+      <description>安装过程 安装的版本： CentOS 6.3
+ U 盘使用 Win32diskimager 制作镜像来不成功，使用的外置 USB 光驱成功安装。 安装过程中注意选择安装为 Virtualhost 模式即可。 其余选择为默认或稍作改动，如时区的选择。 安装完成后会包含KVM套件和ssh。  安装心得  全程不需要连网，比 Debian 、 Ubuntu 要好很多； 不强迫设置一个非 root 用户； 装之前一定查看cpu是否支持虚拟化，并打开主板虚拟化开关。如果主板支持虚拟化，但是没有虚拟化开关，也可以使用虚拟化，默认肯定开启的。有一种说法是带 K 的 Intel CPU 不能虚拟化。带 K 即可以超频的Intel CPU，看来并非越快的，越新的 CPU 越好。  </description>
+    </item>
+    
+    <item>
+      <title>如何配置 CentOS 6 NFS 服务</title>
+      <link>https://www.minifish.org/posts/centos6-nfs/</link>
+      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
+      
+      <guid>https://www.minifish.org/posts/centos6-nfs/</guid>
+      <description>服务器端  关闭 SeLinux vi /etc/selinux/config #SELINUX=enforcing #注释 #SELINUXTYPE=targeted #注释掉 SELINUX=disabled #增加 reboot #重启系统
+ 用 root 用户建一个文件夹，就叫 /nfs 即可（注意，这里最好先 df 一下，看看哪个分区空间大，不一定就是/的空间最大，有些自动分区是/home空间最大）； yum -y install nfs-utils rpcbind chkconfig nfs on ; chkconfig rpcbind on ; chkconfig nfslock on vi /etc/exports 加入 /home/nfs 192.168.1.0/24(rw,sync,no_all_squash) service rpcbind start ; service nfs start ; service nfslock star ; exportfs -a vi /etc/sysconfig/nfs 去掉下列前面的注释: LOCKD_TCPPORT=32803 LOCKD_UDPPORT=32769 MOUNTD_PORT=892  service rpcbind restart ; service nfs restart ; service nfslock restart rpcinfo -p localhost 记下端口和端口类型 iptables -I INPUT -m state --state NEW -p tcp -m multiport --dport 111,892,2049,32803 -s 192.</description>
+    </item>
+    
+    <item>
+      <title>如何配置 CentOS KVM 网络桥接模式</title>
+      <link>https://www.minifish.org/posts/centos6-kvm-net-bridge/</link>
+      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
+      
+      <guid>https://www.minifish.org/posts/centos6-kvm-net-bridge/</guid>
+      <description>什么是桥接 高度模拟网卡，让路由认为虚拟机的网卡是真实存在的，个人感觉类似电阻的并联，而 NAT （另一种常用的虚拟机网络连接方式）更像寄生在 host 网卡的形式。
+为什么用桥接 能把虚拟机当作完全独立的机器来操作，可以与外网互相访问（ NAT 不行）。
+怎么桥接 在 CentOS 6 下参考这篇文章 里的命令行方式。
+不采用 GUI 的方式是因为：
+ 不知道最后一个图填哪几个选项； 不知道如果选错了怎么重置。  命令行形式：
+  rpm -q bridge-utils 一般这个都已经装了，没有的话如下 su -; yum install bridge-utils
+  ifconfig 至少应该有三个网络
+eth0 Link encap:Ethernet HWaddr 00:18:E7:16:DA:65 inet addr:192.168.0.117 Bcast:192.168.0.255 Mask:255.255.255.0 inet6 addr: fe80::218:e7ff:fe16:da65/64 Scope:Link UP BROADCAST RUNNING MULTICAST MTU:1500 Metric:1 RX packets:556 errors:0 dropped:0 overruns:0 frame:0 TX packets:414 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:1000 RX bytes:222834 (217.</description>
+    </item>
+    
+  </channel>
+</rss>

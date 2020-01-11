@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="zh-cn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>如何配置 CentOS KVM 网络桥接模式 | Mini How</title>
+
+
+
+<link rel="stylesheet" href="/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://www.minifish.org/posts/centos6-kvm-net-bridge/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://www.minifish.org/">
+          <h1 id="nav-heading" class="title is-4">Mini How</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+    </div>
+    <h2 class="subtitle is-6">June 5, 2014</h2>
+    <h1 class="title">如何配置 CentOS KVM 网络桥接模式</h1>
+    
+    <div class="content">
+      
+
+<h1 id="什么是桥接">什么是桥接</h1>
+
+<p>高度模拟网卡，让路由认为虚拟机的网卡是真实存在的，个人感觉类似电阻的并联，而 NAT （另一种常用的虚拟机网络连接方式）更像寄生在 host 网卡的形式。</p>
+
+<h1 id="为什么用桥接">为什么用桥接</h1>
+
+<p>能把虚拟机当作完全独立的机器来操作，可以与外网互相访问（ NAT 不行）。</p>
+
+<h1 id="怎么桥接">怎么桥接</h1>
+
+<p>在 CentOS 6 下参考<a href="http://www.techotopia.com/index.php/Creating_a_CentOS_6_KVM_Networked_Bridge_Interface">这篇文章</a>
+里的命令行方式。</p>
+
+<p>不采用 GUI 的方式是因为：</p>
+
+<ul>
+<li>不知道最后一个图填哪几个选项；</li>
+<li>不知道如果选错了怎么重置。</li>
+</ul>
+
+<p>命令行形式：</p>
+
+<ol>
+<li><p><code>rpm -q bridge-utils</code>
+一般这个都已经装了，没有的话如下 <code>su -; yum install bridge-utils</code></p></li>
+
+<li><p>ifconfig 至少应该有三个网络</p>
+
+<pre><code class="language-text"> eth0      Link encap:Ethernet  HWaddr 00:18:E7:16:DA:65
+           inet addr:192.168.0.117  Bcast:192.168.0.255  Mask:255.255.255.0
+           inet6 addr: fe80::218:e7ff:fe16:da65/64 Scope:Link
+           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+           RX packets:556 errors:0 dropped:0 overruns:0 frame:0
+           TX packets:414 errors:0 dropped:0 overruns:0 carrier:0
+           collisions:0 txqueuelen:1000
+           RX bytes:222834 (217.6 KiB)  TX bytes:48430 (47.2 KiB)
+           Interrupt:16 Base address:0x4f00
+
+ lo        Link encap:Local Loopback
+           inet addr:127.0.0.1  Mask:255.0.0.0
+           inet6 addr: ::1/128 Scope:Host
+           UP LOOPBACK RUNNING  MTU:16436  Metric:1
+           RX packets:8 errors:0 dropped:0 overruns:0 frame:0
+           TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+           collisions:0 txqueuelen:0
+           RX bytes:480 (480.0 b)  TX bytes:480 (480.0 b)
+
+ virbr0    Link encap:Ethernet  HWaddr 52:54:00:2A:C1:7E
+           inet addr:192.168.122.1  Bcast:192.168.122.255  Mask:255.255.255.0
+           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+           RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+           TX packets:13 errors:0 dropped:0 overruns:0 carrier:0
+           collisions:0 txqueuelen:0
+           RX bytes:0 (0.0 b)  TX bytes:2793 (2.7 KiB)
+</code></pre></li>
+
+<li><p><code>su – ;cd /etc/sysconfig/network-scripts</code></p></li>
+
+<li><p><code>ifdown eth0</code>
+这一步一定要做，所以必须要本机配置，本人在第一次配置的时候没有先关网络（因为要远程），结果我没想到在网络没有重启的情况下ifcfg-eth0的配置就更新了，然后网络就再也连不上了。</p></li>
+
+<li><p>在 ifcfg-eth0 里填</p>
+
+<pre><code class="language-text"> DEVICE=eth0
+ ONBOOT=yes
+ BRIDGE=br0
+</code></pre>
+
+<p>文件里只保留这三行就行，不用配置 ip，桥接貌似是用桥接器代替原始网卡，所以配置部分交给桥接器就可以了。</p></li>
+
+<li><p>新建文件 ifcfg-br0，</p>
+
+<pre><code class="language-text"> DEVICE=br0
+ ONBOOT=yes
+ TYPE=Bridge
+ BOOTPROTO=static
+ IPADDR=xxx.xxx.xxx.xxx （这里ip等配置就是你原来填在ifcfg-eth0里的）
+ GATEWAY=xxx.xxx.xxx.xxx
+ ...（不再列举，下两行也要写，不过不知道是什么）
+ STP=on
+ DELAY=0
+</code></pre></li>
+
+<li><p><code>ifup br0; ifup eth0</code></p></li>
+
+<li><p>看下 <code>ifconfig</code> ，应该就有 br0 了，</p></li>
+
+<li><p>编辑 /etc/sysconfig/iptables 加入，
+<code>-INPUT -i br0 -j ACCEPT （大概是这样，需要根据实际情况修改）</code></p></li>
+
+<li><p><code>service iptables restart</code></p></li>
+
+<li><p>用 virt-manager 新建虚拟机的时候就可以选 br0 了，否则桥接没法选。</p></li>
+</ol>
+
+<p><strong>注意：</strong> 配置虚拟机内的 ip 时要注意指定 GATEWAY ，否则只能访问内网，不能访问外网。也就是这时候虚拟机不会自动找 GATEWAY 了。</p>
+
+      
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+  
+    <script type="text/javascript">
+      var disqus_shortname = 'jackysp';
+      function disqus() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+  
+      disqus();
+  
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p></p>
+    
+  </div>
+</section>
+
+
+
+</body>
+</html>
+

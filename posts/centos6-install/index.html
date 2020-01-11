@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="zh-cn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>如何作为虚拟化主机安装 CentOS | Mini How</title>
+
+
+
+<link rel="stylesheet" href="/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://www.minifish.org/posts/centos6-install/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://www.minifish.org/">
+          <h1 id="nav-heading" class="title is-4">Mini How</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+    </div>
+    <h2 class="subtitle is-6">June 5, 2014</h2>
+    <h1 class="title">如何作为虚拟化主机安装 CentOS</h1>
+    
+    <div class="content">
+      
+
+<h1 id="安装过程">安装过程</h1>
+
+<p>安装的版本： CentOS 6.3</p>
+
+<ol>
+<li>U 盘使用 Win32diskimager 制作镜像来不成功，使用的外置 USB 光驱成功安装。</li>
+<li>安装过程中注意选择安装为 Virtualhost 模式即可。</li>
+<li>其余选择为默认或稍作改动，如时区的选择。</li>
+<li>安装完成后会包含KVM套件和ssh。</li>
+</ol>
+
+<h1 id="安装心得">安装心得</h1>
+
+<ul>
+<li>全程不需要连网，比 Debian 、 Ubuntu 要好很多；</li>
+<li>不强迫设置一个非 root 用户；</li>
+<li>装之前一定查看cpu是否支持虚拟化，并打开主板虚拟化开关。如果主板支持虚拟化，但是没有虚拟化开关，也可以使用虚拟化，默认肯定开启的。有一种说法是带 K 的 Intel CPU 不能虚拟化。带 K 即可以超频的Intel CPU，看来并非越快的，越新的 CPU 越好。</li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+  
+    <script type="text/javascript">
+      var disqus_shortname = 'jackysp';
+      function disqus() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+  
+      disqus();
+  
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p></p>
+    
+  </div>
+</section>
+
+
+
+</body>
+</html>
+

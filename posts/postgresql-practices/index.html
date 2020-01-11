@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="zh-cn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>如何练习使用 SQL | Mini How</title>
+
+
+<link rel="stylesheet" href="/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+
+
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="https://www.minifish.life/"><h1 class="title is-4">Mini How</h1></a>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile"></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+    </div>
+    <h2 class="subtitle is-6">June 5, 2014</h2>
+    <h1 class="title">如何练习使用 SQL</h1>
+    
+    <div class="content">
+      
+
+<p>做题。以下使用的是 POSTGRESQL 9.4 BETA 2。</p>
+
+<h1 id="表结构">表结构</h1>
+
+<pre><code class="language-sql">CREATE TABLE STUDENT
+(SNO VARCHAR(3) NOT NULL,
+SNAME VARCHAR(4) NOT NULL,
+SSEX VARCHAR(2) NOT NULL,
+SBIRTHDAY DATE,
+CLASS VARCHAR(5));
+
+CREATE TABLE COURSE
+(CNO VARCHAR(5) NOT NULL,
+CNAME VARCHAR(10) NOT NULL,
+TNO VARCHAR(10) NOT NULL);
+
+CREATE TABLE SCORE
+(SNO VARCHAR(3) NOT NULL,
+CNO VARCHAR(5) NOT NULL,
+DEGREE NUMERIC(10, 1) NOT NULL);
+
+CREATE TABLE TEACHER
+(TNO VARCHAR(3) NOT NULL,
+TNAME VARCHAR(4) NOT NULL, TSEX VARCHAR(2) NOT NULL,
+TBIRTHDAY DATE NOT NULL, PROF VARCHAR(6),
+DEPART VARCHAR(10) NOT NULL);
+
+INSERT INTO STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,CLASS) VALUES (108 ,'曾华','男' ,'1977-09-01',95033);
+INSERT INTO STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,CLASS) VALUES (105 ,'匡明','男' ,'1975-10-02',95031);
+INSERT INTO STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,CLASS) VALUES (107 ,'王丽','女' ,'1976-01-23',95033);
+INSERT INTO STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,CLASS) VALUES (101 ,'李军','男' ,'1976-02-20',95033);
+INSERT INTO STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,CLASS) VALUES (109 ,'王芳','女' ,'1975-02-10',95031);
+INSERT INTO STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,CLASS) VALUES (103 ,'陆君','男' ,'1974-06-03',95031);
+
+INSERT INTO COURSE(CNO,CNAME,TNO)VALUES ('3-105' ,'计算机导论',825);
+INSERT INTO COURSE(CNO,CNAME,TNO)VALUES ('3-245' ,'操作系统' ,804);
+INSERT INTO COURSE(CNO,CNAME,TNO)VALUES ('6-166' ,'数据电路' ,856);
+INSERT INTO COURSE(CNO,CNAME,TNO)VALUES ('9-888' ,'高等数学' ,100);
+
+INSERT INTO SCORE(SNO,CNO,DEGREE)VALUES (103,'3-245',86);
+INSERT INTO SCORE(SNO,CNO,DEGREE)VALUES (105,'3-245',75);
+INSERT INTO SCORE(SNO,CNO,DEGREE)VALUES (109,'3-245',68);
+INSERT INTO SCORE(SNO,CNO,DEGREE)VALUES (103,'3-105',92);
+INSERT INTO SCORE(SNO,CNO,DEGREE)VALUES (105,'3-105',88);
+INSERT INTO SCORE(SNO,CNO,DEGREE)VALUES (109,'3-105',76);
+INSERT INTO SCORE(SNO,CNO,DEGREE)VALUES (101,'3-105',64);
+INSERT INTO SCORE(SNO,CNO,DEGREE)VALUES (107,'3-105',91);
+INSERT INTO SCORE(SNO,CNO,DEGREE)VALUES (108,'3-105',78);
+INSERT INTO SCORE(SNO,CNO,DEGREE)VALUES (101,'6-166',85);
+INSERT INTO SCORE(SNO,CNO,DEGREE)VALUES (107,'6-106',79);
+INSERT INTO SCORE(SNO,CNO,DEGREE)VALUES (108,'6-166',81);
+
+INSERT INTO TEACHER(TNO,TNAME,TSEX,TBIRTHDAY,PROF,DEPART) VALUES (804,'李诚','男','1958-12-02','副教授','计算机系');
+INSERT INTO TEACHER(TNO,TNAME,TSEX,TBIRTHDAY,PROF,DEPART) VALUES (856,'张旭','男','1969-03-12','讲师','电子工程系');
+INSERT INTO TEACHER(TNO,TNAME,TSEX,TBIRTHDAY,PROF,DEPART) VALUES (825,'王萍','女','1972-05-05','助教','计算机系');
+INSERT INTO TEACHER(TNO,TNAME,TSEX,TBIRTHDAY,PROF,DEPART) VALUES (831,'刘冰','女','1977-08-14','助教','电子工程系');
+</code></pre>
+
+<h1 id="题目">题目</h1>
+
+<ol>
+<li>查询STUDENT表中的所有记录的SNAME、SSEX和CLASS列。</li>
+<li>查询教师所有的单位即不重复的DEPART列。</li>
+<li>查询STUDENT表的所有记录。</li>
+<li>查询SCORE表中成绩在60到80之间的所有记录。</li>
+<li>查询SCORE表中成绩为85，86或88的记录。</li>
+<li>查询STUDENT表中“95031”班或性别为“女”的同学记录。</li>
+<li>以CLASS降序查询STUDENT表的所有记录。</li>
+<li>以CNO升序、DEGREE降序查询SCORE表的所有记录。</li>
+<li>查询“95031”班的学生人数。</li>
+<li>查询SCORE表中的最高分的学生学号和课程号。</li>
+<li>查询‘3-105’号课程的平均分。</li>
+<li>查询SCORE表中至少有5名学生选修的并以3开头的课程的平均分数。</li>
+<li>查询最低分大于70，最高分小于90的SNO列。</li>
+<li>查询所有学生的SNAME、CNO和DEGREE列。</li>
+<li>查询所有学生的SNO、CNAME和DEGREE列。</li>
+<li>查询所有学生的SNAME、CNAME和DEGREE列。</li>
+<li>查询“95033”班所选课程的平均分。</li>
+<li>查询选修“3-105”课程的成绩高于“109”号同学成绩的所有同学的记录。</li>
+<li>查询SCORE中选学一门以上课程的同学中分数为非最高分成绩的记录。</li>
+<li>查询成绩高于学号为“109”、课程号为“3-105”的成绩的所有记录。</li>
+<li>查询和学号为108的同学同年出生的所有学生的SNO、SNAME和SBIRTHDAY列。</li>
+<li>查询“张旭“教师任课的学生成绩。</li>
+<li>查询选修某课程的同学人数多于5人的教师姓名。</li>
+<li>查询95033班和95031班全体学生的记录。</li>
+<li>查询存在有85分以上成绩的课程CNO.</li>
+<li>查询出“计算机系“教师所教课程的成绩表。</li>
+<li>查询“计算机系”与“电子工程系“不同职称的教师的TNAME和PROF。</li>
+<li>查询选修编号为“3-105“课程且成绩至少高于选修编号为“3-245”的同学的CNO、SNO和DEGREE,并按DEGREE从高到低次序排序。</li>
+<li>查询选修编号为“3-105”且成绩高于选修编号为“3-245”课程的同学的CNO、SNO和DEGREE.</li>
+<li>查询所有教师和同学的NAME、SEX和BIRTHDAY.</li>
+<li>查询所有“女”教师和“女”同学的NAME、SEX和BIRTHDAY.</li>
+<li>查询成绩比该课程平均成绩低的同学的成绩表。</li>
+<li>查询所有任课教师的TNAME和DEPART.</li>
+<li>查询所有未讲课的教师的TNAME和DEPART.</li>
+<li>查询至少有2名男生的班号。</li>
+<li>查询STUDENT表中不姓“王”的同学记录。</li>
+<li>查询STUDENT表中每个学生的姓名和年龄。</li>
+<li>查询STUDENT表中最大和最小的SBIRTHDAY日期值。</li>
+<li>以班号和年龄从大到小的顺序查询STUDENT表中的全部记录。</li>
+<li>查询“男”教师及其所上的课程。</li>
+<li>查询最高分同学的SNO、CNO和DEGREE列。</li>
+<li>查询和“李军”同性别的所有同学的SNAME.</li>
+<li>查询和“李军”同性别并同班的同学SNAME.</li>
+<li>查询所有选修“计算机导论”课程的“男”同学的成绩表</li>
+</ol>
+
+<h1 id="参考答案">参考答案</h1>
+
+<ol>
+<li>SELECT SNAME,SSEX,CLASS FROM STUDENT;</li>
+<li>SELECT DISTINCT DEPART FROM TEACHER;</li>
+<li>SELECT * FROM STUDENT;</li>
+<li>SELECT * FROM SCORE WHERE DEGREE BETWEEN 60 AND 80;</li>
+<li>SELECT * FROM SCORE WHERE DEGREE IN (85,86,88);</li>
+<li>SELECT * FROM STUDENT WHERE CLASS=&lsquo;95031&rsquo; OR SSEX=&lsquo;女&rsquo;;</li>
+<li>SELECT * FROM STUDENT ORDER BY CLASS DESC;</li>
+<li>SELECT * FROM SCORE ORDER BY CNO ASC,DEGREE DESC;</li>
+<li>SELECT  COUNT(*) FROM STUDENT WHERE CLASS=&lsquo;95031&rsquo;;</li>
+<li>
+
+<ul>
+<li>SELECT SNO,CNO FROM SCORE WHERE DEGREE=(SELECT MAX(DEGREE) FROM SCORE);</li>
+<li>SELECT SNO,CNO FROM SCORE ORDER BY DEGREE DESC LIMIT 1;</li>
+</ul></li>
+<li>SELECT AVG(DEGREE) FROM SCORE WHERE CNO=&lsquo;3-105&rsquo;;</li>
+<li>SELECT AVG(DEGREE), CNO FROM SCORE WHERE CNO LIKE &lsquo;3%&rsquo; GROUP BY CNO HAVING COUNT(SNO) &gt;= 5;</li>
+<li>SELECT SNO FROM SCORE GROUP BY SNO HAVING MIN(DEGREE)&gt;70 AND MAX(DEGREE)&lt;90;</li>
+<li>SELECT A.SNAME,B.CNO,B.DEGREE FROM STUDENT AS A JOIN SCORE AS B ON A.SNO=B.SNO;</li>
+<li>SELECT A.CNAME, B.SNO,B.DEGREE FROM COURSE AS A JOIN SCORE AS B ON A.CNO=B.CNO ;</li>
+<li>SELECT A.SNAME, C.CNAME,B.DEGREE FROM STUDENT A JOIN SCORE B ON A.SNO=B.SNO JOIN COURSE C ON B.CNO =C.CNO;</li>
+<li>SELECT AVG(A.DEGREE) FROM SCORE A JOIN STUDENT B ON A.SNO = B.SNO WHERE B.CLASS=&lsquo;95033&rsquo;;</li>
+<li>
+
+<ul>
+<li>SELECT A.* FROM SCORE A JOIN SCORE B ON A.CNO = B.CNO WHERE A.CNO=&lsquo;3-105&rsquo; AND A.DEGREE&gt;B.DEGREE AND B.SNO=&lsquo;109&rsquo; AND B.CNO=&lsquo;3-105&rsquo;;</li>
+<li>SELECT A.* FROM SCORE A  WHERE A.CNO=&lsquo;3-105&rsquo; AND A.DEGREE&gt;ALL(SELECT DEGREE FROM SCORE B WHERE B.SNO=&lsquo;109&rsquo; AND B.CNO=&lsquo;3-105&rsquo;);</li>
+</ul></li>
+<li>SELECT SNO FROM SCORE WHERE DEGREE&lt;(SELECT MAX(DEGREE) FROM SCORE) GROUP BY SNO HAVING COUNT(SNO)&gt;1 ;</li>
+<li>见18的第二种解法</li>
+<li>SELECT SNO,SNAME,SBIRTHDAY FROM STUDENT WHERE EXTRACT(YEAR FROM SBIRTHDAY)=(SELECT EXTRACT(YEAR FROM SBIRTHDAY) FROM STUDENT WHERE SNO=&lsquo;108&rsquo;);</li>
+<li>
+
+<ul>
+<li>SELECT A.SNO,A.DEGREE FROM SCORE A JOIN COURSE C ON A.CNO = C.CNO JOIN TEACHER B ON B.TNO=C.TNO WHERE B.TNAME=&lsquo;张旭&rsquo;;</li>
+<li>SELECT CNO,SNO,DEGREE FROM SCORE WHERE CNO=(SELECT X.CNO FROM COURSE X,TEACHER Y WHERE X.TNO=Y.TNO AND Y.TNAME=&lsquo;张旭&rsquo;);根据实际EXPLAIN此SELECT语句，第一个的扫描次数要小于第二个</li>
+</ul></li>
+<li>
+
+<ul>
+<li>SELECT C.CNO FROM TEACHER A JOIN COURSE B ON A.TNO=B.TNO JOIN SCORE C ON  B.CNO=C.CNO GROUP BY C.CNO HAVING COUNT(C.CNO)&gt;5;</li>
+<li>SELECT TNAME FROM TEACHER WHERE TNO IN(SELECT X.TNO FROM COURSE X,SCORE Y WHERE X.CNO=Y.CNO GROUP BY X.TNO HAVING COUNT(X.TNO)&gt;5);实际测试1明显优于2</li>
+</ul></li>
+<li>SELECT CNO,SNO,DEGREE FROM SCORE WHERE CNO=(SELECT X.CNO FROM COURSE X,TEACHER Y WHERE X.TNO=Y.TNO AND Y.TNAME=&lsquo;张旭&rsquo;);</li>
+<li>
+
+<ul>
+<li>SELECT CNO FROM SCORE GROUP BY CNO HAVING MAX(DEGREE)&gt;85;</li>
+<li>SELECT DISTINCT CNO FROM SCORE WHERE DEGREE IN (SELECT DEGREE FROM SCORE WHERE DEGREE&gt;85);</li>
+</ul></li>
+<li>
+
+<ul>
+<li>SELECT A.* FROM SCORE A JOIN COURSE C ON A.CNO=C.CNO JOIN TEACHER B ON B.TNO=C.TNO WHERE B.DEPART=&lsquo;计算机系&rsquo;;</li>
+<li>SELECT * FROM SCORE WHERE CNO IN (SELECT A.CNO FROM COURSE A JOIN TEACHER B ON A.TNO=B.TNO AND B.DEPART=&lsquo;计算机系&rsquo;);此时2略好于1，在多连接的境况下性能会迅速下降</li>
+</ul></li>
+<li>SELECT TNAME,PROF FROM TEACHER WHERE DEPART=&lsquo;计算机系&rsquo; AND PROF NOT IN (SELECT PROF FROM TEACHER WHERE DEPART=&lsquo;电子工程系&rsquo;);</li>
+<li>SELECT * FROM SCORE WHERE DEGREE&gt;ANY(SELECT DEGREE FROM SCORE WHERE CNO=&lsquo;3-245&rsquo;) ORDER BY DEGREE DESC;</li>
+<li>SELECT * FROM SCORE WHERE DEGREE&gt;ALL(SELECT DEGREE FROM SCORE WHERE CNO=&lsquo;3-245&rsquo;) ORDER BY DEGREE DESC;</li>
+<li>SELECT SNAME AS NAME, SSEX AS SEX, SBIRTHDAY AS BIRTHDAY FROM STUDENT UNION SELECT TNAME AS NAME, TSEX AS SEX, TBIRTHDAY AS BIRTHDAY FROM TEACHER;</li>
+<li>SELECT SNAME AS NAME, SSEX AS SEX, SBIRTHDAY AS BIRTHDAY FROM STUDENT WHERE SSEX=&lsquo;女&rsquo; UNION SELECT TNAME AS NAME, TSEX AS SEX, TBIRTHDAY AS BIRTHDAY FROM TEACHER WHERE TSEX=&lsquo;女&rsquo;;</li>
+<li>
+
+<ul>
+<li>SELECT A.TNAME,A.DEPART FROM TEACHER A JOIN COURSE B ON A.TNO=B.TNO;</li>
+<li>SELECT TNAME,DEPART FROM TEACHER A WHERE EXISTS (SELECT * FROM COURSE B WHERE A.TNO=B.TNO);</li>
+</ul></li>
+<li>
+
+<ul>
+<li>SELECT TNAME,DEPART FROM TEACHER WHERE TNO IN (SELECT TNO FROM COURSE); 实际分析，第一种揭发貌似更好，至少扫描次数最少。</li>
+</ul></li>
+<li>
+
+<ul>
+<li>SELECT TNAME,DEPART FROM TEACHER A LEFT JOIN COURSE B USING(TNO) WHERE ISNUL (B.TNO);</li>
+<li>SELECT TNAME,DEPART FROM TEACHER A WHERE NOT EXISTS (SELECT * FROM COURSE B WHERE A.TNO=B.TNO);</li>
+<li>SELECT TNAME,DEPART FROM TEACHER WHERE TNO NOT IN (SELECT TNO FROM COURSE); NOT IN的方法效率最差，其余两种差不多</li>
+</ul></li>
+<li>SELECT CLASS FROM STUDENT A WHERE SSEX=&lsquo;男&rsquo; GROUP BY CLASS HAVING COUNT(SSEX)&gt;1;</li>
+<li>SELECT * FROM STUDENT A WHERE SNAME NOT LIKE &lsquo;王%&rsquo;;</li>
+<li>SELECT SNAME, DATE_PART(&lsquo;YEAR&rsquo;, AGE(SBIRTHDAY)) AS AGE FROM STUDENT;</li>
+<li>SELECT SNAME,SBIRTHDAY AS THEMAX FROM STUDENT WHERE SBIRTHDAY =(SELECT MIN(SBIRTHDAY) FROM STUDENT) UNION SELECT SNAME,SBIRTHDAY AS THEMIN FROM STUDENT WHERE SBIRTHDAY =(SELECT MAX(SBIRTHDAY) FROM STUDENT);</li>
+<li>SELECT CLASS,AGE(SBIRTHDAY) AS AGE FROM STUDENT ORDER BY CLASS DESC,AGE DESC;</li>
+<li>SELECT A.TNAME,B.CNAME FROM TEACHER A JOIN COURSE B ON A.TNO = B.TNO WHERE A.TSEX=&lsquo;男&rsquo;;</li>
+<li>SELECT A.* FROM SCORE A WHERE DEGREE=(SELECT MAX(DEGREE) FROM SCORE B );</li>
+<li>SELECT SNAME FROM STUDENT A WHERE SSEX=(SELECT SSEX FROM STUDENT B WHERE B.SNAME=&lsquo;李军&rsquo;);</li>
+<li>SELECT SNAME FROM STUDENT A WHERE SSEX=(SELECT SSEX FROM STUDENT B WHERE B.SNAME=&lsquo;李军&rsquo; ) AND CLASS=(SELECT CLASS FROM STUDENT C WHERE C.SNAME=&lsquo;李军&rsquo;);</li>
+<li>
+
+<ul>
+<li>SELECT A.* FROM SCORE A JOIN STUDENT B ON A.SNO = B.SNO JOIN COURSE C ON A.CNO = C.CNO WHERE B.SSEX=&lsquo;男&rsquo; AND C.CNAME=&lsquo;计算机导论&rsquo;;</li>
+<li>SELECT * FROM SCORE WHERE SNO IN(SELECT SNO FROM STUDENT WHERE SSEX=&lsquo;男&rsquo;) AND CNO=(SELECT CNO FROM COURSE WHERE CNAME=&lsquo;计算机导论&rsquo;);</li>
+</ul></li>
+</ol>
+
+      
+    </div>
+    
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+    <script type="text/javascript">
+      var disqus_shortname = 'jackysp';
+      (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p></p>
+    
+  </div>
+</section>
+
+</body>
+</html>
+

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="zh-cn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Posts | Mini How</title>
+
+
+
+<link rel="stylesheet" href="/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://www.minifish.org/posts/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://www.minifish.org/">
+          <h1 id="nav-heading" class="title is-4">Mini How</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    
+    
+    <article>
+      <div class="subtitle tags is-6 is-pulled-right">
+        
+      </div>
+      <h2 class="subtitle is-6 date">August 16, 2017</h2>
+      <h1 class="title"><a href="https://www.minifish.org/posts/mysqlx-protocol/">如何在 TiDB 上实现 MySQL X Protocol&#34;</a></h1>
+      <div class="content">
+        MySQL 的一些文档  客户端使用指南 MySQL Shell User Guide 服务端配置指南 Using MySQL as a Document Store 应用开发接口指南 X DevAPI User Guide 服务端内部实现介绍 X Protocol.  实现原理  客户端与服务端之间靠 tcp 通信，协议使用了 protobuf 。 服务端接收到消息后，把消息解码后分析。协议中包含了 namespace 这样一个概念，具体是指，如果 namespace 为空或者 &ldquo;sql&rdquo; ，则消息内容按照 sql 语句来执行，如果为 &ldquo;xplugin&rdquo; 、 &ldquo;mysqlx&rdquo; 则消息按照其他方式来处理。其他方式又可分为：  管理命令 CRUD 操作  &ldquo;xplugin&rdquo; 和 &ldquo;mysqlx&rdquo; 作用完全相同，后者是前者的新名字，为了保持兼容暂时没有去掉前者。 &ldquo;mysqlx&rdquo; 的消息除了个别如 kill_client 这样的明显的命令内容外，都是用拼 sql 的方式，转给服务端进行处理。也就是大部分也变成了 namespace 为 &ldquo;sql&rdquo; 的形式。  实现步骤  给 TiDB 启动一个新的 server 。需要相关的配置参数， ip 、 port 、 socket 之类的东西。 实现消息通讯的读和写功能。 需要为这个新 server 写一个建立连接的过程，包括认证等内容，过程要遵循协议。为了得到协议内容，可使用 tcpdump 来抓取 MySQL 与客户端的消息内容。再结合对 MySQL 源代码的理解来实现这个过程。 server 中要包含原 TiDB server 的 Query Context 等内容，因为主要还是要转成 sql 去执行。 实现对消息的解码处理。虽然只有一句话，但是包含的工作量巨大。  (Mysqlx::ServerMessages::CONN_CAPABILITIES, "
+        
+        <a class="button is-link" href="https://www.minifish.org/posts/mysqlx-protocol/" style="height:28px">
+          Read more
+        </a>
+        
+      </div>
+    </article>
+    
+    <article>
+      <div class="subtitle tags is-6 is-pulled-right">
+        
+      </div>
+      <h2 class="subtitle is-6 date">June 5, 2014</h2>
+      <h1 class="title"><a href="https://www.minifish.org/posts/centos6-install/">如何作为虚拟化主机安装 CentOS</a></h1>
+      <div class="content">
+         安装过程 安装的版本： CentOS 6.3
+ U 盘使用 Win32diskimager 制作镜像来不成功，使用的外置 USB 光驱成功安装。 安装过程中注意选择安装为 Virtualhost 模式即可。 其余选择为默认或稍作改动，如时区的选择。 安装完成后会包含KVM套件和ssh。  安装心得  全程不需要连网，比 Debian 、 Ubuntu 要好很多； 不强迫设置一个非 root 用户； 装之前一定查看cpu是否支持虚拟化，并打开主板虚拟化开关。如果主板支持虚拟化，但是没有虚拟化开关，也可以使用虚拟化，默认肯定开启的。有一种说法是带 K 的 Intel CPU 不能虚拟化。带 K 即可以超频的Intel CPU，看来并非越快的，越新的 CPU 越好。  
+        
+      </div>
+    </article>
+    
+    <article>
+      <div class="subtitle tags is-6 is-pulled-right">
+        
+      </div>
+      <h2 class="subtitle is-6 date">June 5, 2014</h2>
+      <h1 class="title"><a href="https://www.minifish.org/posts/centos6-nfs/">如何配置 CentOS 6 NFS 服务</a></h1>
+      <div class="content">
+        服务器端  关闭 SeLinux vi /etc/selinux/config text #SELINUX=enforcing #注释 #SELINUXTYPE=targeted #注释掉 SELINUX=disabled #增加  reboot #重启系统 用 root 用户建一个文件夹，就叫 /nfs 即可（注意，这里最好先 df 一下，看看哪个分区空间大，不一定就是/的空间最大，有些自动分区是/home空间最大）； yum -y install nfs-utils rpcbind chkconfig nfs on ; chkconfig rpcbind on ; chkconfig nfslock on vi /etc/exports 加入 /home/nfs 192.168.1.0/24(rw,sync,no_all_squash) service rpcbind start ; service nfs start ; service nfslock star ; exportfs -a vi /etc/sysconfig/nfs 去掉下列前面的注释: text LOCKD_TCPPORT=32803 LOCKD_UDPPORT=32769 MOUNTD_PORT=892  service rpcbind restart ; service nfs restart ; service nfslock restart rpcinfo -p localhost 记下端口和端口类型 iptables -I INPUT -m state --state NEW -p tcp -m multiport --dport 111,892,2049,32803 -s 192.
+        
+        <a class="button is-link" href="https://www.minifish.org/posts/centos6-nfs/" style="height:28px">
+          Read more
+        </a>
+        
+      </div>
+    </article>
+    
+    <article>
+      <div class="subtitle tags is-6 is-pulled-right">
+        
+      </div>
+      <h2 class="subtitle is-6 date">June 5, 2014</h2>
+      <h1 class="title"><a href="https://www.minifish.org/posts/centos6-kvm-net-bridge/">如何配置 CentOS KVM 网络桥接模式</a></h1>
+      <div class="content">
+        什么是桥接 高度模拟网卡，让路由认为虚拟机的网卡是真实存在的，个人感觉类似电阻的并联，而 NAT （另一种常用的虚拟机网络连接方式）更像寄生在 host 网卡的形式。
+为什么用桥接 能把虚拟机当作完全独立的机器来操作，可以与外网互相访问（ NAT 不行）。
+怎么桥接 在 CentOS 6 下参考这篇文章 里的命令行方式。
+不采用 GUI 的方式是因为：
+ 不知道最后一个图填哪几个选项； 不知道如果选错了怎么重置。  命令行形式：
+ rpm -q bridge-utils 一般这个都已经装了，没有的话如下 su -; yum install bridge-utils
+ ifconfig 至少应该有三个网络
+eth0 Link encap:Ethernet HWaddr 00:18:E7:16:DA:65 inet addr:192.168.0.117 Bcast:192.168.0.255 Mask:255.255.255.0 inet6 addr: fe80::218:e7ff:fe16:da65/64 Scope:Link UP BROADCAST RUNNING MULTICAST MTU:1500 Metric:1 RX packets:556 errors:0 dropped:0 overruns:0 frame:0 TX packets:414 errors:0 dropped:0 overruns:0 carrier:0 collisions:0 txqueuelen:1000 RX bytes:222834 (217.
+        
+        <a class="button is-link" href="https://www.minifish.org/posts/centos6-kvm-net-bridge/" style="height:28px">
+          Read more
+        </a>
+        
+      </div>
+    </article>
+    
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <nav class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          
+          <a class="button" href="/posts/">
+            <span class="icon is-small is-marginless">
+              <svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <polyline points="15 18 9 12 15 6"/>
+    
+  </svg>
+            </span>
+            Newer
+          </a>
+          
+        </div>
+      </div>
+      <div class="level-right is-marginless">
+        <div class="level-item">
+          
+        </div>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p></p>
+    
+  </div>
+</section>
+
+
+
+</body>
+</html>
+
