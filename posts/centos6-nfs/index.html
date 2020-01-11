@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="zh-cn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>如何配置 CentOS 6 NFS 服务 | Mini How</title>
+
+
+
+<link rel="stylesheet" href="/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://www.minifish.org/posts/centos6-nfs/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://www.minifish.org/">
+          <h1 id="nav-heading" class="title is-4">Mini How</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+    </div>
+    <h2 class="subtitle is-6">June 5, 2014</h2>
+    <h1 class="title">如何配置 CentOS 6 NFS 服务</h1>
+    
+    <div class="content">
+      <h1 id="服务器端">服务器端</h1>
+<ol>
+<li>关闭 SeLinux <code>vi /etc/selinux/config</code>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">#SELINUX=enforcing #注释
+#SELINUXTYPE=targeted #注释掉
+SELINUX=disabled #增加
+</code></pre></div><p><code>reboot #重启系统</code></p>
+</li>
+<li>用 root 用户建一个文件夹，就叫 /nfs 即可（注意，这里最好先 df 一下，看看哪个分区空间大，不一定就是/的空间最大，有些自动分区是/home空间最大）；</li>
+<li><code>yum -y install nfs-utils rpcbind</code></li>
+<li><code>chkconfig nfs on ; chkconfig rpcbind on ; chkconfig nfslock on</code></li>
+<li><code>vi /etc/exports</code> 加入 <code>/home/nfs 192.168.1.0/24(rw,sync,no_all_squash)</code></li>
+<li><code>service rpcbind start ; service nfs start ; service nfslock star ; exportfs -a</code></li>
+<li><code>vi /etc/sysconfig/nfs</code> 去掉下列前面的注释:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">LOCKD_TCPPORT=32803
+LOCKD_UDPPORT=32769
+MOUNTD_PORT=892
+</code></pre></div></li>
+<li><code>service rpcbind restart ; service nfs restart ; service nfslock restart</code></li>
+<li><code>rpcinfo -p localhost</code> 记下端口和端口类型</li>
+<li><code>iptables -I INPUT -m state --state NEW -p tcp -m multiport --dport 111,892,2049,32803 -s 192.168.0.0/24 -j ACCEPT ; iptables -I INPUT -m state --state NEW -p udp -m multiport --dport 111,892,2049,32769 -s 192.168.0.0/24 -j ACCEPT</code> 自己根据ip段改一下。</li>
+<li>在客户端侧测试，如果通了，则 <code>service iptables save</code></li>
+</ol>
+<h1 id="客户端">客户端</h1>
+<ol>
+<li><code>mkdir /nfs</code></li>
+<li><code>rpcinfo -p server的ip</code></li>
+<li><code>showmount -e server的ip</code></li>
+<li><code>mount -t nfs -o soft,intr,bg,rw server的ip:/home/nfs /nfs</code></li>
+<li>解除挂载umount /nfs</li>
+<li>自动挂载<code>vi /etc/fstab</code>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">server的ip:/home/nfs /nfs nfs soft,intr,bg,rw 0 0
+</code></pre></div></li>
+</ol>
+
+      
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+  
+    <script type="text/javascript">
+      var disqus_shortname = 'jackysp';
+      function disqus() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+  
+      disqus();
+  
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p></p>
+    
+  </div>
+</section>
+
+
+
+</body>
+</html>
+

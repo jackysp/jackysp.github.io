@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="zh-cn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>如何在 travis ci 里执行 git push | Mini How</title>
+
+
+
+<link rel="stylesheet" href="/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://www.minifish.org/posts/travis-git-push/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://www.minifish.org/">
+          <h1 id="nav-heading" class="title is-4">Mini How</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+    </div>
+    <h2 class="subtitle is-6">October 16, 2017</h2>
+    <h1 class="title">如何在 travis ci 里执行 git push</h1>
+    
+    <div class="content">
+      <h1 id="背景">背景</h1>
+<p>Travis ci 一般用来自动化的跑下测试，而不需要将跑出来的内容更新回 repo 。本文介绍了怎么将 travis 的结果进行自动提交。</p>
+<h1 id="过程">过程</h1>
+<p>基本过程参考了<a href="https://gist.github.com/Maumagnaguagno/84a9807ed71d233e5d3f">这个gist</a>。</p>
+<p>为了避免翻墙，将它的 <code>.travis.yml</code> 贴在下面。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">language: ruby
+rvm:
+  - <span style="color:#ae81ff">2.0</span><span style="color:#ae81ff">.0</span>
+env:
+  global:
+  - USER=<span style="color:#e6db74">&#34;username&#34;</span>
+  - EMAIL=<span style="color:#e6db74">&#34;username@mail.com&#34;</span>
+  - REPO=<span style="color:#e6db74">&#34;name of target repo&#34;</span>
+  - FILES=<span style="color:#e6db74">&#34;README.md foo.txt bar.txt&#34;</span>
+  - GH_REPO=<span style="color:#e6db74">&#34;github.com/${USER}/${REPO}.git&#34;</span>
+  - secure: <span style="color:#e6db74">&#34;put travis gem output here =&gt; http://docs.travis-ci.com/user/encryption-keys/&#34;</span>
+script:
+  - ruby test.rb
+after_success:
+  - MESSAGE=$(git log --format=%B -n <span style="color:#ae81ff">1</span> $TRAVIS_COMMIT)
+  - git clone git://${GH_REPO}
+  - mv -f ${FILES} ${REPO}
+  - cd ${REPO}
+  - git remote
+  - git config user.email ${EMAIL}
+  - git config user.name ${USER}
+  - git add ${FILES}
+  - git commit -m <span style="color:#e6db74">&#34;${MESSAGE}&#34;</span>
+  - git push <span style="color:#e6db74">&#34;https://${GH_TOKEN}@${GH_REPO}&#34;</span> master &gt; /dev/<span style="color:#66d9ef">null</span> <span style="color:#ae81ff">2</span>&gt;<span style="color:#75715e">&amp;1</span>
+</code></pre></div><p>这里注意 MESSAGE 在 commit 的时候要加个引号，原 gist 没加。</p>
+<p>原文的 README ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown"># Travis-CI tested push
+Sometimes we have a private repository to hold both problems and solutions as a reference for the class projects.
+The students can see only the problems in a public repository where they are able to clone/fork and develop their own solutions.
+We do not want the solution files in the public repository and each bug found/feature added in the project requires a push for each repository.
+It would be cool to work only with the reference repo and use tests to see if our modification is good enough for the public release.
+This is possible with Travis-CI following simple steps:
+<span style="color:#66d9ef">-</span> Create private and public repos
+<span style="color:#66d9ef">-</span> Download Ruby
+<span style="color:#66d9ef">-</span> Install the travis gem ``gem install travis``
+<span style="color:#66d9ef">-</span> Generate a token in the Github website to allow others to play with your repos (copy the hash)
+<span style="color:#66d9ef">-</span> Log into your git account
+<span style="color:#66d9ef">-</span> Generate a secure token with the Travis gem (copy long hash)
+<span style="color:#66d9ef">-</span> Fill the environment variables in the ```.travis.yml``` file (USER, EMAIL, REPO, FILES)
+<span style="color:#66d9ef">-</span> Replace the value of <span style="font-weight:bold">**secure</span><span style="font-weight:bold">**</span> with your long hash
+<span style="color:#66d9ef">-</span> Replace <span style="font-weight:bold">**GH_TOKEN</span><span style="font-weight:bold">**</span> with your Travis token name
+<span style="color:#66d9ef">-</span> Push ```.travis.yml``` to private repo
+<span style="color:#66d9ef">-</span> Go to Travis to unlock your private repo tests
+<span style="color:#66d9ef">-</span> Push your files to the private repo to test
+
+Travis now have a [<span style="color:#f92672">deployment</span>](<span style="color:#a6e22e">https://docs.travis-ci.com/user/deployment/</span>) feature, which may be better for certain scenarios.
+</code></pre></div><p>简单翻译一下：</p>
+<ol>
+<li>创建 github 工程。原文看起来是创建了两个工程，一个工程用来更新另一个。</li>
+<li>安装 Ruby。一般同时安装了 gem 。</li>
+<li>通过 <code>gem install travis</code> 安装 travis 。</li>
+<li>给自己的 github 账号申请一个 token 。具体可以 Google 。需要注意的是 token 权限选择里，勾选 repo 相关的所有权限就可以了，其他无关的没必要选上。</li>
+<li>复制生成后的 token 。</li>
+<li>在本地机器上的 repo 根目录里（是不是必须根目录我也不清楚）<code>travis encrypt GH_TOKEN=&quot;上面复制的 token &quot;</code>。这就创建了一个经过加密的 token ，这个 token 在使用的时候 <code>${GH_TOKEN}</code> 这样用。其实就是个环境变量。具体原理应该就是把 github 的 token 加密了一下。前面这个命令会输出一个字符串到屏幕，需要自己粘贴进 travis 配置文件，放在 secure: 后面。可以使用 <code>travis encrypt GH_TOKEN=&quot;上面复制的 token &quot; --add</code> 来直接写进配置文件里。</li>
+<li>提交修改的配置文件。</li>
+</ol>
+<p>没有完全按照上面的文字翻译。<strong>上面这段内容更适用于下面这份我自己的配置文件：</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">language: ruby
+branches:
+  only:
+  - master
+rvm:
+- <span style="color:#ae81ff">2.4</span><span style="color:#ae81ff">.1</span>
+exclude:
+- vendor
+sudo: <span style="color:#66d9ef">false</span>
+env:
+  global:
+    - secure: rxKkyttLE1L4VsVIhhDUYGoLlER33ijKbdAAJPE8vNDSHwyANYnsP1GXK/rcwQqsL/KcJa55wEjVwEBzTMCqZM4UYNVIWqrJepVYo4rL1WhO+jT5sCqVR3qxK9KbgodcSXbmySJnJs0iLGMIQ2bo8yE91OxIC/GKkLCIwr9x4EGwFd5EcE5bOqmVqoSRk1q/<span style="color:#ae81ff">1</span>/5yA0aVF+Pohc5ATCZGw9+IyprU2Dx7qbA7F/T/4FQTOQZ4CLZAgyh/Gp1P+uxf1OK4IMCc/P6jVeTmbzQIbUcX0uG09pR7F0GnlV1ZOutMjY7SF8tQ7LNv2Wf8iWdiqehcwKNe/4TFHjs6rm3lEc6F1ELB5s4Z+QXjIM70haENSwM1FI8K5biL7tndAC1TujKESm0XadxORy5yOz7TfQZDTuMXvmmH3j+NFL3vTYPyMwwFca+IQBwD67a4PKD0PWBgEFD9Kn3rAlAzhV5OYdUuxZhx5zuQjKX5szUbL166fgoRnUwDp8dsOjLgOUqQa47IRqR3CTPzbf3zZIxGuX5x6mWySezCNprnXKCpyCegJBLoxQusA+EEYkvl4AOzhnmkhxFbEbHp+DYBjcSEEgpd06l67l3KzjMkpF02vr9CHNj8r7lAtZxwBVxYmczk289D5csOVR1SZKxQLwhx7k+CuEcYds685tLjIMmB0ZU=
+    - USER=<span style="color:#e6db74">&#34;jackysp&#34;</span>
+    - FULLNAME=<span style="color:#e6db74">&#34;Jack Yu&#34;</span>
+    - EMAIL=<span style="color:#e6db74">&#34;jackysp@gmail.com&#34;</span>
+    - REPO=<span style="color:#e6db74">&#34;jackysp.github.io&#34;</span>
+    - GH_REPO=<span style="color:#e6db74">&#34;github.com/${USER}/${REPO}.git&#34;</span>
+before_script:
+  - git clone https://${GH_TOKEN}@${GH_REPO}
+script: bundle exec jekyll b -d ${REPO}
+after_success:
+  - MESSAGE=$(git log --format=%B -n <span style="color:#ae81ff">1</span> $TRAVIS_COMMIT)
+  - cd ${REPO}
+  - git config user.email ${EMAIL}
+  - git config user.name ${FULLNAME}
+  - git add --all
+  - git commit -m <span style="color:#e6db74">&#34;${MESSAGE}&#34;</span>
+  - git push --force origin master
+</code></pre></div><p>这份文件是用来自动更新 jekyll 创建的 blog 的。分了两个工程，一个存源文件，一个存编译后的 html 文件。做这个的原因是，希望不用自己搭 jekyll 的环境也可以更新 blog 。这样即使是用在 github 网页上也可以更新 blog 了。</p>
+
+      
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+  
+    <script type="text/javascript">
+      var disqus_shortname = 'jackysp';
+      function disqus() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+  
+      disqus();
+  
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p></p>
+    
+  </div>
+</section>
+
+
+
+</body>
+</html>
+

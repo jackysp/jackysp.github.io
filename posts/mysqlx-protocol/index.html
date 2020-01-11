@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="zh-cn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>如何在 TiDB 上实现 MySQL X Protocol&#34; | Mini How</title>
+
+
+
+<link rel="stylesheet" href="/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://www.minifish.org/posts/mysqlx-protocol/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://www.minifish.org/">
+          <h1 id="nav-heading" class="title is-4">Mini How</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+    </div>
+    <h2 class="subtitle is-6">August 16, 2017</h2>
+    <h1 class="title">如何在 TiDB 上实现 MySQL X Protocol&#34;</h1>
+    
+    <div class="content">
+      <h1 id="mysql-的一些文档">MySQL 的一些文档</h1>
+<ul>
+<li>客户端使用指南 <a href="https://dev.mysql.com/doc/refman/5.7/en/mysql-shell.html">MySQL Shell User Guide</a></li>
+<li>服务端配置指南 <a href="https://dev.mysql.com/doc/refman/5.7/en/document-store.html">Using MySQL as a Document Store</a></li>
+<li>应用开发接口指南 <a href="https://dev.mysql.com/doc/x-devapi-userguide/en/">X DevAPI User Guide</a></li>
+<li>服务端内部实现介绍 <a href="https://dev.mysql.com/doc/internals/en/x-protocol.html">X Protocol</a>.</li>
+</ul>
+<h1 id="实现原理">实现原理</h1>
+<ul>
+<li>客户端与服务端之间靠 tcp 通信，协议使用了 protobuf 。</li>
+<li>服务端接收到消息后，把消息解码后分析。协议中包含了 namespace 这样一个概念，具体是指，如果 namespace 为空或者 &ldquo;sql&rdquo; ，则消息内容按照 sql 语句来执行，如果为 &ldquo;xplugin&rdquo; 、 &ldquo;mysqlx&rdquo; 则消息按照其他方式来处理。其他方式又可分为：
+<ul>
+<li>管理命令</li>
+<li>CRUD 操作</li>
+</ul>
+</li>
+<li>&ldquo;xplugin&rdquo; 和 &ldquo;mysqlx&rdquo; 作用完全相同，后者是前者的新名字，为了保持兼容暂时没有去掉前者。</li>
+<li>&ldquo;mysqlx&rdquo; 的消息除了个别如 kill_client 这样的明显的命令内容外，都是用拼 sql 的方式，转给服务端进行处理。也就是大部分也变成了 namespace 为 &ldquo;sql&rdquo; 的形式。</li>
+</ul>
+<h1 id="实现步骤">实现步骤</h1>
+<ol>
+<li>给 TiDB 启动一个新的 server 。需要相关的配置参数， ip 、 port 、 socket 之类的东西。</li>
+<li>实现消息通讯的读和写功能。</li>
+<li>需要为这个新 server 写一个建立连接的过程，包括认证等内容，过程要遵循协议。为了得到协议内容，可使用 tcpdump 来抓取 MySQL 与客户端的消息内容。再结合对 MySQL 源代码的理解来实现这个过程。</li>
+<li>server 中要包含原 TiDB server 的 Query Context 等内容，因为主要还是要转成 sql 去执行。</li>
+<li>实现对消息的解码处理。虽然只有一句话，但是包含的工作量巨大。</li>
+</ol>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<blockquote>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+  
+    <script type="text/javascript">
+      var disqus_shortname = 'jackysp';
+      function disqus() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+  
+      disqus();
+  
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p></p>
+    
+  </div>
+</section>
+
+
+
+</body>
+</html>
+
