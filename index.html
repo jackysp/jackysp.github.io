@@ -48,6 +48,20 @@
       <div class="subtitle tags is-6 is-pulled-right">
         
       </div>
+      <h2 class="subtitle is-6 date">January 14, 2020</h2>
+      <h1 class="title"><a href="https://www.minifish.org/posts/powershell-starttup/">如何在 Windows 开机后台启动一个 PowerShell 脚本</a></h1>
+      <div class="content">
+        创建一个脚本放在 C:\Users\name\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\
+  脚本里填
+Start-Process -FilePath &#34;C:\Users\name\bin\gost-windows-amd64.exe&#34; -ArgumentList &#34;-L=&#34;, &#34;-F=&#34; -RedirectStandardOutput &#34;C:\Users\name\bin\gost-windows-amd64.log&#34; -RedirectStandardError &#34;C:\Users\name\bin\gost-windows-amd64.err&#34; -WindowStyle Hidden   注：Start-Process 好像会做一个 folk 类似的动作，默认会开启一个新的 PowerShell 窗口来执行，所以最后加上了 -WindowStyle Hidden，这里不能用 -NoNewWindow，因为这样只是让执行 Start-Process 不生成新窗口，老窗口不会退出。 注2：老窗口退出后，folk 出来的进程似乎成了孤儿被托管，所以可能会重新申请一下权限，比如，网络连接权限。
+        
+      </div>
+    </article>
+    
+    <article>
+      <div class="subtitle tags is-6 is-pulled-right">
+        
+      </div>
       <h2 class="subtitle is-6 date">September 16, 2019</h2>
       <h1 class="title"><a href="https://www.minifish.org/posts/dlv/">使用 delve 调试 Golang 程序</a></h1>
       <div class="content">
@@ -210,25 +224,6 @@ F1 的方法 以之前做类似 Aurora 的经验，这一块问题非常多，�
  C: Consistency, which we can think of as serializability for this discussion; A: 100% availability, for both reads and updates; P: tolerance to network partitions.  This leads to three kinds of systems: CA, CP and AP, based on what letter you leave out.
         
         <a class="button is-link" href="https://www.minifish.org/posts/cap/" style="height:28px">
-          Read more
-        </a>
-        
-      </div>
-    </article>
-    
-    <article>
-      <div class="subtitle tags is-6 is-pulled-right">
-        
-      </div>
-      <h2 class="subtitle is-6 date">October 16, 2017</h2>
-      <h1 class="title"><a href="https://www.minifish.org/posts/travis-git-push/">如何在 travis ci 里执行 git push</a></h1>
-      <div class="content">
-        背景 Travis ci 一般用来自动化的跑下测试，而不需要将跑出来的内容更新回 repo 。本文介绍了怎么将 travis 的结果进行自动提交。
-过程 基本过程参考了这个gist。
-为了避免翻墙，将它的 .travis.yml 贴在下面。
-language: ruby rvm: - 2.0.0 env: global: - USER=&#34;username&#34; - EMAIL=&#34;username@mail.com&#34; - REPO=&#34;name of target repo&#34; - FILES=&#34;README.md foo.txt bar.txt&#34; - GH_REPO=&#34;github.com/${USER}/${REPO}.git&#34; - secure: &#34;put travis gem output here =&gt; http://docs.travis-ci.com/user/encryption-keys/&#34; script: - ruby test.rb after_success: - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT) - git clone git://${GH_REPO} - mv -f ${FILES} ${REPO} - cd ${REPO} - git remote - git config user.
-        
-        <a class="button is-link" href="https://www.minifish.org/posts/travis-git-push/" style="height:28px">
           Read more
         </a>
         

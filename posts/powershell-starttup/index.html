@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="zh-cn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>如何在 Windows 开机后台启动一个 PowerShell 脚本 | Mini How</title>
+
+
+
+<link rel="stylesheet" href="/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://www.minifish.org/posts/powershell-starttup/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://www.minifish.org/">
+          <h1 id="nav-heading" class="title is-4">Mini How</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+    </div>
+    <h2 class="subtitle is-6">January 14, 2020</h2>
+    <h1 class="title">如何在 Windows 开机后台启动一个 PowerShell 脚本</h1>
+    
+    <div class="content">
+      <ul>
+<li>
+<p>创建一个脚本放在 <code>C:\Users\name\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\</code></p>
+</li>
+<li>
+<p>脚本里填</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Start-Process -FilePath <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.exe&#34;</span> -ArgumentList <span style="color:#e6db74">&#34;-L=&#34;</span>, <span style="color:#e6db74">&#34;-F=&#34;</span> -RedirectStandardOutput <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.log&#34;</span> -RedirectStandardError <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.err&#34;</span> -WindowStyle Hidden
+</code></pre></div></li>
+</ul>
+<p>注：<code>Start-Process</code> 好像会做一个 folk 类似的动作，默认会开启一个新的 PowerShell 窗口来执行，所以最后加上了 <code>-WindowStyle Hidden</code>，这里不能用 <code>-NoNewWindow</code>，因为这样只是让执行 <code>Start-Process</code> 不生成新窗口，老窗口不会退出。
+注2：老窗口退出后，folk 出来的进程似乎成了孤儿被托管，所以可能会重新申请一下权限，比如，网络连接权限。</p>
+
+      
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+  
+    <script type="text/javascript">
+      var disqus_shortname = 'jackysp';
+      function disqus() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+  
+      disqus();
+  
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p></p>
+    
+  </div>
+</section>
+
+
+
+</body>
+</html>
+
