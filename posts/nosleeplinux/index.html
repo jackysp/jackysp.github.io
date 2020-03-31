@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="zh-cn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>如何让一台 Linux 笔记本电脑合上盖子后不进入休眠 | Mini How</title>
+
+
+
+<link rel="stylesheet" href="/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="http://blog.minifish.org/posts/nosleeplinux/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="http://blog.minifish.org/">
+          <h1 id="nav-heading" class="title is-4">Mini How</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"></nav>
+      </div>
+    </nav>
+
+    <nav class="nav">
+      
+
+      
+    </nav>
+
+  </div>
+  <script src="/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+    </div>
+    <h2 class="subtitle is-6">March 31, 2020</h2>
+    <h1 class="title">如何让一台 Linux 笔记本电脑合上盖子后不进入休眠</h1>
+    
+    <div class="content">
+      <p>本来以为是一个很简单的设置，就随便 Google 了一下，果然有清一色的解法，就是修改 <code>/etc/systemd/logind.conf</code>，把 <code>HandleLidSwitch</code> 改成 <code>ignore</code> 或者 <code>lock</code>，然后，重启 <code>logind</code> 或者 <code>reboot</code>。
+试了下，发现在 Thinkpad X230 下根本不行，于是又改了上述文件的其他一些选项，发现都不行，而且 <code>Ubuntu</code> 竟然报错了。。。</p>
+<p>于是，重装了更喜欢的 <code>Debian</code>。重试，发现还是不行。最后，找到了一个最暴力的解决办法。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+</code></pre></div><p>直接把这几个 unit 指向了 /dev/null。。。</p>
+<p>想恢复的话就，</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target
+</code></pre></div><p>简单有效。</p>
+
+      
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <aside><div id="disqus_thread"></div></aside>
+  
+    <script type="text/javascript">
+      var disqus_shortname = 'jackysp';
+      function disqus() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+  
+      disqus();
+  
+
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p></p>
+    
+  </div>
+</section>
+
+
+
+</body>
+</html>
+

@@ -47,6 +47,22 @@
       <div class="subtitle tags is-6 is-pulled-right">
         
       </div>
+      <h2 class="subtitle is-6 date">March 31, 2020</h2>
+      <h1 class="title"><a href="http://blog.minifish.org/posts/nosleeplinux/">如何让一台 Linux 笔记本电脑合上盖子后不进入休眠</a></h1>
+      <div class="content">
+        本来以为是一个很简单的设置，就随便 Google 了一下，果然有清一色的解法，就是修改 /etc/systemd/logind.conf，把 HandleLidSwitch 改成 ignore 或者 lock，然后，重启 logind 或者 reboot。 试了下，发现在 Thinkpad X230 下根本不行，于是又改了上述文件的其他一些选项，发现都不行，而且 Ubuntu 竟然报错了。。。
+于是，重装了更喜欢的 Debian。重试，发现还是不行。最后，找到了一个最暴力的解决办法。
+systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target 直接把这几个 unit 指向了 /dev/null。。。
+想恢复的话就，
+systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target 简单有效。
+        
+      </div>
+    </article>
+    
+    <article>
+      <div class="subtitle tags is-6 is-pulled-right">
+        
+      </div>
       <h2 class="subtitle is-6 date">January 14, 2020</h2>
       <h1 class="title"><a href="http://blog.minifish.org/posts/powershell-starttup/">如何在 Windows 开机后台启动一个 PowerShell 脚本</a></h1>
       <div class="content">
@@ -204,25 +220,6 @@ F1 的方法 以之前做类似 Aurora 的经验，这一块问题非常多，�
 (reorganization) absent -&gt; delete only -&gt; write only ---------------&gt; public 这样一系列状态变化来完成一个 DDL ，其中的约定是，每个节点都通过这四个状态，节点通过接受命令来进入下一状态。每个状态在所有节点里出现的时间最长不超过两个租约时间，怎么保证呢？通过下面这个规则，如果节点接收到上个状态转换的命令后太长时间没收到下个命令，也就是某个状态超过了两个租约时间，意味着自己接受指令太迟了，该节点就拒绝提供服务挂掉。
         
         <a class="button is-link" href="http://blog.minifish.org/posts/f1/" style="height:28px">
-          Read more
-        </a>
-        
-      </div>
-    </article>
-    
-    <article>
-      <div class="subtitle tags is-6 is-pulled-right">
-        
-      </div>
-      <h2 class="subtitle is-6 date">December 20, 2017</h2>
-      <h1 class="title"><a href="http://blog.minifish.org/posts/cap/">如何理解 CAP 定理</a></h1>
-      <div class="content">
-        背景 CAP 定理也是近些年最热的定理之一了，谈分布式必扯 CAP 。但是我觉得没有理解透彻，于是就想写一篇 blog 来记录下自己的理解。有新的理解会更新内容。
-理解 读了下这篇文献的第一部分。
- The CAP theorem [Bre12] says that you can only have two of the three desirable properties of:
- C: Consistency, which we can think of as serializability for this discussion; A: 100% availability, for both reads and updates; P: tolerance to network partitions.  This leads to three kinds of systems: CA, CP and AP, based on what letter you leave out.
-        
-        <a class="button is-link" href="http://blog.minifish.org/posts/cap/" style="height:28px">
           Read more
         </a>
         

@@ -6,10 +6,23 @@
     <description>Recent content in Posts on Mini How</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 14 Jan 2020 08:56:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 31 Mar 2020 20:31:00 +0800</lastBuildDate>
     
 	<atom:link href="http://blog.minifish.org/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>如何让一台 Linux 笔记本电脑合上盖子后不进入休眠</title>
+      <link>http://blog.minifish.org/posts/nosleeplinux/</link>
+      <pubDate>Tue, 31 Mar 2020 20:31:00 +0800</pubDate>
+      
+      <guid>http://blog.minifish.org/posts/nosleeplinux/</guid>
+      <description>本来以为是一个很简单的设置，就随便 Google 了一下，果然有清一色的解法，就是修改 /etc/systemd/logind.conf，把 HandleLidSwitch 改成 ignore 或者 lock，然后，重启 logind 或者 reboot。 试了下，发现在 Thinkpad X230 下根本不行，于是又改了上述文件的其他一些选项，发现都不行，而且 Ubuntu 竟然报错了。。。
+于是，重装了更喜欢的 Debian。重试，发现还是不行。最后，找到了一个最暴力的解决办法。
+systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target 直接把这几个 unit 指向了 /dev/null。。。
+想恢复的话就，
+systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target 简单有效。</description>
+    </item>
     
     <item>
       <title>如何在 Windows 开机后台启动一个 PowerShell 脚本</title>
