@@ -1,55 +1,58 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"  lang="zh-cn">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn" lang="zh-cn">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.73.0" />
 
-<title>如何用 Sysbench 测试 CockroachDB 性能 | Mini How</title>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>如何用 Sysbench 测试 CockroachDB 性能 &middot; Mini How</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
 
 
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
 
-<link rel="stylesheet" href="/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-<link rel="canonical" href="http://blog.minifish.org/posts/cockroachdb-sysbench/">
-<meta name="msapplication-TileColor" content="#da532c">
-<meta name="theme-color" content="#ffffff">
+  
+  
 </head>
-<body>
-<section class="section">
-  <div class="container">
-    <nav id="nav-main" class="nav">
-      <div id="nav-name" class="nav-left">
-        <a id="nav-anchor" class="nav-item" href="http://blog.minifish.org/">
-          <h1 id="nav-heading" class="title is-4">Mini How</h1>
-        </a>
-      </div>
-      <div class="nav-right">
-        <nav id="nav-items" class="nav-item level is-mobile"></nav>
-      </div>
-    </nav>
 
-    <nav class="nav">
-      
-
-      
-    </nav>
-
-  </div>
-  <script src="/js/navicon-shift.js"></script>
-</section>
-<section class="section">
-  <div class="container">
-    <div class="subtitle tags is-6 is-pulled-right">
-      
+  <body class=" ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="http://blog.minifish.org/"><h1>Mini How</h1></a>
+      <p class="lead">
+       A blog that&#39;s all about how to do it. 
+      </p>
     </div>
-    <h2 class="subtitle is-6">June 11, 2018</h2>
-    <h1 class="title">如何用 Sysbench 测试 CockroachDB 性能</h1>
-    
-    <div class="content">
-      <h1 id="为-sysbench-编译-pgsql-的支持">为 Sysbench 编译 pgsql 的支持</h1>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="http://blog.minifish.org/">Home</a> </li>
+        
+      </ul>
+    </nav>
+
+    <p>&copy; 2020. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>如何用 Sysbench 测试 CockroachDB 性能</h1>
+  <time datetime=2018-06-11T13:50:00&#43;0800 class="post-date">Mon, Jun 11, 2018</time>
+  <h1 id="为-sysbench-编译-pgsql-的支持">为 Sysbench 编译 pgsql 的支持</h1>
 <p>CockroachDB 使用的是 PostgreSQL 协议，如果想使用 Sysbench 进行测试，则需要 Sysbench 支持 pg 协议。Sysbench 本身已经支持了 pg 协议，只是在编译的时候默认不开启。
 通过以下命令即可配置开启：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./configure --with-pgsql
@@ -64,11 +67,11 @@
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> sbtest1 (
        id INT <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> unique_rowid(),
        k INTEGER <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#ae81ff">0</span>:::INT,
-       <span style="color:#66d9ef">c</span> STRING(<span style="color:#ae81ff">120</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">&#39;</span>:::STRING,
-       <span style="color:#66d9ef">pad</span> STRING(<span style="color:#ae81ff">60</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">&#39;</span>:::STRING,
-       <span style="color:#66d9ef">CONSTRAINT</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">primary</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span> <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (id <span style="color:#66d9ef">ASC</span>),
+       <span style="color:#66d9ef">c</span> STRING(<span style="color:#ae81ff">120</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#e6db74">&#39;&#39;</span>:::STRING,
+       <span style="color:#66d9ef">pad</span> STRING(<span style="color:#ae81ff">60</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#e6db74">&#39;&#39;</span>:::STRING,
+       <span style="color:#66d9ef">CONSTRAINT</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#66d9ef">primary</span><span style="color:#e6db74">&#34;&#34;</span> <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (id <span style="color:#66d9ef">ASC</span>),
        <span style="color:#66d9ef">INDEX</span> k_1 (k <span style="color:#66d9ef">ASC</span>),
-       FAMILY <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">primary</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">&#34;</span> (id, k, <span style="color:#66d9ef">c</span>, <span style="color:#66d9ef">pad</span>)
+       FAMILY <span style="color:#e6db74">&#34;&#34;</span><span style="color:#66d9ef">primary</span><span style="color:#e6db74">&#34;&#34;</span> (id, k, <span style="color:#66d9ef">c</span>, <span style="color:#66d9ef">pad</span>)
 )
 </code></pre></div><p><strong>数据</strong></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">root<span style="color:#f92672">@</span>:<span style="color:#ae81ff">26257</span><span style="color:#f92672">/</span>sbtest<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> id <span style="color:#66d9ef">from</span> sbtest1 <span style="color:#66d9ef">order</span> <span style="color:#66d9ef">by</span> id <span style="color:#66d9ef">limit</span> <span style="color:#ae81ff">1</span>;
@@ -79,7 +82,7 @@
 <span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
 </span></code></pre></div><p>可以看到数据不是从 1 开始的，其实也不是连续的。正常 Sysbench 表的 id 应该是 [1, table_size]，这个范围。</p>
 <p><strong>SQL</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">UPDATE</span> sbtest<span style="color:#f92672">%</span>u <span style="color:#66d9ef">SET</span> k<span style="color:#f92672">=</span>k<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">WHERE</span> id<span style="color:#f92672">=</span><span style="color:#f92672">?</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">UPDATE</span> sbtest<span style="color:#f92672">%</span>u <span style="color:#66d9ef">SET</span> k<span style="color:#f92672">=</span>k<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">WHERE</span> id<span style="color:#f92672">=?</span>
 </code></pre></div><p>以 UPDATE 语句为例，id 是作为查询条件存在的，Sysbench 会认为这个 id 应该在 [1, table_size] 之间。实际则没有。</p>
 <p><strong>正确的测试命令行举例</strong></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sysbench --db-driver<span style="color:#f92672">=</span>pgsql --pgsql-host<span style="color:#f92672">=</span>127.0.0.1 --pgsql-port<span style="color:#f92672">=</span><span style="color:#ae81ff">26257</span> --pgsql-user<span style="color:#f92672">=</span>root --pgsql-db<span style="color:#f92672">=</span>sbtest <span style="color:#ae81ff">\
@@ -91,43 +94,33 @@
 <p>对于 CockroachDB 测试 INSERT 的时候，如果 auto_inc 为 off，prepare 之后的 run 阶段插入数据，可以看监控（连接 CockroachDB 的 http 端口）的 Distribution 项里的 KV Transactions，可以看到有大量 Fast-path Committed，这代表其事务是通过一阶段提交（1PC）来进行的。即事务涉及的数据没有跨 CockroachDB 实例，因此没有必要通过两阶段事务来保证一致性。这是 CockroachDB 的一个优化，在 INSERT 测试中非常适用，可以有很好的性能表现。</p>
 <p>如果 auto_inc 为 on，虽然对于其他需要先读后写的测试，CockroachDB 的结果是虚高的，但是对于 INSERT 测试还是公正的。有时间可以补充测试一下。</p>
 
+</div>
+
+<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jackysp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </main>
+
+    
       
-    </div>
     
-  </div>
-</section>
-
-
-<section class="section">
-  <div class="container">
-    <aside><div id="disqus_thread"></div></aside>
-  
-    <script type="text/javascript">
-      var disqus_shortname = 'jackysp';
-      function disqus() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      }
-  
-      disqus();
-  
-
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-  </div>
-</section>
-
-
-<section class="section">
-  <div class="container has-text-centered">
-    <p></p>
-    
-  </div>
-</section>
-
-
-
-</body>
+  </body>
 </html>
-
