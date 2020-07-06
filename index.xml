@@ -6,10 +6,28 @@
     <description>Recent content on Mini How</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 13 Apr 2020 10:34:00 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 06 Jul 2020 16:51:00 +0800</lastBuildDate>
     
 	<atom:link href="http://blog.minifish.org/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>如何阅读 TiDB 的源代码（一）</title>
+      <link>http://blog.minifish.org/posts/tidb1/</link>
+      <pubDate>Mon, 06 Jul 2020 16:51:00 +0800</pubDate>
+      
+      <guid>http://blog.minifish.org/posts/tidb1/</guid>
+      <description>背景 TiDB 有很多源码阅读文章，人称《二十四章经》。不过，介绍的角度是从宏观到微观来的，本系列试图用更容易上手的角度来介绍如何阅读 TiDB 的源代码。想达到的目的是，
+ 可以让读者自己上手读 TiDB 的代码，而不是通过别人写好的文章来被动理解代码 提供一些常用的查看代码里细节的例子，比如，查看某变量的作用域等  毕竟，代码经常变，而方法基本是不变的。
+准备工作   一台开发机
+TiDB 是一个纯 Golang 的工程，它不仅可以方便的在 Linux、MacOS 进行开发，也可以在 Windows 下开发。本文中所使用的环境就是 Windows 10。
+  TiDB 源代码一份，可以从官方 repo 下载
+  Golang 环境，跟着官网走就行，很简单
+  Goland 或者 IntelliJ IDEA + Golang 插件
+我实际体验感受两者没有什么区别。为什么没推荐 VSCode + Golang 插件呢？主要是我用 JetBrains 全家桶习惯了，而且商业软件确实比开源软件质量要高。要长期使用的话建议付费，学生的话可以免费使用，不过每年要 renew 一下 license。
+  环境搭建   安装好 Golang 环境后，记得设置下 GOPATH，通常就是，
+  TiDB 代码可以不放在 GOPATH 下开发，因此，TiDB 代码放在哪都可以。我一般就是创建一个叫 work 的目录，把各种代码都丢在里面。</description>
+    </item>
     
     <item>
       <title>如何在 Windows 中使用 Docker</title>
