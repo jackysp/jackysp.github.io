@@ -176,7 +176,7 @@
 <p>看 <code>dispatch</code> 的调用者，也可以看到信息来解释一些经常被大家问到的问题，</p>
 <p><img src="/posts/images/20200707154120.png" alt="dispatch4"></p>
 <ol>
-<li>如果 <code>dispatch</code> 遇到了 EOF 错误，一般是客户端自己断开了，那数据库连接也没有必要保留，就断开了。</li>
+<li>如果 <code>dispatch</code> 遇到了 EOF 错误，一般是客户端自己主动断开了，那数据库连接也没有必要保留，就断开了。</li>
 <li>如果发生 undetermined 错误（指的是事务进行了提交，但是，不知道是提交成功还是失败了，需要人工介入验证事务是否提交成功），此时，应该立刻人工介入，本连接也会关闭。</li>
 <li>写 binlog 失败并且 <code>ignore-error = false</code>，之前的处理是 tidb-server 进程不退出，但是不能提供服务。现在是 tidb-server 直接会退出。</li>
 <li>对于所有其他 <code>dispatch</code> 错误，连接都不会断开，会继续提供服务，但是会把失败信息用日志的形式打出来：&ldquo;command dispatched failed&rdquo;，可以说这是
