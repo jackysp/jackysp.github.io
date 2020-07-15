@@ -53,6 +53,28 @@
     <div class="posts">
 <article class="post">
   <h1 class="post-title">
+    <a href="http://blog.minifish.org/posts/tidb2/">如何阅读 TiDB 的源代码（二）</a>
+  </h1>
+  <time datetime="2020-07-12T12:09:00&#43;0800" class="post-date">Sun, Jul 12, 2020</time>
+  接上篇，我们知道了怎么去搭建读代码的环境，从哪里入口来读代码。本篇开始会根据一些常见地查看代码需求，介绍它们的查看方法。
+如何查看某个语法的支持程度 常见的有两种方法，
+ 通过 parser repo 来查 直接在 TiDB repo 里查看  这两种方法都需要上篇的环境搭建部分。还没尝试的可以去尝试一下。
+准备工作   安装 GoYacc Support
+GoYacc Support 插件是我司同学的作品，JetBrains 正式接受的第三方插件，属于上得了厅堂的作品。 其包含了语法高亮和 Intelligent，非常赞！
+  下载 parser repo
+如果从 parser 直接看语法，需要手动下载；如果从 TiDB 里跳转，IDEA 会自动下载代码，反而不需要额外操作。
+  通过 parser repo 来查 用 IDEA 打开 parser，切换到自己需要的分支，找到 parser.y 文件。不过，更推荐的是从 TiDB 里查看。
+通过 TiDB repo 来查   用 IDEA 打开 TiDB 工程，切换到需要的分支
+  找到 parser.y 文件，注意搜索的时候要选最大的搜索的 scope
+也可以从文件列表里找到，
+  下面我们以查 SHOW ENGINES 这个 SQL 来举例。
+  
+  <div class="read-more-link">
+    <a href="/posts/tidb2/">Read More…</a>
+  </div>
+  
+</article><article class="post">
+  <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/tidb1/">如何阅读 TiDB 的源代码（一）</a>
   </h1>
   <time datetime="2020-07-06T16:51:00&#43;0800" class="post-date">Mon, Jul 6, 2020</time>
