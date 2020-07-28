@@ -56,8 +56,7 @@
 <h2 id="系统变量">系统变量</h2>
 <p>TiDB 的系统变量名定义在 <a href="https://github.com/pingcap/tidb/blob/db0310b17901b1a59f7f728294455ed9667f88ac/sessionctx/variable/tidb_vars.go">tidb_vars.go</a> 中，
 其中也包含了一些变量的默认值，但实际将他们组合在一起的位置是 <a href="https://github.com/pingcap/tidb/blob/12aac547a9068c404ad18093ae4d0ea4d060a465/sessionctx/variable/sysvar.go#L96">defaultSysVars</a></p>
-<pre><code>![defaultSysVars](/posts/images/20200728151254.png)
-</code></pre>
+<p><img src="/posts/images/20200728151254.png" alt="defaultSysVars"></p>
 <p>这个大的 struct 数组定义了 TiDB 中所有变量的作用域、变量名和默认值。这里面除了 TiDB 自己独有的系统变量以外，同时，也兼容了 MySQL 的系统变量。</p>
 <h3 id="作用域">作用域</h3>
 <p>TiDB 中，从字面意思上讲，有三种变量作用域，</p>
@@ -226,9 +225,8 @@ MySQL  127.0.0.1:4000  SQL &gt; select @@rand_seed2;
 <p>像是，<code>atomic.StoreUint32(&amp;ProcessGeneralLog, uint32(tidbOptPositiveInt32(val, DefTiDBGeneralLog)))</code> 其实际是修改了 <code>ProcessGeneralLog</code> 这个全局变量的值，也就是 <code>set tidb_general_log = 1</code> 是直接对当前整个 TiDB 生效的。</p>
 <h4 id="纯粹全局变量的生效方式">纯粹全局变量的生效方式</h4>
 <p>当前 TiDB 内存粹的全局变量都是为一些后台线程服务的，比如，DDL、统计信息等等。</p>
-<pre><code>![defaultSysVars](/posts/images/20200728174207.png)
-![defaultSysVars](/posts/images/20200728174243.png)
-</code></pre>
+<p><img src="/posts/images/20200728174207.png" alt="defaultSysVars">
+<img src="/posts/images/20200728174243.png" alt="defaultSysVars"></p>
 <p>因为它们都是只有一个 TiDB server 才需要使用的，会话层级本身对它也没有意义。</p>
 <h4 id="全局变量的作用机制">全局变量的作用机制</h4>
 <p>TiDB 的全局变量不会在设置之后立刻生效，因为每建立一次连接，连接都会先从 TiKV 获取最新的全局系统变量来赋值给当前会话，当大量连接并发创建时，会对 TiKV 中存储这个少量全局变量的节点进行频繁访问，因此，TiDB 内部缓存了全局变量，每两秒钟会进行一次更新，这样就能极大的降低 TiKV 的压力。

@@ -19,13 +19,13 @@
       <guid>http://blog.minifish.org/posts/tidb3/</guid>
       <description>在上一篇中，给大家介绍了查看语法和查看配置的方法，本篇将介绍查看系统变量，包括，默认值、作用域，以及监控 metric 的方法。
 系统变量 TiDB 的系统变量名定义在 tidb_vars.go 中， 其中也包含了一些变量的默认值，但实际将他们组合在一起的位置是 defaultSysVars
-![defaultSysVars](/posts/images/20200728151254.png)  这个大的 struct 数组定义了 TiDB 中所有变量的作用域、变量名和默认值。这里面除了 TiDB 自己独有的系统变量以外，同时，也兼容了 MySQL 的系统变量。
+这个大的 struct 数组定义了 TiDB 中所有变量的作用域、变量名和默认值。这里面除了 TiDB 自己独有的系统变量以外，同时，也兼容了 MySQL 的系统变量。
 作用域 TiDB 中，从字面意思上讲，有三种变量作用域，
 分别是 ScopeNone、ScopeGlobal 和 ScopeSession。它们分别代表，
  ScopeNone：只读变量 ScopeGlobal：全局变量 ScopeSession：会话变量  这三个作用域的实际作用是，在使用 SQL 实际去读写它们时，会要求使用相应的语法，如果 SQL 报错失败，SQL 作用必然是没有生效，如果 SQL 执行成功，仅意味着能设置完成，并不意味着实际按照对应的作用域生效。
 下面我们用第一篇里提到的方法来启动一个单机版的 TiDB 来进行演示：
 ScopeNone 以 performance_schema_max_mutex_classes 为例，
-```SQL MySQL 127.0.0.1:4000 SQL &amp;gt; select @@performance_schema_max_mutex_classes; +----------------------------------------+ | @@performance_schema_max_mutex_classes | +----------------------------------------+ | 200 | +----------------------------------------+ 1 row in set (0.0002 sec) MySQL 127.</description>
+```SQL MySQL 127.0.0.1:4000 SQL &amp;gt; select @@performance_schema_max_mutex_classes; +----------------------------------------+ | @@performance_schema_max_mutex_classes | +----------------------------------------+ | 200 | +----------------------------------------+ 1 row in set (0.0002 sec) MySQL 127.0.0.1:4000 SQL &amp;gt; select @@global.</description>
     </item>
     
     <item>
