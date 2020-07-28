@@ -61,8 +61,7 @@
 <p>这个大的 struct 数组定义了 TiDB 中所有变量的作用域、变量名和默认值。这里面除了 TiDB 自己独有的系统变量以外，同时，也兼容了 MySQL 的系统变量。</p>
 <h3 id="作用域">作用域</h3>
 <p>TiDB 中，从字面意思上讲，有三种变量作用域，</p>
-<pre><code>![defaultSysVars](/posts/images/20200728151833.png)
-</code></pre>
+<p><img src="/posts/images/20200728151833.png" alt="defaultSysVars"></p>
 <p>分别是 ScopeNone、ScopeGlobal 和 ScopeSession。它们分别代表，</p>
 <ul>
 <li>ScopeNone：只读变量</li>
@@ -104,11 +103,9 @@ ERROR: 1105 (HY000): Variable 'performance_schema_max_mutex_classes' is a read o
 </code></pre>
 <p>但是，无论哪种方式都无法写。</p>
 <p>实际上，追踪 ScopeNone 的使用，可以看到</p>
-<pre><code>![defaultSysVars](/posts/images/20200728155134.png)
-</code></pre>
+<p><img src="/posts/images/20200728155134.png" alt="defaultSysVars"></p>
 <p>在 <code>setSysVariable</code> 里遇到这种作用域的变量，会直接返回错误。</p>
-<pre><code>![defaultSysVars](/posts/images/20200728155332.png)
-</code></pre>
+<p><img src="/posts/images/20200728155332.png" alt="defaultSysVars"></p>
 <p>在 <code>ValidateGetSystemVar</code> 里把它按照 ScopeGlobal 来一同处理了。
 从原理上讲，这种 ScopeNone 的变量，实际就是只有代码里的一份，TiDB 启动后就是存在内存中的一块只读内存，不会实际存储在 TiKV。</p>
 <h4 id="scopeglobal">ScopeGlobal</h4>
@@ -169,8 +166,7 @@ MySQL  127.0.0.1:4000  SQL &gt; select @@gtid_mode;
 </code></pre>
 <p>可以看到，依旧能读到这个结果，也就是这种设置，是存储到了存储引擎里，持久化了的。
 仔细看代码可以看到，</p>
-<pre><code>![defaultSysVars](/posts/images/20200728164505.png)
-</code></pre>
+<p><img src="/posts/images/20200728164505.png" alt="defaultSysVars"></p>
 <p>实际实现上是执行了一个内部的 replace 语句来更新了原有值。这里是一个完整的事务，会经历获取两次 tso、提交整个过程，相对于设置会话变量要慢。</p>
 <h4 id="scopesession">ScopeSession</h4>
 <p>以 <code>rand_seed2</code> 为例，</p>
@@ -211,8 +207,7 @@ MySQL  127.0.0.1:4000  SQL &gt; select @@rand_seed2;
 </code></pre>
 <p>设置也是，其实可以简单看到，该操作内部仅仅是对会话的内存做了设置。
 实际最终生效的位置是 <a href="https://github.com/pingcap/tidb/blob/f360ad7a434e4edd4d7ebce5ed5dc2b9826b6ed0/sessionctx/variable/session.go#L998">SetSystemVar</a></p>
-<pre><code>![defaultSysVars](/posts/images/20200728171914.png)
-</code></pre>
+<p><img src="/posts/images/20200728171914.png" alt="defaultSysVars"></p>
 <p>这里就会有几分 trick 的地方了。</p>
 <h3 id="变量实际作用范围">变量实际作用范围</h3>
 <p>上一节讲到了会话变量的设置，基于 MySQL 的变量规则，设置全局变量不影响当前会话，只有初始创建的会话，才会重新获取全局变量为会话变量赋值。
@@ -239,8 +234,7 @@ MySQL  127.0.0.1:4000  SQL &gt; select @@rand_seed2;
 <p>TiDB 的全局变量不会在设置之后立刻生效，因为每建立一次连接，连接都会先从 TiKV 获取最新的全局系统变量来赋值给当前会话，当大量连接并发创建时，会对 TiKV 中存储这个少量全局变量的节点进行频繁访问，因此，TiDB 内部缓存了全局变量，每两秒钟会进行一次更新，这样就能极大的降低 TiKV 的压力。
 带来的问题是，在设置全局变量后，需要等待一下再开始创建新连接，这样来保证新连接一定能读到最新的全局变量。这是 TiDB 中为数不多的数据最终一致的地方。</p>
 <p>具体的可以看 <code>loadCommonGlobalVariablesIfNeeded</code> 中的<a href="https://github.com/pingcap/tidb/blob/838b6a0cf2df2d1907508e56d9de9ba7fab502e5/session/session.go#L1990">这段注释</a>。</p>
-<pre><code>![defaultSysVars](/posts/images/20200728191527.png)
-</code></pre>
+<p><img src="/posts/images/20200728191527.png" alt="defaultSysVars"></p>
 
 </div>
 
