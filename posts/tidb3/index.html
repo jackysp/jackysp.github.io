@@ -71,8 +71,7 @@
 <p>下面我们用第一篇里提到的方法来启动一个单机版的 TiDB 来进行演示：</p>
 <h4 id="scopenone">ScopeNone</h4>
 <p>以 <code>performance_schema_max_mutex_classes</code> 为例，</p>
-<pre><code>```SQL
-MySQL  127.0.0.1:4000  SQL &gt; select @@performance_schema_max_mutex_classes;
+<pre><code>MySQL  127.0.0.1:4000  SQL &gt; select @@performance_schema_max_mutex_classes;
 +----------------------------------------+
 | @@performance_schema_max_mutex_classes |
 +----------------------------------------+
@@ -88,17 +87,14 @@ MySQL  127.0.0.1:4000  SQL &gt; select @@global.performance_schema_max_mutex_cla
 1 row in set (0.0004 sec)
 MySQL  127.0.0.1:4000  SQL &gt; select @@session.performance_schema_max_mutex_classes;
 ERROR: 1238 (HY000): Variable 'performance_schema_max_mutex_classes' is a GLOBAL variable
-```
 </code></pre>
 <p>可以看到，ScopeNone 的作用域可以按照全局变量来读，</p>
-<pre><code>```SQL
-MySQL  127.0.0.1:4000  SQL &gt; set global performance_schema_max_mutex_classes = 1;
+<pre><code>MySQL  127.0.0.1:4000  SQL &gt; set global performance_schema_max_mutex_classes = 1;
 ERROR: 1105 (HY000): Variable 'performance_schema_max_mutex_classes' is a read only variable
 MySQL  127.0.0.1:4000  SQL &gt; set performance_schema_max_mutex_classes = 1;
 ERROR: 1105 (HY000): Variable 'performance_schema_max_mutex_classes' is a read only variable
 MySQL  127.0.0.1:4000  SQL &gt; set session performance_schema_max_mutex_classes = 1;
 ERROR: 1105 (HY000): Variable 'performance_schema_max_mutex_classes' is a read only variable
-```
 </code></pre>
 <p>但是，无论哪种方式都无法写。</p>
 <p>实际上，追踪 ScopeNone 的使用，可以看到</p>
@@ -109,8 +105,7 @@ ERROR: 1105 (HY000): Variable 'performance_schema_max_mutex_classes' is a read o
 从原理上讲，这种 ScopeNone 的变量，实际就是只有代码里的一份，TiDB 启动后就是存在内存中的一块只读内存，不会实际存储在 TiKV。</p>
 <h4 id="scopeglobal">ScopeGlobal</h4>
 <p>以 <code>gtid_mode</code> 为例，</p>
-<pre><code>```SQL
-MySQL  127.0.0.1:4000  SQL &gt; select @@gtid_mode;
+<pre><code>MySQL  127.0.0.1:4000  SQL &gt; select @@gtid_mode;
 +-------------+
 | @@gtid_mode |
 +-------------+
@@ -126,11 +121,9 @@ MySQL  127.0.0.1:4000  SQL &gt; select @@global.gtid_mode;
 1 row in set (0.0006 sec)
 MySQL  127.0.0.1:4000  SQL &gt; select @@session.gtid_mode;
 ERROR: 1238 (HY000): Variable 'gtid_mode' is a GLOBAL variable
-```
 </code></pre>
 <p>就是与 MySQL 兼容的全局变量读取方式，</p>
-<pre><code>```SQL
-MySQL  127.0.0.1:4000  SQL &gt; set gtid_mode=on;
+<pre><code>MySQL  127.0.0.1:4000  SQL &gt; set gtid_mode=on;
 ERROR: 1105 (HY000): Variable 'gtid_mode' is a GLOBAL variable and should be set with SET GLOBAL
 MySQL  127.0.0.1:4000  SQL &gt; set session gtid_mode=on;
 ERROR: 1105 (HY000): Variable 'gtid_mode' is a GLOBAL variable and should be set with SET GLOBAL
@@ -150,18 +143,15 @@ MySQL  127.0.0.1:4000  SQL &gt; select @@gtid_mode;
 | ON          |
 +-------------+
 1 row in set (0.0006 sec)
-```
 </code></pre>
 <p>设置方法，也跟 MySQL 兼容。这时候，我们可以关掉单机 TiDB，然后，再次启动，</p>
-<pre><code>```SQL
-MySQL  127.0.0.1:4000  SQL &gt; select @@gtid_mode;
+<pre><code>MySQL  127.0.0.1:4000  SQL &gt; select @@gtid_mode;
 +-------------+
 | @@gtid_mode |
 +-------------+
 | ON          |
 +-------------+
 1 row in set (0.0003 sec)
-```
 </code></pre>
 <p>可以看到，依旧能读到这个结果，也就是这种设置，是存储到了存储引擎里，持久化了的。
 仔细看代码可以看到，</p>
@@ -169,8 +159,7 @@ MySQL  127.0.0.1:4000  SQL &gt; select @@gtid_mode;
 <p>实际实现上是执行了一个内部的 replace 语句来更新了原有值。这里是一个完整的事务，会经历获取两次 tso、提交整个过程，相对于设置会话变量要慢。</p>
 <h4 id="scopesession">ScopeSession</h4>
 <p>以 <code>rand_seed2</code> 为例，</p>
-<pre><code>```SQL
-MySQL  127.0.0.1:4000  SQL &gt; select @@rand_seed2;
+<pre><code>MySQL  127.0.0.1:4000  SQL &gt; select @@rand_seed2;
 +--------------+
 | @@rand_seed2 |
 +--------------+
@@ -186,11 +175,9 @@ MySQL  127.0.0.1:4000  SQL &gt; select @@session.rand_seed2;
 1 row in set (0.0003 sec)
 MySQL  127.0.0.1:4000  SQL &gt; select @@global.rand_seed2;
 ERROR: 1238 (HY000): Variable 'rand_seed2' is a SESSION variable
-```
 </code></pre>
 <p>读取是兼容 MySQL 的</p>
-<pre><code>```SQL
-MySQL  127.0.0.1:4000  SQL &gt; set rand_seed2='abc';
+<pre><code>MySQL  127.0.0.1:4000  SQL &gt; set rand_seed2='abc';
 Query OK, 0 rows affected (0.0006 sec)
 MySQL  127.0.0.1:4000  SQL &gt; set session rand_seed2='bcd';
 Query OK, 0 rows affected (0.0004 sec)
@@ -202,7 +189,6 @@ MySQL  127.0.0.1:4000  SQL &gt; select @@rand_seed2;
 +--------------+
 | bcd          |
 +--------------+
-```
 </code></pre>
 <p>设置也是，其实可以简单看到，该操作内部仅仅是对会话的内存做了设置。
 实际最终生效的位置是 <a href="https://github.com/pingcap/tidb/blob/f360ad7a434e4edd4d7ebce5ed5dc2b9826b6ed0/sessionctx/variable/session.go#L998">SetSystemVar</a></p>
