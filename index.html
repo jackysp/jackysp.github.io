@@ -58,11 +58,17 @@
   <time datetime="2020-07-31T10:58:00&#43;0800" class="post-date">Fri, Jul 31, 2020</time>
   本篇会介绍 TiDB 中的某些重点函数和日志的解读。
 重点函数 重点函数的定义因人而异，所以，本章节内容偏向主观。
-runStmt 从 runStmt 的 call graph 看，这个函数几乎是所有 SQL 执行的必经之路，除了走 binary 协议的自动提交的点查语句，其他所有语句都会经过这个函数。 这个函数承担的责任是，SQL 的执行，不包括，SQL 解析、编译过程（binary 协议不需要重复解析 SQL，使用 plan cache 后也不需要编译 SQL）。
+execute execute 是文本协议执行的必经之路。它也很好的展示了 SQL 处理的各个过程。
+  ParseSQL 解析 SQL，最终的实现是在 parser 中，按照前面第二篇介绍的规则进行 SQL 的解析，这里要注意，解析出来的 SQL 可能是单条，也可能是多条。 TiDB 本身支持 multi-SQL 特性，允许一次性执行多条 SQL
+  解析完成后，会返回 stmtNodes 数组，在下面的 for 循环中挨个处理。首先要做的是 Compile，Compile 本身的核心是要做优化，生成 plan，顺着 Optimize 一路找进去就能够找到
+可以看到这里分了逻辑优化、物理优化等与常见其他数据库类似。
+  最后是执行部分，executeStatement 其中 runStmt 是另外一个重点函数。
+  runStmt 从 runStmt 的 call graph 看，这个函数几乎是所有 SQL 执行的必经之路，除了走 binary 协议的自动提交的点查语句，其他所有语句都会经过这个函数。 这个函数承担的责任是 SQL 的执行，不包括，SQL 解析、编译过程（binary 协议不需要重复解析 SQL，使用 plan cache 后也不需要编译 SQL）。
 runStmt 函数核心部分时候如上的部分。从上到下依旧是：
-  checkTxnAborted
-当事务已经损坏不能再提交的时候，需要用户主动关闭事务，来结束整个已经损坏的事务。事务在执行时会遇到一些无法处理的错误，此时事务只能终止， 此时，不能偷偷地关闭事务，因为用户可能会继续执行 SQL，并假设 SQL 还在事务内。这个函数的作用就是，让用户的后续所有 SQL 不执行，直接报错， 直到，用户使用 rollback、commit 这种显示关闭事务的 SQL 才正常执行。
   
+  <div class="read-more-link">
+    <a href="/posts/tidb4/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
