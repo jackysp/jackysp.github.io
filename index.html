@@ -56,7 +56,7 @@
     <a href="http://blog.minifish.org/posts/tidb5/">如何阅读 TiDB 的源代码（五）</a>
   </h1>
   <time datetime="2020-09-08T11:36:00&#43;0800" class="post-date">Tue, Sep 8, 2020</time>
-  大家在使用 TiDB 时可能偶尔会遇到一些异常，比如 &ldquo;Lost connection to MySQL server during query&rdquo; 错误，此时代表客户端跟数据库连接已经断开了（非用户主动行为）， 至于为什么会断开，通常有多种原因造成。本文试图从异常处理的角度，从代码层面分析一些常见的 TiDB 错误。
+  大家在使用 TiDB 时可能偶尔会遇到一些异常，比如 &ldquo;Lost connection to MySQL server during query&rdquo; 错误，此时代表客户端跟数据库连接已经断开了（非用户主动行为）， 至于为什么会断开，通常有多种原因造成。本文试图从异常处理的角度，从代码层面分析一些常见的 TiDB 错误。 另外，有些异常并不是错误，而是执行缓慢，也就是性能问题，本文的后半段还会介绍常用的追踪性能的工具。
 Lost Connection Lost Connection 一般有三种原因，
  客户端跟数据库之间连接超时（直连），或者客户端跟数据库的中间链路中的某个环节超时了，比如，客户端到 Proxy 或者 Proxy 到数据库出现了超时。 连接在执行 SQL 时，遇到了 bug，此类 bug 一般都可以被 recover，进而不会导致整个 TiDB server 崩溃（panic）。 TiDB 自身崩溃，一般可能会由于使用内存过多，进而触发 OOM，或者用户主动杀掉 TiDB 导致，还有种可能就是存在 bug 但未被 recover，这种情况一般在后台线程中出现较多。  Timeout 直连超时 TiDB 支持与 MySQL 兼容的 wait_timeout 变量，默认值是 0，代表不设置超时，与 MySQL 的默认 8 小时不同。
 代码中唯一使用它的地方是 getSessionVarsWaitTimeout，在 connection Run 的位置，将它的值设置给 packet IO，如果变量非 0，则在每次读 readPacket 之前会设置 timeout，
