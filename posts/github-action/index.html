@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn" lang="zh-cn">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.73.0" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>如何用 GitHub Action 自动发布 Blog &middot; Mini How</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class="theme-base-0d ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="http://blog.minifish.org/"><h1>Mini How</h1></a>
+      <p class="lead">
+       A blog that&#39;s all about how to do it. 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="http://blog.minifish.org/">Home</a> </li>
+        <li><a href="https://github.com/jackysp/"> Github </a></li><li><a href="https://www.linkedin.com/in/shuaipeng-yu-81280434/"> LinkedIn </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2020. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>如何用 GitHub Action 自动发布 Blog</h1>
+  <time datetime=2020-12-16T16:11:00&#43;0800 class="post-date">Wed, Dec 16, 2020</time>
+  <p>在<a href="/posts/travis-git-push">这篇</a>里用 travis 实现了 Blog 自动发布，不过，最近发现 travis 不自己 run 了（手动可以），没有仔细研究因为 GitHub Action 出来了，于是就想把所有依赖都放在 GitHub 上。</p>
+<h2 id="go-action">Go Action</h2>
+<p>点击 repo 上的 Action，再 New Workflow 可以出现推荐 action，因为这个 Blog 用了 Go 代码，就显示 Go Action。</p>
+<p><img src="/posts/images/20201216163209.png" alt="goaction"></p>
+<p>剩下的就是照着 travis 的写法来攒流程。</p>
+<ol>
+<li>Check out Blog 的 repo</li>
+<li>Check out 发布站点 repo</li>
+<li><code>make</code></li>
+<li>提交发布站点修改</li>
+</ol>
+<p>需要注意的是，发布站点需要写权限，所以，需要配置 token，跟 travis 一样。</p>
+<ol>
+<li>生成一个 token，只给 repo 权限</li>
+<li>到某个 repo 里，设置 secrets（把 token 填进去），这里其实应该在发布站点设置，但是，我在 Blog 里设置也可以用，还没研究原因</li>
+</ol>
+<p>这里一共需要两个 action，一个是 GitHub 自己的，另一个是一个第三方的，叫 <a href="https://github.com/marketplace/actions/push-directory-to-another-repository">《Push directory to another repository》</a>，可能还有别的更好用的，等以后有时间再研究。</p>
+<p>最后，放上我的简单 GitHub Action CI 文件。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">name</span>: CI
+
+<span style="color:#66d9ef">on</span>:
+  <span style="color:#66d9ef">push</span>:
+    <span style="color:#66d9ef">branches</span>: [ master ]
+
+<span style="color:#66d9ef">jobs</span>:
+  <span style="color:#66d9ef">build</span>:
+    <span style="color:#66d9ef">name</span>: Build
+    <span style="color:#66d9ef">runs-on</span>: ubuntu-latest
+    <span style="color:#66d9ef">steps</span>:
+
+    - <span style="color:#66d9ef">name</span>: Set up Go <span style="color:#ae81ff">1.</span>x
+      <span style="color:#66d9ef">uses</span>: actions/setup-go@v2
+      <span style="color:#66d9ef">with</span>:
+        <span style="color:#66d9ef">go-version</span>: ^<span style="color:#ae81ff">1.13</span>
+
+    - <span style="color:#66d9ef">name</span>: Check out code into the Go module directory
+      <span style="color:#66d9ef">uses</span>: actions/checkout@v2
+
+    - <span style="color:#66d9ef">name</span>: Get dependencies
+      <span style="color:#66d9ef">run</span>: <span style="color:#e6db74">|
+</span><span style="color:#e6db74">        go get -v -t -d ./...</span>
+        if [ -f Gopkg.toml ]; then
+            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+            dep ensure
+        fi
+
+    - <span style="color:#66d9ef">name</span>: Check out my other private repo
+      <span style="color:#66d9ef">uses</span>: actions/checkout@v2
+      <span style="color:#66d9ef">with</span>:
+        <span style="color:#66d9ef">repository</span>: jackysp/jackysp.github.io
+        <span style="color:#66d9ef">token</span>: ${{ secrets.UPDATE_BLOG }}
+        <span style="color:#66d9ef">path</span>: public
+
+    - <span style="color:#66d9ef">name</span>: Build
+      <span style="color:#66d9ef">run</span>: make
+    
+    - <span style="color:#66d9ef">name</span>: Pushes to another repository
+      <span style="color:#66d9ef">id</span>: public
+      <span style="color:#66d9ef">uses</span>: cpina/github-action-push-to-another-repository@cp_instead_of_deleting
+      <span style="color:#66d9ef">env</span>:
+        <span style="color:#66d9ef">API_TOKEN_GITHUB</span>: ${{ secrets.UPDATE_BLOG }}
+      <span style="color:#66d9ef">with</span>:
+        <span style="color:#66d9ef">source-directory</span>: <span style="color:#e6db74">&#39;public&#39;</span>
+        <span style="color:#66d9ef">destination-github-username</span>: <span style="color:#e6db74">&#39;jackysp&#39;</span>
+        <span style="color:#66d9ef">destination-repository-name</span>: <span style="color:#e6db74">&#39;jackysp.github.io&#39;</span>
+        <span style="color:#66d9ef">user-email</span>: your@email.com
+        <span style="color:#66d9ef">commit-message</span>: See ORIGIN_COMMIT
+</code></pre></div>
+</div>
+
+<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jackysp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </main>
+
+    
+      
+    
+  </body>
+</html>
