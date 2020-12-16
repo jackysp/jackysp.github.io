@@ -68,7 +68,7 @@
 <li>生成一个 token，只给 repo 权限</li>
 <li>到某个 repo 里，设置 secrets（把 token 填进去），这里其实应该在发布站点设置，但是，我在 Blog 里设置也可以用，还没研究原因</li>
 </ol>
-<p>这里一共需要两个 action，一个是 GitHub 自己的，另一个是一个第三方的，叫 <a href="https://github.com/marketplace/actions/push-directory-to-another-repository">《Push directory to another repository》</a>，可能还有别的更好用的，等以后有时间再研究。</p>
+<p>这里一共需要两个 action，一个是 GitHub 自己的 <a href="https://github.com/actions/checkout">checkout</a>，另一个是一个第三方的，叫 <a href="https://github.com/marketplace/actions/push-directory-to-another-repository">《Push directory to another repository》</a>，可能还有别的更好用的，等以后有时间再研究。</p>
 <p>最后，放上我的简单 GitHub Action CI 文件。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">name</span>: CI
 
