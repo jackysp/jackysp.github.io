@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.73.0" />
+  <meta name="generator" content="Hugo 0.92.2" />
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,7 +63,7 @@
 <p>在准备好 Benchmarksql 的代码后，先别急于测试。这里有三个主要的坑，需要先处理一下。</p>
 <ol>
 <li>CockroachDB 不支持后加主键。因此，需要在建表语句中先将主键一同创建好。具体，可以在 Benchmarksql 代码跟目录下的 run 文件夹下，创建 sql.cdb 文件夹，在其中拷贝来自同一级的 sql.common 文件夹下的 tableCreates.sql 和 indexCreates.sql 到 sql.cdb 中。然后将 indexCreates 里的 primary key 移到 tableCreates.sql 里的建表语句中。具体怎么在建表的同时定义索引，这个就请 Google 数据库文档的语法吧。</li>
-<li>CockroachDB 是一个&quot;强类型&quot;数据库。这个说法是我自己想的。它有个比较奇怪的行为，就是当你用一个不同类型相加时（比如 int + float），它会报错说，&ldquo;InternalError: unsupported binary operator: <!-- raw HTML omitted --> + <!-- raw HTML omitted -->&rdquo;。一般数据库都不会这样，大多数的做法是，做一些隐式的转换。或者说，对写 SQL 的人容忍度非常高。但是 CockroachDB 就别具一格，不指定类型就是报错。这样很大程度上减少了内部实现里类型推倒的负担。
+<li>CockroachDB 是一个&quot;强类型&quot;数据库。这个说法是我自己想的。它有个比较奇怪的行为，就是当你用一个不同类型相加时（比如 int + float），它会报错说，&ldquo;InternalError: unsupported binary operator: <!-- raw HTML omitted --> + <!-- raw HTML omitted -->&quot;。一般数据库都不会这样，大多数的做法是，做一些隐式的转换。或者说，对写 SQL 的人容忍度非常高。但是 CockroachDB 就别具一格，不指定类型就是报错。这样很大程度上减少了内部实现里类型推倒的负担。
 这个行为在 Benchmarksql 里的就成了没法正常跑完测试。解决方案就是，在报错的位置加上需要的类型，比如 update t set i = i + ?; （这个 ? 一般是通过 preppare/execute 来填值用的）改写成 update t set i = i + ?::DECIMAL; 。对，CockroachDB 就是通过在后面加 ::&lt;类型名&gt; 来显示指定类型的。但是非常奇怪的是，也不是所有的加都需要类型指定。</li>
 <li>CockroachDB 不支持 select for update 。这个最好解决，把 Benchmarksql 里的 for udpate 全都注释掉吧。CockroachDB 本身支持可串行化隔离级别，没有 for update 不影响一致性。</li>
 </ol>

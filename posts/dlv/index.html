@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.73.0" />
+  <meta name="generator" content="Hugo 0.92.2" />
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -57,7 +57,7 @@
 <p>这两天调试 go test，test 按 package 来跑的时候总会 hang 住，一时没想到合适的方法，就又想起 delve 来。试用了一下，比原来成熟了很多。</p>
 <h1 id="用法">用法</h1>
 <p><code>dlv attach ${pid}</code> 是我最常用的用法，attach 上之后就可以用类似 gdb 的调试方法，可以用 help 来查看具体命令。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">(dlv) help
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">(dlv) help
 The following commands are available:
     args ------------------------ Print function arguments.
     break (alias: b) ------------ Sets a breakpoint.
@@ -103,7 +103,7 @@ The following commands are available:
 Type help followed by a command for full documentation.
 </code></pre></div><p>其中有很多与 gdb 相同的命令。其他用的比较多的就是 <code>grs</code>，输出所有 goroutine，还可以 <code>grs -t</code>，相当于 gdb 的 <code>t a a bt</code>。唯一美中不足的是，只能输出 10 条栈信息，多了 truncated 了。
 再就是，似乎 go test fork 出来的进程是用不了的，如果想测试，必须先编译成 test 文件，再执行它。具体可以看 <a href="https://github.com/pingcap/tidb/issues/12184">https://github.com/pingcap/tidb/issues/12184</a> 。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ dlv attach 19654
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ dlv attach 19654
 could not attach to pid 19654: decoding dwarf section info at offset 0x0: too short
 </code></pre></div><p>再就是，在使用中，go 的 test 是默认 cache 的，可以通过环境变量控制。但是，有了 go mod 之后，推荐使用 <code>./ddl.test -test.count=1</code> 的方式来去掉 cache。感觉很不值观。</p>
 

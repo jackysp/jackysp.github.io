@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.73.0" />
+  <meta name="generator" content="Hugo 0.92.2" />
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -57,33 +57,33 @@
 <h2 id="过程">过程</h2>
 <p>基本过程参考了<a href="https://gist.github.com/Maumagnaguagno/84a9807ed71d233e5d3f">这个gist</a>。</p>
 <p>将它的 <code>.travis.yml</code> 贴在下面。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">language</span>: ruby
-<span style="color:#66d9ef">rvm</span>:
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">language</span>: <span style="color:#ae81ff">ruby</span>
+<span style="color:#f92672">rvm</span>:
   - <span style="color:#ae81ff">2.0.0</span>
-<span style="color:#66d9ef">env</span>:
-  <span style="color:#66d9ef">global</span>:
-  - USER=<span style="color:#e6db74">&#34;username&#34;</span>
-  - EMAIL=<span style="color:#e6db74">&#34;username@mail.com&#34;</span>
-  - REPO=<span style="color:#e6db74">&#34;name of target repo&#34;</span>
-  - FILES=<span style="color:#e6db74">&#34;README.md foo.txt bar.txt&#34;</span>
-  - GH_REPO=<span style="color:#e6db74">&#34;github.com/${USER}/${REPO}.git&#34;</span>
-  - <span style="color:#66d9ef">secure</span>: <span style="color:#e6db74">&#34;put travis gem output here =&gt; http://docs.travis-ci.com/user/encryption-keys/&#34;</span>
-<span style="color:#66d9ef">script</span>:
-  - ruby test.rb
-<span style="color:#66d9ef">after_success</span>:
-  - MESSAGE=$(git log --format=%B -n <span style="color:#ae81ff">1</span> $TRAVIS_COMMIT)
-  - git clone git://${GH_REPO}
-  - mv -f ${FILES} ${REPO}
-  - cd ${REPO}
-  - git remote
-  - git config user.email ${EMAIL}
-  - git config user.name ${USER}
-  - git add ${FILES}
-  - git commit -m <span style="color:#e6db74">&#34;${MESSAGE}&#34;</span>
-  - git push <span style="color:#e6db74">&#34;https://${GH_TOKEN}@${GH_REPO}&#34;</span> master &gt; /dev/<span style="color:#66d9ef">null</span> <span style="color:#ae81ff">2</span>&gt;<span style="color:#75715e">&amp;1</span>
+<span style="color:#f92672">env</span>:
+  <span style="color:#f92672">global</span>:
+  - <span style="color:#ae81ff">USER=&#34;username&#34;</span>
+  - <span style="color:#ae81ff">EMAIL=&#34;username@mail.com&#34;</span>
+  - <span style="color:#ae81ff">REPO=&#34;name of target repo&#34;</span>
+  - <span style="color:#ae81ff">FILES=&#34;README.md foo.txt bar.txt&#34;</span>
+  - <span style="color:#ae81ff">GH_REPO=&#34;github.com/${USER}/${REPO}.git&#34;</span>
+  - <span style="color:#f92672">secure</span>: <span style="color:#e6db74">&#34;put travis gem output here =&gt; http://docs.travis-ci.com/user/encryption-keys/&#34;</span>
+<span style="color:#f92672">script</span>:
+  - <span style="color:#ae81ff">ruby test.rb</span>
+<span style="color:#f92672">after_success</span>:
+  - <span style="color:#ae81ff">MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)</span>
+  - <span style="color:#ae81ff">git clone git://${GH_REPO}</span>
+  - <span style="color:#ae81ff">mv -f ${FILES} ${REPO}</span>
+  - <span style="color:#ae81ff">cd ${REPO}</span>
+  - <span style="color:#ae81ff">git remote</span>
+  - <span style="color:#ae81ff">git config user.email ${EMAIL}</span>
+  - <span style="color:#ae81ff">git config user.name ${USER}</span>
+  - <span style="color:#ae81ff">git add ${FILES}</span>
+  - <span style="color:#ae81ff">git commit -m &#34;${MESSAGE}&#34;</span>
+  - <span style="color:#ae81ff">git push &#34;https://${GH_TOKEN}@${GH_REPO}&#34; master &gt; /dev/null 2&gt;&amp;1</span>
 </code></pre></div><p>这里注意 MESSAGE 在 commit 的时候要加个引号，原 gist 没加。</p>
 <p>原文的 README ：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown"># Travis-CI tested push
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown"># Travis-CI tested push
 Sometimes we have a private repository to hold both problems and solutions as a reference for the class projects.
 The students can see only the problems in a public repository where they are able to clone/fork and develop their own solutions.
 We do not want the solution files in the public repository and each bug found/feature added in the project requires a push for each repository.
@@ -114,34 +114,34 @@ Travis now have a [<span style="color:#f92672">deployment</span>](<span style="c
 <li>提交修改的配置文件。</li>
 </ol>
 <p>没有完全按照上面的文字翻译。<strong>上面这段内容更适用于下面这份我自己的配置文件：</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#66d9ef">language</span>: ruby
-<span style="color:#66d9ef">branches</span>:
-  <span style="color:#66d9ef">only</span>:
-  - master
-<span style="color:#66d9ef">rvm</span>:
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#f92672">language</span>: <span style="color:#ae81ff">ruby</span>
+<span style="color:#f92672">branches</span>:
+  <span style="color:#f92672">only</span>:
+  - <span style="color:#ae81ff">master</span>
+<span style="color:#f92672">rvm</span>:
 - <span style="color:#ae81ff">2.4.1</span>
-<span style="color:#66d9ef">exclude</span>:
-- vendor
-<span style="color:#66d9ef">sudo</span>: <span style="color:#66d9ef">false</span>
-<span style="color:#66d9ef">env</span>:
-  <span style="color:#66d9ef">global</span>:
-    - <span style="color:#66d9ef">secure</span>: rxKkyttLE1L4VsVIhhDUYGoLlER33ijKbdAAJPE8vNDSHwyANYnsP1GXK/rcwQqsL/KcJa55wEjVwEBzTMCqZM4UYNVIWqrJepVYo4rL1WhO+jT5sCqVR3qxK9KbgodcSXbmySJnJs0iLGMIQ2bo8yE91OxIC/GKkLCIwr9x4EGwFd5EcE5bOqmVqoSRk1q/<span style="color:#ae81ff">1</span>/5yA0aVF+Pohc5ATCZGw9+IyprU2Dx7qbA7F/T/4FQTOQZ4CLZAgyh/Gp1P+uxf1OK4IMCc/P6jVeTmbzQIbUcX0uG09pR7F0GnlV1ZOutMjY7SF8tQ7LNv2Wf8iWdiqehcwKNe/4TFHjs6rm3lEc6F1ELB5s4Z+QXjIM70haENSwM1FI8K5biL7tndAC1TujKESm0XadxORy5yOz7TfQZDTuMXvmmH3j+NFL3vTYPyMwwFca+IQBwD67a4PKD0PWBgEFD9Kn3rAlAzhV5OYdUuxZhx5zuQjKX5szUbL166fgoRnUwDp8dsOjLgOUqQa47IRqR3CTPzbf3zZIxGuX5x6mWySezCNprnXKCpyCegJBLoxQusA+EEYkvl4AOzhnmkhxFbEbHp+DYBjcSEEgpd06l67l3KzjMkpF02vr9CHNj8r7lAtZxwBVxYmczk289D5csOVR1SZKxQLwhx7k+CuEcYds685tLjIMmB0ZU=
-    - USER=<span style="color:#e6db74">&#34;jackysp&#34;</span>
-    - FULLNAME=<span style="color:#e6db74">&#34;Jack Yu&#34;</span>
-    - EMAIL=<span style="color:#e6db74">&#34;jackysp@gmail.com&#34;</span>
-    - REPO=<span style="color:#e6db74">&#34;jackysp.github.io&#34;</span>
-    - GH_REPO=<span style="color:#e6db74">&#34;github.com/${USER}/${REPO}.git&#34;</span>
-<span style="color:#66d9ef">before_script</span>:
-  - git clone https://${GH_TOKEN}@${GH_REPO}
-<span style="color:#66d9ef">script</span>: bundle exec jekyll b -d ${REPO}
-<span style="color:#66d9ef">after_success</span>:
-  - MESSAGE=$(git log --format=%B -n <span style="color:#ae81ff">1</span> $TRAVIS_COMMIT)
-  - cd ${REPO}
-  - git config user.email ${EMAIL}
-  - git config user.name ${FULLNAME}
-  - git add --all
-  - git commit -m <span style="color:#e6db74">&#34;${MESSAGE}&#34;</span>
-  - git push --force origin master
+<span style="color:#f92672">exclude</span>:
+- <span style="color:#ae81ff">vendor</span>
+<span style="color:#f92672">sudo</span>: <span style="color:#66d9ef">false</span>
+<span style="color:#f92672">env</span>:
+  <span style="color:#f92672">global</span>:
+    - <span style="color:#f92672">secure</span>: <span style="color:#ae81ff">rxKkyttLE1L4VsVIhhDUYGoLlER33ijKbdAAJPE8vNDSHwyANYnsP1GXK/rcwQqsL/KcJa55wEjVwEBzTMCqZM4UYNVIWqrJepVYo4rL1WhO+jT5sCqVR3qxK9KbgodcSXbmySJnJs0iLGMIQ2bo8yE91OxIC/GKkLCIwr9x4EGwFd5EcE5bOqmVqoSRk1q/1/5yA0aVF+Pohc5ATCZGw9+IyprU2Dx7qbA7F/T/4FQTOQZ4CLZAgyh/Gp1P+uxf1OK4IMCc/P6jVeTmbzQIbUcX0uG09pR7F0GnlV1ZOutMjY7SF8tQ7LNv2Wf8iWdiqehcwKNe/4TFHjs6rm3lEc6F1ELB5s4Z+QXjIM70haENSwM1FI8K5biL7tndAC1TujKESm0XadxORy5yOz7TfQZDTuMXvmmH3j+NFL3vTYPyMwwFca+IQBwD67a4PKD0PWBgEFD9Kn3rAlAzhV5OYdUuxZhx5zuQjKX5szUbL166fgoRnUwDp8dsOjLgOUqQa47IRqR3CTPzbf3zZIxGuX5x6mWySezCNprnXKCpyCegJBLoxQusA+EEYkvl4AOzhnmkhxFbEbHp+DYBjcSEEgpd06l67l3KzjMkpF02vr9CHNj8r7lAtZxwBVxYmczk289D5csOVR1SZKxQLwhx7k+CuEcYds685tLjIMmB0ZU=</span>
+    - <span style="color:#ae81ff">USER=&#34;jackysp&#34;</span>
+    - <span style="color:#ae81ff">FULLNAME=&#34;Jack Yu&#34;</span>
+    - <span style="color:#ae81ff">EMAIL=&#34;jackysp@gmail.com&#34;</span>
+    - <span style="color:#ae81ff">REPO=&#34;jackysp.github.io&#34;</span>
+    - <span style="color:#ae81ff">GH_REPO=&#34;github.com/${USER}/${REPO}.git&#34;</span>
+<span style="color:#f92672">before_script</span>:
+  - <span style="color:#ae81ff">git clone https://${GH_TOKEN}@${GH_REPO}</span>
+<span style="color:#f92672">script</span>: <span style="color:#ae81ff">bundle exec jekyll b -d ${REPO}</span>
+<span style="color:#f92672">after_success</span>:
+  - <span style="color:#ae81ff">MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)</span>
+  - <span style="color:#ae81ff">cd ${REPO}</span>
+  - <span style="color:#ae81ff">git config user.email ${EMAIL}</span>
+  - <span style="color:#ae81ff">git config user.name ${FULLNAME}</span>
+  - <span style="color:#ae81ff">git add --all</span>
+  - <span style="color:#ae81ff">git commit -m &#34;${MESSAGE}&#34;</span>
+  - <span style="color:#ae81ff">git push --force origin master</span>
 </code></pre></div><p>这份文件是用来自动更新 jekyll 创建的 blog 的。分了两个工程，一个存源文件，一个存编译后的 html 文件。做这个的原因是，希望不用自己搭 jekyll 的环境也可以更新 blog 。这样即使是用在 github 网页上也可以更新 blog 了。</p>
 
 </div>

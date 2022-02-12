@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.73.0" />
+  <meta name="generator" content="Hugo 0.92.2" />
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -62,7 +62,7 @@
 </ol>
 <p>稍微解释一下，这里核心的部分其实就是 recipes 和 tools。tools 是编译工具链，包括使用哪种工具编译，选项用什么，顺序无所谓。recipes 是定义如何组合上述工具来生成最终文档，顺序是有意义的，默认使用第一个。
 这里把 XeLaTex 放在了第一，也是因为它编译中文是兼容性最好的，如果用 pdflatex 来编译中文文件，大概率会踩坑。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
    <span style="color:#f92672">&#34;latex-workshop.latex.recipes&#34;</span>: [
          {
             <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;XeLaTeX&#34;</span>,
@@ -226,7 +226,7 @@
 <li>创建一个文件夹</li>
 <li>使用 VSCode 打开这个文件夹创建一个 .tex 文件，内容写</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-tex" data-lang="tex"><span style="color:#66d9ef">\documentclass</span><span style="color:#a6e22e">[UTF8]</span>{ctexart}
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-tex" data-lang="tex"><span style="color:#66d9ef">\documentclass</span><span style="color:#a6e22e">[UTF8]</span>{ctexart}
 
 <span style="color:#66d9ef">\begin</span>{document}
 OK，大功告成了。。。

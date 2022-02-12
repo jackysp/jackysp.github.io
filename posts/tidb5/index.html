@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.73.0" />
+  <meta name="generator" content="Hugo 0.92.2" />
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -102,10 +102,10 @@
 <p>tracing 本身在框架支持好以后，增加埋点是相对简单的一件事情，只需要在希望埋点的位置加上如下一段代码即可：</p>
 <p><img src="/posts/images/20200908165442.png" alt="lost"></p>
 <p>有感兴趣的同学其实可以自己根据需要给 TiDB 增加埋点，也是一个很好的上手体验机会。</p>
-<p>后来，tracing 又增加了 format='row' 和 format='log' 功能，</p>
+<p>后来，tracing 又增加了 format=&lsquo;row&rsquo; 和 format=&lsquo;log&rsquo; 功能，</p>
 <p><img src="/posts/images/20200908165729.png" alt="lost"></p>
 <p><img src="/posts/images/20200908165805.png" alt="lost"></p>
-<p>个人更喜欢 format='log'，</p>
+<p>个人更喜欢 format=&lsquo;log&rsquo;，</p>
 <h3 id="tracing-跟-explain-analyze-的区别">Tracing 跟 Explain (Analyze) 的区别</h3>
 <ol>
 <li>Tracing 是函数级的，Explain 是算子级的。Tracing 添加比较方便，粒度也更细，不需要必须是 plan 的一部分。</li>

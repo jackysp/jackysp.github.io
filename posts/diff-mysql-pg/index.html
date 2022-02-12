@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.73.0" />
+  <meta name="generator" content="Hugo 0.92.2" />
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -57,7 +57,7 @@
 校验一般就是两边都做一个 checksum，对比一下。</p>
 <h2 id="tidbmysql侧">TiDB（MySQL）侧</h2>
 <p>对于某张表的校验，其实用的是下面这个 SQL</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">SELECT</span> bit_xor(
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">SELECT</span> bit_xor(
     <span style="color:#66d9ef">CAST</span>(crc32(
         concat_ws(<span style="color:#e6db74">&#39;,&#39;</span>,
             col1, col2, col3, <span style="color:#960050;background-color:#1e0010">…</span>, colN,
@@ -67,7 +67,7 @@
 )
 <span style="color:#66d9ef">FROM</span> t;
 </code></pre></div><p>具体找一个例子，</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> t;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> t;
 <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT, j INT);
 <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>), (<span style="color:#66d9ef">NULL</span>, <span style="color:#66d9ef">NULL</span>);
 <span style="color:#66d9ef">SELECT</span> bit_xor(
@@ -80,7 +80,7 @@
 )
 <span style="color:#66d9ef">FROM</span> t;
 </code></pre></div><p>结果是，</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">+-------------------------------------------------------------------------------------------------------------------------------------------+
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">+-------------------------------------------------------------------------------------------------------------------------------------------+
 | bit_xor(
     CAST(crc32(
         concat_ws(&#39;,&#39;,
@@ -98,9 +98,9 @@
 <p>目的比较简单就是希望能写出跟上面一样的 SQL，但是 PostgreSQL 不支持 bit_xor、crc32、isnull，也没有 unsigned。所以，解决办法比较简单，就是靠 UDF。
 于是，搜了一下，主要缺失的函数，通过一些改写，都可以解决。</p>
 <p>bit_xor:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">AGGREGATE</span> BIT_XOR(<span style="color:#66d9ef">IN</span> v bigint) (SFUNC <span style="color:#f92672">=</span> int8xor, <span style="color:#66d9ef">STYPE</span> <span style="color:#f92672">=</span> bigint);
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">AGGREGATE</span> BIT_XOR(<span style="color:#66d9ef">IN</span> v bigint) (SFUNC <span style="color:#f92672">=</span> int8xor, <span style="color:#66d9ef">STYPE</span> <span style="color:#f92672">=</span> bigint);
 </code></pre></div><p>crc32:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">FUNCTION</span> crc32(text_string text) <span style="color:#66d9ef">RETURNS</span> bigint <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">$$</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">FUNCTION</span> crc32(text_string text) <span style="color:#66d9ef">RETURNS</span> bigint <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">$$</span>
 <span style="color:#66d9ef">DECLARE</span>
     tmp bigint;
     i int;
@@ -135,13 +135,13 @@
 <span style="color:#66d9ef">END</span>
 <span style="color:#960050;background-color:#1e0010">$$</span> <span style="color:#66d9ef">IMMUTABLE</span> <span style="color:#66d9ef">LANGUAGE</span> plpgsql;
 </code></pre></div><p>isnull:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">FUNCTION</span> <span style="color:#66d9ef">isnull</span>( anyelement ) <span style="color:#66d9ef">RETURNS</span> int <span style="color:#66d9ef">as</span> <span style="color:#960050;background-color:#1e0010">$$</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">FUNCTION</span> <span style="color:#66d9ef">isnull</span>( anyelement ) <span style="color:#66d9ef">RETURNS</span> int <span style="color:#66d9ef">as</span> <span style="color:#960050;background-color:#1e0010">$$</span>
 <span style="color:#66d9ef">BEGIN</span>
     <span style="color:#66d9ef">RETURN</span> <span style="color:#66d9ef">CAST</span>((<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span>) <span style="color:#66d9ef">as</span> INT);
 <span style="color:#66d9ef">END</span>
 <span style="color:#960050;background-color:#1e0010">$$</span><span style="color:#66d9ef">LANGUAGE</span> plpgsql;
 </code></pre></div><p>创建好上面三个 UDF 后，试一下上面的用例，注意，UNSIGNED 要改成 BIGINT。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> t;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> t;
 <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT, j INT);
 <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>), (<span style="color:#66d9ef">NULL</span>, <span style="color:#66d9ef">NULL</span>);
 <span style="color:#66d9ef">SELECT</span> bit_xor(
@@ -154,7 +154,7 @@
 )
 <span style="color:#66d9ef">FROM</span> t;
 </code></pre></div><p>结果，</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"> bit_xor
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"> bit_xor
 ---------
  5062371
 (1 row)

@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.73.0" />
+  <meta name="generator" content="Hugo 0.92.2" />
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -70,55 +70,55 @@
 </ol>
 <p>这里一共需要两个 action，一个是 GitHub 自己的 <a href="https://github.com/actions/checkout">checkout</a>，另一个是一个第三方的，叫 <a href="https://github.com/marketplace/actions/push-directory-to-another-repository">《Push directory to another repository》</a>，可能还有别的更好用的，等以后有时间再研究。</p>
 <p>最后，放上我的简单 GitHub Action CI 文件。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">name</span>: CI
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">name</span>: <span style="color:#ae81ff">CI</span>
 
-<span style="color:#66d9ef">on</span>:
-  <span style="color:#66d9ef">push</span>:
-    <span style="color:#66d9ef">branches</span>: [ master ]
+<span style="color:#f92672">on</span>:
+  <span style="color:#f92672">push</span>:
+    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">master ]</span>
 
-<span style="color:#66d9ef">jobs</span>:
-  <span style="color:#66d9ef">build</span>:
-    <span style="color:#66d9ef">name</span>: Build
-    <span style="color:#66d9ef">runs-on</span>: ubuntu-latest
-    <span style="color:#66d9ef">steps</span>:
+<span style="color:#f92672">jobs</span>:
+  <span style="color:#f92672">build</span>:
+    <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build</span>
+    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+    <span style="color:#f92672">steps</span>:
 
-    - <span style="color:#66d9ef">name</span>: Set up Go <span style="color:#ae81ff">1.</span>x
-      <span style="color:#66d9ef">uses</span>: actions/setup-go@v2
-      <span style="color:#66d9ef">with</span>:
-        <span style="color:#66d9ef">go-version</span>: ^<span style="color:#ae81ff">1.13</span>
+    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Set up Go 1.x</span>
+      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/setup-go@v2</span>
+      <span style="color:#f92672">with</span>:
+        <span style="color:#f92672">go-version</span>: <span style="color:#ae81ff">^1.13</span>
 
-    - <span style="color:#66d9ef">name</span>: Check out code into the Go module directory
-      <span style="color:#66d9ef">uses</span>: actions/checkout@v2
+    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Check out code into the Go module directory</span>
+      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v2</span>
 
-    - <span style="color:#66d9ef">name</span>: Get dependencies
-      <span style="color:#66d9ef">run</span>: <span style="color:#e6db74">|
-</span><span style="color:#e6db74">        go get -v -t -d ./...</span>
-        if [ -f Gopkg.toml ]; then
-            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-            dep ensure
-        fi
+    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Get dependencies</span>
+      <span style="color:#f92672">run</span>: |<span style="color:#e6db74">
+</span><span style="color:#e6db74">        go get -v -t -d ./...
+</span><span style="color:#e6db74">        if [ -f Gopkg.toml ]; then
+</span><span style="color:#e6db74">            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+</span><span style="color:#e6db74">            dep ensure
+</span><span style="color:#e6db74">        fi</span>        
 
-    - <span style="color:#66d9ef">name</span>: Check out my other private repo
-      <span style="color:#66d9ef">uses</span>: actions/checkout@v2
-      <span style="color:#66d9ef">with</span>:
-        <span style="color:#66d9ef">repository</span>: jackysp/jackysp.github.io
-        <span style="color:#66d9ef">token</span>: ${{ secrets.UPDATE_BLOG }}
-        <span style="color:#66d9ef">path</span>: public
+    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Check out my other private repo</span>
+      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v2</span>
+      <span style="color:#f92672">with</span>:
+        <span style="color:#f92672">repository</span>: <span style="color:#ae81ff">jackysp/jackysp.github.io</span>
+        <span style="color:#f92672">token</span>: <span style="color:#ae81ff">${{ secrets.UPDATE_BLOG }}</span>
+        <span style="color:#f92672">path</span>: <span style="color:#ae81ff">public</span>
 
-    - <span style="color:#66d9ef">name</span>: Build
-      <span style="color:#66d9ef">run</span>: make
+    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build</span>
+      <span style="color:#f92672">run</span>: <span style="color:#ae81ff">make</span>
     
-    - <span style="color:#66d9ef">name</span>: Pushes to another repository
-      <span style="color:#66d9ef">id</span>: public
-      <span style="color:#66d9ef">uses</span>: cpina/github-action-push-to-another-repository@cp_instead_of_deleting
-      <span style="color:#66d9ef">env</span>:
-        <span style="color:#66d9ef">API_TOKEN_GITHUB</span>: ${{ secrets.UPDATE_BLOG }}
-      <span style="color:#66d9ef">with</span>:
-        <span style="color:#66d9ef">source-directory</span>: <span style="color:#e6db74">&#39;public&#39;</span>
-        <span style="color:#66d9ef">destination-github-username</span>: <span style="color:#e6db74">&#39;jackysp&#39;</span>
-        <span style="color:#66d9ef">destination-repository-name</span>: <span style="color:#e6db74">&#39;jackysp.github.io&#39;</span>
-        <span style="color:#66d9ef">user-email</span>: your@email.com
-        <span style="color:#66d9ef">commit-message</span>: See ORIGIN_COMMIT
+    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Pushes to another repository</span>
+      <span style="color:#f92672">id</span>: <span style="color:#ae81ff">public</span>
+      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">cpina/github-action-push-to-another-repository@cp_instead_of_deleting</span>
+      <span style="color:#f92672">env</span>:
+        <span style="color:#f92672">API_TOKEN_GITHUB</span>: <span style="color:#ae81ff">${{ secrets.UPDATE_BLOG }}</span>
+      <span style="color:#f92672">with</span>:
+        <span style="color:#f92672">source-directory</span>: <span style="color:#e6db74">&#39;public&#39;</span>
+        <span style="color:#f92672">destination-github-username</span>: <span style="color:#e6db74">&#39;jackysp&#39;</span>
+        <span style="color:#f92672">destination-repository-name</span>: <span style="color:#e6db74">&#39;jackysp.github.io&#39;</span>
+        <span style="color:#f92672">user-email</span>: <span style="color:#ae81ff">your@email.com</span>
+        <span style="color:#f92672">commit-message</span>: <span style="color:#ae81ff">See ORIGIN_COMMIT</span>
 </code></pre></div>
 </div>
 

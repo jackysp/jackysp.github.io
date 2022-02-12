@@ -1,183 +1,111 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
     <loc>http://blog.minifish.org/</loc>
     <lastmod>2022-02-03T18:08:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/</loc>
     <lastmod>2022-02-03T18:08:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/mc/</loc>
     <lastmod>2022-02-03T18:08:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/diff-mysql-pg/</loc>
     <lastmod>2021-05-09T18:13:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/latex-win/</loc>
     <lastmod>2021-03-31T11:13:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/github-action/</loc>
     <lastmod>2020-12-16T16:11:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/sysbench/</loc>
     <lastmod>2020-12-14T12:06:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/tidb5/</loc>
     <lastmod>2020-09-08T11:36:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/tidb4/</loc>
     <lastmod>2020-07-31T10:58:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/tidb3/</loc>
     <lastmod>2020-07-28T11:47:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/tidb2/</loc>
     <lastmod>2020-07-12T12:09:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/tidb1/</loc>
     <lastmod>2020-07-06T16:51:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/docker-win/</loc>
     <lastmod>2020-04-13T10:34:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/nosleeplinux/</loc>
     <lastmod>2020-03-31T20:31:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/und/</loc>
     <lastmod>2020-02-01T12:27:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/powershell-starttup/</loc>
     <lastmod>2020-01-14T08:56:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/gost/</loc>
     <lastmod>2020-01-12T19:43:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/dlv/</loc>
     <lastmod>2019-09-16T13:24:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/piano-price/</loc>
     <lastmod>2018-10-23T11:38:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/shadowsocks/</loc>
     <lastmod>2018-09-27T15:48:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/golang-panic/</loc>
     <lastmod>2018-07-26T14:24:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/haproxy/</loc>
     <lastmod>2018-07-10T15:07:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/cockroachdb-tpcc/</loc>
     <lastmod>2018-07-06T21:21:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/cockroachdb-sysbench/</loc>
     <lastmod>2018-06-11T13:50:00+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/oltp-bench/</loc>
     <lastmod>2018-02-23T22:21:06+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/font/</loc>
     <lastmod>2017-12-26T22:21:06+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/f1/</loc>
     <lastmod>2017-12-25T22:21:06+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/cap/</loc>
     <lastmod>2017-12-20T22:21:06+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/travis-git-push/</loc>
     <lastmod>2017-10-16T22:21:06+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/mysqlx-protocol/</loc>
     <lastmod>2017-08-16T22:21:06+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/centos6-install/</loc>
     <lastmod>2014-06-05T22:21:06+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/postgresql-practices/</loc>
     <lastmod>2014-06-05T22:21:06+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/centos6-nfs/</loc>
     <lastmod>2014-06-05T22:21:06+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/posts/centos6-kvm-net-bridge/</loc>
     <lastmod>2014-06-05T22:21:06+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/categories/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://blog.minifish.org/tags/</loc>
   </url>
-  
 </urlset>

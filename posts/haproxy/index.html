@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.73.0" />
+  <meta name="generator" content="Hugo 0.92.2" />
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -56,7 +56,7 @@
 <p><code>yum install haproxy</code> 对 CentOS 7 有效。安装之后，即可使用 <code>systemctl start haproxy</code> 来启动服务了。但是先别急。</p>
 <h2 id="配置-haproxy">配置 HAProxy</h2>
 <p>在 /etc/haproxy/haproxy.cfg 里写入以下内容。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">global <span style="color:#75715e"># global 的内容基本固定，也比较好理解。</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">global <span style="color:#75715e"># global 的内容基本固定，也比较好理解。</span>
         log 127.0.0.1   local2
         maxconn <span style="color:#ae81ff">4096</span>
         user haproxy
@@ -92,7 +92,7 @@ listen cdb_cluster 0.0.0.0:3030  <span style="color:#75715e"># 真正的 proxy �
 <p><code>psql -Uroot -h127.0.0.1 -p3030 test</code> 连接数据库。</p>
 <h2 id="cockroachdb-官方推荐">CockroachDB 官方推荐</h2>
 <p>CockroachDB 官方给了自己推荐的<a href="https://www.cockroachlabs.com/docs/stable/deploy-cockroachdb-on-premises.html">配置</a>。在这个配置里，它用了：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">default
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">default
 <span style="color:#75715e"># TCP keep-alive on client side. Server already enables them.</span>
     option              clitcpka
 

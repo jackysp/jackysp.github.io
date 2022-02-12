@@ -5,10 +5,6 @@
     <link>http://blog.minifish.org/categories/</link>
     <description>Recent content in Categories on Mini How</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    
-	<atom:link href="http://blog.minifish.org/categories/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>zh-cn</language><atom:link href="http://blog.minifish.org/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.73.0" />
+  <meta name="generator" content="Hugo 0.92.2" />
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,7 +53,7 @@
   <h1>Golang panic 的实时性是怎样的</h1>
   <time datetime=2018-07-26T14:24:00&#43;0800 class="post-date">Thu, Jul 26, 2018</time>
   <p>先看下面这段代码，</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
 <span style="color:#f92672">import</span> (
 	<span style="color:#e6db74">&#34;fmt&#34;</span>
@@ -81,7 +81,7 @@
 	}
 }
 </code></pre></div><p>编译完之后，运行，会得到下面的错误（前提你的机器有 2 个及以上的核），</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">fatal error: concurrent map read and map write
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">fatal error: concurrent map read and map write
 
 goroutine 1 [running]:
 runtime.throw(0x10c3e05, 0x21)

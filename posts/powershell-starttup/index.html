@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.73.0" />
+  <meta name="generator" content="Hugo 0.92.2" />
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,7 +58,7 @@
 </li>
 <li>
 <p>脚本里填</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Start-Process -FilePath <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.exe&#34;</span> -ArgumentList <span style="color:#e6db74">&#34;-L=&#34;</span>, <span style="color:#e6db74">&#34;-F=&#34;</span> -RedirectStandardOutput <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.log&#34;</span> -RedirectStandardError <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.err&#34;</span> -WindowStyle Hidden
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Start-Process -FilePath <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.exe&#34;</span> -ArgumentList <span style="color:#e6db74">&#34;-L=&#34;</span>, <span style="color:#e6db74">&#34;-F=&#34;</span> -RedirectStandardOutput <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.log&#34;</span> -RedirectStandardError <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.err&#34;</span> -WindowStyle Hidden
 </code></pre></div></li>
 </ul>
 <p>注：<code>Start-Process</code> 好像会做一个 folk 类似的动作，默认会开启一个新的 PowerShell 窗口来执行，所以最后加上了 <code>-WindowStyle Hidden</code>，这里不能用 <code>-NoNewWindow</code>，因为这样只是让执行 <code>Start-Process</code> 不生成新窗口，老窗口不会退出。
