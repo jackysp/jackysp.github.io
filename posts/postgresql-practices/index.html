@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn" lang="zh-cn">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.73.0" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>如何练习使用 SQL &middot; Mini How</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class="theme-base-0d ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="http://blog.minifish.org/"><h1>Mini How</h1></a>
+      <p class="lead">
+       A blog that&#39;s all about how to do it. 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="http://blog.minifish.org/">Home</a> </li>
+        <li><a href="https://github.com/jackysp/"> Github </a></li><li><a href="https://www.linkedin.com/in/shuaipeng-yu-81280434/"> LinkedIn </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2022. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>如何练习使用 SQL</h1>
+  <time datetime=2014-06-05T22:21:06&#43;0800 class="post-date">Thu, Jun 5, 2014</time>
+  <p>做题。以下使用的是 POSTGRESQL 9.4 BETA 2。</p>
+<h1 id="表结构">表结构</h1>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> STUDENT
+(SNO VARCHAR(<span style="color:#ae81ff">3</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+SNAME VARCHAR(<span style="color:#ae81ff">4</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+SSEX VARCHAR(<span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+SBIRTHDAY DATE,
+<span style="color:#66d9ef">CLASS</span> VARCHAR(<span style="color:#ae81ff">5</span>));
+
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> COURSE
+(CNO VARCHAR(<span style="color:#ae81ff">5</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+CNAME VARCHAR(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+TNO VARCHAR(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>);
+
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> SCORE
+(SNO VARCHAR(<span style="color:#ae81ff">3</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+CNO VARCHAR(<span style="color:#ae81ff">5</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+DEGREE NUMERIC(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>);
+
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> TEACHER
+(TNO VARCHAR(<span style="color:#ae81ff">3</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+TNAME VARCHAR(<span style="color:#ae81ff">4</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>, TSEX VARCHAR(<span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+TBIRTHDAY DATE <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>, PROF VARCHAR(<span style="color:#ae81ff">6</span>),
+DEPART VARCHAR(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>);
+
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">108</span> ,<span style="color:#e6db74">&#39;曾华&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span> ,<span style="color:#e6db74">&#39;1977-09-01&#39;</span>,<span style="color:#ae81ff">95033</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">105</span> ,<span style="color:#e6db74">&#39;匡明&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span> ,<span style="color:#e6db74">&#39;1975-10-02&#39;</span>,<span style="color:#ae81ff">95031</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">107</span> ,<span style="color:#e6db74">&#39;王丽&#39;</span>,<span style="color:#e6db74">&#39;女&#39;</span> ,<span style="color:#e6db74">&#39;1976-01-23&#39;</span>,<span style="color:#ae81ff">95033</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">101</span> ,<span style="color:#e6db74">&#39;李军&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span> ,<span style="color:#e6db74">&#39;1976-02-20&#39;</span>,<span style="color:#ae81ff">95033</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">109</span> ,<span style="color:#e6db74">&#39;王芳&#39;</span>,<span style="color:#e6db74">&#39;女&#39;</span> ,<span style="color:#e6db74">&#39;1975-02-10&#39;</span>,<span style="color:#ae81ff">95031</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">103</span> ,<span style="color:#e6db74">&#39;陆君&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span> ,<span style="color:#e6db74">&#39;1974-06-03&#39;</span>,<span style="color:#ae81ff">95031</span>);
+
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> COURSE(CNO,CNAME,TNO)<span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;3-105&#39;</span> ,<span style="color:#e6db74">&#39;计算机导论&#39;</span>,<span style="color:#ae81ff">825</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> COURSE(CNO,CNAME,TNO)<span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;3-245&#39;</span> ,<span style="color:#e6db74">&#39;操作系统&#39;</span> ,<span style="color:#ae81ff">804</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> COURSE(CNO,CNAME,TNO)<span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;6-166&#39;</span> ,<span style="color:#e6db74">&#39;数据电路&#39;</span> ,<span style="color:#ae81ff">856</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> COURSE(CNO,CNAME,TNO)<span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;9-888&#39;</span> ,<span style="color:#e6db74">&#39;高等数学&#39;</span> ,<span style="color:#ae81ff">100</span>);
+
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">103</span>,<span style="color:#e6db74">&#39;3-245&#39;</span>,<span style="color:#ae81ff">86</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">105</span>,<span style="color:#e6db74">&#39;3-245&#39;</span>,<span style="color:#ae81ff">75</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">109</span>,<span style="color:#e6db74">&#39;3-245&#39;</span>,<span style="color:#ae81ff">68</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">103</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">92</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">105</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">88</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">109</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">76</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">101</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">64</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">107</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">91</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">108</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">78</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">101</span>,<span style="color:#e6db74">&#39;6-166&#39;</span>,<span style="color:#ae81ff">85</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">107</span>,<span style="color:#e6db74">&#39;6-106&#39;</span>,<span style="color:#ae81ff">79</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">108</span>,<span style="color:#e6db74">&#39;6-166&#39;</span>,<span style="color:#ae81ff">81</span>);
+
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> TEACHER(TNO,TNAME,TSEX,TBIRTHDAY,PROF,DEPART) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">804</span>,<span style="color:#e6db74">&#39;李诚&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span>,<span style="color:#e6db74">&#39;1958-12-02&#39;</span>,<span style="color:#e6db74">&#39;副教授&#39;</span>,<span style="color:#e6db74">&#39;计算机系&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> TEACHER(TNO,TNAME,TSEX,TBIRTHDAY,PROF,DEPART) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">856</span>,<span style="color:#e6db74">&#39;张旭&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span>,<span style="color:#e6db74">&#39;1969-03-12&#39;</span>,<span style="color:#e6db74">&#39;讲师&#39;</span>,<span style="color:#e6db74">&#39;电子工程系&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> TEACHER(TNO,TNAME,TSEX,TBIRTHDAY,PROF,DEPART) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">825</span>,<span style="color:#e6db74">&#39;王萍&#39;</span>,<span style="color:#e6db74">&#39;女&#39;</span>,<span style="color:#e6db74">&#39;1972-05-05&#39;</span>,<span style="color:#e6db74">&#39;助教&#39;</span>,<span style="color:#e6db74">&#39;计算机系&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> TEACHER(TNO,TNAME,TSEX,TBIRTHDAY,PROF,DEPART) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">831</span>,<span style="color:#e6db74">&#39;刘冰&#39;</span>,<span style="color:#e6db74">&#39;女&#39;</span>,<span style="color:#e6db74">&#39;1977-08-14&#39;</span>,<span style="color:#e6db74">&#39;助教&#39;</span>,<span style="color:#e6db74">&#39;电子工程系&#39;</span>);
+</code></pre></div><h1 id="题目">题目</h1>
+<ol>
+<li>查询STUDENT表中的所有记录的SNAME、SSEX和CLASS列。</li>
+<li>查询教师所有的单位即不重复的DEPART列。</li>
+<li>查询STUDENT表的所有记录。</li>
+<li>查询SCORE表中成绩在60到80之间的所有记录。</li>
+<li>查询SCORE表中成绩为85，86或88的记录。</li>
+<li>查询STUDENT表中“95031”班或性别为“女”的同学记录。</li>
+<li>以CLASS降序查询STUDENT表的所有记录。</li>
+<li>以CNO升序、DEGREE降序查询SCORE表的所有记录。</li>
+<li>查询“95031”班的学生人数。</li>
+<li>查询SCORE表中的最高分的学生学号和课程号。</li>
+<li>查询‘3-105’号课程的平均分。</li>
+<li>查询SCORE表中至少有5名学生选修的并以3开头的课程的平均分数。</li>
+<li>查询最低分大于70，最高分小于90的SNO列。</li>
+<li>查询所有学生的SNAME、CNO和DEGREE列。</li>
+<li>查询所有学生的SNO、CNAME和DEGREE列。</li>
+<li>查询所有学生的SNAME、CNAME和DEGREE列。</li>
+<li>查询“95033”班所选课程的平均分。</li>
+<li>查询选修“3-105”课程的成绩高于“109”号同学成绩的所有同学的记录。</li>
+<li>查询SCORE中选学一门以上课程的同学中分数为非最高分成绩的记录。</li>
+<li>查询成绩高于学号为“109”、课程号为“3-105”的成绩的所有记录。</li>
+<li>查询和学号为108的同学同年出生的所有学生的SNO、SNAME和SBIRTHDAY列。</li>
+<li>查询“张旭“教师任课的学生成绩。</li>
+<li>查询选修某课程的同学人数多于5人的教师姓名。</li>
+<li>查询95033班和95031班全体学生的记录。</li>
+<li>查询存在有85分以上成绩的课程CNO.</li>
+<li>查询出“计算机系“教师所教课程的成绩表。</li>
+<li>查询“计算机系”与“电子工程系“不同职称的教师的TNAME和PROF。</li>
+<li>查询选修编号为“3-105“课程且成绩至少高于选修编号为“3-245”的同学的CNO、SNO和DEGREE,并按DEGREE从高到低次序排序。</li>
+<li>查询选修编号为“3-105”且成绩高于选修编号为“3-245”课程的同学的CNO、SNO和DEGREE.</li>
+<li>查询所有教师和同学的NAME、SEX和BIRTHDAY.</li>
+<li>查询所有“女”教师和“女”同学的NAME、SEX和BIRTHDAY.</li>
+<li>查询成绩比该课程平均成绩低的同学的成绩表。</li>
+<li>查询所有任课教师的TNAME和DEPART.</li>
+<li>查询所有未讲课的教师的TNAME和DEPART.</li>
+<li>查询至少有2名男生的班号。</li>
+<li>查询STUDENT表中不姓“王”的同学记录。</li>
+<li>查询STUDENT表中每个学生的姓名和年龄。</li>
+<li>查询STUDENT表中最大和最小的SBIRTHDAY日期值。</li>
+<li>以班号和年龄从大到小的顺序查询STUDENT表中的全部记录。</li>
+<li>查询“男”教师及其所上的课程。</li>
+<li>查询最高分同学的SNO、CNO和DEGREE列。</li>
+<li>查询和“李军”同性别的所有同学的SNAME.</li>
+<li>查询和“李军”同性别并同班的同学SNAME.</li>
+<li>查询所有选修“计算机导论”课程的“男”同学的成绩表</li>
+</ol>
+<h1 id="参考答案">参考答案</h1>
+<ol>
+<li>SELECT SNAME,SSEX,CLASS FROM STUDENT;</li>
+<li>SELECT DISTINCT DEPART FROM TEACHER;</li>
+<li>SELECT * FROM STUDENT;</li>
+<li>SELECT * FROM SCORE WHERE DEGREE BETWEEN 60 AND 80;</li>
+<li>SELECT * FROM SCORE WHERE DEGREE IN (85,86,88);</li>
+<li>SELECT * FROM STUDENT WHERE CLASS='95031' OR SSEX='女';</li>
+<li>SELECT * FROM STUDENT ORDER BY CLASS DESC;</li>
+<li>SELECT * FROM SCORE ORDER BY CNO ASC,DEGREE DESC;</li>
+<li>SELECT  COUNT(*) FROM STUDENT WHERE CLASS='95031';</li>
+<li>两个答案
+<ul>
+<li>SELECT SNO,CNO FROM SCORE WHERE DEGREE=(SELECT MAX(DEGREE) FROM SCORE);</li>
+<li>SELECT SNO,CNO FROM SCORE ORDER BY DEGREE DESC LIMIT 1;</li>
+</ul>
+</li>
+<li>SELECT AVG(DEGREE) FROM SCORE WHERE CNO='3-105';</li>
+<li>SELECT AVG(DEGREE), CNO FROM SCORE WHERE CNO LIKE &lsquo;3%&rsquo; GROUP BY CNO HAVING COUNT(SNO) &gt;= 5;</li>
+<li>SELECT SNO FROM SCORE GROUP BY SNO HAVING MIN(DEGREE)&gt;70 AND MAX(DEGREE)&lt;90;</li>
+<li>SELECT A.SNAME,B.CNO,B.DEGREE FROM STUDENT AS A JOIN SCORE AS B ON A.SNO=B.SNO;</li>
+<li>SELECT A.CNAME, B.SNO,B.DEGREE FROM COURSE AS A JOIN SCORE AS B ON A.CNO=B.CNO ;</li>
+<li>SELECT A.SNAME, C.CNAME,B.DEGREE FROM STUDENT A JOIN SCORE B ON A.SNO=B.SNO JOIN COURSE C ON B.CNO =C.CNO;</li>
+<li>SELECT AVG(A.DEGREE) FROM SCORE A JOIN STUDENT B ON A.SNO = B.SNO WHERE B.CLASS='95033';</li>
+<li>两个答案
+<ul>
+<li>SELECT A.* FROM SCORE A JOIN SCORE B ON A.CNO = B.CNO WHERE A.CNO='3-105' AND A.DEGREE&gt;B.DEGREE AND B.SNO='109' AND B.CNO='3-105';</li>
+<li>SELECT A.* FROM SCORE A  WHERE A.CNO='3-105' AND A.DEGREE&gt;ALL(SELECT DEGREE FROM SCORE B WHERE B.SNO='109' AND B.CNO='3-105');</li>
+</ul>
+</li>
+<li>SELECT SNO FROM SCORE WHERE DEGREE&lt;(SELECT MAX(DEGREE) FROM SCORE) GROUP BY SNO HAVING COUNT(SNO)&gt;1 ;</li>
+<li>见18的第二种解法</li>
+<li>SELECT SNO,SNAME,SBIRTHDAY FROM STUDENT WHERE EXTRACT(YEAR FROM SBIRTHDAY)=(SELECT EXTRACT(YEAR FROM SBIRTHDAY) FROM STUDENT WHERE SNO='108');</li>
+<li>两个答案
+<ul>
+<li>SELECT A.SNO,A.DEGREE FROM SCORE A JOIN COURSE C ON A.CNO = C.CNO JOIN TEACHER B ON B.TNO=C.TNO WHERE B.TNAME='张旭';</li>
+<li>SELECT CNO,SNO,DEGREE FROM SCORE WHERE CNO=(SELECT X.CNO FROM COURSE X,TEACHER Y WHERE X.TNO=Y.TNO AND Y.TNAME='张旭');根据实际EXPLAIN此SELECT语句，第一个的扫描次数要小于第二个</li>
+</ul>
+</li>
+<li>两个答案
+<ul>
+<li>SELECT C.CNO FROM TEACHER A JOIN COURSE B ON A.TNO=B.TNO JOIN SCORE C ON  B.CNO=C.CNO GROUP BY C.CNO HAVING COUNT(C.CNO)&gt;5;</li>
+<li>SELECT TNAME FROM TEACHER WHERE TNO IN(SELECT X.TNO FROM COURSE X,SCORE Y WHERE X.CNO=Y.CNO GROUP BY X.TNO HAVING COUNT(X.TNO)&gt;5);实际测试1明显优于2</li>
+</ul>
+</li>
+<li>SELECT CNO,SNO,DEGREE FROM SCORE WHERE CNO=(SELECT X.CNO FROM COURSE X,TEACHER Y WHERE X.TNO=Y.TNO AND Y.TNAME='张旭');</li>
+<li>两个答案
+<ul>
+<li>SELECT CNO FROM SCORE GROUP BY CNO HAVING MAX(DEGREE)&gt;85;</li>
+<li>SELECT DISTINCT CNO FROM SCORE WHERE DEGREE IN (SELECT DEGREE FROM SCORE WHERE DEGREE&gt;85);</li>
+</ul>
+</li>
+<li>两个答案
+<ul>
+<li>SELECT A.* FROM SCORE A JOIN COURSE C ON A.CNO=C.CNO JOIN TEACHER B ON B.TNO=C.TNO WHERE B.DEPART='计算机系';</li>
+<li>SELECT * FROM SCORE WHERE CNO IN (SELECT A.CNO FROM COURSE A JOIN TEACHER B ON A.TNO=B.TNO AND B.DEPART='计算机系');此时2略好于1，在多连接的境况下性能会迅速下降</li>
+</ul>
+</li>
+<li>SELECT TNAME,PROF FROM TEACHER WHERE DEPART='计算机系' AND PROF NOT IN (SELECT PROF FROM TEACHER WHERE DEPART='电子工程系');</li>
+<li>SELECT * FROM SCORE WHERE DEGREE&gt;ANY(SELECT DEGREE FROM SCORE WHERE CNO='3-245') ORDER BY DEGREE DESC;</li>
+<li>SELECT * FROM SCORE WHERE DEGREE&gt;ALL(SELECT DEGREE FROM SCORE WHERE CNO='3-245') ORDER BY DEGREE DESC;</li>
+<li>SELECT SNAME AS NAME, SSEX AS SEX, SBIRTHDAY AS BIRTHDAY FROM STUDENT UNION SELECT TNAME AS NAME, TSEX AS SEX, TBIRTHDAY AS BIRTHDAY FROM TEACHER;</li>
+<li>SELECT SNAME AS NAME, SSEX AS SEX, SBIRTHDAY AS BIRTHDAY FROM STUDENT WHERE SSEX='女' UNION SELECT TNAME AS NAME, TSEX AS SEX, TBIRTHDAY AS BIRTHDAY FROM TEACHER WHERE TSEX='女';</li>
+<li>三个答案
+<ul>
+<li>SELECT A.TNAME,A.DEPART FROM TEACHER A JOIN COURSE B ON A.TNO=B.TNO;</li>
+<li>SELECT TNAME,DEPART FROM TEACHER A WHERE EXISTS (SELECT * FROM COURSE B WHERE A.TNO=B.TNO);</li>
+<li>SELECT TNAME,DEPART FROM TEACHER WHERE TNO IN (SELECT TNO FROM COURSE); 实际分析，第一种解法貌似更好，至少扫描次数最少。</li>
+</ul>
+</li>
+<li>三个答案
+<ul>
+<li>SELECT TNAME,DEPART FROM TEACHER A LEFT JOIN COURSE B USING(TNO) WHERE ISNUL (B.TNO);</li>
+<li>SELECT TNAME,DEPART FROM TEACHER A WHERE NOT EXISTS (SELECT * FROM COURSE B WHERE A.TNO=B.TNO);</li>
+<li>SELECT TNAME,DEPART FROM TEACHER WHERE TNO NOT IN (SELECT TNO FROM COURSE); NOT IN的方法效率最差，其余两种差不多</li>
+</ul>
+</li>
+<li>SELECT CLASS FROM STUDENT A WHERE SSEX='男' GROUP BY CLASS HAVING COUNT(SSEX)&gt;1;</li>
+<li>SELECT * FROM STUDENT A WHERE SNAME NOT LIKE &lsquo;王%';</li>
+<li>SELECT SNAME, DATE_PART(&lsquo;YEAR&rsquo;, AGE(SBIRTHDAY)) AS AGE FROM STUDENT;</li>
+<li>SELECT SNAME,SBIRTHDAY AS THEMAX FROM STUDENT WHERE SBIRTHDAY =(SELECT MIN(SBIRTHDAY) FROM STUDENT) UNION SELECT SNAME,SBIRTHDAY AS THEMIN FROM STUDENT WHERE SBIRTHDAY =(SELECT MAX(SBIRTHDAY) FROM STUDENT);</li>
+<li>SELECT CLASS,AGE(SBIRTHDAY) AS AGE FROM STUDENT ORDER BY CLASS DESC,AGE DESC;</li>
+<li>SELECT A.TNAME,B.CNAME FROM TEACHER A JOIN COURSE B ON A.TNO = B.TNO WHERE A.TSEX='男&rsquo;;</li>
+<li>SELECT A.* FROM SCORE A WHERE DEGREE=(SELECT MAX(DEGREE) FROM SCORE B );</li>
+<li>SELECT SNAME FROM STUDENT A WHERE SSEX=(SELECT SSEX FROM STUDENT B WHERE B.SNAME='李军');</li>
+<li>SELECT SNAME FROM STUDENT A WHERE SSEX=(SELECT SSEX FROM STUDENT B WHERE B.SNAME='李军' ) AND CLASS=(SELECT CLASS FROM STUDENT C WHERE C.SNAME='李军');</li>
+<li>两个答案
+<ul>
+<li>SELECT A.* FROM SCORE A JOIN STUDENT B ON A.SNO = B.SNO JOIN COURSE C ON A.CNO = C.CNO WHERE B.SSEX='男' AND C.CNAME='计算机导论';</li>
+<li>SELECT * FROM SCORE WHERE SNO IN(SELECT SNO FROM STUDENT WHERE SSEX='男') AND CNO=(SELECT CNO FROM COURSE WHERE CNAME='计算机导论');</li>
+</ul>
+</li>
+</ol>
+
+</div>
+
+<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jackysp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </main>
+
+    
+      
+    
+  </body>
+</html>

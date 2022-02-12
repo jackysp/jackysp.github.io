@@ -120,6 +120,15 @@
     </item>
     
     <item>
+      <title>如何动态更新 Namesilo 的 DNS 记录</title>
+      <link>http://blog.minifish.org/posts/und/</link>
+      <pubDate>Sat, 01 Feb 2020 12:27:00 +0800</pubDate>
+      
+      <guid>http://blog.minifish.org/posts/und/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>如何在 Windows 开机后台启动一个 PowerShell 脚本</title>
       <link>http://blog.minifish.org/posts/powershell-starttup/</link>
       <pubDate>Tue, 14 Jan 2020 08:56:00 +0800</pubDate>
@@ -129,11 +138,38 @@
     </item>
     
     <item>
+      <title>如何部署 HTTPS 代理服务</title>
+      <link>http://blog.minifish.org/posts/gost/</link>
+      <pubDate>Sun, 12 Jan 2020 19:43:00 +0800</pubDate>
+      
+      <guid>http://blog.minifish.org/posts/gost/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>使用 delve 调试 Golang 程序</title>
       <link>http://blog.minifish.org/posts/dlv/</link>
       <pubDate>Mon, 16 Sep 2019 13:24:00 +0800</pubDate>
       
       <guid>http://blog.minifish.org/posts/dlv/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>如何查钢琴流行度</title>
+      <link>http://blog.minifish.org/posts/piano-price/</link>
+      <pubDate>Tue, 23 Oct 2018 11:38:00 +0800</pubDate>
+      
+      <guid>http://blog.minifish.org/posts/piano-price/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>如何部署 shadowsocks server</title>
+      <link>http://blog.minifish.org/posts/shadowsocks/</link>
+      <pubDate>Thu, 27 Sep 2018 15:48:00 +0800</pubDate>
+      
+      <guid>http://blog.minifish.org/posts/shadowsocks/</guid>
       <description></description>
     </item>
     
@@ -233,6 +269,15 @@
       <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
       
       <guid>http://blog.minifish.org/posts/centos6-install/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>如何练习使用 SQL</title>
+      <link>http://blog.minifish.org/posts/postgresql-practices/</link>
+      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
+      
+      <guid>http://blog.minifish.org/posts/postgresql-practices/</guid>
       <description></description>
     </item>
     

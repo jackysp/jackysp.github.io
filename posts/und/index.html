@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn" lang="zh-cn">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.73.0" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>如何动态更新 Namesilo 的 DNS 记录 &middot; Mini How</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class="theme-base-0d ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="http://blog.minifish.org/"><h1>Mini How</h1></a>
+      <p class="lead">
+       A blog that&#39;s all about how to do it. 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="http://blog.minifish.org/">Home</a> </li>
+        <li><a href="https://github.com/jackysp/"> Github </a></li><li><a href="https://www.linkedin.com/in/shuaipeng-yu-81280434/"> LinkedIn </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2022. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>如何动态更新 Namesilo 的 DNS 记录</h1>
+  <time datetime=2020-02-01T12:27:00&#43;0800 class="post-date">Sat, Feb 1, 2020</time>
+  <h2 id="动态更新-dns-记录">动态更新 DNS 记录</h2>
+<p>动态更新的目的很简单，作为一个长期使用联通宽带的用户，虽然，联通提供了公网地址，但是，其本质上是一个动态地址，而不是绑定的。如果在外想用 IP 来访问家里的设备，就得用动态 DNS（DDNS）。
+很多路由器上都直接集成了 DDNS 功能，不过，基本就是把路由发布时常见的几家服务提供商的接口封装了进去。这几家一般有几个特点：1. 被墙；2. 收费不低；3. 国内服务商，可能有安全问题；4. 公司已经倒闭了。
+与其依靠这些不靠谱的服务，不如自己写个脚本来更新。</p>
+<p>于是，脚本大法来了。一开始，打算用 Cloudflare，因为这是晚上推荐的方式。后来搜了一下，我的域名提供商 Namesilo 自己就提供 API 来更新 DNS。但是，它返回的是 xml 格式的数据，我不知道怎么用 shell 来解析。</p>
+<p>于是，就想到了 golang。因为，这个 DDNS 客户端肯定要部署在路由器一类的设备上，python、java 之类的需要部署环境，c 之类的可能需要一些动态链接库才能跑起来，而且我不知道怎么搞。golang 的无动态链接库的特性就很有优势了。所以就手写了一个叫 <a href="https://github.com/jackysp/und">und</a> 的工具。</p>
+<ol>
+<li>先在 Namesilo 里创建一个 DNS 记录</li>
+<li>搞一个适合你的平台的 und 的 binary。我这里只提供了 arm64|linux + amd64|三个主流 OS 的 binary，需要额外的平台要自己编译，可以参考 Makefile。</li>
+<li>从 namesile 生成一个 API key，然后照着 und 的用法来启动就好了。大部分可能需要放到后台，所以，nohup 吧。</li>
+</ol>
+<h2 id="github-功能体验">GitHub 功能体验</h2>
+<h3 id="github-action">GitHub Action</h3>
+<p>感觉是用来替代混乱的第三方 CI 的。直接为 und 选了 Golang 的选项。默认其实就是在 ubuntu 里执行了一下 <code>go build -v .</code>。</p>
+<h3 id="release">Release</h3>
+<p>之前在发布 TiDB 的时候用过该功能，只是没记得上传/自动生成 binary。因为，TiDB 也不是一个组件能完整跑起来的，所以，单拿一个 binary 意义不大。
+这次体验让我觉得，</p>
+<ol>
+<li>要 release 的话，打标签，最好还是用 release 功能直接来打</li>
+<li>release 完之后，因为可以编辑，这时候，再 <code>make</code> 生成各自 binary，然后，上传。根据 Makefile 的写法，可以生成 version。这还是一个比较重要的功能。</li>
+</ol>
+<p>这两步也挺方便的。</p>
+
+</div>
+
+<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jackysp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </main>
+
+    
+      
+    
+  </body>
+</html>
