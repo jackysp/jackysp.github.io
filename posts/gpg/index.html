@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn" lang="zh-cn">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.92.2" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>如何在 MacBook M1 上创建 GitHub Verified Commit &middot; Mini How</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class="theme-base-0d ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="http://blog.minifish.org/"><h1>Mini How</h1></a>
+      <p class="lead">
+       A blog that&#39;s all about how to do it. 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="http://blog.minifish.org/">Home</a> </li>
+        <li><a href="https://github.com/jackysp/"> Github </a></li><li><a href="https://www.linkedin.com/in/shuaipeng-yu-81280434/"> LinkedIn </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2022. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>如何在 MacBook M1 上创建 GitHub Verified Commit</h1>
+  <time datetime=2022-02-12T11:54:00&#43;0800 class="post-date">Sat, Feb 12, 2022</time>
+  <h2 id="背景">背景</h2>
+<p>有一天手贱点开了 GitHub 的 Vigilant mode。</p>
+<p><img src="/posts/images/2022-02-12-12.02.07.png" alt="test"></p>
+<p>于是，所有的 commit 就变成了下面这个样子。</p>
+<p><img src="/posts/images/2022-02-12-12.11.01.png" alt="test"></p>
+<p>为了试着让他们怎么变成 Verified，于是找到了下面的方法。</p>
+<h2 id="方法">方法</h2>
+<p>其实就是参照了这个<a href="https://zhuanlan.zhihu.com/p/76861431">链接</a>。
+但它是不够的，在 MacBook 上可能由于一些认证器的问题，会导致 commit 报错，于是，就找到了下面的<a href="https://stackoverflow.com/a/40066889">解决方法</a>。</p>
+<p>归纳下来就是，想要认证，需要填写密码，在 Mac 上提示填写密码的部分有问题，需要替换成 pinentry-mac，一般大家都用 homebrew 安装。</p>
+<p>当然，这个解决方法还很贴心的提供了一个验证方法。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">echo <span style="color:#e6db74">&#34;test&#34;</span> | gpg --clearsign
+</code></pre></div><h2 id="gpg-使用体验">GPG 使用体验</h2>
+<ol>
+<li>不是代替 ssh key 的，我验证成功后把 GitHub ssh key 删掉了，发现登录不了。其实，就只是验证 commit 的合法性的。</li>
+<li>在本机上，不管哪个 repo 里，只要输入一次密码就够了，就是 verified commit。倒是不影响日常使用。只是做这个的意义单纯的变成了打一个绿色标记。</li>
+<li>用 https 协议 + token 的方式感觉比这个还靠谱，不知道有没有 verified 标记。</li>
+</ol>
+
+</div>
+
+<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jackysp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </main>
+
+    
+      
+    
+  </body>
+</html>

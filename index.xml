@@ -6,7 +6,16 @@
     <description>Recent content on Mini How</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 03 Feb 2022 18:08:00 +0800</lastBuildDate><atom:link href="http://blog.minifish.org/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 12 Feb 2022 11:54:00 +0800</lastBuildDate><atom:link href="http://blog.minifish.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>如何在 MacBook M1 上创建 GitHub Verified Commit</title>
+      <link>http://blog.minifish.org/posts/gpg/</link>
+      <pubDate>Sat, 12 Feb 2022 11:54:00 +0800</pubDate>
+      
+      <guid>http://blog.minifish.org/posts/gpg/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>如何跨平台MineCraft（基岩版）联机</title>
       <link>http://blog.minifish.org/posts/mc/</link>
