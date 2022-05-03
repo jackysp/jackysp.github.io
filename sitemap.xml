@@ -3,10 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://blog.minifish.org/</loc>
-    <lastmod>2022-02-12T11:54:00+08:00</lastmod>
+    <lastmod>2022-05-02T19:05:00+08:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/posts/</loc>
-    <lastmod>2022-02-12T11:54:00+08:00</lastmod>
+    <lastmod>2022-05-02T19:05:00+08:00</lastmod>
+  </url><url>
+    <loc>http://blog.minifish.org/posts/mc-server/</loc>
+    <lastmod>2022-05-02T19:05:00+08:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/posts/gpg/</loc>
     <lastmod>2022-02-12T11:54:00+08:00</lastmod>
