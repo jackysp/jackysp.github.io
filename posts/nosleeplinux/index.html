@@ -60,6 +60,14 @@
 <p>想恢复的话就，</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target
 </code></pre></div><p>简单有效。</p>
+<p><strong>更新：</strong></p>
+<p>如果只 mask 的话，systemd-logind 的 CPU 占用会非常高，因为它会不断的尝试睡眠，所以还需要把 <code>HandleLidSwitch</code> 等改成 <code>ignore</code>。如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">HandleSuspendKey=ignore
+HandleHibernateKey=ignore
+HandleLidSwitch=ignore
+HandleLidSwitchExternalPower=ignore
+HandleLidSwitchDocked=ignore
+</code></pre></div><p>然后，<code>systemctl restart systemd-logind</code>。详细参考了这里：<a href="https://tothecloud.dev/systemd-logind-high-cpu-usage/">SystemD-LoginD High CPU Usage</a>。</p>
 
 </div>
 
