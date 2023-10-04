@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Mini How</title>
+    <title>Mini Fish</title>
     <link>http://blog.minifish.org/</link>
-    <description>Recent content on Mini How</description>
+    <description>Recent content on Mini Fish</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Mon, 02 May 2022 19:05:00 +0800</lastBuildDate><atom:link href="http://blog.minifish.org/index.xml" rel="self" type="application/rss+xml" />
