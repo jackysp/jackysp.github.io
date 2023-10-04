@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.92.2" />
+  <meta name="generator" content="Hugo 0.119.0">
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -62,176 +62,176 @@
 </ol>
 <p>稍微解释一下，这里核心的部分其实就是 recipes 和 tools。tools 是编译工具链，包括使用哪种工具编译，选项用什么，顺序无所谓。recipes 是定义如何组合上述工具来生成最终文档，顺序是有意义的，默认使用第一个。
 这里把 XeLaTex 放在了第一，也是因为它编译中文是兼容性最好的，如果用 pdflatex 来编译中文文件，大概率会踩坑。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-   <span style="color:#f92672">&#34;latex-workshop.latex.recipes&#34;</span>: [
-         {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;XeLaTeX&#34;</span>,
-            <span style="color:#f92672">&#34;tools&#34;</span>: [
-                <span style="color:#e6db74">&#34;xelatex&#34;</span>
-            ]
-        },
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;latexmk 🔃&#34;</span>,
-            <span style="color:#f92672">&#34;tools&#34;</span>: [
-                <span style="color:#e6db74">&#34;latexmk&#34;</span>
-            ]
-        },
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;latexmk (latexmkrc)&#34;</span>,
-            <span style="color:#f92672">&#34;tools&#34;</span>: [
-                <span style="color:#e6db74">&#34;latexmk_rconly&#34;</span>
-            ]
-        },
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;latexmk (lualatex)&#34;</span>,
-            <span style="color:#f92672">&#34;tools&#34;</span>: [
-                <span style="color:#e6db74">&#34;lualatexmk&#34;</span>
-            ]
-        },
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;pdflatex ➞ bibtex ➞ pdflatex × 2&#34;</span>,
-            <span style="color:#f92672">&#34;tools&#34;</span>: [
-                <span style="color:#e6db74">&#34;pdflatex&#34;</span>,
-                <span style="color:#e6db74">&#34;bibtex&#34;</span>,
-                <span style="color:#e6db74">&#34;pdflatex&#34;</span>,
-                <span style="color:#e6db74">&#34;pdflatex&#34;</span>
-            ]
-        },
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Compile Rnw files&#34;</span>,
-            <span style="color:#f92672">&#34;tools&#34;</span>: [
-                <span style="color:#e6db74">&#34;rnw2tex&#34;</span>,
-                <span style="color:#e6db74">&#34;latexmk&#34;</span>
-            ]
-        },
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Compile Jnw files&#34;</span>,
-            <span style="color:#f92672">&#34;tools&#34;</span>: [
-                <span style="color:#e6db74">&#34;jnw2tex&#34;</span>,
-                <span style="color:#e6db74">&#34;latexmk&#34;</span>
-            ]
-        },
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;tectonic&#34;</span>,
-            <span style="color:#f92672">&#34;tools&#34;</span>: [
-                <span style="color:#e6db74">&#34;tectonic&#34;</span>
-            ]
-        }
-    ],
-    <span style="color:#f92672">&#34;latex-workshop.latex.tools&#34;</span>: [
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;xelatex&#34;</span>,
-            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;xelatex&#34;</span>,
-            <span style="color:#f92672">&#34;args&#34;</span>: [
-                <span style="color:#e6db74">&#34;-synctex=1&#34;</span>,
-                <span style="color:#e6db74">&#34;-interaction=nonstopmode&#34;</span>,
-                <span style="color:#e6db74">&#34;-file-line-error&#34;</span>,
-                <span style="color:#e6db74">&#34;%DOCFILE%&#34;</span>
-            ]
-        },
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;latexmk&#34;</span>,
-            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;latexmk&#34;</span>,
-            <span style="color:#f92672">&#34;args&#34;</span>: [
-                <span style="color:#e6db74">&#34;-synctex=1&#34;</span>,
-                <span style="color:#e6db74">&#34;-interaction=nonstopmode&#34;</span>,
-                <span style="color:#e6db74">&#34;-file-line-error&#34;</span>,
-                <span style="color:#e6db74">&#34;-pdf&#34;</span>,
-                <span style="color:#e6db74">&#34;-outdir=%OUTDIR%&#34;</span>,
-                <span style="color:#e6db74">&#34;%DOC%&#34;</span>
-            ],
-            <span style="color:#f92672">&#34;env&#34;</span>: {}
-        },
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;lualatexmk&#34;</span>,
-            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;latexmk&#34;</span>,
-            <span style="color:#f92672">&#34;args&#34;</span>: [
-                <span style="color:#e6db74">&#34;-synctex=1&#34;</span>,
-                <span style="color:#e6db74">&#34;-interaction=nonstopmode&#34;</span>,
-                <span style="color:#e6db74">&#34;-file-line-error&#34;</span>,
-                <span style="color:#e6db74">&#34;-lualatex&#34;</span>,
-                <span style="color:#e6db74">&#34;-outdir=%OUTDIR%&#34;</span>,
-                <span style="color:#e6db74">&#34;%DOC%&#34;</span>
-            ],
-            <span style="color:#f92672">&#34;env&#34;</span>: {}
-        },
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;latexmk_rconly&#34;</span>,
-            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;latexmk&#34;</span>,
-            <span style="color:#f92672">&#34;args&#34;</span>: [
-                <span style="color:#e6db74">&#34;%DOC%&#34;</span>
-            ],
-            <span style="color:#f92672">&#34;env&#34;</span>: {}
-        },
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;pdflatex&#34;</span>,
-            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;pdflatex&#34;</span>,
-            <span style="color:#f92672">&#34;args&#34;</span>: [
-                <span style="color:#e6db74">&#34;-synctex=1&#34;</span>,
-                <span style="color:#e6db74">&#34;-interaction=nonstopmode&#34;</span>,
-                <span style="color:#e6db74">&#34;-file-line-error&#34;</span>,
-                <span style="color:#e6db74">&#34;%DOC%&#34;</span>
-            ],
-            <span style="color:#f92672">&#34;env&#34;</span>: {}
-        },
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;bibtex&#34;</span>,
-            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;bibtex&#34;</span>,
-            <span style="color:#f92672">&#34;args&#34;</span>: [
-                <span style="color:#e6db74">&#34;%DOCFILE%&#34;</span>
-            ],
-            <span style="color:#f92672">&#34;env&#34;</span>: {}
-        },
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;rnw2tex&#34;</span>,
-            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;Rscript&#34;</span>,
-            <span style="color:#f92672">&#34;args&#34;</span>: [
-                <span style="color:#e6db74">&#34;-e&#34;</span>,
-                <span style="color:#e6db74">&#34;knitr::opts_knit$set(concordance = TRUE); knitr::knit(&#39;%DOCFILE_EXT%&#39;)&#34;</span>
-            ],
-            <span style="color:#f92672">&#34;env&#34;</span>: {}
-        },
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;jnw2tex&#34;</span>,
-            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;julia&#34;</span>,
-            <span style="color:#f92672">&#34;args&#34;</span>: [
-                <span style="color:#e6db74">&#34;-e&#34;</span>,
-                <span style="color:#e6db74">&#34;using Weave; weave(\&#34;%DOC_EXT%\&#34;, doctype=\&#34;tex\&#34;)&#34;</span>
-            ],
-            <span style="color:#f92672">&#34;env&#34;</span>: {}
-        },
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;jnw2texmintex&#34;</span>,
-            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;julia&#34;</span>,
-            <span style="color:#f92672">&#34;args&#34;</span>: [
-                <span style="color:#e6db74">&#34;-e&#34;</span>,
-                <span style="color:#e6db74">&#34;using Weave; weave(\&#34;%DOC_EXT%\&#34;, doctype=\&#34;texminted\&#34;)&#34;</span>
-            ],
-            <span style="color:#f92672">&#34;env&#34;</span>: {}
-        },
-        {
-            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;tectonic&#34;</span>,
-            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;tectonic&#34;</span>,
-            <span style="color:#f92672">&#34;args&#34;</span>: [
-                <span style="color:#e6db74">&#34;--synctex&#34;</span>,
-                <span style="color:#e6db74">&#34;--keep-logs&#34;</span>,
-                <span style="color:#e6db74">&#34;%DOC%.tex&#34;</span>
-            ],
-            <span style="color:#f92672">&#34;env&#34;</span>: {}
-        }
-    ],
-    <span style="color:#f92672">&#34;latex-workshop.view.pdf.viewer&#34;</span>: <span style="color:#e6db74">&#34;tab&#34;</span>
-}
-</code></pre></div><ol start="4">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;latex-workshop.latex.recipes&#34;</span>: [
+</span></span><span style="display:flex;"><span>         {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;XeLaTeX&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;tools&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;xelatex&#34;</span>
+</span></span><span style="display:flex;"><span>            ]
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;latexmk 🔃&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;tools&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;latexmk&#34;</span>
+</span></span><span style="display:flex;"><span>            ]
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;latexmk (latexmkrc)&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;tools&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;latexmk_rconly&#34;</span>
+</span></span><span style="display:flex;"><span>            ]
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;latexmk (lualatex)&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;tools&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;lualatexmk&#34;</span>
+</span></span><span style="display:flex;"><span>            ]
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;pdflatex ➞ bibtex ➞ pdflatex × 2&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;tools&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;pdflatex&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;bibtex&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;pdflatex&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;pdflatex&#34;</span>
+</span></span><span style="display:flex;"><span>            ]
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Compile Rnw files&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;tools&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;rnw2tex&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;latexmk&#34;</span>
+</span></span><span style="display:flex;"><span>            ]
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Compile Jnw files&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;tools&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;jnw2tex&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;latexmk&#34;</span>
+</span></span><span style="display:flex;"><span>            ]
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;tectonic&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;tools&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;tectonic&#34;</span>
+</span></span><span style="display:flex;"><span>            ]
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;latex-workshop.latex.tools&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;xelatex&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;xelatex&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;args&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-synctex=1&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-interaction=nonstopmode&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-file-line-error&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;%DOCFILE%&#34;</span>
+</span></span><span style="display:flex;"><span>            ]
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;latexmk&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;latexmk&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;args&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-synctex=1&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-interaction=nonstopmode&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-file-line-error&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-pdf&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-outdir=%OUTDIR%&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;%DOC%&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;env&#34;</span>: {}
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;lualatexmk&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;latexmk&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;args&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-synctex=1&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-interaction=nonstopmode&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-file-line-error&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-lualatex&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-outdir=%OUTDIR%&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;%DOC%&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;env&#34;</span>: {}
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;latexmk_rconly&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;latexmk&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;args&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;%DOC%&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;env&#34;</span>: {}
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;pdflatex&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;pdflatex&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;args&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-synctex=1&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-interaction=nonstopmode&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-file-line-error&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;%DOC%&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;env&#34;</span>: {}
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;bibtex&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;bibtex&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;args&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;%DOCFILE%&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;env&#34;</span>: {}
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;rnw2tex&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;Rscript&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;args&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-e&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;knitr::opts_knit$set(concordance = TRUE); knitr::knit(&#39;%DOCFILE_EXT%&#39;)&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;env&#34;</span>: {}
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;jnw2tex&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;julia&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;args&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-e&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;using Weave; weave(\&#34;%DOC_EXT%\&#34;, doctype=\&#34;tex\&#34;)&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;env&#34;</span>: {}
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;jnw2texmintex&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;julia&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;args&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;-e&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;using Weave; weave(\&#34;%DOC_EXT%\&#34;, doctype=\&#34;texminted\&#34;)&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;env&#34;</span>: {}
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;tectonic&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;tectonic&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;args&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;--synctex&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;--keep-logs&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;%DOC%.tex&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;env&#34;</span>: {}
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;latex-workshop.view.pdf.viewer&#34;</span>: <span style="color:#e6db74">&#34;tab&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ol start="4">
 <li>创建一个文件夹</li>
 <li>使用 VSCode 打开这个文件夹创建一个 .tex 文件，内容写</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-tex" data-lang="tex"><span style="color:#66d9ef">\documentclass</span><span style="color:#a6e22e">[UTF8]</span>{ctexart}
-
-<span style="color:#66d9ef">\begin</span>{document}
-OK，大功告成了。。。
-<span style="color:#66d9ef">\end</span>{document
-</code></pre></div><p>应该会自动开始编译，中间遇到需要下载依赖确认通过就好。编译后效果如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-tex" data-lang="tex"><span style="display:flex;"><span><span style="color:#66d9ef">\documentclass</span><span style="color:#a6e22e">[UTF8]</span>{ctexart}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">\begin</span>{document}
+</span></span><span style="display:flex;"><span>OK，大功告成了。。。
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">\end</span>{document
+</span></span></code></pre></div><p>应该会自动开始编译，中间遇到需要下载依赖确认通过就好。编译后效果如下：</p>
 <p><img src="/posts/images/20210331113405.png" alt="test"></p>
 
 </div>
@@ -239,7 +239,7 @@ OK，大功告成了。。。
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
 <script type="application/javascript">
-    var disqus_config = function () {
+    window.disqus_config = function () {
     
     
     

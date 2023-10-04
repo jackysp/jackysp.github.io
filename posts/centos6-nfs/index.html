@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.92.2" />
+  <meta name="generator" content="Hugo 0.119.0">
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,20 +55,20 @@
   <h1 id="服务器端">服务器端</h1>
 <ol>
 <li>关闭 SeLinux <code>vi /etc/selinux/config</code>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">#SELINUX=enforcing #注释
-#SELINUXTYPE=targeted #注释掉
-SELINUX=disabled #增加
-</code></pre></div><code>reboot #重启系统</code></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#SELINUX=enforcing #注释
+</span></span><span style="display:flex;"><span>#SELINUXTYPE=targeted #注释掉
+</span></span><span style="display:flex;"><span>SELINUX=disabled #增加
+</span></span></code></pre></div><code>reboot #重启系统</code></li>
 <li>用 root 用户建一个文件夹，就叫 /nfs 即可（注意，这里最好先 df 一下，看看哪个分区空间大，不一定就是/的空间最大，有些自动分区是/home空间最大）；</li>
 <li><code>yum -y install nfs-utils rpcbind</code></li>
 <li><code>chkconfig nfs on ; chkconfig rpcbind on ; chkconfig nfslock on</code></li>
 <li><code>vi /etc/exports</code> 加入 <code>/home/nfs 192.168.1.0/24(rw,sync,no_all_squash)</code></li>
 <li><code>service rpcbind start ; service nfs start ; service nfslock star ; exportfs -a</code></li>
 <li><code>vi /etc/sysconfig/nfs</code> 去掉下列前面的注释:
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">LOCKD_TCPPORT=32803
-LOCKD_UDPPORT=32769
-MOUNTD_PORT=892
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>LOCKD_TCPPORT=32803
+</span></span><span style="display:flex;"><span>LOCKD_UDPPORT=32769
+</span></span><span style="display:flex;"><span>MOUNTD_PORT=892
+</span></span></code></pre></div></li>
 <li><code>service rpcbind restart ; service nfs restart ; service nfslock restart</code></li>
 <li><code>rpcinfo -p localhost</code> 记下端口和端口类型</li>
 <li><code>iptables -I INPUT -m state --state NEW -p tcp -m multiport --dport 111,892,2049,32803 -s 192.168.0.0/24 -j ACCEPT ; iptables -I INPUT -m state --state NEW -p udp -m multiport --dport 111,892,2049,32769 -s 192.168.0.0/24 -j ACCEPT</code> 自己根据ip段改一下。</li>
@@ -82,8 +82,8 @@ MOUNTD_PORT=892
 <li><code>mount -t nfs -o soft,intr,bg,rw server的ip:/home/nfs /nfs</code></li>
 <li>解除挂载umount /nfs</li>
 <li>自动挂载<code>vi /etc/fstab</code>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">server的ip:/home/nfs /nfs nfs soft,intr,bg,rw 0 0
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>server的ip:/home/nfs /nfs nfs soft,intr,bg,rw 0 0
+</span></span></code></pre></div></li>
 </ol>
 
 </div>
@@ -91,7 +91,7 @@ MOUNTD_PORT=892
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
 <script type="application/javascript">
-    var disqus_config = function () {
+    window.disqus_config = function () {
     
     
     

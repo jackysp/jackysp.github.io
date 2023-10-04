@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.92.2" />
+  <meta name="generator" content="Hugo 0.119.0">
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -56,56 +56,56 @@
 <p><code>yum install haproxy</code> 对 CentOS 7 有效。安装之后，即可使用 <code>systemctl start haproxy</code> 来启动服务了。但是先别急。</p>
 <h2 id="配置-haproxy">配置 HAProxy</h2>
 <p>在 /etc/haproxy/haproxy.cfg 里写入以下内容。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">global <span style="color:#75715e"># global 的内容基本固定，也比较好理解。</span>
-        log 127.0.0.1   local2
-        maxconn <span style="color:#ae81ff">4096</span>
-        user haproxy
-        group haproxy
-        chroot /var/lib/haproxy
-        daemon
-        pidfile /var/run/haproxy.pid
-        stats socket /var/run/haproxy.sock         <span style="color:#75715e"># Make sock file for haproxy</span>
-        nbproc <span style="color:#ae81ff">40</span>                                  <span style="color:#75715e"># 启动 40 个进程并发转发，高版本可以用 nbthread，改为线程化。</span>
-
-defaults <span style="color:#75715e"># 这部分都是抄的，option 不是很明白。</span>
-        log     global
-        mode    http
-        option  tcplog
-        option  dontlognull
-        retries <span style="color:#ae81ff">3</span>
-        option  redispatch
-        maxconn <span style="color:#ae81ff">1024</span>
-        timeout connect 5000ms
-        timeout client 50000ms
-        timeout server 50000ms
-
-listen cdb_cluster 0.0.0.0:3030  <span style="color:#75715e"># 真正的 proxy 名以及接受服务的地址。</span>
-<span style="color:#75715e">## cdb balance leastconn - the cluster listening on port 3030.</span>
-        mode tcp
-        balance leastconn  <span style="color:#75715e"># 这个方法最适用于数据库，不要改。</span>
-        server cdb1 172.16.30.3:26257 check <span style="color:#75715e"># check 似乎可以接一个反馈状态的端口，不接可能不生效，但是无所谓。</span>
-        server cdb2 172.16.30.3:26258 check
-        server cdb3 172.16.30.3:26259 check
-        server cdb4 172.16.30.3:26260 check
-</code></pre></div><h2 id="启动连接">启动、连接</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>global <span style="color:#75715e"># global 的内容基本固定，也比较好理解。</span>
+</span></span><span style="display:flex;"><span>        log 127.0.0.1   local2
+</span></span><span style="display:flex;"><span>        maxconn <span style="color:#ae81ff">4096</span>
+</span></span><span style="display:flex;"><span>        user haproxy
+</span></span><span style="display:flex;"><span>        group haproxy
+</span></span><span style="display:flex;"><span>        chroot /var/lib/haproxy
+</span></span><span style="display:flex;"><span>        daemon
+</span></span><span style="display:flex;"><span>        pidfile /var/run/haproxy.pid
+</span></span><span style="display:flex;"><span>        stats socket /var/run/haproxy.sock         <span style="color:#75715e"># Make sock file for haproxy</span>
+</span></span><span style="display:flex;"><span>        nbproc <span style="color:#ae81ff">40</span>                                  <span style="color:#75715e"># 启动 40 个进程并发转发，高版本可以用 nbthread，改为线程化。</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>defaults <span style="color:#75715e"># 这部分都是抄的，option 不是很明白。</span>
+</span></span><span style="display:flex;"><span>        log     global
+</span></span><span style="display:flex;"><span>        mode    http
+</span></span><span style="display:flex;"><span>        option  tcplog
+</span></span><span style="display:flex;"><span>        option  dontlognull
+</span></span><span style="display:flex;"><span>        retries <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>        option  redispatch
+</span></span><span style="display:flex;"><span>        maxconn <span style="color:#ae81ff">1024</span>
+</span></span><span style="display:flex;"><span>        timeout connect 5000ms
+</span></span><span style="display:flex;"><span>        timeout client 50000ms
+</span></span><span style="display:flex;"><span>        timeout server 50000ms
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>listen cdb_cluster 0.0.0.0:3030  <span style="color:#75715e"># 真正的 proxy 名以及接受服务的地址。</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## cdb balance leastconn - the cluster listening on port 3030.</span>
+</span></span><span style="display:flex;"><span>        mode tcp
+</span></span><span style="display:flex;"><span>        balance leastconn  <span style="color:#75715e"># 这个方法最适用于数据库，不要改。</span>
+</span></span><span style="display:flex;"><span>        server cdb1 172.16.30.3:26257 check <span style="color:#75715e"># check 似乎可以接一个反馈状态的端口，不接可能不生效，但是无所谓。</span>
+</span></span><span style="display:flex;"><span>        server cdb2 172.16.30.3:26258 check
+</span></span><span style="display:flex;"><span>        server cdb3 172.16.30.3:26259 check
+</span></span><span style="display:flex;"><span>        server cdb4 172.16.30.3:26260 check
+</span></span></code></pre></div><h2 id="启动连接">启动、连接</h2>
 <p><code>systemctl start haproxy</code> 启动服务。</p>
 <p><code>psql -Uroot -h127.0.0.1 -p3030 test</code> 连接数据库。</p>
 <h2 id="cockroachdb-官方推荐">CockroachDB 官方推荐</h2>
 <p>CockroachDB 官方给了自己推荐的<a href="https://www.cockroachlabs.com/docs/stable/deploy-cockroachdb-on-premises.html">配置</a>。在这个配置里，它用了：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">default
-<span style="color:#75715e"># TCP keep-alive on client side. Server already enables them.</span>
-    option              clitcpka
-
-listen psql
-    option httpchk GET /health?ready<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
-</code></pre></div><p>这两个配置，第一个是让客户端 keep alive，感觉很有用。第二个是一个状态检查端口，我理解可能是确保服务可用再分发请求的一个选项，感觉也很有用。推荐加上。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>default
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># TCP keep-alive on client side. Server already enables them.</span>
+</span></span><span style="display:flex;"><span>    option              clitcpka
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>listen psql
+</span></span><span style="display:flex;"><span>    option httpchk GET /health?ready<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>这两个配置，第一个是让客户端 keep alive，感觉很有用。第二个是一个状态检查端口，我理解可能是确保服务可用再分发请求的一个选项，感觉也很有用。推荐加上。</p>
 
 </div>
 
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
 <script type="application/javascript">
-    var disqus_config = function () {
+    window.disqus_config = function () {
     
     
     

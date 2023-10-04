@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.92.2" />
+  <meta name="generator" content="Hugo 0.119.0">
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,9 +61,9 @@
 <p>MySQL 支持的在线 DDL 可以看<a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-create-index-overview.html">这个网页</a>。基本就是两类，对索引的操作和对列的操作。这里解答了我的一个疑惑，为什么 TiDB 里实现的解释总是拿添加索引来举例？</p>
 <h2 id="f1-的方法">F1 的方法</h2>
 <p>以之前做类似 Aurora 的经验，这一块问题非常多，如果只做离线的 DDL 大可不必这么麻烦。按照 F1 的论文，它通过</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">                                    (reorganization)
-absent -&gt; delete only -&gt; write only ---------------&gt; public
-</code></pre></div><p>这样一系列状态变化来完成一个 DDL ，其中的约定是，每个节点都通过这四个状态，节点通过接受命令来进入下一状态。每个状态在所有节点里出现的时间最长不超过两个租约时间，怎么保证呢？通过下面这个规则，如果节点接收到上个状态转换的命令后太长时间没收到下个命令，也就是某个状态超过了两个租约时间，意味着自己接受指令太迟了，该节点就拒绝提供服务挂掉。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>                                    (reorganization)
+</span></span><span style="display:flex;"><span>absent -&gt; delete only -&gt; write only ---------------&gt; public
+</span></span></code></pre></div><p>这样一系列状态变化来完成一个 DDL ，其中的约定是，每个节点都通过这四个状态，节点通过接受命令来进入下一状态。每个状态在所有节点里出现的时间最长不超过两个租约时间，怎么保证呢？通过下面这个规则，如果节点接收到上个状态转换的命令后太长时间没收到下个命令，也就是某个状态超过了两个租约时间，意味着自己接受指令太迟了，该节点就拒绝提供服务挂掉。</p>
 <p>这四个状态里，absent 相当于节点还没收到指令的状态，public 相当于 DDL 做完的状态，那中间的两个状态呢？背景介绍里的链接给出了如下解释：</p>
 <blockquote>
 <ul>
@@ -145,7 +145,7 @@ absent -&gt; delete only -&gt; write only ---------------&gt; public
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
 <script type="application/javascript">
-    var disqus_config = function () {
+    window.disqus_config = function () {
     
     
     

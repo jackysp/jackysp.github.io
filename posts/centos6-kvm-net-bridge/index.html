@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.92.2" />
+  <meta name="generator" content="Hugo 0.119.0">
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,33 +72,33 @@
 </li>
 <li>
 <p>ifconfig 至少应该有三个网络</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"> eth0      Link encap:Ethernet  HWaddr 00:18:E7:16:DA:65
-           inet addr:192.168.0.117  Bcast:192.168.0.255  Mask:255.255.255.0
-           inet6 addr: fe80::218:e7ff:fe16:da65/64 Scope:Link
-           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-           RX packets:556 errors:0 dropped:0 overruns:0 frame:0
-           TX packets:414 errors:0 dropped:0 overruns:0 carrier:0
-           collisions:0 txqueuelen:1000
-           RX bytes:222834 (217.6 KiB)  TX bytes:48430 (47.2 KiB)
-           Interrupt:16 Base address:0x4f00
-
- lo        Link encap:Local Loopback
-           inet addr:127.0.0.1  Mask:255.0.0.0
-           inet6 addr: ::1/128 Scope:Host
-           UP LOOPBACK RUNNING  MTU:16436  Metric:1
-           RX packets:8 errors:0 dropped:0 overruns:0 frame:0
-           TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
-           collisions:0 txqueuelen:0
-           RX bytes:480 (480.0 b)  TX bytes:480 (480.0 b)
-
- virbr0    Link encap:Ethernet  HWaddr 52:54:00:2A:C1:7E
-           inet addr:192.168.122.1  Bcast:192.168.122.255  Mask:255.255.255.0
-           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-           RX packets:0 errors:0 dropped:0 overruns:0 frame:0
-           TX packets:13 errors:0 dropped:0 overruns:0 carrier:0
-           collisions:0 txqueuelen:0
-           RX bytes:0 (0.0 b)  TX bytes:2793 (2.7 KiB)
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span> eth0      Link encap:Ethernet  HWaddr 00:18:E7:16:DA:65
+</span></span><span style="display:flex;"><span>           inet addr:192.168.0.117  Bcast:192.168.0.255  Mask:255.255.255.0
+</span></span><span style="display:flex;"><span>           inet6 addr: fe80::218:e7ff:fe16:da65/64 Scope:Link
+</span></span><span style="display:flex;"><span>           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span></span><span style="display:flex;"><span>           RX packets:556 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>           TX packets:414 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>           collisions:0 txqueuelen:1000
+</span></span><span style="display:flex;"><span>           RX bytes:222834 (217.6 KiB)  TX bytes:48430 (47.2 KiB)
+</span></span><span style="display:flex;"><span>           Interrupt:16 Base address:0x4f00
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> lo        Link encap:Local Loopback
+</span></span><span style="display:flex;"><span>           inet addr:127.0.0.1  Mask:255.0.0.0
+</span></span><span style="display:flex;"><span>           inet6 addr: ::1/128 Scope:Host
+</span></span><span style="display:flex;"><span>           UP LOOPBACK RUNNING  MTU:16436  Metric:1
+</span></span><span style="display:flex;"><span>           RX packets:8 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>           TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>           collisions:0 txqueuelen:0
+</span></span><span style="display:flex;"><span>           RX bytes:480 (480.0 b)  TX bytes:480 (480.0 b)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> virbr0    Link encap:Ethernet  HWaddr 52:54:00:2A:C1:7E
+</span></span><span style="display:flex;"><span>           inet addr:192.168.122.1  Bcast:192.168.122.255  Mask:255.255.255.0
+</span></span><span style="display:flex;"><span>           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span></span><span style="display:flex;"><span>           RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>           TX packets:13 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>           collisions:0 txqueuelen:0
+</span></span><span style="display:flex;"><span>           RX bytes:0 (0.0 b)  TX bytes:2793 (2.7 KiB)
+</span></span></code></pre></div></li>
 <li>
 <p><code>su – ;cd /etc/sysconfig/network-scripts</code></p>
 </li>
@@ -108,23 +108,23 @@
 </li>
 <li>
 <p>在 ifcfg-eth0 里填</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"> DEVICE=eth0
- ONBOOT=yes
- BRIDGE=br0
-</code></pre></div><p>文件里只保留这三行就行，不用配置 ip，桥接貌似是用桥接器代替原始网卡，所以配置部分交给桥接器就可以了。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span> DEVICE=eth0
+</span></span><span style="display:flex;"><span> ONBOOT=yes
+</span></span><span style="display:flex;"><span> BRIDGE=br0
+</span></span></code></pre></div><p>文件里只保留这三行就行，不用配置 ip，桥接貌似是用桥接器代替原始网卡，所以配置部分交给桥接器就可以了。</p>
 </li>
 <li>
 <p>新建文件 ifcfg-br0，</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text"> DEVICE=br0
- ONBOOT=yes
- TYPE=Bridge
- BOOTPROTO=static
- IPADDR=xxx.xxx.xxx.xxx （这里ip等配置就是你原来填在ifcfg-eth0里的）
- GATEWAY=xxx.xxx.xxx.xxx
- ...（不再列举，下两行也要写，不过不知道是什么）
- STP=on
- DELAY=0
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span> DEVICE=br0
+</span></span><span style="display:flex;"><span> ONBOOT=yes
+</span></span><span style="display:flex;"><span> TYPE=Bridge
+</span></span><span style="display:flex;"><span> BOOTPROTO=static
+</span></span><span style="display:flex;"><span> IPADDR=xxx.xxx.xxx.xxx （这里ip等配置就是你原来填在ifcfg-eth0里的）
+</span></span><span style="display:flex;"><span> GATEWAY=xxx.xxx.xxx.xxx
+</span></span><span style="display:flex;"><span> ...（不再列举，下两行也要写，不过不知道是什么）
+</span></span><span style="display:flex;"><span> STP=on
+</span></span><span style="display:flex;"><span> DELAY=0
+</span></span></code></pre></div></li>
 <li>
 <p><code>ifup br0; ifup eth0</code></p>
 </li>
@@ -149,7 +149,7 @@
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
 <script type="application/javascript">
-    var disqus_config = function () {
+    window.disqus_config = function () {
     
     
     

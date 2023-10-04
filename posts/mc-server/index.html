@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.92.2" />
+  <meta name="generator" content="Hugo 0.119.0">
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -75,11 +75,11 @@
 <p>想 systemd 启动的话，可以参考<a href="https://gist.github.com/gatopeich/36ed7fab3850367bbcd8e6f40becd4e5">这个 gist</a>。
 因为 console 实际有些命令，比如 stop 这种，真正实现了 graceful shutdown，所以，还是有必要用的，所以要依靠 screen session 来创建。
 再就是启动 server 有一些环境依赖，最好写一个小脚本来启动，比如：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
-</span><span style="color:#75715e"></span>
-cd /home/user/bedrock-server
-LD_LIBRARY_PATH<span style="color:#f92672">=</span>. ./bedrock_server
-</code></pre></div><p>如果用绝对路径会有 core dump。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>cd /home/user/bedrock-server
+</span></span><span style="display:flex;"><span>LD_LIBRARY_PATH<span style="color:#f92672">=</span>. ./bedrock_server
+</span></span></code></pre></div><p>如果用绝对路径会有 core dump。</p>
 <h2 id="公网服务器">公网服务器</h2>
 <p>公网服务器的选择无非是内网映射到公网，或者是买一个云服务器。鉴于安全担忧，最后还是选择了买一个云服务器。虽然官网写的是支持 Ubuntu，但是，我买的 Debian 服务器运行起来也毫无问题。唯一要注意的是，基岩版走的是 UDP 协议，联通 5G 禁掉了 UDP，所以，没有 WiFi 连不上。</p>
 <h2 id="服务器监控">服务器监控</h2>
@@ -92,7 +92,7 @@ LD_LIBRARY_PATH<span style="color:#f92672">=</span>. ./bedrock_server
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
 <script type="application/javascript">
-    var disqus_config = function () {
+    window.disqus_config = function () {
     
     
     

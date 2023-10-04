@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.92.2" />
+  <meta name="generator" content="Hugo 0.119.0">
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -79,23 +79,23 @@
 <ol>
 <li>
 <p>创建一个 <code>/lib/systemd/system/gost.service</code> 文件，填入一下内容，域名换成自己的。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">[Unit]
-Description=gost service
-After=network.target
-StartLimitIntervalSec=0
-
-[Service]
-Type=simple
-Restart=always
-RestartSec=1
-User=root
-PIDFile=/home/admin/gost.pid
-ExecStart=/home/admin/bin/gost -L &#34;http2://xxx:yyy@0.0.0.0:443?cert=/etc/letsencrypt/live/example.com/fullchain.pem&amp;key=/etc/letsencrypt/live/example.com/privkey.pem&amp;probe_resist=code:404&#34;
-ExecReload=/bin/kill -HUP $MAINPID
-
-[Install]
-WantedBy=multi-user.target
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[Unit]
+</span></span><span style="display:flex;"><span>Description=gost service
+</span></span><span style="display:flex;"><span>After=network.target
+</span></span><span style="display:flex;"><span>StartLimitIntervalSec=0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[Service]
+</span></span><span style="display:flex;"><span>Type=simple
+</span></span><span style="display:flex;"><span>Restart=always
+</span></span><span style="display:flex;"><span>RestartSec=1
+</span></span><span style="display:flex;"><span>User=root
+</span></span><span style="display:flex;"><span>PIDFile=/home/admin/gost.pid
+</span></span><span style="display:flex;"><span>ExecStart=/home/admin/bin/gost -L &#34;http2://xxx:yyy@0.0.0.0:443?cert=/etc/letsencrypt/live/example.com/fullchain.pem&amp;key=/etc/letsencrypt/live/example.com/privkey.pem&amp;probe_resist=code:404&#34;
+</span></span><span style="display:flex;"><span>ExecReload=/bin/kill -HUP $MAINPID
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[Install]
+</span></span><span style="display:flex;"><span>WantedBy=multi-user.target
+</span></span></code></pre></div></li>
 </ol>
 <p><code>ExecStart</code> 就是简化了<a href="https://haoel.github.io/">攻略</a>里的 docker 方式。<code>ExecReload</code> 就是 kill。</p>
 <ol>
@@ -104,9 +104,9 @@ WantedBy=multi-user.target
 </li>
 <li>
 <p>配置 crontab 来更新证书。没有用 systemd 是因为我不太熟。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">0 0 1 * * /usr/bin/certbot renew --force-renewal
-5 0 1 * * systemctl restart gost
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>0 0 1 * * /usr/bin/certbot renew --force-renewal
+</span></span><span style="display:flex;"><span>5 0 1 * * systemctl restart gost
+</span></span></code></pre></div></li>
 </ol>
 </li>
 <li>
@@ -114,8 +114,8 @@ WantedBy=multi-user.target
 </li>
 <li>
 <p>配置客户端。这个就简单了，直接参照<a href="https://haoel.github.io/">攻略</a>，即可。原理很简单，因为 gost 实现 shadowsocks 协议本身就是用的 shandowsocks golang 版本的实现。所以，以下命令就是本地启动一个 shadowsocks server。然后，再配置你的客户端，增加一个密码匹配的本地服务器配置即可。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">.\bin\gost-windows-amd64.exe -L=ss://aes-128-cfb:passcode@:1984 -F=https://xxx:yyy@example.com:443
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>.\bin\gost-windows-amd64.exe -L=ss://aes-128-cfb:passcode@:1984 -F=https://xxx:yyy@example.com:443
+</span></span></code></pre></div></li>
 </ul>
 <p>PS: 本人还不知道怎么在 Android 上不 root 的话配置全局 https 代理，也不知道 iOS 上没有美区账号怎么配。再就是也不知道 Windows 10 上怎么优雅配置开机启动脚本。这些待研究。。。</p>
 <h2 id="续">续</h2>
@@ -129,7 +129,7 @@ WantedBy=multi-user.target
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
 <script type="application/javascript">
-    var disqus_config = function () {
+    window.disqus_config = function () {
     
     
     

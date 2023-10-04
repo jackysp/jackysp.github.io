@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.92.2" />
+  <meta name="generator" content="Hugo 0.119.0">
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,26 +55,26 @@
   <p>本来以为是一个很简单的设置，就随便 Google 了一下，果然有清一色的解法，就是修改 <code>/etc/systemd/logind.conf</code>，把 <code>HandleLidSwitch</code> 改成 <code>ignore</code> 或者 <code>lock</code>，然后，重启 <code>logind</code> 或者 <code>reboot</code>。
 试了下，发现在 Thinkpad X230 下根本不行，于是又改了上述文件的其他一些选项，发现都不行，而且 <code>Ubuntu</code> 竟然报错了。。。</p>
 <p>于是，重装了更喜欢的 <code>Debian</code>。重试，发现还是不行。最后，找到了一个最暴力的解决办法。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
-</code></pre></div><p>直接把这几个 unit 指向了 /dev/null。。。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+</span></span></code></pre></div><p>直接把这几个 unit 指向了 /dev/null。。。</p>
 <p>想恢复的话就，</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target
-</code></pre></div><p>简单有效。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target
+</span></span></code></pre></div><p>简单有效。</p>
 <p><strong>更新：</strong></p>
 <p>如果只 mask 的话，systemd-logind 的 CPU 占用会非常高，因为它会不断的尝试睡眠，所以还需要把 <code>HandleLidSwitch</code> 等改成 <code>ignore</code>。如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">HandleSuspendKey=ignore
-HandleHibernateKey=ignore
-HandleLidSwitch=ignore
-HandleLidSwitchExternalPower=ignore
-HandleLidSwitchDocked=ignore
-</code></pre></div><p>然后，<code>systemctl restart systemd-logind</code>。详细参考了这里：<a href="https://tothecloud.dev/systemd-logind-high-cpu-usage/">SystemD-LoginD High CPU Usage</a>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>HandleSuspendKey=ignore
+</span></span><span style="display:flex;"><span>HandleHibernateKey=ignore
+</span></span><span style="display:flex;"><span>HandleLidSwitch=ignore
+</span></span><span style="display:flex;"><span>HandleLidSwitchExternalPower=ignore
+</span></span><span style="display:flex;"><span>HandleLidSwitchDocked=ignore
+</span></span></code></pre></div><p>然后，<code>systemctl restart systemd-logind</code>。详细参考了这里：<a href="https://tothecloud.dev/systemd-logind-high-cpu-usage/">SystemD-LoginD High CPU Usage</a>。</p>
 
 </div>
 
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
 <script type="application/javascript">
-    var disqus_config = function () {
+    window.disqus_config = function () {
     
     
     

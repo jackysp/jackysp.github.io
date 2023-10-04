@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.92.2" />
+  <meta name="generator" content="Hugo 0.119.0">
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,59 +54,59 @@
   <time datetime=2014-06-05T22:21:06&#43;0800 class="post-date">Thu, Jun 5, 2014</time>
   <p>做题。以下使用的是 POSTGRESQL 9.4 BETA 2。</p>
 <h1 id="表结构">表结构</h1>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> STUDENT
-(SNO VARCHAR(<span style="color:#ae81ff">3</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
-SNAME VARCHAR(<span style="color:#ae81ff">4</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
-SSEX VARCHAR(<span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
-SBIRTHDAY DATE,
-<span style="color:#66d9ef">CLASS</span> VARCHAR(<span style="color:#ae81ff">5</span>));
-
-<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> COURSE
-(CNO VARCHAR(<span style="color:#ae81ff">5</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
-CNAME VARCHAR(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
-TNO VARCHAR(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>);
-
-<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> SCORE
-(SNO VARCHAR(<span style="color:#ae81ff">3</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
-CNO VARCHAR(<span style="color:#ae81ff">5</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
-DEGREE NUMERIC(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>);
-
-<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> TEACHER
-(TNO VARCHAR(<span style="color:#ae81ff">3</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
-TNAME VARCHAR(<span style="color:#ae81ff">4</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>, TSEX VARCHAR(<span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
-TBIRTHDAY DATE <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>, PROF VARCHAR(<span style="color:#ae81ff">6</span>),
-DEPART VARCHAR(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>);
-
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">108</span> ,<span style="color:#e6db74">&#39;曾华&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span> ,<span style="color:#e6db74">&#39;1977-09-01&#39;</span>,<span style="color:#ae81ff">95033</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">105</span> ,<span style="color:#e6db74">&#39;匡明&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span> ,<span style="color:#e6db74">&#39;1975-10-02&#39;</span>,<span style="color:#ae81ff">95031</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">107</span> ,<span style="color:#e6db74">&#39;王丽&#39;</span>,<span style="color:#e6db74">&#39;女&#39;</span> ,<span style="color:#e6db74">&#39;1976-01-23&#39;</span>,<span style="color:#ae81ff">95033</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">101</span> ,<span style="color:#e6db74">&#39;李军&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span> ,<span style="color:#e6db74">&#39;1976-02-20&#39;</span>,<span style="color:#ae81ff">95033</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">109</span> ,<span style="color:#e6db74">&#39;王芳&#39;</span>,<span style="color:#e6db74">&#39;女&#39;</span> ,<span style="color:#e6db74">&#39;1975-02-10&#39;</span>,<span style="color:#ae81ff">95031</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">103</span> ,<span style="color:#e6db74">&#39;陆君&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span> ,<span style="color:#e6db74">&#39;1974-06-03&#39;</span>,<span style="color:#ae81ff">95031</span>);
-
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> COURSE(CNO,CNAME,TNO)<span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;3-105&#39;</span> ,<span style="color:#e6db74">&#39;计算机导论&#39;</span>,<span style="color:#ae81ff">825</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> COURSE(CNO,CNAME,TNO)<span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;3-245&#39;</span> ,<span style="color:#e6db74">&#39;操作系统&#39;</span> ,<span style="color:#ae81ff">804</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> COURSE(CNO,CNAME,TNO)<span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;6-166&#39;</span> ,<span style="color:#e6db74">&#39;数据电路&#39;</span> ,<span style="color:#ae81ff">856</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> COURSE(CNO,CNAME,TNO)<span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;9-888&#39;</span> ,<span style="color:#e6db74">&#39;高等数学&#39;</span> ,<span style="color:#ae81ff">100</span>);
-
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">103</span>,<span style="color:#e6db74">&#39;3-245&#39;</span>,<span style="color:#ae81ff">86</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">105</span>,<span style="color:#e6db74">&#39;3-245&#39;</span>,<span style="color:#ae81ff">75</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">109</span>,<span style="color:#e6db74">&#39;3-245&#39;</span>,<span style="color:#ae81ff">68</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">103</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">92</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">105</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">88</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">109</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">76</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">101</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">64</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">107</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">91</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">108</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">78</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">101</span>,<span style="color:#e6db74">&#39;6-166&#39;</span>,<span style="color:#ae81ff">85</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">107</span>,<span style="color:#e6db74">&#39;6-106&#39;</span>,<span style="color:#ae81ff">79</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">108</span>,<span style="color:#e6db74">&#39;6-166&#39;</span>,<span style="color:#ae81ff">81</span>);
-
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> TEACHER(TNO,TNAME,TSEX,TBIRTHDAY,PROF,DEPART) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">804</span>,<span style="color:#e6db74">&#39;李诚&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span>,<span style="color:#e6db74">&#39;1958-12-02&#39;</span>,<span style="color:#e6db74">&#39;副教授&#39;</span>,<span style="color:#e6db74">&#39;计算机系&#39;</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> TEACHER(TNO,TNAME,TSEX,TBIRTHDAY,PROF,DEPART) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">856</span>,<span style="color:#e6db74">&#39;张旭&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span>,<span style="color:#e6db74">&#39;1969-03-12&#39;</span>,<span style="color:#e6db74">&#39;讲师&#39;</span>,<span style="color:#e6db74">&#39;电子工程系&#39;</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> TEACHER(TNO,TNAME,TSEX,TBIRTHDAY,PROF,DEPART) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">825</span>,<span style="color:#e6db74">&#39;王萍&#39;</span>,<span style="color:#e6db74">&#39;女&#39;</span>,<span style="color:#e6db74">&#39;1972-05-05&#39;</span>,<span style="color:#e6db74">&#39;助教&#39;</span>,<span style="color:#e6db74">&#39;计算机系&#39;</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> TEACHER(TNO,TNAME,TSEX,TBIRTHDAY,PROF,DEPART) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">831</span>,<span style="color:#e6db74">&#39;刘冰&#39;</span>,<span style="color:#e6db74">&#39;女&#39;</span>,<span style="color:#e6db74">&#39;1977-08-14&#39;</span>,<span style="color:#e6db74">&#39;助教&#39;</span>,<span style="color:#e6db74">&#39;电子工程系&#39;</span>);
-</code></pre></div><h1 id="题目">题目</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> STUDENT
+</span></span><span style="display:flex;"><span>(SNO VARCHAR(<span style="color:#ae81ff">3</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>SNAME VARCHAR(<span style="color:#ae81ff">4</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>SSEX VARCHAR(<span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>SBIRTHDAY DATE,
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">CLASS</span> VARCHAR(<span style="color:#ae81ff">5</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> COURSE
+</span></span><span style="display:flex;"><span>(CNO VARCHAR(<span style="color:#ae81ff">5</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>CNAME VARCHAR(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>TNO VARCHAR(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> SCORE
+</span></span><span style="display:flex;"><span>(SNO VARCHAR(<span style="color:#ae81ff">3</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>CNO VARCHAR(<span style="color:#ae81ff">5</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>DEGREE NUMERIC(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> TEACHER
+</span></span><span style="display:flex;"><span>(TNO VARCHAR(<span style="color:#ae81ff">3</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>TNAME VARCHAR(<span style="color:#ae81ff">4</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>, TSEX VARCHAR(<span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>TBIRTHDAY DATE <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>, PROF VARCHAR(<span style="color:#ae81ff">6</span>),
+</span></span><span style="display:flex;"><span>DEPART VARCHAR(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">108</span> ,<span style="color:#e6db74">&#39;曾华&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span> ,<span style="color:#e6db74">&#39;1977-09-01&#39;</span>,<span style="color:#ae81ff">95033</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">105</span> ,<span style="color:#e6db74">&#39;匡明&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span> ,<span style="color:#e6db74">&#39;1975-10-02&#39;</span>,<span style="color:#ae81ff">95031</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">107</span> ,<span style="color:#e6db74">&#39;王丽&#39;</span>,<span style="color:#e6db74">&#39;女&#39;</span> ,<span style="color:#e6db74">&#39;1976-01-23&#39;</span>,<span style="color:#ae81ff">95033</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">101</span> ,<span style="color:#e6db74">&#39;李军&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span> ,<span style="color:#e6db74">&#39;1976-02-20&#39;</span>,<span style="color:#ae81ff">95033</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">109</span> ,<span style="color:#e6db74">&#39;王芳&#39;</span>,<span style="color:#e6db74">&#39;女&#39;</span> ,<span style="color:#e6db74">&#39;1975-02-10&#39;</span>,<span style="color:#ae81ff">95031</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> STUDENT (SNO,SNAME,SSEX,SBIRTHDAY,<span style="color:#66d9ef">CLASS</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">103</span> ,<span style="color:#e6db74">&#39;陆君&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span> ,<span style="color:#e6db74">&#39;1974-06-03&#39;</span>,<span style="color:#ae81ff">95031</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> COURSE(CNO,CNAME,TNO)<span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;3-105&#39;</span> ,<span style="color:#e6db74">&#39;计算机导论&#39;</span>,<span style="color:#ae81ff">825</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> COURSE(CNO,CNAME,TNO)<span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;3-245&#39;</span> ,<span style="color:#e6db74">&#39;操作系统&#39;</span> ,<span style="color:#ae81ff">804</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> COURSE(CNO,CNAME,TNO)<span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;6-166&#39;</span> ,<span style="color:#e6db74">&#39;数据电路&#39;</span> ,<span style="color:#ae81ff">856</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> COURSE(CNO,CNAME,TNO)<span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;9-888&#39;</span> ,<span style="color:#e6db74">&#39;高等数学&#39;</span> ,<span style="color:#ae81ff">100</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">103</span>,<span style="color:#e6db74">&#39;3-245&#39;</span>,<span style="color:#ae81ff">86</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">105</span>,<span style="color:#e6db74">&#39;3-245&#39;</span>,<span style="color:#ae81ff">75</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">109</span>,<span style="color:#e6db74">&#39;3-245&#39;</span>,<span style="color:#ae81ff">68</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">103</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">92</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">105</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">88</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">109</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">76</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">101</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">64</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">107</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">91</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">108</span>,<span style="color:#e6db74">&#39;3-105&#39;</span>,<span style="color:#ae81ff">78</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">101</span>,<span style="color:#e6db74">&#39;6-166&#39;</span>,<span style="color:#ae81ff">85</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">107</span>,<span style="color:#e6db74">&#39;6-106&#39;</span>,<span style="color:#ae81ff">79</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> SCORE(SNO,CNO,DEGREE)<span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">108</span>,<span style="color:#e6db74">&#39;6-166&#39;</span>,<span style="color:#ae81ff">81</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> TEACHER(TNO,TNAME,TSEX,TBIRTHDAY,PROF,DEPART) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">804</span>,<span style="color:#e6db74">&#39;李诚&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span>,<span style="color:#e6db74">&#39;1958-12-02&#39;</span>,<span style="color:#e6db74">&#39;副教授&#39;</span>,<span style="color:#e6db74">&#39;计算机系&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> TEACHER(TNO,TNAME,TSEX,TBIRTHDAY,PROF,DEPART) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">856</span>,<span style="color:#e6db74">&#39;张旭&#39;</span>,<span style="color:#e6db74">&#39;男&#39;</span>,<span style="color:#e6db74">&#39;1969-03-12&#39;</span>,<span style="color:#e6db74">&#39;讲师&#39;</span>,<span style="color:#e6db74">&#39;电子工程系&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> TEACHER(TNO,TNAME,TSEX,TBIRTHDAY,PROF,DEPART) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">825</span>,<span style="color:#e6db74">&#39;王萍&#39;</span>,<span style="color:#e6db74">&#39;女&#39;</span>,<span style="color:#e6db74">&#39;1972-05-05&#39;</span>,<span style="color:#e6db74">&#39;助教&#39;</span>,<span style="color:#e6db74">&#39;计算机系&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> TEACHER(TNO,TNAME,TSEX,TBIRTHDAY,PROF,DEPART) <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">831</span>,<span style="color:#e6db74">&#39;刘冰&#39;</span>,<span style="color:#e6db74">&#39;女&#39;</span>,<span style="color:#e6db74">&#39;1977-08-14&#39;</span>,<span style="color:#e6db74">&#39;助教&#39;</span>,<span style="color:#e6db74">&#39;电子工程系&#39;</span>);
+</span></span></code></pre></div><h1 id="题目">题目</h1>
 <ol>
 <li>查询STUDENT表中的所有记录的SNAME、SSEX和CLASS列。</li>
 <li>查询教师所有的单位即不重复的DEPART列。</li>
@@ -231,7 +231,7 @@ DEPART VARCHAR(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef
 </ul>
 </li>
 <li>SELECT CLASS FROM STUDENT A WHERE SSEX=&lsquo;男&rsquo; GROUP BY CLASS HAVING COUNT(SSEX)&gt;1;</li>
-<li>SELECT * FROM STUDENT A WHERE SNAME NOT LIKE &lsquo;王%';</li>
+<li>SELECT * FROM STUDENT A WHERE SNAME NOT LIKE &lsquo;王%&rsquo;;</li>
 <li>SELECT SNAME, DATE_PART(&lsquo;YEAR&rsquo;, AGE(SBIRTHDAY)) AS AGE FROM STUDENT;</li>
 <li>SELECT SNAME,SBIRTHDAY AS THEMAX FROM STUDENT WHERE SBIRTHDAY =(SELECT MIN(SBIRTHDAY) FROM STUDENT) UNION SELECT SNAME,SBIRTHDAY AS THEMIN FROM STUDENT WHERE SBIRTHDAY =(SELECT MAX(SBIRTHDAY) FROM STUDENT);</li>
 <li>SELECT CLASS,AGE(SBIRTHDAY) AS AGE FROM STUDENT ORDER BY CLASS DESC,AGE DESC;</li>
@@ -252,7 +252,7 @@ DEPART VARCHAR(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
 <script type="application/javascript">
-    var disqus_config = function () {
+    window.disqus_config = function () {
     
     
     
