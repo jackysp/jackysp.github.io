@@ -6,7 +6,16 @@
     <description>Recent content on Mini Fish</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 02 May 2022 19:05:00 +0800</lastBuildDate><atom:link href="http://blog.minifish.org/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 15 May 2024 20:31:00 +0800</lastBuildDate><atom:link href="http://blog.minifish.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>遇到 Cloudflare Warp 的大坑：一场 VPS 的生死救援</title>
+      <link>http://blog.minifish.org/posts/warp-cli/</link>
+      <pubDate>Wed, 15 May 2024 20:31:00 +0800</pubDate>
+      
+      <guid>http://blog.minifish.org/posts/warp-cli/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>如何用 Multipass 搭建 Minecraft Bedrock Server</title>
       <link>http://blog.minifish.org/posts/mc-server/</link>

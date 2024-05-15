@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn" lang="zh-cn">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.119.0">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>遇到 Cloudflare Warp 的大坑：一场 VPS 的生死救援 &middot; Mini Fish</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class="theme-base-0d ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="http://blog.minifish.org/"><h1>Mini Fish</h1></a>
+      <p class="lead">
+       A blog that&#39;s all about how to do it. 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="http://blog.minifish.org/">Home</a> </li>
+        <li><a href="https://github.com/jackysp/"> Github </a></li><li><a href="https://www.linkedin.com/in/shuaipeng-yu-81280434/"> LinkedIn </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2024. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>遇到 Cloudflare Warp 的大坑：一场 VPS 的生死救援</h1>
+  <time datetime=2024-05-15T20:31:00&#43;0800 class="post-date">Wed, May 15, 2024</time>
+  <p>今天计划使用 Warp 为我的 VPS 选择 IP 出口，参考了 <a href="https://developers.cloudflare.com/warp-client/get-started/linux/">Cloudflare 官方文档</a> 进行操作。在执行到 <code>warp-cli connect</code> 这一步时，服务器立即失去了连接，重启后问题依旧存在。</p>
+<p>经过查阅资料，发现这一问题并非个例。例如，在 <a href="https://www.v2ex.com/t/933725">V2EX 的讨论</a> 中，许多用户也遇到了类似情况。解决方案是在执行 <code>warp-cli connect</code> 之前，先运行 <code>warp-cli set-mode proxy</code>，以绕过本地地址。令人惊讶的是，Cloudflare 的官方文档居然没有提到这一关键步骤，这无疑增加了配置的复杂性和风险。</p>
+<p>探索解决方案的过程中，发现有用户建议通过重建实例或使用 VNC 连接进行修复。然而，由于我使用的是 AWS Lightsail，VNC 并不适用。最后，决定尝试 <a href="https://www.4os.org/2022/02/14/aws-lightsail-ssh-%E6%8C%82%E6%8E%89%E5%A6%82%E4%BD%95%E7%99%BB%E5%BD%95/">这篇文章</a> 中提到的方法：对当前 VPS 进行快照备份，然后利用快照新建实例，并在新实例启动时加载脚本，执行 <code>warp-cli set-mode proxy</code>。</p>
+<p>检查现有实例后发现并未创建任何快照。这一发现提醒我日常备份的重要性。在没有其他选择的情况下，只能尝试按照上述文章的指导进行快照备份。然而，无论尝试哪种启动脚本命令，均未能成功执行。AWS Lightsail 的启动脚本执行结果不可见，使得问题排查难度增加。</p>
+<p>在几近绝望时，从快照页面发现一个日期为 2022 年的旧快照。尽管此快照使用的是旧技术，恢复后可能会丢失许多重要更新，但已是最后的希望。开始恢复快照后，通过 <code>history</code> 命令查看历史记录，意外发现此快照竟包含了所有重要的更新。这一发现使得整个恢复过程得以顺利完成。</p>
+<p>这次经历再次强调了备份的重要性。过去的细心备份最终避免了数据的严重丢失。此外，AWS 的静态 IP 保留功能也发挥了关键作用。新实例在旧实例释放静态 IP 后，可以立即绑定该 IP，实现了无缝切换。</p>
+<h2 id="结论">结论</h2>
+<ol>
+<li><strong>备份至关重要</strong>：定期备份是保障系统稳定运行的关键。</li>
+<li><strong>操作谨慎</strong>：在执行关键命令前，应充分查阅和理解相关文档及用户反馈，避免潜在风险。</li>
+<li><strong>信任过去的自己</strong>：过去的细致工作往往能在关键时刻发挥重要作用。</li>
+</ol>
+<p>希望这次经历能为他人提供借鉴和帮助，避免类似问题的发生。</p>
+
+</div>
+
+<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jackysp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </main>
+
+    
+      
+    
+  </body>
+</html>
