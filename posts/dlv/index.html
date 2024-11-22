@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>使用 delve 调试 Golang 程序 &middot; Mini Fish</title>
+  <title>Using delve to Debug Golang Programs &middot; Mini Fish</title>
   <meta name="description" content="" />
 
   
@@ -50,13 +50,13 @@
 
     <main class="content container">
     <div class="post">
-  <h1>使用 delve 调试 Golang 程序</h1>
+  <h1>Using delve to Debug Golang Programs</h1>
   <time datetime=2019-09-16T13:24:00&#43;0800 class="post-date">Mon, Sep 16, 2019</time>
-  <h1 id="背景">背景</h1>
-<p>一开始写 Golang 的时候，就一直想找一个方便的 debug 工具，当时看到过用 gdb 来 debug 的文档，也用过 delve。但是都觉得不好用。后来，经人指点，又用回了 print 大法。。。</p>
-<p>这两天调试 go test，test 按 package 来跑的时候总会 hang 住，一时没想到合适的方法，就又想起 delve 来。试用了一下，比原来成熟了很多。</p>
-<h1 id="用法">用法</h1>
-<p><code>dlv attach ${pid}</code> 是我最常用的用法，attach 上之后就可以用类似 gdb 的调试方法，可以用 help 来查看具体命令。</p>
+  <h1 id="background">Background</h1>
+<p>When I first started writing Golang, I was always looking for a convenient debugging tool. Back then, I came across documentation about using <code>gdb</code> to debug and also tried <code>delve</code>, but neither felt easy to use. Later, on someone&rsquo;s advice, I went back to the good old <code>print</code> statements&hellip;</p>
+<p>Over the past couple of days, I was debugging <code>go test</code> and found that tests would always hang when run per package. I couldn&rsquo;t think of a suitable method at first, so I thought of <code>delve</code> again. After giving it a try, I found it has become much more mature than before.</p>
+<h1 id="usage">Usage</h1>
+<p><code>dlv attach ${pid}</code> is the method I use most often. After attaching, you can use debugging commands similar to <code>gdb</code>. You can use <code>help</code> to view specific commands.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>(dlv) help
 </span></span><span style="display:flex;"><span>The following commands are available:
 </span></span><span style="display:flex;"><span>    args ------------------------ Print function arguments.
@@ -75,10 +75,10 @@
 </span></span><span style="display:flex;"><span>    exit (alias: quit | q) ------ Exit the debugger.
 </span></span><span style="display:flex;"><span>    frame ----------------------- Set the current frame, or execute command on a different frame.
 </span></span><span style="display:flex;"><span>    funcs ----------------------- Print list of functions.
-</span></span><span style="display:flex;"><span>    goroutine (alias: gr) ------- Shows or changes current goroutine
+</span></span><span style="display:flex;"><span>    goroutine (alias: gr) ------- Shows or changes current goroutine.
 </span></span><span style="display:flex;"><span>    goroutines (alias: grs) ----- List program goroutines.
 </span></span><span style="display:flex;"><span>    help (alias: h) ------------- Prints the help message.
-</span></span><span style="display:flex;"><span>    libraries ------------------- List loaded dynamic libraries
+</span></span><span style="display:flex;"><span>    libraries ------------------- List loaded dynamic libraries.
 </span></span><span style="display:flex;"><span>    list (alias: ls | l) -------- Show source code.
 </span></span><span style="display:flex;"><span>    locals ---------------------- Print local variables.
 </span></span><span style="display:flex;"><span>    next (alias: n) ------------- Step over to next source line.
@@ -87,25 +87,25 @@
 </span></span><span style="display:flex;"><span>    regs ------------------------ Print contents of CPU registers.
 </span></span><span style="display:flex;"><span>    restart (alias: r) ---------- Restart process.
 </span></span><span style="display:flex;"><span>    set ------------------------- Changes the value of a variable.
-</span></span><span style="display:flex;"><span>    source ---------------------- Executes a file containing a list of delve commands
+</span></span><span style="display:flex;"><span>    source ---------------------- Executes a file containing a list of delve commands.
 </span></span><span style="display:flex;"><span>    sources --------------------- Print list of source files.
 </span></span><span style="display:flex;"><span>    stack (alias: bt) ----------- Print stack trace.
 </span></span><span style="display:flex;"><span>    step (alias: s) ------------- Single step through program.
-</span></span><span style="display:flex;"><span>    step-instruction (alias: si)  Single step a single cpu instruction.
+</span></span><span style="display:flex;"><span>    step-instruction (alias: si)  Single step a single CPU instruction.
 </span></span><span style="display:flex;"><span>    stepout (alias: so) --------- Step out of the current function.
 </span></span><span style="display:flex;"><span>    thread (alias: tr) ---------- Switch to the specified thread.
 </span></span><span style="display:flex;"><span>    threads --------------------- Print out info for every traced thread.
 </span></span><span style="display:flex;"><span>    trace (alias: t) ------------ Set tracepoint.
-</span></span><span style="display:flex;"><span>    types ----------------------- Print list of types
+</span></span><span style="display:flex;"><span>    types ----------------------- Print list of types.
 </span></span><span style="display:flex;"><span>    up -------------------------- Move the current frame up.
 </span></span><span style="display:flex;"><span>    vars ------------------------ Print package variables.
 </span></span><span style="display:flex;"><span>    whatis ---------------------- Prints type of an expression.
 </span></span><span style="display:flex;"><span>Type help followed by a command for full documentation.
-</span></span></code></pre></div><p>其中有很多与 gdb 相同的命令。其他用的比较多的就是 <code>grs</code>，输出所有 goroutine，还可以 <code>grs -t</code>，相当于 gdb 的 <code>t a a bt</code>。唯一美中不足的是，只能输出 10 条栈信息，多了 truncated 了。
-再就是，似乎 go test fork 出来的进程是用不了的，如果想测试，必须先编译成 test 文件，再执行它。具体可以看 <a href="https://github.com/pingcap/tidb/issues/12184">https://github.com/pingcap/tidb/issues/12184</a> 。</p>
+</span></span></code></pre></div><p>Many of these commands are the same as those in <code>gdb</code>. Another command I use frequently is <code>grs</code>, which outputs all goroutines. You can also use <code>grs -t</code>, which is equivalent to <code>gdb</code>&rsquo;s <code>t a a bt</code>. The only slight drawback is that it only outputs 10 stack frames, and any additional ones are truncated.</p>
+<p>Additionally, it seems that processes forked by <code>go test</code> can&rsquo;t be attached to. If you want to test, you must first compile it into a test file and then execute it. You can refer to <a href="https://github.com/pingcap/tidb/issues/12184">this issue</a> for more details.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>$ dlv attach 19654
 </span></span><span style="display:flex;"><span>could not attach to pid 19654: decoding dwarf section info at offset 0x0: too short
-</span></span></code></pre></div><p>再就是，在使用中，go 的 test 是默认 cache 的，可以通过环境变量控制。但是，有了 go mod 之后，推荐使用 <code>./ddl.test -test.count=1</code> 的方式来去掉 cache。感觉很不值观。</p>
+</span></span></code></pre></div><p>Furthermore, by default, Go&rsquo;s <code>test</code> caches results, which can be controlled via environment variables. However, with Go modules (<code>go mod</code>), it&rsquo;s recommended to use <code>./ddl.test -test.count=1</code> to disable caching. It doesn&rsquo;t feel very elegant.</p>
 
 </div>
 

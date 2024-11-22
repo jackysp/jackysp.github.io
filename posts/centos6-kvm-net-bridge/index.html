@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>如何配置 CentOS KVM 网络桥接模式 &middot; Mini Fish</title>
+  <title>How to Configure CentOS KVM Network Bridging Mode &middot; Mini Fish</title>
   <meta name="description" content="" />
 
   
@@ -50,99 +50,116 @@
 
     <main class="content container">
     <div class="post">
-  <h1>如何配置 CentOS KVM 网络桥接模式</h1>
+  <h1>How to Configure CentOS KVM Network Bridging Mode</h1>
   <time datetime=2014-06-05T22:21:06&#43;0800 class="post-date">Thu, Jun 5, 2014</time>
-  <h1 id="什么是桥接">什么是桥接</h1>
-<p>高度模拟网卡，让路由认为虚拟机的网卡是真实存在的，个人感觉类似电阻的并联，而 NAT （另一种常用的虚拟机网络连接方式）更像寄生在 host 网卡的形式。</p>
-<h1 id="为什么用桥接">为什么用桥接</h1>
-<p>能把虚拟机当作完全独立的机器来操作，可以与外网互相访问（ NAT 不行）。</p>
-<h1 id="怎么桥接">怎么桥接</h1>
-<p>在 CentOS 6 下参考<a href="http://www.techotopia.com/index.php/Creating_a_CentOS_6_KVM_Networked_Bridge_Interface">这篇文章</a>
-里的命令行方式。</p>
-<p>不采用 GUI 的方式是因为：</p>
+  <h1 id="what-is-bridging">What Is Bridging</h1>
+<p>Bridging highly simulates a network card, making the router believe that the virtual machine&rsquo;s network card truly exists. Personally, I feel it&rsquo;s similar to resistors connected in parallel, whereas NAT (another common virtual machine network connection method) is more like parasitizing on the host&rsquo;s network card.</p>
+<h1 id="why-use-bridging">Why Use Bridging</h1>
+<p>It allows you to treat the virtual machine as a completely independent machine, enabling mutual access with the external network (which is not possible with NAT).</p>
+<h1 id="how-to-configure-bridging">How to Configure Bridging</h1>
+<p>In CentOS 6, refer to the command-line method in <a href="http://www.techotopia.com/index.php/Creating_a_CentOS_6_KVM_Networked_Bridge_Interface">this article</a>.</p>
+<p>We don&rsquo;t use the GUI method because:</p>
 <ul>
-<li>不知道最后一个图填哪几个选项；</li>
-<li>不知道如果选错了怎么重置。</li>
+<li>We&rsquo;re unsure which options to fill in on the last screen.</li>
+<li>We don&rsquo;t know how to reset if we make a wrong selection.</li>
 </ul>
-<p>命令行形式：</p>
+<p>Command-line steps:</p>
 <ol>
 <li>
-<p><code>rpm -q bridge-utils</code>
-一般这个都已经装了，没有的话如下 <code>su -; yum install bridge-utils</code></p>
-</li>
-<li>
-<p>ifconfig 至少应该有三个网络</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span> eth0      Link encap:Ethernet  HWaddr 00:18:E7:16:DA:65
-</span></span><span style="display:flex;"><span>           inet addr:192.168.0.117  Bcast:192.168.0.255  Mask:255.255.255.0
-</span></span><span style="display:flex;"><span>           inet6 addr: fe80::218:e7ff:fe16:da65/64 Scope:Link
-</span></span><span style="display:flex;"><span>           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-</span></span><span style="display:flex;"><span>           RX packets:556 errors:0 dropped:0 overruns:0 frame:0
-</span></span><span style="display:flex;"><span>           TX packets:414 errors:0 dropped:0 overruns:0 carrier:0
-</span></span><span style="display:flex;"><span>           collisions:0 txqueuelen:1000
-</span></span><span style="display:flex;"><span>           RX bytes:222834 (217.6 KiB)  TX bytes:48430 (47.2 KiB)
-</span></span><span style="display:flex;"><span>           Interrupt:16 Base address:0x4f00
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span> lo        Link encap:Local Loopback
-</span></span><span style="display:flex;"><span>           inet addr:127.0.0.1  Mask:255.0.0.0
-</span></span><span style="display:flex;"><span>           inet6 addr: ::1/128 Scope:Host
-</span></span><span style="display:flex;"><span>           UP LOOPBACK RUNNING  MTU:16436  Metric:1
-</span></span><span style="display:flex;"><span>           RX packets:8 errors:0 dropped:0 overruns:0 frame:0
-</span></span><span style="display:flex;"><span>           TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
-</span></span><span style="display:flex;"><span>           collisions:0 txqueuelen:0
-</span></span><span style="display:flex;"><span>           RX bytes:480 (480.0 b)  TX bytes:480 (480.0 b)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span> virbr0    Link encap:Ethernet  HWaddr 52:54:00:2A:C1:7E
-</span></span><span style="display:flex;"><span>           inet addr:192.168.122.1  Bcast:192.168.122.255  Mask:255.255.255.0
-</span></span><span style="display:flex;"><span>           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-</span></span><span style="display:flex;"><span>           RX packets:0 errors:0 dropped:0 overruns:0 frame:0
-</span></span><span style="display:flex;"><span>           TX packets:13 errors:0 dropped:0 overruns:0 carrier:0
-</span></span><span style="display:flex;"><span>           collisions:0 txqueuelen:0
-</span></span><span style="display:flex;"><span>           RX bytes:0 (0.0 b)  TX bytes:2793 (2.7 KiB)
+<p><strong>Check if <code>bridge-utils</code> is installed:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpm -q bridge-utils
+</span></span></code></pre></div><p>Usually, it&rsquo;s already installed. If not, install it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su -
+</span></span><span style="display:flex;"><span>yum install bridge-utils
 </span></span></code></pre></div></li>
 <li>
-<p><code>su – ;cd /etc/sysconfig/network-scripts</code></p>
-</li>
-<li>
-<p><code>ifdown eth0</code>
-这一步一定要做，所以必须要本机配置，本人在第一次配置的时候没有先关网络（因为要远程），结果我没想到在网络没有重启的情况下ifcfg-eth0的配置就更新了，然后网络就再也连不上了。</p>
-</li>
-<li>
-<p>在 ifcfg-eth0 里填</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span> DEVICE=eth0
-</span></span><span style="display:flex;"><span> ONBOOT=yes
-</span></span><span style="display:flex;"><span> BRIDGE=br0
-</span></span></code></pre></div><p>文件里只保留这三行就行，不用配置 ip，桥接貌似是用桥接器代替原始网卡，所以配置部分交给桥接器就可以了。</p>
-</li>
-<li>
-<p>新建文件 ifcfg-br0，</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span> DEVICE=br0
-</span></span><span style="display:flex;"><span> ONBOOT=yes
-</span></span><span style="display:flex;"><span> TYPE=Bridge
-</span></span><span style="display:flex;"><span> BOOTPROTO=static
-</span></span><span style="display:flex;"><span> IPADDR=xxx.xxx.xxx.xxx （这里ip等配置就是你原来填在ifcfg-eth0里的）
-</span></span><span style="display:flex;"><span> GATEWAY=xxx.xxx.xxx.xxx
-</span></span><span style="display:flex;"><span> ...（不再列举，下两行也要写，不过不知道是什么）
-</span></span><span style="display:flex;"><span> STP=on
-</span></span><span style="display:flex;"><span> DELAY=0
+<p><strong>Verify your network interfaces:</strong></p>
+<p>Run <code>ifconfig</code> to ensure you have at least three network interfaces:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>eth0      Link encap:Ethernet  HWaddr 00:18:E7:16:DA:65
+</span></span><span style="display:flex;"><span>          inet addr:192.168.0.117  Bcast:192.168.0.255  Mask:255.255.255.0
+</span></span><span style="display:flex;"><span>          inet6 addr: fe80::218:e7ff:fe16:da65/64 Scope:Link
+</span></span><span style="display:flex;"><span>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span></span><span style="display:flex;"><span>          RX packets:556 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>          TX packets:414 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>          collisions:0 txqueuelen:1000
+</span></span><span style="display:flex;"><span>          RX bytes:222834 (217.6 KiB)  TX bytes:48430 (47.2 KiB)
+</span></span><span style="display:flex;"><span>          Interrupt:16 Base address:0x4f00
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lo        Link encap:Local Loopback
+</span></span><span style="display:flex;"><span>          inet addr:127.0.0.1  Mask:255.0.0.0
+</span></span><span style="display:flex;"><span>          inet6 addr: ::1/128 Scope:Host
+</span></span><span style="display:flex;"><span>          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+</span></span><span style="display:flex;"><span>          RX packets:8 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>          collisions:0 txqueuelen:0
+</span></span><span style="display:flex;"><span>          RX bytes:480 (480.0 b)  TX bytes:480 (480.0 b)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>virbr0    Link encap:Ethernet  HWaddr 52:54:00:2A:C1:7E
+</span></span><span style="display:flex;"><span>          inet addr:192.168.122.1  Bcast:192.168.122.255  Mask:255.255.255.0
+</span></span><span style="display:flex;"><span>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span></span><span style="display:flex;"><span>          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>          TX packets:13 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>          collisions:0 txqueuelen:0
+</span></span><span style="display:flex;"><span>          RX bytes:0 (0.0 b)  TX bytes:2793 (2.7 KiB)
 </span></span></code></pre></div></li>
 <li>
-<p><code>ifup br0; ifup eth0</code></p>
+<p><strong>Navigate to the network scripts directory:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su –
+</span></span><span style="display:flex;"><span>cd /etc/sysconfig/network-scripts
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Bring down the <code>eth0</code> interface:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifdown eth0
+</span></span></code></pre></div><p><em>This step is crucial and must be performed locally.</em> When I first configured this, I didn&rsquo;t shut down the network (since I was working remotely). I didn&rsquo;t realize that updating the <code>ifcfg-eth0</code> configuration without restarting the network would immediately apply changes, resulting in loss of network connectivity.</p>
 </li>
 <li>
-<p>看下 <code>ifconfig</code> ，应该就有 br0 了，</p>
+<p><strong>Edit <code>ifcfg-eth0</code>:</strong></p>
+<p>In the <code>ifcfg-eth0</code> file, include:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=eth0
+</span></span><span style="display:flex;"><span>ONBOOT=yes
+</span></span><span style="display:flex;"><span>BRIDGE=br0
+</span></span></code></pre></div><p>Keep only these three lines in the file. There&rsquo;s no need to configure an IP address here. Bridging seems to replace the original network card with the bridge, so you can delegate the configuration to the bridge.</p>
 </li>
 <li>
-<p>编辑 /etc/sysconfig/iptables 加入，
-<code>-INPUT -i br0 -j ACCEPT （大概是这样，需要根据实际情况修改）</code></p>
+<p><strong>Create a new file <code>ifcfg-br0</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=br0
+</span></span><span style="display:flex;"><span>ONBOOT=yes
+</span></span><span style="display:flex;"><span>TYPE=Bridge
+</span></span><span style="display:flex;"><span>BOOTPROTO=static
+</span></span><span style="display:flex;"><span>IPADDR=xxx.xxx.xxx.xxx   # Use the IP you originally had in ifcfg-eth0
+</span></span><span style="display:flex;"><span>GATEWAY=xxx.xxx.xxx.xxx  # Your gateway address
+</span></span><span style="display:flex;"><span>NETMASK=255.255.255.0    # Your netmask
+</span></span><span style="display:flex;"><span>DNS1=xxx.xxx.xxx.xxx     # Your primary DNS server
+</span></span><span style="display:flex;"><span>DNS2=xxx.xxx.xxx.xxx     # Your secondary DNS server (if any)
+</span></span><span style="display:flex;"><span>STP=on
+</span></span><span style="display:flex;"><span>DELAY=0
+</span></span></code></pre></div><p><em>Note:</em> Replace <code>xxx.xxx.xxx.xxx</code> with your actual network settings.</p>
 </li>
 <li>
-<p><code>service iptables restart</code></p>
+<p><strong>Bring up the interfaces:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifup br0
+</span></span><span style="display:flex;"><span>ifup eth0
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Verify the bridge interface:</strong></p>
+<p>Check <code>ifconfig</code> to ensure that <code>br0</code> is now present.</p>
 </li>
 <li>
-<p>用 virt-manager 新建虚拟机的时候就可以选 br0 了，否则桥接没法选。</p>
+<p><strong>Update firewall rules:</strong></p>
+<p>Edit <code>/etc/sysconfig/iptables</code> and add:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>-A INPUT -i br0 -j ACCEPT
+</span></span></code></pre></div><p><em>(This is a general example; you may need to adjust it based on your specific firewall configuration.)</em></p>
+</li>
+<li>
+<p><strong>Restart the firewall:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service iptables restart
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Configure bridging in <code>virt-manager</code>:</strong></p>
+<p>When creating a new virtual machine using <code>virt-manager</code>, you can now select <code>br0</code> for the network interface. Without this bridge, the bridging option would not be available.</p>
 </li>
 </ol>
-<p><strong>注意：</strong> 配置虚拟机内的 ip 时要注意指定 GATEWAY ，否则只能访问内网，不能访问外网。也就是这时候虚拟机不会自动找 GATEWAY 了。</p>
+<p><strong>Note:</strong> When configuring the IP inside the virtual machine, be sure to specify the <code>GATEWAY</code>. Otherwise, the virtual machine will only be able to access the internal network and not the external network. At this point, the virtual machine won&rsquo;t automatically discover the gateway.</p>
 
 </div>
 

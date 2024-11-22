@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>如何让一台 Linux 笔记本电脑合上盖子后不进入休眠 &middot; Mini Fish</title>
+  <title>How to Prevent a Linux Laptop from Entering Sleep Mode When the Lid is Closed &middot; Mini Fish</title>
   <meta name="description" content="" />
 
   
@@ -50,24 +50,24 @@
 
     <main class="content container">
     <div class="post">
-  <h1>如何让一台 Linux 笔记本电脑合上盖子后不进入休眠</h1>
-  <time datetime=2020-03-31T20:31:00&#43;0800 class="post-date">Tue, Mar 31, 2020</time>
-  <p>本来以为是一个很简单的设置，就随便 Google 了一下，果然有清一色的解法，就是修改 <code>/etc/systemd/logind.conf</code>，把 <code>HandleLidSwitch</code> 改成 <code>ignore</code> 或者 <code>lock</code>，然后，重启 <code>logind</code> 或者 <code>reboot</code>。
-试了下，发现在 Thinkpad X230 下根本不行，于是又改了上述文件的其他一些选项，发现都不行，而且 <code>Ubuntu</code> 竟然报错了。。。</p>
-<p>于是，重装了更喜欢的 <code>Debian</code>。重试，发现还是不行。最后，找到了一个最暴力的解决办法。</p>
+  <h1>How to Prevent a Linux Laptop from Entering Sleep Mode When the Lid is Closed</h1>
+  <time datetime=0001-01-01T00:00:00Z class="post-date">Mon, Jan 1, 0001</time>
+  <p>Initially, I thought it would be a simple setting adjustment, so I casually Googled it. Sure enough, there was a unanimous solution: modify <code>/etc/systemd/logind.conf</code>, change <code>HandleLidSwitch</code> to <code>ignore</code> or <code>lock</code>, and then restart <code>logind</code> or reboot.</p>
+<p>I tried this, but it didn&rsquo;t work at all on my Thinkpad X230. I then tried changing some other options in the aforementioned file, but none worked, and surprisingly, <code>Ubuntu</code> even reported errors.</p>
+<p>So, I reinstalled the more preferred <code>Debian</code>. Tried again, and it still didn&rsquo;t work. Finally, I found a more brutal method.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
-</span></span></code></pre></div><p>直接把这几个 unit 指向了 /dev/null。。。</p>
-<p>想恢复的话就，</p>
+</span></span></code></pre></div><p>This directly points these units to /dev/null&hellip;</p>
+<p>To revert, simply use:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target
-</span></span></code></pre></div><p>简单有效。</p>
-<p><strong>更新：</strong></p>
-<p>如果只 mask 的话，systemd-logind 的 CPU 占用会非常高，因为它会不断的尝试睡眠，所以还需要把 <code>HandleLidSwitch</code> 等改成 <code>ignore</code>。如下：</p>
+</span></span></code></pre></div><p>It&rsquo;s simple and effective.</p>
+<p><strong>Update:</strong></p>
+<p>If you only mask them, the CPU usage of systemd-logind will be very high because it continuously attempts to sleep. Therefore, you also need to change <code>HandleLidSwitch</code> and others to <code>ignore</code>. As follows:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>HandleSuspendKey=ignore
 </span></span><span style="display:flex;"><span>HandleHibernateKey=ignore
 </span></span><span style="display:flex;"><span>HandleLidSwitch=ignore
 </span></span><span style="display:flex;"><span>HandleLidSwitchExternalPower=ignore
 </span></span><span style="display:flex;"><span>HandleLidSwitchDocked=ignore
-</span></span></code></pre></div><p>然后，<code>systemctl restart systemd-logind</code>。详细参考了这里：<a href="https://tothecloud.dev/systemd-logind-high-cpu-usage/">SystemD-LoginD High CPU Usage</a>。</p>
+</span></span></code></pre></div><p>Then, execute <code>systemctl restart systemd-logind</code>. For more details, refer to this: <a href="https://tothecloud.dev/systemd-logind-high-cpu-usage/">SystemD-LoginD High CPU Usage</a>.</p>
 
 </div>
 

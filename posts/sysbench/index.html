@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>如何用 Sysbench 实现简单负载 &middot; Mini Fish</title>
+  <title>How to Implement a Simple Load Using Sysbench &middot; Mini Fish</title>
   <meta name="description" content="" />
 
   
@@ -50,12 +50,10 @@
 
     <main class="content container">
     <div class="post">
-  <h1>如何用 Sysbench 实现简单负载</h1>
+  <h1>How to Implement a Simple Load Using Sysbench</h1>
   <time datetime=2020-12-14T12:06:00&#43;0800 class="post-date">Mon, Dec 14, 2020</time>
-  <p><a href="https://github.com/akopytov/sysbench">Sysbench</a> 是数据库测试中常使用的工具。1.0 版本以后，它支持了更强大的自定义功能。可以让使用者方便的编写一些 lua 脚本来模拟负载。
-写这篇文章的目的，一是本来就想研究下 Sysbench 自定义负载的用法，二是，因为看到了 MySQL 官方给出的 mysqlslap 工具，试用了一下，发现随随便便就 hang 死在那，在数据库性能测试中，
-会让用户误认为是数据库有问题，坑了不少人，所以，想让大家少踩坑吧。</p>
-<h2 id="一个简单的例子">一个简单的例子</h2>
+  <p><a href="https://github.com/akopytov/sysbench">Sysbench</a> is a tool commonly used in database testing. Since version 1.0, it has supported more powerful custom functions, allowing users to conveniently write some Lua scripts to simulate load. The purpose of writing this article is, firstly, because I wanted to explore Sysbench&rsquo;s custom load usage. Secondly, because I tried the mysqlslap tool provided by MySQL&rsquo;s official source, and found that it freezes easily during database performance testing, which could mislead users into thinking there is an issue with the database, causing trouble for many. Therefore, I want to help people avoid these pitfalls.</p>
+<h2 id="a-simple-example">A Simple Example</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env sysbench</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>require(<span style="color:#e6db74">&#34;oltp_common&#34;</span>)
@@ -66,12 +64,10 @@
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">event</span>()
 </span></span><span style="display:flex;"><span>    con:query(<span style="color:#e6db74">&#34;set autocommit = 1&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
-</span></span></code></pre></div><p>第一行 <code>require</code> 将 Sysbench 自带的基础库包含进来；
-空的 <code>prepare_statement</code> 是 <code>oltp_common</code> 的回调函数，必须要有；
-具体单次负载如何执行就是后面的 <code>event</code> 函数里实现了。</p>
-<p>把这段脚本保存为一个 lua 文件，比如叫 set.lua，然后用 sysbench 执行它就可以了。</p>
+</span></span></code></pre></div><p>The first line <code>require</code> includes Sysbench&rsquo;s built-in basic library; the empty <code>prepare_statement</code> is a callback function from <code>oltp_common</code> that must be present; the specific execution of a single load is implemented in the <code>event</code> function.</p>
+<p>Save this script as a Lua file, for example, named set.lua, and then execute it using sysbench.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sysbench --config-file<span style="color:#f92672">=</span>config --threads<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> set.lua --tables<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> --table_size<span style="color:#f92672">=</span><span style="color:#ae81ff">1000000</span> run
-</span></span></code></pre></div><p>比如用上述命令。当然这里 <code>--tables=1</code> 和 <code>--table_size=1000000</code> 对于这个负载都是没什么用的，不填也行，<code>--threads</code> 控制并发度。</p>
+</span></span></code></pre></div><p>You can use the above command. Of course, here <code>--tables=1</code> and <code>--table_size=1000000</code> are not useful for this load, so they are optional. <code>--threads</code> controls concurrency.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ cat config
 </span></span><span style="display:flex;"><span>time<span style="color:#f92672">=</span><span style="color:#ae81ff">120</span>
 </span></span><span style="display:flex;"><span>db-driver<span style="color:#f92672">=</span>mysql
@@ -80,9 +76,8 @@
 </span></span><span style="display:flex;"><span>mysql-user<span style="color:#f92672">=</span>root
 </span></span><span style="display:flex;"><span>mysql-db<span style="color:#f92672">=</span>sbtest
 </span></span><span style="display:flex;"><span>report-interval<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>
-</span></span></code></pre></div><p>config 文件里就是把不常调整的参数一次性写进去，避免命令行里一长串参数。这些都是必填项目，<code>time</code> 代表测试时长，<code>report-interval</code> 用来观测实时性能结果，
-其他的都是如何连接数据库。</p>
-<p>跑起来的样子基本就是：</p>
+</span></span></code></pre></div><p>In the config file, parameters you don&rsquo;t frequently adjust are written once to avoid having a long string of parameters in the command line. These are required fields: <code>time</code> represents the test duration, <code>report-interval</code> is used to observe real-time performance results, and the others pertain to how to connect to the database.</p>
+<p>The running output generally looks like:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[ 10s ] thds: 100 tps: 94574.34 qps: 94574.34 (r/w/o: 0.00/0.00/94574.34) lat (ms,95%): 3.68 err/s: 0.00 reconn/s: 0.00
 </span></span><span style="display:flex;"><span>[ 20s ] thds: 100 tps: 77720.30 qps: 77720.30 (r/w/o: 0.00/0.00/77720.30) lat (ms,95%): 5.28 err/s: 0.00 reconn/s: 0.00
 </span></span><span style="display:flex;"><span>[ 30s ] thds: 100 tps: 56080.10 qps: 56080.10 (r/w/o: 0.00/0.00/56080.10) lat (ms,95%): 9.22 err/s: 0.00 reconn/s: 0.00
@@ -92,7 +87,7 @@
 </span></span><span style="display:flex;"><span>[ 70s ] thds: 100 tps: 74707.37 qps: 74707.37 (r/w/o: 0.00/0.00/74707.37) lat (ms,95%): 6.79 err/s: 0.00 reconn/s: 0.00
 </span></span><span style="display:flex;"><span>[ 80s ] thds: 100 tps: 89485.10 qps: 89485.10 (r/w/o: 0.00/0.00/89485.10) lat (ms,95%): 5.18 err/s: 0.00 reconn/s: 0.00
 </span></span><span style="display:flex;"><span>[ 90s ] thds: 100 tps: 109296.44 qps: 109296.44 (r/w/o: 0.00/0.00/109296.44) lat (ms,95%): 2.91 err/s: 0.00 reconn/s: 0.00
-</span></span></code></pre></div><p>最后，结束还会有个汇总报告。</p>
+</span></span></code></pre></div><p>Finally, there will be a summary report.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>SQL statistics:
 </span></span><span style="display:flex;"><span>    queries performed:
 </span></span><span style="display:flex;"><span>        read:                            0

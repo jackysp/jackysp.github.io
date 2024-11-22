@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>如何配置 CentOS 6 NFS 服务 &middot; Mini Fish</title>
+  <title>How to Configure CentOS 6 NFS Service &middot; Mini Fish</title>
   <meta name="description" content="" />
 
   
@@ -50,39 +50,109 @@
 
     <main class="content container">
     <div class="post">
-  <h1>如何配置 CentOS 6 NFS 服务</h1>
+  <h1>How to Configure CentOS 6 NFS Service</h1>
   <time datetime=2014-06-05T22:21:06&#43;0800 class="post-date">Thu, Jun 5, 2014</time>
-  <h1 id="服务器端">服务器端</h1>
+  <h1 id="server-side">Server Side</h1>
 <ol>
-<li>关闭 SeLinux <code>vi /etc/selinux/config</code>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#SELINUX=enforcing #注释
-</span></span><span style="display:flex;"><span>#SELINUXTYPE=targeted #注释掉
-</span></span><span style="display:flex;"><span>SELINUX=disabled #增加
-</span></span></code></pre></div><code>reboot #重启系统</code></li>
-<li>用 root 用户建一个文件夹，就叫 /nfs 即可（注意，这里最好先 df 一下，看看哪个分区空间大，不一定就是/的空间最大，有些自动分区是/home空间最大）；</li>
-<li><code>yum -y install nfs-utils rpcbind</code></li>
-<li><code>chkconfig nfs on ; chkconfig rpcbind on ; chkconfig nfslock on</code></li>
-<li><code>vi /etc/exports</code> 加入 <code>/home/nfs 192.168.1.0/24(rw,sync,no_all_squash)</code></li>
-<li><code>service rpcbind start ; service nfs start ; service nfslock star ; exportfs -a</code></li>
-<li><code>vi /etc/sysconfig/nfs</code> 去掉下列前面的注释:
+<li>
+<p><strong>Disable SeLinux</strong><br>
+Edit the configuration file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/selinux/config
+</span></span></code></pre></div><p>Modify as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#SELINUX=enforcing    # Comment out
+</span></span><span style="display:flex;"><span>#SELINUXTYPE=targeted # Comment out
+</span></span><span style="display:flex;"><span>SELINUX=disabled      # Add this line
+</span></span></code></pre></div><p>Then reboot the system:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>reboot  <span style="color:#75715e"># Restart the system</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Create a Directory</strong><br>
+Using the root user, create a directory named <code>/nfs</code>. Note: It&rsquo;s best to check which partition has the most space by running <code>df</code>, as the root (<code>/</code>) partition may not have the most space. In some automatic partitioning setups, the <code>/home</code> partition may have the most space.</p>
+</li>
+<li>
+<p><strong>Install NFS Utilities and RPC Bind</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yum -y install nfs-utils rpcbind
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Enable Services at Boot</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chkconfig nfs on
+</span></span><span style="display:flex;"><span>chkconfig rpcbind on
+</span></span><span style="display:flex;"><span>chkconfig nfslock on
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Configure Exports</strong><br>
+Edit the NFS exports file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/exports
+</span></span></code></pre></div><p>Add the following line:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>/home/nfs 192.168.1.0/24(rw,sync,no_all_squash)
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Start NFS Services</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service rpcbind start
+</span></span><span style="display:flex;"><span>service nfs start
+</span></span><span style="display:flex;"><span>service nfslock start
+</span></span><span style="display:flex;"><span>exportfs -a
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Configure NFS Ports</strong><br>
+Edit the NFS configuration file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/sysconfig/nfs
+</span></span></code></pre></div><p>Uncomment the following lines:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>LOCKD_TCPPORT=32803
 </span></span><span style="display:flex;"><span>LOCKD_UDPPORT=32769
 </span></span><span style="display:flex;"><span>MOUNTD_PORT=892
 </span></span></code></pre></div></li>
-<li><code>service rpcbind restart ; service nfs restart ; service nfslock restart</code></li>
-<li><code>rpcinfo -p localhost</code> 记下端口和端口类型</li>
-<li><code>iptables -I INPUT -m state --state NEW -p tcp -m multiport --dport 111,892,2049,32803 -s 192.168.0.0/24 -j ACCEPT ; iptables -I INPUT -m state --state NEW -p udp -m multiport --dport 111,892,2049,32769 -s 192.168.0.0/24 -j ACCEPT</code> 自己根据ip段改一下。</li>
-<li>在客户端侧测试，如果通了，则 <code>service iptables save</code></li>
+<li>
+<p><strong>Restart NFS Services</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service rpcbind restart
+</span></span><span style="display:flex;"><span>service nfs restart
+</span></span><span style="display:flex;"><span>service nfslock restart
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Verify RPC Services</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpcinfo -p localhost
+</span></span></code></pre></div><p>Note down the ports and their types.</p>
+</li>
+<li>
+<p><strong>Configure Firewall Rules</strong><br>
+Adjust the IP range according to your network:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>iptables -I INPUT -m state --state NEW -p tcp -m multiport --dport 111,892,2049,32803 -s 192.168.0.0/24 -j ACCEPT
+</span></span><span style="display:flex;"><span>iptables -I INPUT -m state --state NEW -p udp -m multiport --dport 111,892,2049,32769 -s 192.168.0.0/24 -j ACCEPT
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Save Firewall Rules</strong><br>
+Test from the client side. If successful, save the iptables configuration:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service iptables save
+</span></span></code></pre></div></li>
 </ol>
-<h1 id="客户端">客户端</h1>
+<h1 id="client-side">Client Side</h1>
 <ol>
-<li><code>mkdir /nfs</code></li>
-<li><code>rpcinfo -p server的ip</code></li>
-<li><code>showmount -e server的ip</code></li>
-<li><code>mount -t nfs -o soft,intr,bg,rw server的ip:/home/nfs /nfs</code></li>
-<li>解除挂载umount /nfs</li>
-<li>自动挂载<code>vi /etc/fstab</code>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>server的ip:/home/nfs /nfs nfs soft,intr,bg,rw 0 0
+<li>
+<p><strong>Create Mount Point</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir /nfs
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Check RPC Services on Server</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpcinfo -p <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Show NFS Exports</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>showmount -e <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Mount NFS Share</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mount -t nfs -o soft,intr,bg,rw <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>:/home/nfs /nfs
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Unmount NFS Share</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>umount /nfs
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Configure Automatic Mounting</strong><br>
+Edit the fstab file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/fstab
+</span></span></code></pre></div><p>Add the following line:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[server_ip]:/home/nfs /nfs nfs soft,intr,bg,rw 0 0
 </span></span></code></pre></div></li>
 </ol>
 

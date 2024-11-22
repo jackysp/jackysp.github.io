@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>如何理解 CAP 定理 &middot; Mini Fish</title>
+  <title>Understanding the CAP Theorem &middot; Mini Fish</title>
   <meta name="description" content="" />
 
   
@@ -50,12 +50,12 @@
 
     <main class="content container">
     <div class="post">
-  <h1>如何理解 CAP 定理</h1>
+  <h1>Understanding the CAP Theorem</h1>
   <time datetime=2017-12-20T22:21:06&#43;0800 class="post-date">Wed, Dec 20, 2017</time>
-  <h1 id="背景">背景</h1>
-<p>CAP 定理也是近些年最热的定理之一了，谈分布式必扯 CAP 。但是我觉得没有理解透彻，于是就想写一篇 blog 来记录下自己的理解。有新的理解会更新内容。</p>
-<h1 id="理解">理解</h1>
-<p>读了下这篇<a href="https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/45855.pdf">文献</a>的第一部分。</p>
+  <h1 id="background">Background</h1>
+<p>The CAP theorem has become one of the hottest theorems in recent years; when discussing distributed systems, CAP is inevitably mentioned. However, I feel that I haven&rsquo;t thoroughly understood it, so I wanted to write a blog post to record my understanding. I will update the content as I gain new insights.</p>
+<h1 id="understanding">Understanding</h1>
+<p>I read the first part of this <a href="https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/45855.pdf">paper</a>.</p>
 <blockquote>
 <p>The CAP theorem [Bre12] says that you can only have two of the three desirable properties of:</p>
 <ul>
@@ -65,21 +65,33 @@
 </ul>
 <p>This leads to three kinds of systems: CA, CP and AP, based on what letter you leave out.</p>
 </blockquote>
-<p>说下我的理解，以三台机器（ x ，y ，z ）组成的网络为例：</p>
+<p>Let me share my understanding, using a network composed of three machines (x, y, and z) as an example:</p>
 <ul>
-<li>C: 三台机器看起来就像一台一样，一个人对一台机器的增删改查操作，始终应该是一致的。也就是从 x 读了数据，接着从 y 读，结果一样。从 x 写了数据，接着从 y 读也读到了这个新的写入。在 wikipedix 里还特别说明，稍过一段时间从 y 读到刚从 x 写的数据也是可以的（最终一致）。</li>
-<li>A: 三台机器作为一个整体必读都可以读和写，部分挂掉没关系，必须可读也可写。</li>
-<li>P: x ，y 和 z 之间网络断了，任何机器不能或者但拒绝提供服务，既不可读也不可写。</li>
+<li>
+<p><strong>C (Consistency)</strong>: The three machines appear as one. Operations of addition, deletion, modification, and query on any one machine should always be consistent. That is, if you read data from x and then read from y, the results are the same. If you write data to x and then read from y, you should also read the newly written data. Wikipedia also specifically mentions that it&rsquo;s acceptable to read the data just written to x from y after a short period of time (eventual consistency).</p>
+</li>
+<li>
+<p><strong>A (Availability)</strong>: The three machines, as a whole, must always be readable and writable; even if some parts fail, it must be readable and writable.</p>
+</li>
+<li>
+<p><strong>P (Partition Tolerance)</strong>: If the network between x, y, and z is broken, any machine cannot or refuses to provide services; it is neither readable nor writable.</p>
+</li>
 </ul>
-<p>这里 C 是最好理解的。A 和 P 的概念比较模糊，容易混淆。</p>
-<p>下面说三种组合：</p>
-<p>如果 x ，y 和 z 之间网络断了，</p>
+<p>Here, <strong>C</strong> is the easiest to understand. The concepts of <strong>A</strong> and <strong>P</strong> are somewhat vague and easy to confuse.</p>
+<p>Now let&rsquo;s discuss the three combinations:</p>
+<p>If the network between x, y, and z is disconnected:</p>
 <ul>
-<li>CA: 让数据一致，x 写数据，y 可读到（ C ），让系统即使是只有 x ，y 部分继续提供服务，可读可写（ A ），只能容忍 z 不提供服务，不能读写，也就不能返回错误的数据（ P 丢失）。</li>
-<li>CP: 让数据一致 （ C ），让三台机器都可提供服务（可读也算）（ P ），只能容忍 x ，y ，z 都不能写（ A 丢失）。</li>
-<li>AP: 让三台机器都可写（ A ），让三台机器都可提供服务（可读也算）（ P ），只能容忍 x ，y 写的数据到不了 z ，z 会返回跟 x ，y 不一致的数据（ C 丢失）。</li>
+<li>
+<p><strong>CA</strong>: Ensure data consistency (<strong>C</strong>). When x writes data, y can read it (<strong>C</strong>). Allow the system to continue providing services—even if only x and y are operational—ensuring it is readable and writable (<strong>A</strong>). We can only tolerate z not providing service; it cannot read or write, nor return incorrect data (losing <strong>P</strong>).</p>
+</li>
+<li>
+<p><strong>CP</strong>: Ensure data consistency (<strong>C</strong>). Allow all three machines to provide services (even if only for reads) (<strong>P</strong>). We can only tolerate that x, y, and z cannot write (losing <strong>A</strong>).</p>
+</li>
+<li>
+<p><strong>AP</strong>: Allow all three machines to write (<strong>A</strong>). Allow all three machines to provide services (reads count) (<strong>P</strong>). We can only tolerate that the data written by x and y doesn&rsquo;t reach z; z will return data inconsistent with x and y (losing <strong>C</strong>).</p>
+</li>
 </ul>
-<p>CA 是 paxos/raft ，是大多数协议，牺牲了 P ，少数派节点完全沉默。CP 是只读系统，如果什么系统是只读的，之间有没有网络其实也无所谓，网络分区容忍无限大。AP 适合只追加不更新的系统，只 insert 不 delete 和 update，最后把结果合并到一起，也能用。</p>
+<p><strong>CA</strong> is exemplified by Paxos/Raft, which are majority protocols that sacrifice <strong>P</strong>; minority nodes remain completely silent. <strong>CP</strong> represents a read-only system; if a system is read-only, whether there&rsquo;s a network partition doesn&rsquo;t really matter—the tolerance to network partitions is infinitely large. <strong>AP</strong> is suitable for systems that only append and do not update—only inserts, no deletes or updates. Finally, by merging the results together, it can still function.</p>
 
 </div>
 

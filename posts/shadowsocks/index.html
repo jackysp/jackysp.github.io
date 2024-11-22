@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>如何部署 shadowsocks server &middot; Mini Fish</title>
+  <title>How to Deploy a Shadowsocks Server &middot; Mini Fish</title>
   <meta name="description" content="" />
 
   
@@ -50,27 +50,22 @@
 
     <main class="content container">
     <div class="post">
-  <h1>如何部署 shadowsocks server</h1>
+  <h1>How to Deploy a Shadowsocks Server</h1>
   <time datetime=2018-09-27T15:48:00&#43;0800 class="post-date">Thu, Sep 27, 2018</time>
-  <p>shadowsocks 的 server 端有多个不同的版本，最初的版本是用 python 写的，后来各路爱好者又都做了自己喜爱语言的实现。</p>
-<p>在这众多的实现中，个人认为最可靠稳定的是最初的 python 实现版，理由很简单，用的人最多。
-golang 版本据说是功能最多，性能也很好的，总之非常强大。可能得益于 golang 本身的高性能，实现方便等特点。
-还有个实现是用 libev 来实现的，纯 c 的实现，也有很好的性能并且十分轻量。</p>
-<p>另外，如何更新服务端也是一个对于使用 shadowsocks 的用户需要面对的问题。由于众所周知的原因，服务端还是应该多更新。
-如果是 python 实现，可能可以通过 pip 来安装，这个我没有确认过，golang 的也许就需要一套 golang 的编译环境，然后再
-go get -u 了。而 libev 的更新我们则可以通过 debian 系的 apt 来更新，apt 已经包含了 libev 的 shadowsocks。至于
-redhat 系的 yum 有没有我没去确认过。</p>
-<p>介绍过了之后，简单讲下步骤，具体非常简单：</p>
+  <p>There are multiple versions of the Shadowsocks server side implementation. The original version was written in Python, and later, enthusiasts implemented it in various programming languages of their liking.</p>
+<p>Among all these implementations, I personally think the most reliable and stable one is the original Python version. The reason is simple - it has the most users. The Golang version is said to have the most features and also performs very well, making it quite powerful. This might be due to Golang’s inherent high performance and ease of implementation. There&rsquo;s also an implementation using libev, a pure C implementation, which also offers good performance and is very lightweight.</p>
+<p>Additionally, updating the server is a necessary task for Shadowsocks users due to well-known reasons. The server should be updated frequently. If you’re using the Python implementation, you might be able to install updates via pip, although I haven’t confirmed this. The Golang version may require a Golang build environment, and then you can use <code>go get -u</code>. For updating libev, you can use apt on Debian-based systems, as apt includes shadowsocks-libev. I haven’t checked if it is available in the Red Hat-based yum repositories.</p>
+<p>After this introduction, let&rsquo;s go over the deployment steps, which are quite straightforward:</p>
 <ol>
-<li>部署一个 debian 9 或者 ubuntu 17 的 vps，在 vultr 等主流提供商应该都有。假设这里用的是 debian 9。</li>
-<li><code>apt install shadowsocks-libev</code> 安装。</li>
-<li><code>vim /etc/shadowsocks-libev/config.json</code> 编辑下配置，里面的 Server IP 最好设置成 0.0.0.0，为了避免类似 AWS Lightsail 的 IP 问题。
+<li>Deploy a Debian 9 or Ubuntu 17 VPS. Mainstream providers like Vultr should have these options available. Assume we are using Debian 9 here.</li>
+<li>Run <code>apt install shadowsocks-libev</code> to install.</li>
+<li>Edit the configuration file using <code>vim /etc/shadowsocks-libev/config.json</code>. It&rsquo;s best to set the Server IP to 0.0.0.0 to avoid IP issues similar to those on AWS Lightsail.
 <ol>
-<li>AWS Lightsail 需要绑定静态 IP，并且额外开防火墙端口，具体操作可以去 Google。</li>
+<li>For AWS Lightsail, you need to bind a static IP and open firewall ports. Specific steps can be found on Google.</li>
 </ol>
 </li>
-<li><code>systemctl restart shadowsocks-libev</code> 重启服务以生效。</li>
-<li>开启 tcp bbr，具体操作去 Google。</li>
+<li>Restart the service using <code>systemctl restart shadowsocks-libev</code> to apply the changes.</li>
+<li>Enable TCP BBR. Specific instructions can be found on Google.</li>
 </ol>
 
 </div>

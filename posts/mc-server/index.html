@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>如何用 Multipass 搭建 Minecraft Bedrock Server &middot; Mini Fish</title>
+  <title>How to Set Up a Minecraft Bedrock Server Using Multipass &middot; Mini Fish</title>
   <meta name="description" content="" />
 
   
@@ -50,42 +50,40 @@
 
     <main class="content container">
     <div class="post">
-  <h1>如何用 Multipass 搭建 Minecraft Bedrock Server</h1>
+  <h1>How to Set Up a Minecraft Bedrock Server Using Multipass</h1>
   <time datetime=2022-05-02T19:05:00&#43;0800 class="post-date">Mon, May 2, 2022</time>
-  <h2 id="背景">背景</h2>
-<p>最近家里两个孩子都喜欢起 Minecraft，他们同龄的孩子也有在玩的。虽然之前买了 Switch 版本，但是，它的联网能力太差，设备性能也太差，体验不好。于是，有了自建一个服务器的想法。当然，也可以好友间联机，但是对于 Host 一方一旦下线，游戏就结束，这种体验还是不如有一个始终在线的服务器来的好。</p>
-<p>对于版本的选择，目前有网易版、官方 Java 版和基岩版。按我以前的了解，网易版有各种防沉迷的监管，于是 pass，Java 版自建 Server 好像都是通过第三方启动器来实现的，有点儿像盗版，于是，最后选了基岩版。选基岩版的另一个理由是，记得它前身是手游版的 Minecraft，后来微软<a href="https://minecraft.fandom.com/zh/wiki/%E5%9F%BA%E5%B2%A9%E7%89%88?variant=zh">支持了更多的平台</a>，通用性是最好的。再就是，它内核是 C++ 编写的，在性能和资源利用率上应该都会好一些。</p>
-<h2 id="下载服务器软件">下载服务器软件</h2>
-<p>我这里下载的是 <a href="https://www.minecraft.net/en-us/download/server/bedrock">Ubuntu 版本</a>，虽然，我也下过 Windows 版本，也可以跑起来，但是做服务器的话，我没管理过 Windows Server，而且 Windows 版本本身在使用时也会有一些小坑，这里就不在详述了。</p>
-<h2 id="内网服务器">内网服务器</h2>
-<p>本来打算用老的 Thinkpad，后来没找到，只找到了老的 Macbook，更新搞起来之后发现老的 Macbook 还能再战几年的样子，比 Thinkpad 强多了。于是，虚拟机搞起。结果查了下 Ubuntu Server，现在不支持直接下载 iso，要走 Multipass 启动。</p>
-<p>Multipass 是个啥？</p>
-<p>Ubuntu 家开发的一个轻量级虚拟化平台。Multipass 分 multipass 和 multipassd，一个前台，有 GUI 和 CLI，一个后台，需要 root 权限。可以直接下载，也可以用 brew cask 安装。</p>
-<p>Multipass 好像只能安装 Ubuntu Server，而且有一定的定制化，比如，安装完成后自动搞一个叫 ubuntu 的用户，有自动公私钥配对。装好后，直接起就有一个 1C 1GB 的虚拟机，叫 primary，primary 默认 mount 用户的 home 目录。</p>
-<p>multipassd 更偏下层是可插拔的虚拟化 hypervisor，默认是支持 hyperkit 和 qemu，hyperkit 给 intel macOS 用，qemu 给 m1 用。</p>
-<p>multipassd 也可以用 Virtualbox 做 backend 的 hypervisor，这种其实更加推荐，因为它带桥接功能，否则，都靠端口映射也太麻烦了。不是说 qemu 不带桥接，只是 Multipass 的官网文档给了一篇很无脑的 <a href="https://multipass.run/docs/set-up-the-driver">Virtualbox 桥接教程</a>，跟着抄就行了。</p>
-<p>于是，先搞起 Virtualbox，不得不说 Oracle 在这里还是挺良心的，它依然可以免费使用。然后，根据上面链接一步一步抄。需要注意一下，第一步 <code>sudo multipass set local.driver=virtualbox</code> 后最好重启一下机器，感觉像是变量没热生效。否则，创建出来的 primary 还是用的老 backend。因为有了一个默认的虚拟机，我不想再搞一个来占用额外资源。另外，还有几点需要注意一下：</p>
+  <h2 id="background">Background</h2>
+<p>Recently, both of my kids have become interested in Minecraft, and some of their peers are also playing it. We previously bought the Switch version, but its online capabilities are quite poor, and the device performance is subpar, resulting in a less-than-ideal experience. Thus, I began considering the idea of setting up our own server. Of course, you can play in multiplayer with friends, but the game ends as soon as the host goes offline, which is not as good as having a server that is always online.</p>
+<p>For version selection, there is the NetEase version, the official Java version, and the Bedrock version. Based on my previous understanding, the NetEase version has all sorts of anti-addiction regulations, so that&rsquo;s a no-go. The Java version server setup seems to rely on third-party launchers, resembling piracy to some extent. Therefore, I decided on the Bedrock version. Another reason for choosing the Bedrock version is its origins as the mobile version of Minecraft, and Microsoft later <a href="https://minecraft.fandom.com/zh/wiki/%E5%9F%BA%E5%B2%A9%E7%89%88?variant=zh">expanded support to more platforms</a>, making it the most versatile. Additionally, its core is written in C++, which should offer better performance and resource efficiency.</p>
+<h2 id="downloading-the-server-software">Downloading the Server Software</h2>
+<p>I downloaded the <a href="https://www.minecraft.net/en-us/download/server/bedrock">Ubuntu version</a>. While I also downloaded the Windows version and managed to run it, I’m not experienced in managing Windows Server, and the Windows version has some quirks. I won’t delve into those here.</p>
+<h2 id="local-network-server">Local Network Server</h2>
+<p>Initially, I intended to use an old Thinkpad, but couldn&rsquo;t find it, and ended up using an old Macbook. After updating everything, I found that the old Macbook was still quite robust, outperforming the Thinkpad. So, I set up a virtual machine. I discovered that Ubuntu Server no longer supports direct ISO downloads, requiring Multipass to launch instead.</p>
+<p>What is Multipass?</p>
+<p>Developed by the Ubuntu team, it is a lightweight virtualization platform. Multipass consists of <code>multipass</code> and <code>multipassd</code>. The former provides both GUI and CLI, while the latter requires root permissions and runs in the background. It can be downloaded directly or installed via brew cask.</p>
+<p>Multipass seems to only install Ubuntu Server, with some customization, such as automatically creating a user named &ldquo;ubuntu&rdquo; and key pairing. Once installed, you get a 1C 1GB virtual machine called &ldquo;primary&rdquo; that automatically mounts the user’s home directory.</p>
+<p><code>multipassd</code> is more of a pluggable virtual hypervisor supporting hyperkit and qemu by default, with hyperkit intended for Intel macOS and qemu for M1.</p>
+<p><code>multipassd</code> can also use Virtualbox as a backend hypervisor, which is more recommended because it offers bridging capabilities, whereas relying solely on port mapping would be cumbersome. It&rsquo;s not that qemu doesn&rsquo;t support bridging, but there’s an easy-to-follow <a href="https://multipass.run/docs/set-up-the-driver">Virtualbox bridging tutorial</a> on Multipass’s official documentation.</p>
+<p>I set up Virtualbox first. I must say, Oracle is generous here as it&rsquo;s still free to use. Then, I followed the steps from the link above. It&rsquo;s essential to reboot the machine after running the first step <code>sudo multipass set local.driver=virtualbox</code>, as the variable might not take effect immediately. Otherwise, the primary created will still use the old backend. Since there&rsquo;s already a default virtual machine, I didn&rsquo;t want to create another one to avoid extra resource usage. Additionally, note a few things:</p>
 <ol>
-<li>关于修改 primary 配置，我没找到用 Multipass 的修改方式，用的 vbox 的 <code>sudo VBoxManage controlvm &quot;primary&quot; --cpus 2 --memory 4096</code>（内存单位是 M）来修改的。</li>
-<li>Multipass 的 primary 或者说 mount 点在某些情况下会自动 unmount，导致错误。因此，Minecraft 的数据不能长久放在 mount 里，会 core dump。</li>
+<li>For modifying primary configuration, I didn’t find a way to do it using Multipass, so I used vbox’s command <code>sudo VBoxManage controlvm &quot;primary&quot; --cpus 2 --memory 4096</code> (where memory is in MB).</li>
+<li>The primary mount point in Multipass can automatically unmount in some situations, resulting in errors. Therefore, Minecraft data shouldn’t be stored in the mount point permanently to avoid core dumps.</li>
 </ol>
-<p>解压好服务器文件，进 tmux/screen 启动起来就好了。</p>
-<p>最后就是合上笔记本也能继续工作了，用的是 <a href="https://apps.apple.com/us/app/amphetamine/id937984704?mt=12">Amphetamine</a>，App Store 上就有，注意要把默认的允许系统在屏幕关闭后休眠去掉，去掉的时候会有些告警，自己知道就好了。</p>
-<p><strong>更新：</strong></p>
-<p>想 systemd 启动的话，可以参考<a href="https://gist.github.com/gatopeich/36ed7fab3850367bbcd8e6f40becd4e5">这个 gist</a>。
-因为 console 实际有些命令，比如 stop 这种，真正实现了 graceful shutdown，所以，还是有必要用的，所以要依靠 screen session 来创建。
-再就是启动 server 有一些环境依赖，最好写一个小脚本来启动，比如：</p>
+<p>After extracting the server files, just start it in tmux/screen.</p>
+<p>Lastly, I used <a href="https://apps.apple.com/us/app/amphetamine/id937984704?mt=12">Amphetamine</a> from the App Store to ensure that the laptop continues working when closed by disabling the default sleep setting after the screen is closed. You’ll see some warnings when doing this, but just be aware of them.</p>
+<p><strong>Update:</strong></p>
+<p>For systemd startup, you can refer to <a href="https://gist.github.com/gatopeich/36ed7fab3850367bbcd8e6f40becd4e5">this gist</a>. The server&rsquo;s console has some commands, like &ldquo;stop&rdquo;, that perform graceful shutdowns, so it&rsquo;s necessary to rely on a screen session to create it. Additionally, the server startup has some environmental dependencies, so it’s best to write a small script for starting it, like:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
 </span></span><span style="display:flex;"><span>cd /home/user/bedrock-server
 </span></span><span style="display:flex;"><span>LD_LIBRARY_PATH<span style="color:#f92672">=</span>. ./bedrock_server
-</span></span></code></pre></div><p>如果用绝对路径会有 core dump。</p>
-<h2 id="公网服务器">公网服务器</h2>
-<p>公网服务器的选择无非是内网映射到公网，或者是买一个云服务器。鉴于安全担忧，最后还是选择了买一个云服务器。虽然官网写的是支持 Ubuntu，但是，我买的 Debian 服务器运行起来也毫无问题。唯一要注意的是，基岩版走的是 UDP 协议，联通 5G 禁掉了 UDP，所以，没有 WiFi 连不上。</p>
-<h2 id="服务器监控">服务器监控</h2>
-<p>想看到服务器的状态就需要监控。对于云服务器也是，因为提供商提供的信息可能不全。我用的是 <a href="https://grafana.com/products/cloud/">Grafana Cloud</a>。</p>
-<p>使用免费版就好了，跟着 guide 选一个 linux server integration，然后，在需要监控的服务器里执行安装 Grafana Agent、验证就好了。注意把 Grafana Agent 配置文件里的 hostname 改个名字，就是个 label，方便区分不同 server。</p>
-<p>Grafana Agent 我理解是一个轻量化的 node exporter 外加一些 Prometheus 的功能，不过它也可以 remote write，所以，不用担心盘会爆。</p>
+</span></span></code></pre></div><p>Using absolute paths can lead to core dumps.</p>
+<h2 id="public-network-server">Public Network Server</h2>
+<p>For public network servers, the choices are to map the internal network to the public network or purchase a cloud server. Due to security concerns, I opted to buy a cloud server. Although the official site mentioned Ubuntu support, I found that Debian servers also run without issues. The only thing to note is that the Bedrock version uses UDP, and China Unicom’s 5G network disables UDP, so without WiFi, you cannot connect.</p>
+<h2 id="server-monitoring">Server Monitoring</h2>
+<p>To monitor the server’s status, monitoring is necessary, especially for cloud servers, as provider information might be insufficient. I used <a href="https://grafana.com/products/cloud/">Grafana Cloud</a>.</p>
+<p>Using the free version is fine, just follow the guide to select a Linux server integration, then run the Grafana Agent installation and verification on the server to be monitored. Note to change the hostname in the Grafana Agent configuration file to differentiate between different servers, which acts as a label.</p>
+<p>I understand that Grafana Agent is a lightweight node exporter with some Prometheus functionalities, but it can also remote write, so there&rsquo;s no need to worry about the disk filling up.</p>
 
 </div>
 

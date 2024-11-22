@@ -2,13 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://blog.minifish.org/posts/warp-cli/</loc>
+    <lastmod>2024-05-15T20:31:00+08:00</lastmod>
+  </url><url>
     <loc>http://blog.minifish.org/</loc>
     <lastmod>2024-05-15T20:31:00+08:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/posts/</loc>
-    <lastmod>2024-05-15T20:31:00+08:00</lastmod>
-  </url><url>
-    <loc>http://blog.minifish.org/posts/warp-cli/</loc>
     <lastmod>2024-05-15T20:31:00+08:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/posts/mc-server/</loc>
@@ -18,13 +18,10 @@
     <lastmod>2022-02-12T11:54:00+08:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/posts/mc/</loc>
-    <lastmod>2022-02-03T18:08:00+08:00</lastmod>
+    <lastmod>2022-02-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/posts/diff-mysql-pg/</loc>
     <lastmod>2021-05-09T18:13:00+08:00</lastmod>
-  </url><url>
-    <loc>http://blog.minifish.org/posts/latex-win/</loc>
-    <lastmod>2021-03-31T11:13:00+08:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/posts/github-action/</loc>
     <lastmod>2020-12-16T16:11:00+08:00</lastmod>
@@ -49,9 +46,6 @@
   </url><url>
     <loc>http://blog.minifish.org/posts/docker-win/</loc>
     <lastmod>2020-04-13T10:34:00+08:00</lastmod>
-  </url><url>
-    <loc>http://blog.minifish.org/posts/nosleeplinux/</loc>
-    <lastmod>2020-03-31T20:31:00+08:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/posts/und/</loc>
     <lastmod>2020-02-01T12:27:00+08:00</lastmod>
@@ -84,7 +78,7 @@
     <lastmod>2018-06-11T13:50:00+08:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/posts/oltp-bench/</loc>
-    <lastmod>2018-02-23T22:21:06+08:00</lastmod>
+    <lastmod>2018-02-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/posts/font/</loc>
     <lastmod>2017-12-26T22:21:06+08:00</lastmod>
@@ -99,13 +93,7 @@
     <lastmod>2017-10-16T22:21:06+08:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/posts/mysqlx-protocol/</loc>
-    <lastmod>2017-08-16T22:21:06+08:00</lastmod>
-  </url><url>
-    <loc>http://blog.minifish.org/posts/centos6-install/</loc>
-    <lastmod>2014-06-05T22:21:06+08:00</lastmod>
-  </url><url>
-    <loc>http://blog.minifish.org/posts/postgresql-practices/</loc>
-    <lastmod>2014-06-05T22:21:06+08:00</lastmod>
+    <lastmod>2017-08-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/posts/centos6-nfs/</loc>
     <lastmod>2014-06-05T22:21:06+08:00</lastmod>
@@ -113,7 +101,17 @@
     <loc>http://blog.minifish.org/posts/centos6-kvm-net-bridge/</loc>
     <lastmod>2014-06-05T22:21:06+08:00</lastmod>
   </url><url>
+    <loc>http://blog.minifish.org/posts/centos6-install/</loc>
+    <lastmod>2014-06-05T22:21:06+08:00</lastmod>
+  </url><url>
+    <loc>http://blog.minifish.org/posts/postgresql-practices/</loc>
+    <lastmod>2014-06-05T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://blog.minifish.org/categories/</loc>
+  </url><url>
+    <loc>http://blog.minifish.org/posts/latex-win/</loc>
+  </url><url>
+    <loc>http://blog.minifish.org/posts/nosleeplinux/</loc>
   </url><url>
     <loc>http://blog.minifish.org/tags/</loc>
   </url>

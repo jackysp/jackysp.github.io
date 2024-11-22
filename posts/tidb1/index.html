@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>如何阅读 TiDB 的源代码（一） &middot; Mini Fish</title>
+  <title>How to Read TiDB Source Code (Part 1) &middot; Mini Fish</title>
   <meta name="description" content="" />
 
   
@@ -50,141 +50,154 @@
 
     <main class="content container">
     <div class="post">
-  <h1>如何阅读 TiDB 的源代码（一）</h1>
+  <h1>How to Read TiDB Source Code (Part 1)</h1>
   <time datetime=2020-07-06T16:51:00&#43;0800 class="post-date">Mon, Jul 6, 2020</time>
-  <h2 id="背景">背景</h2>
-<p>TiDB 有很多源码阅读文章，人称<a href="https://pingcap.com/blog-cn/#TiDB-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB">《二十四章经》</a>。不过，介绍的角度是从宏观到微观来的，本系列试图用更容易上手的角度来介绍如何阅读 TiDB 的源代码。想达到的目的是，</p>
+  <h2 id="background">Background</h2>
+<p>There are many articles on reading the source code of TiDB, often referred to as <a href="https://pingcap.com/blog-cn/#TiDB-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB">the &ldquo;Twenty-Four Chapters Scriptures&rdquo;</a>. However, these introductions typically proceed from a macro to a micro perspective. This series attempts to introduce how to read TiDB&rsquo;s source code from an easier angle. The goals we aim to achieve are:</p>
 <ol>
-<li>可以让读者自己上手读 TiDB 的代码，而不是通过别人写好的文章来被动理解代码</li>
-<li>提供一些常用的查看代码里细节的例子，比如，查看某变量的作用域等</li>
+<li>Enable readers to start reading TiDB&rsquo;s code themselves, rather than understanding it passively through pre-written articles.</li>
+<li>Provide some common examples of looking into the details of the code, such as examining the scope of a variable.</li>
 </ol>
-<p>毕竟，授人以鱼不如授人以渔。代码经常变，而方法基本是不变的。</p>
-<p>为什么选 TiDB 来读呢？</p>
-<ol>
-<li>TiKV、PD 我都不熟悉</li>
-<li>TiDB 是跟用户直接打交道的入口，也是最容易被问到的</li>
-<li>TiDB 可以独立运行、调试，如果读完代码想跑几个 SQL 验证一下，也可以很简单地做到</li>
-</ol>
-<h2 id="准备工作">准备工作</h2>
+<p>After all, teaching people to fish is better than giving them fish. While the code changes often, the methods remain mostly unchanged.</p>
+<p>Why choose TiDB to read?</p>
 <ol>
 <li>
-<p>一台开发机</p>
-<p>TiDB 是一个纯 Golang 的工程，它不仅可以方便的在 Linux、MacOS 进行开发，也可以在 Windows 下开发。本文中所使用的环境就是 Windows 10。</p>
+<p>I am not familiar with TiKV or PD.</p>
 </li>
 <li>
-<p>TiDB 源代码一份，可以从<a href="https://github.com/pingcap/tidb">官方 repo</a> 下载</p>
+<p>TiDB is the entry point directly interacting with users and is also the most likely to be questioned.</p>
 </li>
 <li>
-<p><a href="https://golang.org/">Golang</a> 环境，跟着官网走就行，很简单</p>
-</li>
-<li>
-<p>Goland 或者 IntelliJ IDEA + Golang 插件</p>
-<p>我实际体验感受两者没有什么区别。为什么没推荐 VSCode + Golang 插件呢？主要是我用 JetBrains 全家桶习惯了，而且商业软件确实比社区软件质量要高。要长期使用的话建议付费，学生的话可以免费使用，不过每年要 renew 一下 license。</p>
+<p>TiDB can run independently and be debugged. If you want to run some SQL after reading the code to verify your understanding, it can be easily done.</p>
 </li>
 </ol>
-<h2 id="环境搭建">环境搭建</h2>
+<h2 id="preparations">Preparations</h2>
 <ol>
 <li>
-<p>安装好 Golang 环境后，记得设置下 GOPATH，通常就是，</p>
+<p>A development machine</p>
+<p>TiDB is a pure Golang project. It can be conveniently developed on Linux, MacOS, and even Windows. My environment is Windows 10.</p>
+</li>
+<li>
+<p>A copy of the TiDB source code, available for download at the <a href="https://github.com/pingcap/tidb">official repo</a>.</p>
+</li>
+<li>
+<p><a href="https://golang.org/">Golang</a> environment, following the official guide is straightforward.</p>
+</li>
+<li>
+<p>Goland or IntelliJ IDEA + Golang plugin</p>
+<p>I personally feel there&rsquo;s no difference between the two. Why not recommend VSCode + Golang plugin? Mainly because I&rsquo;m used to the JetBrains suite, and indeed commercial software tends to be higher quality than community software. For long-term use, it&rsquo;s recommended to pay for it. Students can use it for free, but need to renew the license every year.</p>
+</li>
+</ol>
+<h2 id="environment-setup">Environment Setup</h2>
+<ol>
+<li>
+<p>After installing the Golang environment, remember to set the GOPATH, which is usually:</p>
 <p><img src="/posts/images/20200706172327.png" alt="goenv"></p>
 </li>
 <li>
-<p>TiDB 代码可以不放在 GOPATH 下开发，因此，TiDB 代码放在哪都可以。我一般就是创建一个叫 work 的目录，把各种代码都丢在里面。</p>
+<p>The TiDB code doesn&rsquo;t need to be developed under the GOPATH, so you can place it anywhere. I usually create a directory called work and throw various codes in there.</p>
 </li>
 <li>
-<p>打开 Goland/IDEA，我用的是 IDEA，因为，平时要看些其他语言的代码。</p>
+<p>Open Goland/IDEA. I use IDEA because I often look at code in other languages.</p>
 </li>
 <li>
-<p>用 IDEA 打开，选 tidb 的目录</p>
+<p>Open with IDEA, select the tidb directory.</p>
 <p><img src="/posts/images/20200706174108.png" alt="src"></p>
 </li>
 <li>
-<p>这时候 IDEA 一般能自动提示设置 GOROOT 和启用 Go Modules，都根据推荐的来</p>
+<p>At this point, IDEA typically prompts you to set up GOROOT and enable Go Modules. Follow the recommendations.</p>
 </li>
 </ol>
-<p>自此环境搭建就完成了。</p>
-<h2 id="切入点">切入点</h2>
-<p>刚开始的时候，有人推荐我从 session 这个包开始看，不过，经历了一些之后，个人感觉，有两个比较好的切入点，一个是 <code>main</code> 函数，一个是 <code>dispatch</code> 函数。</p>
-<h3 id="main-函数">main 函数</h3>
-<p>TiDB 的 <code>main</code> 函数在 <a href="https://github.com/pingcap/tidb/blob/6b6096f1f18a03d655d04d67a2f21d7fbfca2e3f/tidb-server/main.go#L160">link</a> 看到。从上到下可以大体过一下启动一个 tidb-server 都做了什么。</p>
+<p>The environment setup is now complete.</p>
+<h2 id="entry-points">Entry Points</h2>
+<p>At the beginning, someone advised me to start with the session package. However, after some experience, I personally feel there are two better entry points: the <code>main</code> function and the <code>dispatch</code> function.</p>
+<h3 id="main-function">main Function</h3>
+<p>The <code>main</code> function of TiDB can be seen at <a href="https://github.com/pingcap/tidb/blob/6b6096f1f18a03d655d04d67a2f21d7fbfca2e3f/tidb-server/main.go#L160">link</a>. You can roughly go through what happens when starting a tidb-server from top to bottom.</p>
 <p><img src="/posts/images/20200706220211.png" alt="main"></p>
-<p>从上到下分别是</p>
+<p>From top to bottom:</p>
 <ul>
 <li>
-<p>解析 flag</p>
+<p>Parse flags</p>
 </li>
 <li>
-<p>输出版本信息并退出</p>
+<p>Output version information and exit</p>
 </li>
 <li>
-<p>注册 store、监控</p>
+<p>Register store and monitoring</p>
 </li>
 <li>
-<p>配置文件检查</p>
+<p>Configuration file check</p>
 </li>
 <li>
-<p>临时文件夹的初始化等</p>
+<p>Initialize temporary folders, etc.</p>
 </li>
 <li>
-<p>设置全局变量、CPU 亲和性、日志、trace、打印 server 信息、设置 binlog、设置监控</p>
+<p>Set global variables, CPU affinity, log, trace, print server information, set binlog, set monitoring</p>
 </li>
 <li>
-<p>创建 store 和 domain</p>
-<p>这里的 <code>createStoreAndDomain</code> 比较重要，重要地后台线程都在此创建。</p>
+<p>Create store and domain</p>
+<p>The <code>createStoreAndDomain</code> method is important, as critical background threads are created here.</p>
 </li>
 <li>
-<p>创建 server，注册停止信号函数</p>
+<p>Create server and register stop signal function</p>
 </li>
 <li>
-<p>启动 server</p>
-<p><code>runServer</code> 里的 <code>srv.Run()</code> 真正的把 tidb-server 给 run 了起来。
+<p>Start the server</p>
+<p>Within <code>runServer</code>, the <code>srv.Run()</code> actually brings up the tidb-server.
 <img src="/posts/images/20200706221611.png" alt="run">
-在 <code>Run()</code> 函数的这里，server 不断监听网络请求，出现新连接请求就创建一个新连接，使用一个新 goroutine 来持续为它提供服务。</p>
+In the <code>Run()</code> function here, the server continuously listens to network requests, creating a new connection for each new request and using a new goroutine to serve it continually.</p>
 </li>
 <li>
-<p>再这后面就是当 server 需要停止后，进行一些清理工作，最终把日志写出去。</p>
+<p>After this, cleanup work is done when the server needs to stop, ultimately writing out the logs.</p>
 </li>
 </ul>
-<p>至此，整个 <code>main</code> 函数结束。使用 <code>main</code> 函数可以看到一个 server 从创建到销毁的全生命周期。</p>
-<p>另外，结合 IDEA 还可以轻松的启动、调试 TiDB。点击下图这个三角</p>
+<p>Thus, the entire <code>main</code> function process ends. Through the <code>main</code> function, you can see the complete lifecycle of a server from creation to destruction.</p>
+<p>Additionally, with IDEA, you can easily start and debug TiDB. Click on this triangle symbol as shown in the image below:</p>
 <p><img src="/posts/images/20200706222247.png" alt="run1"></p>
 <p><img src="/posts/images/20200706222457.png" alt="run2"></p>
-<p>会弹出 run 和 debug <code>main</code> 函数的选项，本质就是启动了一个使用默认配置的 TiDB，TiDB 默认用 mocktikv 作为存储引擎，因此可以单机启动，方便做各种测试验证。</p>
-<p>至于怎么修改配置来启动、调试，会在后续的系列文章中介绍。</p>
-<h3 id="dispatch-函数">dispatch 函数</h3>
-<p>从 <code>srv.Run()</code> 里向后走不远，就到了另一个适合做切入点的函数 <code>dispatch</code>。</p>
-<p><code>dispatch</code> 函数有几个特点，</p>
+<p>A pop-up with options to run and debug the <code>main</code> function will appear. Essentially, this starts a TiDB with default configurations. TiDB defaults to using mocktikv as the storage engine, so it can be started on a single machine for various testing and validation.</p>
+<p>As for how to modify the configuration for starting and debugging, this will be introduced in subsequent articles in the series.</p>
+<h3 id="dispatch-function">dispatch Function</h3>
+<p>From here, we can proceed further to another suitable entry point function, <code>dispatch</code>.</p>
+<p>The <code>dispatch</code> function has several characteristics:</p>
 <ol>
-<li>只有来自客户端的请求才会进入 <code>dispatch</code> 函数，也就是说，从这里开始看，执行的都是用户的请求，以此为起点打断点的话，可以方便地过滤掉内部线程执行的 SQL。</li>
-<li>从这里开始，各种请求会进行分发，进入不同的处理逻辑，因此，从这开始的用户请求也是不会被漏掉的。不会出现，比如，看了半天 text 协议的代码，结果用户实际使用的是 binary 的协议。</li>
-<li><code>dispatch</code> 本身处在非常靠前的位置，也就是它的参数基本来自客户端的第一手信息，如果是 text 协议，直接读参数还可以解析出 SQL 文本。</li>
+<li>
+<p>Requests coming from clients only enter the <code>dispatch</code> function, meaning from this point onward, user requests are executed. If you set breakpoints here, you can conveniently filter out SQL executed by internal threads.</p>
+</li>
+<li>
+<p>From here, various requests are dispatched into different processing logic, ensuring you don’t miss any user requests. It avoids situations like spending significant time reading text protocol code only to find out the user is actually using a binary protocol.</p>
+</li>
+<li>
+<p><code>dispatch</code> itself is located at a very early stage, meaning its parameters mostly come directly from the client&rsquo;s initial information. If it&rsquo;s a text protocol, directly reading parameters can parse out the SQL text.</p>
+</li>
 </ol>
 <p><img src="/posts/images/20200707150344.png" alt="dispatch1"></p>
-<p><code>dispatch</code> 一开始主要就是获取 token，也就是对应 token-limit 这个参数，获取不到 token 的请求不能执行，这也就是，为什么能创建很多连接，但是最多同时执行的 SQL 默认只有 1000 个。
-然后，就进入了最重要的一个 switch case，</p>
+<p>At the start, <code>dispatch</code> primarily focuses on obtaining tokens corresponding to the token-limit parameter. Requests that can&rsquo;t get a token won&rsquo;t execute, which explains why you can create many connections but only 1000 SQL executions are allowed simultaneously by default.</p>
+<p>Next, we enter the most crucial switch case:</p>
 <p><img src="/posts/images/20200707150736.png" alt="dispatch2"></p>
-<p>在这些 command 就是 MySQL 协议的 command，所以，TiDB 到底实现了哪些，在这里就一目了然了。具体可以跟 <a href="https://dev.mysql.com/doc/internals/en/text-protocol.html">link</a> 进行对比（这个链接只有 text 协议的），全部的可以看下图。</p>
+<p>These commands are MySQL protocol commands, so it&rsquo;s apparent from here exactly what TiDB implements. For comparison, you can refer to <a href="https://dev.mysql.com/doc/internals/en/text-protocol.html">this link</a> (this link is only for the text protocol). For full details, see the figure below:</p>
 <p><img src="/posts/images/20200707151452.png" alt="dispatch3"></p>
-<p><code>dispatch</code> 里最重要的是 <code>mysql.ComQuery</code> 和 <code>mysql.ComStmtPrepare</code>、<code>mysql.ComStmtExecute</code>、<code>mysql.ComStmtClose</code> 三兄弟。后者其实
-更多地在实际生产中使用，所以更加重要。 <code>mysql.ComQuery</code> 其实一般只有一些简单测试验证中使用。</p>
-<p><code>dispatch</code> 由于是与客户端交互的入口，因此，它可以方便地统计数据库处理了多少请求。从监控统计得到的所谓 QPS，其实就是这个函数的每秒执行次数统计。这里，就引入
-一个问题。有的请求，比如，multi-query 请求，像是 select 1; select 1; select 1; 这种多条语句拼在一起发过来的，对于 dispatch 来说，只是一次请求，对于
-客户端来说，可能就是三次。如果使用 binary 协议，有些客户端会先 prepare 语句，再 execute 语句，最后 close 语句，相当于，对于客户端来说只执行了一个 SQL，
-对于数据库其实是完成了三次请求。</p>
-<p>一句话总结，用户感知到的 QPS 与 <code>dispatch</code> 函数调用次数很可能是对不上的。因此，在后面的版本里，TiDB 监控里的 QPS 面板被改成了 CPS，即 Command Per Second，
-每秒执行的 command 数量。</p>
-<p>看 <code>dispatch</code> 的调用者，也可以看到信息来解释一些经常被大家问到的问题，</p>
+<p>Within <code>dispatch</code>, the most important are <code>mysql.ComQuery</code>, as well as the trio <code>mysql.ComStmtPrepare</code>, <code>mysql.ComStmtExecute</code>, and <code>mysql.ComStmtClose</code>. The latter trio is more frequently used in actual production, hence even more important. In contrast, <code>mysql.ComQuery</code> is generally used only for some simple tests and validations.</p>
+<p>Since <code>dispatch</code> is the entry point for interfacing with clients, it can conveniently tally how many requests the database has handled. The so-called QPS derived from monitoring statistics is essentially the number of times this function executes per second. Here arises an issue: in cases like multi-query requests, such as <code>select 1; select 1; select 1;</code>, multiple statements sent together are regarded as a single request by <code>dispatch</code>, but as multiple by clients. While using the binary protocol, some clients prepare a statement, then execute, and finally close it. Seemingly equivalent to executing a single SQL from the client&rsquo;s perspective, the database actually completes three requests.</p>
+<p>In summary, users’ perceived QPS may not necessarily align with the number of <code>dispatch</code> function calls. In later versions, the QPS panel in TiDB&rsquo;s monitoring was changed to CPS, which stands for Commands Per Second, representing the number of commands executed per second.</p>
+<p>Looking at the callers of <code>dispatch</code> can also reveal information that helps explain some frequently asked questions:</p>
 <p><img src="/posts/images/20200707154120.png" alt="dispatch4"></p>
 <ol>
-<li>如果 <code>dispatch</code> 遇到了 EOF 错误，一般是客户端自己主动断开了，那数据库连接也没有必要保留，就断开了。</li>
-<li>如果发生 undetermined 错误（指的是事务进行了提交，但是，不知道是提交成功还是失败了，需要人工介入验证事务是否提交成功），此时，应该立刻人工介入，本连接也会关闭。</li>
-<li>写 binlog 失败并且 <code>ignore-error = false</code>，之前的处理是 tidb-server 进程不退出，但是不能提供服务。现在是 tidb-server 直接会退出。</li>
-<li>对于所有其他 <code>dispatch</code> 错误，连接都不会断开，会继续提供服务，但是会把失败信息用日志的形式打出来：&ldquo;command dispatched failed&rdquo;，可以说这是
-TiDB 最重要的日志之一。</li>
+<li>
+<p>An EOF error in <code>dispatch</code> typically means the client has actively disconnected, so there&rsquo;s no need to maintain the database connection, and it is severed.</p>
+</li>
+<li>
+<p>In case of an undetermined error (indicating a transaction&rsquo;s commit is uncertain—whether it has succeeded or failed needs manual intervention for verification), manual intervention is required immediately, and the connection will be closed.</p>
+</li>
+<li>
+<p>If writing binlog fails and <code>ignore-error = false</code>, previously the tidb-server process wouldn&rsquo;t exit but couldn&rsquo;t provide services. Now, the tidb-server will exit directly.</p>
+</li>
+<li>
+<p>For all other <code>dispatch</code> errors, the connection will not be closed, allowing service to continue, but the failure information will be logged as &ldquo;command dispatched failed&rdquo;, which is arguably one of the most critical logs for TiDB.</p>
+</li>
 </ol>
-<h2 id="总结">总结</h2>
-<p>至此，从环境搭建入手到找到合理切入点开始读代码的介绍就告一段落了。系列的后面会介绍一些，诸如，配置（调整、默认配置值）、变量（默认值、作用域、实际作用范围，如何生效）、
-哪些语法是支持的等等。敬请期待。</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>This concludes the introduction from setting up the environment to finding a reasonable entry point to start reading code. Subsequent posts in the series will cover aspects such as configuration (adjustments, default values), variables (default values, scope, actual range, activation), supported syntax, etc. Stay tuned.</p>
 
 </div>
 

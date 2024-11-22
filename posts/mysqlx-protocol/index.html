@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>如何在 TiDB 上实现 MySQL X Protocol&#34; &middot; Mini Fish</title>
+  <title>How to Implement MySQL X Protocol on TiDB &middot; Mini Fish</title>
   <meta name="description" content="" />
 
   
@@ -50,34 +50,34 @@
 
     <main class="content container">
     <div class="post">
-  <h1>如何在 TiDB 上实现 MySQL X Protocol&#34;</h1>
-  <time datetime=2017-08-16T22:21:06&#43;0800 class="post-date">Wed, Aug 16, 2017</time>
-  <h1 id="mysql-的一些文档">MySQL 的一些文档</h1>
+  <h1>How to Implement MySQL X Protocol on TiDB</h1>
+  <time datetime=2017-08-16T00:00:00Z class="post-date">Wed, Aug 16, 2017</time>
+  <h1 id="some-documents-on-mysql">Some Documents on MySQL</h1>
 <ul>
-<li>客户端使用指南 <a href="https://dev.mysql.com/doc/refman/5.7/en/mysql-shell.html">MySQL Shell User Guide</a></li>
-<li>服务端配置指南 <a href="https://dev.mysql.com/doc/refman/5.7/en/document-store.html">Using MySQL as a Document Store</a></li>
-<li>应用开发接口指南 <a href="https://dev.mysql.com/doc/x-devapi-userguide/en/">X DevAPI User Guide</a></li>
-<li>服务端内部实现介绍 <a href="https://dev.mysql.com/doc/internals/en/x-protocol.html">X Protocol</a>.</li>
+<li>Client Usage Guide <a href="https://dev.mysql.com/doc/refman/5.7/en/mysql-shell.html">MySQL Shell User Guide</a></li>
+<li>Server Configuration Guide <a href="https://dev.mysql.com/doc/refman/5.7/en/document-store.html">Using MySQL as a Document Store</a></li>
+<li>Application Development API Guide <a href="https://dev.mysql.com/doc/x-devapi-userguide/en/">X DevAPI User Guide</a></li>
+<li>Introduction to Server Internal Implementation <a href="https://dev.mysql.com/doc/internals/en/x-protocol.html">X Protocol</a>.</li>
 </ul>
-<h1 id="实现原理">实现原理</h1>
+<h1 id="implementation-principle">Implementation Principle</h1>
 <ul>
-<li>客户端与服务端之间靠 tcp 通信，协议使用了 protobuf 。</li>
-<li>服务端接收到消息后，把消息解码后分析。协议中包含了 namespace 这样一个概念，具体是指，如果 namespace 为空或者 &ldquo;sql&rdquo; ，则消息内容按照 sql 语句来执行，如果为 &ldquo;xplugin&rdquo; 、 &ldquo;mysqlx&rdquo; 则消息按照其他方式来处理。其他方式又可分为：
+<li>Communication between client and server is over TCP and the protocol uses protobuf.</li>
+<li>After the server receives a message, it decodes and analyzes it. The protocol includes a concept called namespace, which specifically refers to whether the namespace is empty or &ldquo;sql&rdquo;, in which case the message content is executed as a SQL statement; if it is &ldquo;xplugin&rdquo; or &ldquo;mysqlx,&rdquo; the message is handled in another way. The other ways can be divided into:
 <ul>
-<li>管理命令</li>
-<li>CRUD 操作</li>
+<li>Administrative commands</li>
+<li>CRUD operations</li>
 </ul>
 </li>
-<li>&ldquo;xplugin&rdquo; 和 &ldquo;mysqlx&rdquo; 作用完全相同，后者是前者的新名字，为了保持兼容暂时没有去掉前者。</li>
-<li>&ldquo;mysqlx&rdquo; 的消息除了个别如 kill_client 这样的明显的命令内容外，都是用拼 sql 的方式，转给服务端进行处理。也就是大部分也变成了 namespace 为 &ldquo;sql&rdquo; 的形式。</li>
+<li>&ldquo;xplugin&rdquo; and &ldquo;mysqlx&rdquo; have the same function, with the latter being the new name for the former, retained temporarily for compatibility.</li>
+<li>The content of &ldquo;mysqlx&rdquo; messages, apart from explicit command content like kill_client, are mostly transformed into SQL statements which the server processes, essentially turning most into a form where the namespace is &ldquo;sql&rdquo;.</li>
 </ul>
-<h1 id="实现步骤">实现步骤</h1>
+<h1 id="implementation-steps">Implementation Steps</h1>
 <ol>
-<li>给 TiDB 启动一个新的 server 。需要相关的配置参数， ip 、 port 、 socket 之类的东西。</li>
-<li>实现消息通讯的读和写功能。</li>
-<li>需要为这个新 server 写一个建立连接的过程，包括认证等内容，过程要遵循协议。为了得到协议内容，可使用 tcpdump 来抓取 MySQL 与客户端的消息内容。再结合对 MySQL 源代码的理解来实现这个过程。</li>
-<li>server 中要包含原 TiDB server 的 Query Context 等内容，因为主要还是要转成 sql 去执行。</li>
-<li>实现对消息的解码处理。虽然只有一句话，但是包含的工作量巨大。</li>
+<li>Start a new server for TiDB. The relevant configuration parameters such as IP, port, and socket need to be set.</li>
+<li>Implement the reading and writing functionality for message communication.</li>
+<li>Write a process for this new server to establish connections, including authentication, that follows the protocol. Use tcpdump to capture messages between MySQL and the client to derive protocol content, implementing the process by understanding MySQL source code.</li>
+<li>The server should include contents like the Query Context from the original TiDB server, as it primarily translates into SQL for execution.</li>
+<li>Implement the decoding and handling of messages. Although only a sentence, the workload included is substantial.</li>
 </ol>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->

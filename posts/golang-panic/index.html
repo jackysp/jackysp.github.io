@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Golang panic 的实时性是怎样的 &middot; Mini Fish</title>
+  <title>How Immediate is Golang&#39;s Panic &middot; Mini Fish</title>
   <meta name="description" content="" />
 
   
@@ -50,9 +50,9 @@
 
     <main class="content container">
     <div class="post">
-  <h1>Golang panic 的实时性是怎样的</h1>
+  <h1>How Immediate is Golang&#39;s Panic</h1>
   <time datetime=2018-07-26T14:24:00&#43;0800 class="post-date">Thu, Jul 26, 2018</time>
-  <p>先看下面这段代码，</p>
+  <p>Let&rsquo;s first look at the following code snippet:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
@@ -80,7 +80,7 @@
 </span></span><span style="display:flex;"><span>		}
 </span></span><span style="display:flex;"><span>	}
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>编译完之后，运行，会得到下面的错误（前提你的机器有 2 个及以上的核），</p>
+</span></span></code></pre></div><p>After compiling and running it (assuming your machine has 2 or more cores), you will get the following error:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>fatal error: concurrent map read and map write
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>goroutine 1 [running]:
@@ -102,8 +102,8 @@
 </span></span><span style="display:flex;"><span>        /Users/yusp/test/panic3/main.go:18 +0x61
 </span></span><span style="display:flex;"><span>created by main.main
 </span></span><span style="display:flex;"><span>        /Users/yusp/test/panic3/main.go:13 +0x59
-</span></span></code></pre></div><p>看起来没什么问题，golang 的 map 不是线程安全的，同时读写会造成 panic。但是看下 <code>/Users/yusp/test/panic3/main.go:18 +0x61</code> 这行错误信息，main.go 的 18 行是 Sleep，也就是并不是并发问题的现场。在一个庞大的栈信息里，就更不可能定位到出问题的地方了。</p>
-<p>解决方法目前想到的是，如果是只看到了读的栈，想看写的，那么在读的位置设置变量，读完后复原该变量，在写的位置检测该变量的值，如果正在读，就 panic 出来。</p>
+</span></span></code></pre></div><p>It seems straightforward; Golang&rsquo;s map is not thread-safe, and concurrent read and write cause a panic. However, look at the error information on line <code>/Users/yusp/test/panic3/main.go:18 +0x61</code>, which points to line 18 of main.go where <code>Sleep</code> is called, not the actual point of concurrency issue. In a vast stack trace, it becomes even harder to locate the problem.</p>
+<p>A workaround that comes to mind is if you only see the read stack and want to see the write stack, set a variable at the read position, reset it after reading, and check the value of this variable at the write position. If reading is currently happening, panic will be triggered.</p>
 
 </div>
 

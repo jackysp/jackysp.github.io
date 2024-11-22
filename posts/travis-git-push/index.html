@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>如何在 travis ci 里执行 git push &middot; Mini Fish</title>
+  <title>How to Execute Git Push in Travis CI &middot; Mini Fish</title>
   <meta name="description" content="" />
 
   
@@ -50,13 +50,13 @@
 
     <main class="content container">
     <div class="post">
-  <h1>如何在 travis ci 里执行 git push</h1>
+  <h1>How to Execute Git Push in Travis CI</h1>
   <time datetime=2017-10-16T22:21:06&#43;0800 class="post-date">Mon, Oct 16, 2017</time>
-  <h2 id="背景">背景</h2>
-<p>Travis ci 一般用来自动化的跑下测试，而不需要将跑出来的内容更新回 repo 。本文介绍了怎么将 travis 的结果进行自动提交。</p>
-<h2 id="过程">过程</h2>
-<p>基本过程参考了<a href="https://gist.github.com/Maumagnaguagno/84a9807ed71d233e5d3f">这个gist</a>。</p>
-<p>将它的 <code>.travis.yml</code> 贴在下面。</p>
+  <h2 id="background">Background</h2>
+<p>Travis CI is generally used for automating tests without needing to update the repository with the test outputs. This article explains how to automatically commit the results from Travis CI.</p>
+<h2 id="process">Process</h2>
+<p>The basic process references <a href="https://gist.github.com/Maumagnaguagno/84a9807ed71d233e5d3f">this gist</a>.</p>
+<p>Below is the <code>.travis.yml</code> from the gist.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">language</span>: <span style="color:#ae81ff">ruby</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">rvm</span>:
 </span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">2.0.0</span>
@@ -81,8 +81,8 @@
 </span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git add ${FILES}</span>
 </span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git commit -m &#34;${MESSAGE}&#34;</span>
 </span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git push &#34;https://${GH_TOKEN}@${GH_REPO}&#34; master &gt; /dev/null 2&gt;&amp;1</span>
-</span></span></code></pre></div><p>这里注意 MESSAGE 在 commit 的时候要加个引号，原 gist 没加。</p>
-<p>原文的 README ：</p>
+</span></span></code></pre></div><p>Note here that MESSAGE should be quoted when committing, which the original gist did not include.</p>
+<p>Original README:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># Travis-CI tested push
 </span></span><span style="display:flex;"><span>Sometimes we have a private repository to hold both problems and solutions as a reference for the class projects.
 </span></span><span style="display:flex;"><span>The students can see only the problems in a public repository where they are able to clone/fork and develop their own solutions.
@@ -102,18 +102,18 @@
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Go to Travis to unlock your private repo tests
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Push your files to the private repo to test
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Travis now have a [<span style="color:#f92672">deployment</span>](<span style="color:#a6e22e">https://docs.travis-ci.com/user/deployment/</span>) feature, which may be better for certain scenarios.
-</span></span></code></pre></div><p>简单翻译一下：</p>
+</span></span><span style="display:flex;"><span>Travis now has a [<span style="color:#f92672">deployment</span>](<span style="color:#a6e22e">https://docs.travis-ci.com/user/deployment/</span>) feature, which may be better for certain scenarios.
+</span></span></code></pre></div><p>A simple translation:</p>
 <ol>
-<li>创建 github 工程。原文看起来是创建了两个工程，一个工程用来更新另一个。</li>
-<li>安装 Ruby。一般同时安装了 gem 。</li>
-<li>通过 <code>gem install travis</code> 安装 travis 。</li>
-<li>给自己的 github 账号申请一个 token 。具体可以 Google 。需要注意的是 token 权限选择里，勾选 repo 相关的所有权限就可以了，其他无关的没必要选上。</li>
-<li>复制生成后的 token 。</li>
-<li>在本地机器上的 repo 根目录里（是不是必须根目录我也不清楚）<code>travis encrypt GH_TOKEN=&quot;上面复制的 token &quot;</code>。这就创建了一个经过加密的 token ，这个 token 在使用的时候 <code>${GH_TOKEN}</code> 这样用。其实就是个环境变量。具体原理应该就是把 github 的 token 加密了一下。前面这个命令会输出一个字符串到屏幕，需要自己粘贴进 travis 配置文件，放在 secure: 后面。可以使用 <code>travis encrypt GH_TOKEN=&quot;上面复制的 token &quot; --add</code> 来直接写进配置文件里。</li>
-<li>提交修改的配置文件。</li>
+<li>Create a GitHub project. The original seems to have created two projects, one for updating another.</li>
+<li>Install Ruby. Usually, gem is installed alongside.</li>
+<li>Install travis via <code>gem install travis</code>.</li>
+<li>Apply for a token for your GitHub account. You can Google the details. When selecting token permissions, only tick all related to repo; others can be omitted.</li>
+<li>Copy the generated token.</li>
+<li>In the root directory of the local machine&rsquo;s repo (not sure if it must be the root) run <code>travis encrypt GH_TOKEN=&quot;copied token&quot;</code>. This creates an encrypted token to use as <code>${GH_TOKEN}</code>, essentially an environment variable. The command output, a string on the screen, needs to be pasted into the travis config file after secure:. Use <code>travis encrypt GH_TOKEN=&quot;copied token&quot; --add</code> to write directly into the config file.</li>
+<li>Commit the modified configuration file.</li>
 </ol>
-<p>没有完全按照上面的文字翻译。<strong>上面这段内容更适用于下面这份我自己的配置文件：</strong></p>
+<p>This translation is not strictly literal. <strong>The above content is more suited to the following personal configuration:</strong></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">language</span>: <span style="color:#ae81ff">ruby</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">branches</span>:
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">only</span>:
@@ -142,7 +142,7 @@
 </span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git add --all</span>
 </span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git commit -m &#34;${MESSAGE}&#34;</span>
 </span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git push --force origin master</span>
-</span></span></code></pre></div><p>这份文件是用来自动更新 jekyll 创建的 blog 的。分了两个工程，一个存源文件，一个存编译后的 html 文件。做这个的原因是，希望不用自己搭 jekyll 的环境也可以更新 blog 。这样即使是用在 github 网页上也可以更新 blog 了。</p>
+</span></span></code></pre></div><p>This configuration is used for automatically updating a blog created with Jekyll. There are two projects, one for source files and another for compiled HTML files. The purpose of this setup is to allow updating the blog without having to set up a Jekyll environment, even allowing updates directly from the GitHub website.</p>
 
 </div>
 
