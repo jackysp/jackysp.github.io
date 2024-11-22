@@ -5,7 +5,7 @@
     <link>http://blog.minifish.org/posts/</link>
     <description>Recent content in Posts on Mini Fish</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
+    <language>en-US</language>
     <lastBuildDate>Wed, 15 May 2024 20:31:00 +0800</lastBuildDate><atom:link href="http://blog.minifish.org/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Encounter with a Major Issue with Cloudflare Warp: A Life and Death Rescue for VPS</title>
@@ -103,7 +103,7 @@
       <pubDate>Sun, 12 Jul 2020 12:09:00 +0800</pubDate>
       
       <guid>http://blog.minifish.org/posts/tidb2/</guid>
-      <description></description>
+      <description>Continuing from the previous article, we learned how to set up the environment for reading code and where to start reading the code.</description>
     </item>
     
     <item>
@@ -301,7 +301,7 @@
       <pubDate>Thu, 05 Jun 2014 00:00:00 +0000</pubDate>
       
       <guid>http://blog.minifish.org/posts/postgresql-practices/</guid>
-      <description></description>
+      <description>The text provided is a detailed set of instructions and queries for practicing SQL using PostgreSQL 9.</description>
     </item>
     
     <item>
