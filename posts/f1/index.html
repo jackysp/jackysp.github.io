@@ -3,7 +3,7 @@
 <head>
   <link href="https://gmpg.org/xfn/11" rel="profile">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.119.0">
+  <meta name="generator" content="Hugo 0.139.0">
 
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,18 +72,18 @@
 </ul>
 <p>Summarized in a table:</p>
 <table>
-<thead>
-<tr>
-<th>delete only</th>
-<th>write only</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Tables and columns can only be deleted; indexes can be updated (tables not really)</td>
-<td>Columns and indexes can be deleted, updated, and inserted</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>delete only</th>
+          <th>write only</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Tables and columns can only be deleted; indexes can be updated (tables not really)</td>
+          <td>Columns and indexes can be deleted, updated, and inserted</td>
+      </tr>
+  </tbody>
 </table>
 <p>The first state is rather peculiar, and the second one even more so—&ldquo;can not read&rdquo; might have been a better name for it. It&rsquo;s said that this design allows two concurrent states to behave consistently, specifically pairs like (absent and delete only), (delete only and write only), and (write only and public).</p>
 <p>Examples:</p>
@@ -140,7 +140,7 @@
 
 <h2>Comments</h2>
 <div id="disqus_thread"></div>
-<script type="application/javascript">
+<script>
     window.disqus_config = function () {
     
     

@@ -23,6 +23,9 @@
     <loc>http://blog.minifish.org/posts/diff-mysql-pg/</loc>
     <lastmod>2021-05-09T18:13:00+08:00</lastmod>
   </url><url>
+    <loc>http://blog.minifish.org/posts/latex-win/</loc>
+    <lastmod>2021-03-31T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://blog.minifish.org/posts/github-action/</loc>
     <lastmod>2020-12-16T16:11:00+08:00</lastmod>
   </url><url>
@@ -46,6 +49,9 @@
   </url><url>
     <loc>http://blog.minifish.org/posts/docker-win/</loc>
     <lastmod>2020-04-13T10:34:00+08:00</lastmod>
+  </url><url>
+    <loc>http://blog.minifish.org/posts/nosleeplinux/</loc>
+    <lastmod>2020-03-31T20:31:00+08:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/posts/und/</loc>
     <lastmod>2020-02-01T12:27:00+08:00</lastmod>
@@ -108,10 +114,6 @@
     <lastmod>2014-06-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/categories/</loc>
-  </url><url>
-    <loc>http://blog.minifish.org/posts/latex-win/</loc>
-  </url><url>
-    <loc>http://blog.minifish.org/posts/nosleeplinux/</loc>
   </url><url>
     <loc>http://blog.minifish.org/tags/</loc>
   </url>
