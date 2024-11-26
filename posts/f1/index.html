@@ -27,7 +27,7 @@
   
 </head>
 
-  <body class="theme-base-0d ">
+  <body class=" ">
   <aside class="sidebar">
   <div class="container sidebar-sticky">
     <div class="sidebar-about">
@@ -52,13 +52,13 @@
     <div class="post">
   <h1>How to Understand F1&#39;s Schema Change</h1>
   <time datetime=2017-12-25T22:21:06&#43;0800 class="post-date">Mon, Dec 25, 2017</time>
-  <h1 id="background">Background</h1>
+  <h2 id="background">Background</h2>
 <p>The DDL paper on F1 serves as the foundation for TiDB&rsquo;s DDL implementation. There are two main papers on F1: one provides an overview of F1&rsquo;s DDL, and the other specifically details the schema change method for DDL. I personally believe the second is key and more confusing to me. There is an <a href="http://www.ifi.uzh.ch/dbtg/teaching/courses/SDBS/Papaioannou.pdf">introduction to the second paper</a> here, which can help in understanding.</p>
-<h1 id="understanding">Understanding</h1>
-<h2 id="online-ddl-concept">Online DDL Concept</h2>
+<h2 id="understanding">Understanding</h2>
+<h3 id="online-ddl-concept">Online DDL Concept</h3>
 <p>The DDL discussed here refers to online DDL. The concept of online DDL originates from databases like MySQL, whereas PostgreSQL and similar databases might not support it. This concept is also quite vague; the distinction is whether you need to use exclusive locks during DDL operations to block transactions. Therefore, all databases can perform online DDL; it just depends on whether they&rsquo;re willing to put in the effort. For traditional businesses where 24/7 availability isn&rsquo;t a priority, DDL operations can be performed during maintenance times or late at night. Even if a few users are online, at most, they might experience minor delays. However, modern internet businesses are strict about maintenance windows, creating a higher demand for non-blocking DDL, which MySQL, as a quintessential internet database, was first to support. The typical implementation involves creating a copy of the schema table, with operations being sent to both the new and old tables during the transition.</p>
 <p>For MySQL&rsquo;s supported online DDL, see <a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-create-index-overview.html">this webpage</a>. Primarily, it&rsquo;s categorized into operations on indexes and columns. This explains my curiosity about why TiDB&rsquo;s examples for implementation often involve adding indexes.</p>
-<h2 id="f1s-method">F1&rsquo;s Method</h2>
+<h3 id="f1s-method">F1&rsquo;s Method</h3>
 <p>Having worked on something similar to Aurora before, there were many issues with this area. If you&rsquo;re only performing offline DDL, it doesn&rsquo;t have to be this complicated. According to F1&rsquo;s paper, it uses the following series of state changes to accomplish a DDL:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>                                    (reorganization)
 </span></span><span style="display:flex;"><span>absent -&gt; delete only -&gt; write only ---------------&gt; public

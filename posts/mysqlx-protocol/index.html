@@ -27,7 +27,7 @@
   
 </head>
 
-  <body class="theme-base-0d ">
+  <body class=" ">
   <aside class="sidebar">
   <div class="container sidebar-sticky">
     <div class="sidebar-about">
@@ -52,14 +52,14 @@
     <div class="post">
   <h1>How to Implement MySQL X Protocol on TiDB</h1>
   <time datetime=2017-08-16T00:00:00Z class="post-date">Wed, Aug 16, 2017</time>
-  <h1 id="some-documents-on-mysql">Some Documents on MySQL</h1>
+  <h2 id="some-documents-on-mysql">Some Documents on MySQL</h2>
 <ul>
 <li>Client Usage Guide <a href="https://dev.mysql.com/doc/refman/5.7/en/mysql-shell.html">MySQL Shell User Guide</a></li>
 <li>Server Configuration Guide <a href="https://dev.mysql.com/doc/refman/5.7/en/document-store.html">Using MySQL as a Document Store</a></li>
 <li>Application Development API Guide <a href="https://dev.mysql.com/doc/x-devapi-userguide/en/">X DevAPI User Guide</a></li>
 <li>Introduction to Server Internal Implementation <a href="https://dev.mysql.com/doc/internals/en/x-protocol.html">X Protocol</a>.</li>
 </ul>
-<h1 id="implementation-principle">Implementation Principle</h1>
+<h2 id="implementation-principle">Implementation Principle</h2>
 <ul>
 <li>Communication between client and server is over TCP and the protocol uses protobuf.</li>
 <li>After the server receives a message, it decodes and analyzes it. The protocol includes a concept called namespace, which specifically refers to whether the namespace is empty or &ldquo;sql&rdquo;, in which case the message content is executed as a SQL statement; if it is &ldquo;xplugin&rdquo; or &ldquo;mysqlx,&rdquo; the message is handled in another way. The other ways can be divided into:
@@ -71,7 +71,7 @@
 <li>&ldquo;xplugin&rdquo; and &ldquo;mysqlx&rdquo; have the same function, with the latter being the new name for the former, retained temporarily for compatibility.</li>
 <li>The content of &ldquo;mysqlx&rdquo; messages, apart from explicit command content like kill_client, are mostly transformed into SQL statements which the server processes, essentially turning most into a form where the namespace is &ldquo;sql&rdquo;.</li>
 </ul>
-<h1 id="implementation-steps">Implementation Steps</h1>
+<h2 id="implementation-steps">Implementation Steps</h2>
 <ol>
 <li>Start a new server for TiDB. The relevant configuration parameters such as IP, port, and socket need to be set.</li>
 <li>Implement the reading and writing functionality for message communication.</li>
@@ -152,110 +152,110 @@
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> ngs<span style="color:#f92672">::</span>Error(ER_UNKNOWN_COM_ERROR, <span style="color:#e6db74">&#34;Unexpected message received&#34;</span>);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>The rest is filling in the gaps.</p>
-<pre tabindex="0"><code>Client::run =&gt; Client::handle_message =&gt; Session::handle_message =&gt; Session::handle_auth_message =&gt; some auth handlers
-                                                                 =&gt; Session::handle_ready_message =&gt; xpl::dispatcher::dispatch_command =&gt; ngs::Error_code do_dispatch_command =&gt; some crud handlers
-</code></pre><p>Mapping between MySQL type and X protocol type</p>
-<pre tabindex="0"><code>//     ================= ============ ======= ========== ====== ========
-//     SQL Type          .type        .length .frac_dig  .flags .charset
-//     ================= ============ ======= ========== ====== ========
-//     TINY              SINT         x
-//     TINY UNSIGNED     UINT         x                  x
-//     SHORT             SINT         x
-//     SHORT UNSIGNED    UINT         x                  x
-//     INT24             SINT         x
-//     INT24 UNSIGNED    UINT         x                  x
-//     INT               SINT         x
-//     INT UNSIGNED      UINT         x                  x
-//     LONGLONG          SINT         x
-//     LONGLONG UNSIGNED UINT         x                  x
-//     DOUBLE            DOUBLE       x       x          x
-//     FLOAT             FLOAT        x       x          x
-//     DECIMAL           DECIMAL      x       x          x
-//     VARCHAR,CHAR,...  BYTES        x                  x      x
-//     GEOMETRY          BYTES
-//     TIME              TIME         x
-//     DATE              DATETIME     x
-//     DATETIME          DATETIME     x
-//     YEAR              UINT         x                  x
-//     TIMESTAMP         DATETIME     x
-//     SET               SET                                    x
-//     ENUM              ENUM                                   x
-//     NULL              BYTES
-//     BIT               BIT          x
-//     ================= ============ ======= ========== ====== ========
-</code></pre><p>The first SQL field information of MySQL:</p>
-<pre tabindex="0"><code>Field   1:  `@@lower_case_table_names`
-Catalog:    `def`
-Database:   ``
-Table:      ``
-Org_table:  ``
-Type:       LONGLONG
-Collation:  binary (63)
-Length:     21
-Max_length: 1
-Decimals:   0
-Flags:      UNSIGNED BINARY NUM 
-
-Field   2:  `connection_id()`
-Catalog:    `def`
-Database:   ``
-Table:      ``
-Org_table:  ``
-Type:       LONGLONG
-Collation:  binary (63)
-Length:     21
-Max_length: 1
-Decimals:   0
-Flags:      NOT_NULL UNSIGNED BINARY NUM 
-
-Field   3:  `variable_value`
-Catalog:    `def`
-Database:   `performance_schema`
-Table:      `session_status`
-Org_table:  `session_status`
-Type:       VAR_STRING
-Collation:  utf8_general_ci (33)
-Length:     3072
-Max_length: 0
-Decimals:   0
-Flags:      
-</code></pre><p>For TiDB:</p>
-<pre tabindex="0"><code>Field   1:  `@@lower_case_table_names`
-Catalog:    `def`
-Database:   ``
-Table:      ``
-Org_table:  ``
-Type:       STRING
-Collation:  ? (0)
-Length:     0
-Max_length: 1
-Decimals:   31
-Flags:      
-
-Field   2:  `connection_id()`
-Catalog:    `def`
-Database:   ``
-Table:      ``
-Org_table:  ``
-Type:       LONGLONG
-Collation:  binary (63)
-Length:     20
-Max_length: 1
-Decimals:   0
-Flags:      UNSIGNED BINARY NUM 
-
-Field   3:  `variable_value`
-Catalog:    `def`
-Database:   ``
-Table:      ``
-Org_table:  ``
-Type:       STRING
-Collation:  utf8_general_ci (33)
-Length:     1024
-Max_length: 0
-Decimals:   0
-Flags:      
-</code></pre>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Client::run =&gt; Client::handle_message =&gt; Session::handle_message =&gt; Session::handle_auth_message =&gt; some auth handlers
+</span></span><span style="display:flex;"><span>                                                                 =&gt; Session::handle_ready_message =&gt; xpl::dispatcher::dispatch_command =&gt; ngs::Error_code do_dispatch_command =&gt; some crud handlers
+</span></span></code></pre></div><p>Mapping between MySQL type and X protocol type</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>//     ================= ============ ======= ========== ====== ========
+</span></span><span style="display:flex;"><span>//     SQL Type          .type        .length .frac_dig  .flags .charset
+</span></span><span style="display:flex;"><span>//     ================= ============ ======= ========== ====== ========
+</span></span><span style="display:flex;"><span>//     TINY              SINT         x
+</span></span><span style="display:flex;"><span>//     TINY UNSIGNED     UINT         x                  x
+</span></span><span style="display:flex;"><span>//     SHORT             SINT         x
+</span></span><span style="display:flex;"><span>//     SHORT UNSIGNED    UINT         x                  x
+</span></span><span style="display:flex;"><span>//     INT24             SINT         x
+</span></span><span style="display:flex;"><span>//     INT24 UNSIGNED    UINT         x                  x
+</span></span><span style="display:flex;"><span>//     INT               SINT         x
+</span></span><span style="display:flex;"><span>//     INT UNSIGNED      UINT         x                  x
+</span></span><span style="display:flex;"><span>//     LONGLONG          SINT         x
+</span></span><span style="display:flex;"><span>//     LONGLONG UNSIGNED UINT         x                  x
+</span></span><span style="display:flex;"><span>//     DOUBLE            DOUBLE       x       x          x
+</span></span><span style="display:flex;"><span>//     FLOAT             FLOAT        x       x          x
+</span></span><span style="display:flex;"><span>//     DECIMAL           DECIMAL      x       x          x
+</span></span><span style="display:flex;"><span>//     VARCHAR,CHAR,...  BYTES        x                  x      x
+</span></span><span style="display:flex;"><span>//     GEOMETRY          BYTES
+</span></span><span style="display:flex;"><span>//     TIME              TIME         x
+</span></span><span style="display:flex;"><span>//     DATE              DATETIME     x
+</span></span><span style="display:flex;"><span>//     DATETIME          DATETIME     x
+</span></span><span style="display:flex;"><span>//     YEAR              UINT         x                  x
+</span></span><span style="display:flex;"><span>//     TIMESTAMP         DATETIME     x
+</span></span><span style="display:flex;"><span>//     SET               SET                                    x
+</span></span><span style="display:flex;"><span>//     ENUM              ENUM                                   x
+</span></span><span style="display:flex;"><span>//     NULL              BYTES
+</span></span><span style="display:flex;"><span>//     BIT               BIT          x
+</span></span><span style="display:flex;"><span>//     ================= ============ ======= ========== ====== ========
+</span></span></code></pre></div><p>The first SQL field information of MySQL:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Field   1:  `@@lower_case_table_names`
+</span></span><span style="display:flex;"><span>Catalog:    `def`
+</span></span><span style="display:flex;"><span>Database:   ``
+</span></span><span style="display:flex;"><span>Table:      ``
+</span></span><span style="display:flex;"><span>Org_table:  ``
+</span></span><span style="display:flex;"><span>Type:       LONGLONG
+</span></span><span style="display:flex;"><span>Collation:  binary (63)
+</span></span><span style="display:flex;"><span>Length:     21
+</span></span><span style="display:flex;"><span>Max_length: 1
+</span></span><span style="display:flex;"><span>Decimals:   0
+</span></span><span style="display:flex;"><span>Flags:      UNSIGNED BINARY NUM 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Field   2:  `connection_id()`
+</span></span><span style="display:flex;"><span>Catalog:    `def`
+</span></span><span style="display:flex;"><span>Database:   ``
+</span></span><span style="display:flex;"><span>Table:      ``
+</span></span><span style="display:flex;"><span>Org_table:  ``
+</span></span><span style="display:flex;"><span>Type:       LONGLONG
+</span></span><span style="display:flex;"><span>Collation:  binary (63)
+</span></span><span style="display:flex;"><span>Length:     21
+</span></span><span style="display:flex;"><span>Max_length: 1
+</span></span><span style="display:flex;"><span>Decimals:   0
+</span></span><span style="display:flex;"><span>Flags:      NOT_NULL UNSIGNED BINARY NUM 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Field   3:  `variable_value`
+</span></span><span style="display:flex;"><span>Catalog:    `def`
+</span></span><span style="display:flex;"><span>Database:   `performance_schema`
+</span></span><span style="display:flex;"><span>Table:      `session_status`
+</span></span><span style="display:flex;"><span>Org_table:  `session_status`
+</span></span><span style="display:flex;"><span>Type:       VAR_STRING
+</span></span><span style="display:flex;"><span>Collation:  utf8_general_ci (33)
+</span></span><span style="display:flex;"><span>Length:     3072
+</span></span><span style="display:flex;"><span>Max_length: 0
+</span></span><span style="display:flex;"><span>Decimals:   0
+</span></span><span style="display:flex;"><span>Flags:      
+</span></span></code></pre></div><p>For TiDB:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Field   1:  `@@lower_case_table_names`
+</span></span><span style="display:flex;"><span>Catalog:    `def`
+</span></span><span style="display:flex;"><span>Database:   ``
+</span></span><span style="display:flex;"><span>Table:      ``
+</span></span><span style="display:flex;"><span>Org_table:  ``
+</span></span><span style="display:flex;"><span>Type:       STRING
+</span></span><span style="display:flex;"><span>Collation:  ? (0)
+</span></span><span style="display:flex;"><span>Length:     0
+</span></span><span style="display:flex;"><span>Max_length: 1
+</span></span><span style="display:flex;"><span>Decimals:   31
+</span></span><span style="display:flex;"><span>Flags:      
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Field   2:  `connection_id()`
+</span></span><span style="display:flex;"><span>Catalog:    `def`
+</span></span><span style="display:flex;"><span>Database:   ``
+</span></span><span style="display:flex;"><span>Table:      ``
+</span></span><span style="display:flex;"><span>Org_table:  ``
+</span></span><span style="display:flex;"><span>Type:       LONGLONG
+</span></span><span style="display:flex;"><span>Collation:  binary (63)
+</span></span><span style="display:flex;"><span>Length:     20
+</span></span><span style="display:flex;"><span>Max_length: 1
+</span></span><span style="display:flex;"><span>Decimals:   0
+</span></span><span style="display:flex;"><span>Flags:      UNSIGNED BINARY NUM 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Field   3:  `variable_value`
+</span></span><span style="display:flex;"><span>Catalog:    `def`
+</span></span><span style="display:flex;"><span>Database:   ``
+</span></span><span style="display:flex;"><span>Table:      ``
+</span></span><span style="display:flex;"><span>Org_table:  ``
+</span></span><span style="display:flex;"><span>Type:       STRING
+</span></span><span style="display:flex;"><span>Collation:  utf8_general_ci (33)
+</span></span><span style="display:flex;"><span>Length:     1024
+</span></span><span style="display:flex;"><span>Max_length: 0
+</span></span><span style="display:flex;"><span>Decimals:   0
+</span></span><span style="display:flex;"><span>Flags:      
+</span></span></code></pre></div>
 </div>
 
 <h2>Comments</h2>

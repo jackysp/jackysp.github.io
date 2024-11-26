@@ -27,7 +27,7 @@
   
 </head>
 
-  <body class="theme-base-0d ">
+  <body class=" ">
   <aside class="sidebar">
   <div class="container sidebar-sticky">
     <div class="sidebar-about">
@@ -52,16 +52,16 @@
     <div class="post">
   <h1>How to Test CockroachDB Performance Using Sysbench</h1>
   <time datetime=2018-06-11T13:50:00&#43;0800 class="post-date">Mon, Jun 11, 2018</time>
-  <h1 id="compiling-sysbench-with-pgsql-support">Compiling Sysbench with pgsql Support</h1>
+  <h2 id="compiling-sysbench-with-pgsql-support">Compiling Sysbench with pgsql Support</h2>
 <p>CockroachDB uses the PostgreSQL protocol. If you want to use Sysbench for testing, you need to enable pg protocol support in Sysbench. Sysbench already supports the pg protocol, but it is not enabled by default during compilation. You can configure it with the following command:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>./configure --with-pgsql
 </span></span></code></pre></div><p>Of course, preliminary work involves downloading the Sysbench source code and installing the necessary PostgreSQL header files required for compilation (you can use <code>yum</code> or <code>sudo</code> to install them).</p>
-<h1 id="testing">Testing</h1>
+<h2 id="testing">Testing</h2>
 <p>The testing method is no different from testing MySQL or PostgreSQL; you can test any of the create, read, update, delete (CRUD) operations you like. The only thing to note is to set <code>auto_inc</code> to <code>off</code>.</p>
 <p>This is because CockroachDB&rsquo;s auto-increment behavior is different from PostgreSQL&rsquo;s. It generates a unique <code>id</code>, but it does not guarantee that the <code>id</code>s are sequential or incremental. This is fine when inserting data. However, during delete, update, or query operations, since all SQL statements use <code>id</code> as the condition for these operations, you may encounter situations where data cannot be found.</p>
 <p>That is:</p>
 <p>When <code>auto_inc = on</code> (which is the default value in Sysbench)</p>
-<p><strong>Table Structure</strong></p>
+<h3 id="table-structure">Table Structure</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> sbtest1 (
 </span></span><span style="display:flex;"><span>   id INT <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> unique_rowid(),
 </span></span><span style="display:flex;"><span>   k INTEGER <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#ae81ff">0</span>:::INT,
@@ -71,7 +71,7 @@
 </span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">INDEX</span> k_1 (k <span style="color:#66d9ef">ASC</span>),
 </span></span><span style="display:flex;"><span>   FAMILY <span style="color:#e6db74">&#34;&#34;</span><span style="color:#66d9ef">primary</span><span style="color:#e6db74">&#34;&#34;</span> (id, k, <span style="color:#66d9ef">c</span>, <span style="color:#66d9ef">pad</span>)
 </span></span><span style="display:flex;"><span>)
-</span></span></code></pre></div><p><strong>Data</strong></p>
+</span></span></code></pre></div><h3 id="data">Data</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>root<span style="color:#f92672">@</span>:<span style="color:#ae81ff">26257</span><span style="color:#f92672">/</span>sbtest<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> id <span style="color:#66d9ef">FROM</span> sbtest1 <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> id <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">1</span>;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span>         id         <span style="color:#f92672">|</span>
@@ -79,10 +79,10 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#ae81ff">354033003848892419</span> <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
 </span></span></span></code></pre></div><p>As you can see, the data does not start from <code>1</code>, nor is it sequential. Normally, the <code>id</code> in a Sysbench table should be within the range <code>[1, table_size]</code>.</p>
-<p><strong>SQL</strong></p>
+<h3 id="sql">SQL</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">UPDATE</span> sbtest<span style="color:#f92672">%</span>u <span style="color:#66d9ef">SET</span> k <span style="color:#f92672">=</span> k <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">WHERE</span> id <span style="color:#f92672">=</span> <span style="color:#f92672">?</span>
 </span></span></code></pre></div><p>Taking the <code>UPDATE</code> statement as an example, <code>id</code> is used as the query condition. Sysbench assumes that this <code>id</code> should be between <code>[1, table_size]</code>, but in reality, it&rsquo;s not.</p>
-<p><strong>Example of Correct Testing Command Line</strong></p>
+<h3 id="example-of-correct-testing-command-line">Example of Correct Testing Command Line</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sysbench --db-driver<span style="color:#f92672">=</span>pgsql --pgsql-host<span style="color:#f92672">=</span>127.0.0.1 --pgsql-port<span style="color:#f92672">=</span><span style="color:#ae81ff">26257</span> --pgsql-user<span style="color:#f92672">=</span>root --pgsql-db<span style="color:#f92672">=</span>sbtest <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>        --time<span style="color:#f92672">=</span><span style="color:#ae81ff">180</span> --threads<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span> --report-interval<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span> --tables<span style="color:#f92672">=</span><span style="color:#ae81ff">32</span> --table-size<span style="color:#f92672">=</span><span style="color:#ae81ff">10000000</span> <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>        oltp_update_index <span style="color:#ae81ff">\

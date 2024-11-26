@@ -27,7 +27,7 @@
   
 </head>
 
-  <body class="theme-base-0d ">
+  <body class=" ">
   <aside class="sidebar">
   <div class="container sidebar-sticky">
     <div class="sidebar-about">
@@ -52,11 +52,11 @@
     <div class="post">
   <h1>How to Configure CentOS KVM Network Bridging Mode</h1>
   <time datetime=2014-06-05T22:21:06&#43;0800 class="post-date">Thu, Jun 5, 2014</time>
-  <h1 id="what-is-bridging">What Is Bridging</h1>
+  <h2 id="what-is-bridging">What Is Bridging</h2>
 <p>Bridging highly simulates a network card, making the router believe that the virtual machine&rsquo;s network card truly exists. Personally, I feel it&rsquo;s similar to resistors connected in parallel, whereas NAT (another common virtual machine network connection method) is more like parasitizing on the host&rsquo;s network card.</p>
-<h1 id="why-use-bridging">Why Use Bridging</h1>
+<h2 id="why-use-bridging">Why Use Bridging</h2>
 <p>It allows you to treat the virtual machine as a completely independent machine, enabling mutual access with the external network (which is not possible with NAT).</p>
-<h1 id="how-to-configure-bridging">How to Configure Bridging</h1>
+<h2 id="how-to-configure-bridging">How to Configure Bridging</h2>
 <p>In CentOS 6, refer to the command-line method in <a href="http://www.techotopia.com/index.php/Creating_a_CentOS_6_KVM_Networked_Bridge_Interface">this article</a>.</p>
 <p>We don&rsquo;t use the GUI method because:</p>
 <ul>

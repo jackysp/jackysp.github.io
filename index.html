@@ -28,7 +28,7 @@
   
 </head>
 
-  <body class="theme-base-0d ">
+  <body class=" ">
   <aside class="sidebar">
   <div class="container sidebar-sticky">
     <div class="sidebar-about">
@@ -56,245 +56,679 @@
     <a href="http://blog.minifish.org/posts/warp-cli/">Encounter with a Major Issue with Cloudflare Warp: A Life and Death Rescue for VPS</a>
   </h1>
   <time datetime="2024-05-15T20:31:00&#43;0800" class="post-date">Wed, May 15, 2024</time>
+  <p>Today, I planned to use Warp to select an IP exit for my VPS, following the <a href="https://developers.cloudflare.com/warp-client/get-started/linux/">Cloudflare official documentation</a>. When executing the <code>warp-cli connect</code> step, the server immediately lost connection, and the problem persisted even after rebooting.</p>
+<p>After researching, I found that this problem is not unique. For instance, in a <a href="https://www.v2ex.com/t/933725">discussion on V2EX</a>, many users encountered similar issues. The solution is to run <code>warp-cli set-mode proxy</code> before executing <code>warp-cli connect</code> to bypass the local address. Surprisingly, Cloudflare&rsquo;s official documentation does not mention this crucial step, undoubtedly increasing the complexity and risk of configuration.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/warp-cli/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/mc-server/">How to Set Up a Minecraft Bedrock Server Using Multipass</a>
   </h1>
   <time datetime="2022-05-02T19:05:00&#43;0800" class="post-date">Mon, May 2, 2022</time>
+  <h2 id="background">Background</h2>
+<p>Recently, both of my kids have become interested in Minecraft, and some of their peers are also playing it. We previously bought the Switch version, but its online capabilities are quite poor, and the device performance is subpar, resulting in a less-than-ideal experience. Thus, I began considering the idea of setting up our own server. Of course, you can play in multiplayer with friends, but the game ends as soon as the host goes offline, which is not as good as having a server that is always online.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/mc-server/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/gpg/">How to Create GitHub Verified Commits on a MacBook M1</a>
   </h1>
   <time datetime="2022-02-12T11:54:00&#43;0800" class="post-date">Sat, Feb 12, 2022</time>
+  <h2 id="background">Background</h2>
+<p>One day, I impulsively turned on GitHub&rsquo;s Vigilant mode.</p>
+<p><img src="/posts/images/2022-02-12-12.02.07.png" alt="test"></p>
+<p>As a result, all my commits started looking like this.</p>
+<p><img src="/posts/images/2022-02-12-12.11.01.png" alt="test"></p>
+<p>To figure out how to make them Verified, I found the following method.</p>
+<h2 id="method">Method</h2>
+<p>I actually referred to this <a href="https://zhuanlan.zhihu.com/p/76861431">link</a>. However, it wasn&rsquo;t quite enough, as there might be authentication-related issues on MacBooks that lead to commit errors. So, I found this <a href="https://stackoverflow.com/a/40066889">solution</a>.</p>
+<p>In summary, to verify, you need to enter a password. The issue on a Mac is the prompt for entering the password, which needs to be replaced with pinentry-mac, which most people install via homebrew.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/gpg/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/mc/">How to Play Minecraft (Bedrock Edition) Cross-Platform</a>
   </h1>
   <time datetime="2022-02-03T00:00:00Z" class="post-date">Thu, Feb 3, 2022</time>
+  <h3 id="background">Background</h3>
+<p>During the Chinese New Year holiday, I spent some time at home playing on the Switch with my child, and I ended up purchasing Minecraft (Bedrock Edition). In order to play together, I also bought the Windows version. Additionally, I wanted to test if the GitHub Actions for this blog are still working properly.</p>
+<h3 id="preparation">Preparation</h3>
+<p>You need two Microsoft accounts, so I dug out my wife&rsquo;s long-unused Hotmail account.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/mc/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/diff-mysql-pg/">How to Compare Data Consistency between MySQL and PostgreSQL</a>
   </h1>
   <time datetime="2021-05-09T18:13:00&#43;0800" class="post-date">Sun, May 9, 2021</time>
+  <h2 id="background">Background</h2>
+<p>Recently, I encountered a problem where a user wanted to synchronize data from PostgreSQL to TiDB (which uses the same protocol as MySQL) and wanted to know whether the data after synchronization is consistent. I hadn&rsquo;t dealt with this kind of issue before, so I did a bit of research.</p>
+<p>Typically, to verify data consistency, you compute a checksum on both sides and compare them.</p>
+<h2 id="tidb-mysql-side">TiDB (MySQL) Side</h2>
+<p>For the verification of a specific table, the following SQL is used:</p>
   
+  <div class="read-more-link">
+    <a href="/posts/diff-mysql-pg/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/latex-win/">How to Configure a Chinese LaTeX Environment on Windows</a>
   </h1>
   <time datetime="2021-03-31T00:00:00Z" class="post-date">Wed, Mar 31, 2021</time>
+  <h2 id="background">Background</h2>
+<p>Initially, I didn&rsquo;t think this was something worth writing about, because CTex was previously working smoothly for everyone. However, it turns out that CTex hasn&rsquo;t been updated since 2016. So, I wanted to find a replacement for Chinese LaTeX on Windows in 2021.</p>
+<h2 id="configuration-method">Configuration Method</h2>
+<ol>
+<li>Install MiKTeX (TexLive should work as well). MiKTeX can automatically download dependency packages and you can also proactively install the ctex package.</li>
+<li>Install the VSCode LaTeX extension.</li>
+<li>Configure the LaTeX extension. I found a powerful configuration on Zhihu, but it’s quite complex, so I simplified it a bit.</li>
+</ol>
+<p>A brief explanation: the core components here are the recipes and tools. Tools are the compilation toolchain, specifying which tools to use for compilation and the options to use, without regard to order. Recipes define how to combine the above tools to generate the final document, where the order does matter. I&rsquo;ve put XeLaTex first here because it&rsquo;s the most compatible for compiling Chinese. If you use pdflatex to compile Chinese documents, you&rsquo;re likely to encounter issues.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/latex-win/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/github-action/">How to Automatically Publish a Blog Using GitHub Actions</a>
   </h1>
   <time datetime="2020-12-16T16:11:00&#43;0800" class="post-date">Wed, Dec 16, 2020</time>
+  <p>In <a href="/posts/travis-git-push">this post</a>, I used Travis to enable automatic blog publishing. However, I recently discovered that Travis does not run automatically anymore (though it works manually). I haven’t looked into it closely because GitHub Actions have been introduced, so I decided to move all dependencies to GitHub.</p>
+<h2 id="go-action">Go Action</h2>
+<p>Click on Actions on the repository page, and then New Workflow to see recommended actions. Since this blog uses Go code, it shows the Go Action.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/github-action/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/sysbench/">How to Implement a Simple Load Using Sysbench</a>
   </h1>
   <time datetime="2020-12-14T12:06:00&#43;0800" class="post-date">Mon, Dec 14, 2020</time>
+  <p><a href="https://github.com/akopytov/sysbench">Sysbench</a> is a tool commonly used in database testing. Since version 1.0, it has supported more powerful custom functions, allowing users to conveniently write some Lua scripts to simulate load. The purpose of writing this article is, firstly, because I wanted to explore Sysbench&rsquo;s custom load usage. Secondly, because I tried the mysqlslap tool provided by MySQL&rsquo;s official source, and found that it freezes easily during database performance testing, which could mislead users into thinking there is an issue with the database, causing trouble for many. Therefore, I want to help people avoid these pitfalls.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/sysbench/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/tidb5/">How to Read TiDB Source Code (Part 5)</a>
   </h1>
   <time datetime="2020-09-08T11:36:00&#43;0800" class="post-date">Tue, Sep 8, 2020</time>
+  <p>When using TiDB, you may occasionally encounter some exceptions, such as the &ldquo;Lost connection to MySQL server during query&rdquo; error. This indicates that the connection between the client and the database has been disconnected (not due to user action). The reasons for disconnection can vary. This article attempts to analyze some common TiDB errors from the perspective of exception handling and code analysis. Additionally, some exceptions are not errors but performance issues due to slow execution. In the second half of this article, we will also introduce common tools for tracking performance.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/tidb5/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
-    <a href="http://blog.minifish.org/posts/tidb4/">How to Read TiDB Source Code (Part Four)</a>
+    <a href="http://blog.minifish.org/posts/tidb4/">How to Read TiDB Source Code (Part 4)</a>
   </h1>
   <time datetime="2020-07-31T10:58:00&#43;0800" class="post-date">Fri, Jul 31, 2020</time>
+  <p>This article will introduce some key functions and the interpretation of logs in TiDB.</p>
+<h2 id="key-functions">Key Functions</h2>
+<p>The definition of key functions varies from person to person, so the content of this section is subjective.</p>
+<h3 id="execute">execute</h3>
+<p><img src="/posts/images/20200812152326.png" alt="func"></p>
+<p>The <code>execute</code> function is the necessary pathway for text protocol execution. It also nicely demonstrates the various processes of SQL handling.</p>
+<ol>
+<li>
+<p>ParseSQL analyzes the SQL. The final implementation is in the parser, where SQL is parsed according to the rules introduced in the second article. Note that the parsed SQL may be a single statement or multiple statements. TiDB itself supports the multi-SQL feature, allowing multiple SQL statements to be executed at once.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/tidb4/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/tidb3/">How to Read the Source Code of TiDB (Part 3)</a>
   </h1>
   <time datetime="2020-07-28T11:47:00&#43;0800" class="post-date">Tue, Jul 28, 2020</time>
+  <p>In the previous article, we introduced methods for viewing syntax and configurations. In this article, we will discuss how to view system variables, including default values, scopes, and how to monitor metrics.</p>
+<h2 id="system-variables">System Variables</h2>
+<p>The system variable names in TiDB are defined in <a href="https://github.com/pingcap/tidb/blob/db0310b17901b1a59f7f728294455ed9667f88ac/sessionctx/variable/tidb_vars.go">tidb_vars.go</a>. This file also includes some default values for variables, but the place where they are actually assembled is <a href="https://github.com/pingcap/tidb/blob/12aac547a9068c404ad18093ae4d0ea4d060a465/sessionctx/variable/sysvar.go#L96">defaultSysVars</a>.</p>
+<p><img src="/posts/images/20200728151254.png" alt="defaultSysVars"></p>
+<p>This large struct array defines the scope, variable names, and default values for all variables in TiDB. Besides TiDB&rsquo;s own system variables, it also includes compatibility with MySQL&rsquo;s system variables.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/tidb3/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/tidb2/">How to Read TiDB Source Code (Part 2)</a>
   </h1>
   <time datetime="2020-07-12T12:09:00&#43;0800" class="post-date">Sun, Jul 12, 2020</time>
+  <p>Continuing from <a href="/posts/tidb1">the previous article</a>, we learned how to set up the environment for reading code and where to start reading the code. In this part, we&rsquo;ll introduce methods for viewing code based on some common needs.</p>
+<h2 id="how-to-check-the-support-level-of-a-syntax">How to Check the Support Level of a Syntax</h2>
+<p>There are usually two methods:</p>
+<ol>
+<li>Check through the parser repo</li>
+<li>Directly check within the TiDB repo</li>
+</ol>
+<p>Both of these methods require the <a href="/posts/tidb1#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA">environment setup from the previous article</a>. If you haven&rsquo;t tried that yet, give it a go.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/tidb2/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/tidb1/">How to Read TiDB Source Code (Part 1)</a>
   </h1>
   <time datetime="2020-07-06T16:51:00&#43;0800" class="post-date">Mon, Jul 6, 2020</time>
+  <h2 id="background">Background</h2>
+<p>There are many articles on reading the source code of TiDB, often referred to as <a href="https://pingcap.com/blog-cn/#TiDB-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB">the &ldquo;Twenty-Four Chapters Scriptures&rdquo;</a>. However, these introductions typically proceed from a macro to a micro perspective. This series attempts to introduce how to read TiDB&rsquo;s source code from an easier angle. The goals we aim to achieve are:</p>
+<ol>
+<li>Enable readers to start reading TiDB&rsquo;s code themselves, rather than understanding it passively through pre-written articles.</li>
+<li>Provide some common examples of looking into the details of the code, such as examining the scope of a variable.</li>
+</ol>
+<p>After all, teaching people to fish is better than giving them fish. While the code changes often, the methods remain mostly unchanged.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/tidb1/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/docker-win/">How to Use Docker on Windows</a>
   </h1>
   <time datetime="2020-04-13T10:34:00&#43;0800" class="post-date">Mon, Apr 13, 2020</time>
+  <h2 id="background">Background</h2>
+<p>I had to install Docker on Windows to reproduce a bug.</p>
+<h2 id="process">Process</h2>
+<ol>
+<li>Using Windows 10 as an example, if you have the Home Basic version, you&rsquo;ll need to pay to upgrade to the Pro version because you need to enable Hyper-V and Container features, which costs about 800 RMB.</li>
+<li>Install everything with the default settings, and do not switch to Windows Containers, since most images are still under Linux. If you do switch, you can restore it after starting up.</li>
+<li>If you encounter permission issues with shared folders, follow the instructions at <a href="https://github.com/docker/for-win/issues/3174">https://github.com/docker/for-win/issues/3174</a>. However, this might not solve the problem, and you might encounter a sharing failure. In that case, go to the settings, troubleshoot, and reset to factory defaults. After resetting, ensure the shared folders are selected.</li>
+<li>When you encounter errors during use, just try a few more times. It might work; if not, reset it.</li>
+</ol>
+<h2 id="impressions">Impressions</h2>
+<p>Initially, there were no issues using Docker on Linux; Docker itself was simple back then. Later, using it on Mac brought changes, including a user interface, various colors, and numerous bugs. Right from the start, I encountered bugs. Docker did not support Windows a long time ago, and given the various bugs on Mac, I didn&rsquo;t have high expectations. The results were still quite surprising. In summary, here are a few points:</p>
   
+  <div class="read-more-link">
+    <a href="/posts/docker-win/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/nosleeplinux/">How to Prevent a Linux Laptop from Entering Sleep Mode When the Lid is Closed</a>
   </h1>
   <time datetime="2020-03-31T20:31:00&#43;0800" class="post-date">Tue, Mar 31, 2020</time>
+  <p>Initially, I thought it would be a simple setting adjustment, so I casually Googled it. Sure enough, there was a unanimous solution: modify <code>/etc/systemd/logind.conf</code>, change <code>HandleLidSwitch</code> to <code>ignore</code> or <code>lock</code>, and then restart <code>logind</code> or reboot.</p>
+<p>I tried this, but it didn&rsquo;t work at all on my Thinkpad X230. I then tried changing some other options in the aforementioned file, but none worked, and surprisingly, <code>Ubuntu</code> even reported errors.</p>
+<p>So, I reinstalled the more preferred <code>Debian</code>. Tried again, and it still didn&rsquo;t work. Finally, I found a more brutal method.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/nosleeplinux/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/und/">How to Dynamically Update DNS Records for Namesilo</a>
   </h1>
   <time datetime="2020-02-01T12:27:00&#43;0800" class="post-date">Sat, Feb 1, 2020</time>
+  <h2 id="dynamically-updating-dns-records">Dynamically Updating DNS Records</h2>
+<p>The purpose of dynamic updates is pretty simple. As a long-term user of China Unicom&rsquo;s broadband, although Unicom provides a public address, it is essentially a dynamic address, not a fixed one. If you want to access your home devices using an IP address from outside, you need to use dynamic DNS (DDNS).</p>
+<p>Many routers come with built-in DDNS functionality, but they mostly wrap the interfaces of the commonly used service providers. These providers generally have a few characteristics: 1. Blocked by the Great Firewall; 2. Not cheap; 3. Domestic providers may have security issues; 4. The company might have gone out of business. Rather than relying on these unreliable services, it&rsquo;s better to write your own script for updating.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/und/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/powershell-starttup/">How to Start a PowerShell Script in the Background at Windows Startup</a>
   </h1>
   <time datetime="2020-01-14T08:56:00&#43;0800" class="post-date">Tue, Jan 14, 2020</time>
+  <ul>
+<li>
+<p>Create a script and place it in <code>C:\Users\name\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\</code></p>
+</li>
+<li>
+<p>Fill the script with:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>Start-Process -FilePath <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.exe&#34;</span> -ArgumentList <span style="color:#e6db74">&#34;-L=&#34;</span>, <span style="color:#e6db74">&#34;-F=&#34;</span> -RedirectStandardOutput <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.log&#34;</span> -RedirectStandardError <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.err&#34;</span> -WindowStyle Hidden
+</span></span></code></pre></div></li>
+</ul>
+<p>Note: <code>Start-Process</code> seems to perform a fork-like action, and by default, it opens a new PowerShell window to execute. That&rsquo;s why <code>-WindowStyle Hidden</code> is added at the end. You can&rsquo;t use <code>-NoNewWindow</code> here because it only prevents the creation of a new window for executing <code>Start-Process</code>, but the old window will not exit.<br>
+Note 2: After the old window exits, the forked process seems to become an orphan and is managed elsewhere, so permissions, such as network connection permissions, might need to be requested again.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/powershell-starttup/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/gost/">How to Deploy an HTTPS Proxy Service</a>
   </h1>
   <time datetime="2020-01-12T19:43:00&#43;0800" class="post-date">Sun, Jan 12, 2020</time>
+  <h2 id="preface">Preface</h2>
+<p>One day, I came across an article by Chen Hao on Twitter. Having benefited from several of his blog posts, I instinctively felt it was reliable, so I read it and decided to write this practical guide.</p>
+<h2 id="why-use-an-https-proxy">Why Use an HTTPS Proxy</h2>
+<p>In the <a href="https://haoel.github.io/">guide</a>, it’s clearly explained why, plus my own experiences of several shadowsocks being banned, I felt it was necessary to switch to a more secure proxy method.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/gost/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/dlv/">Using delve to Debug Golang Programs</a>
   </h1>
   <time datetime="2019-09-16T13:24:00&#43;0800" class="post-date">Mon, Sep 16, 2019</time>
+  <h2 id="background">Background</h2>
+<p>When I first started writing Golang, I was always looking for a convenient debugging tool. Back then, I came across documentation about using <code>gdb</code> to debug and also tried <code>delve</code>, but neither felt easy to use. Later, on someone&rsquo;s advice, I went back to the good old <code>print</code> statements&hellip;</p>
+<p>Over the past couple of days, I was debugging <code>go test</code> and found that tests would always hang when run per package. I couldn&rsquo;t think of a suitable method at first, so I thought of <code>delve</code> again. After giving it a try, I found it has become much more mature than before.</p>
   
-  
-</article><article class="post">
-  <h1 class="post-title">
-    <a href="http://blog.minifish.org/posts/piano-price/">How to Check Piano Popularity</a>
-  </h1>
-  <time datetime="2018-10-23T11:38:00&#43;0800" class="post-date">Tue, Oct 23, 2018</time>
-  
+  <div class="read-more-link">
+    <a href="/posts/dlv/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/shadowsocks/">How to Deploy a Shadowsocks Server</a>
   </h1>
   <time datetime="2018-09-27T15:48:00&#43;0800" class="post-date">Thu, Sep 27, 2018</time>
+  <p>There are multiple versions of the Shadowsocks server side implementation. The original version was written in Python, and later, enthusiasts implemented it in various programming languages of their liking.</p>
+<p>Among all these implementations, I personally think the most reliable and stable one is the original Python version. The reason is simple - it has the most users. The Golang version is said to have the most features and also performs very well, making it quite powerful. This might be due to Golang’s inherent high performance and ease of implementation. There&rsquo;s also an implementation using libev, a pure C implementation, which also offers good performance and is very lightweight.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/shadowsocks/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/golang-panic/">How Immediate is Golang&#39;s Panic</a>
   </h1>
   <time datetime="2018-07-26T14:24:00&#43;0800" class="post-date">Thu, Jul 26, 2018</time>
+  <p>Let&rsquo;s first look at the following code snippet:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;os&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;runtime&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;time&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">runtime</span>.<span style="color:#a6e22e">GOMAXPROCS</span>(<span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">a</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">int</span>]<span style="color:#66d9ef">int</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">a</span>[<span style="color:#ae81ff">1</span>] = <span style="color:#a6e22e">i</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#ae81ff">1000</span>)
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}()
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">a</span>[<span style="color:#ae81ff">1</span>] &gt; <span style="color:#ae81ff">1000000</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">a</span>[<span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Exit</span>(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>After compiling and running it (assuming your machine has 2 or more cores), you will get the following error:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>fatal error: concurrent map read and map write
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>goroutine 1 [running]:
+</span></span><span style="display:flex;"><span>runtime.throw(0x10c3e05, 0x21)
+</span></span><span style="display:flex;"><span>        /usr/local/Cellar/go/1.10.3/libexec/src/runtime/panic.go:616 +0x81 fp=0xc42004bf00 sp=0xc42004bee0 pc=0x10263f1
+</span></span><span style="display:flex;"><span>runtime.mapaccess1_fast64(0x10a5b60, 0xc42007e180, 0x1, 0xc42008e048)
+</span></span><span style="display:flex;"><span>        /usr/local/Cellar/go/1.10.3/libexec/src/runtime/hashmap_fast.go:101 +0x197 fp=0xc42004bf28 sp=0xc42004bf00 pc=0x1008d27
+</span></span><span style="display:flex;"><span>main.main()
+</span></span><span style="display:flex;"><span>        /Users/yusp/test/panic3/main.go:22 +0x7c fp=0xc42004bf88 sp=0xc42004bf28 pc=0x108e28c
+</span></span><span style="display:flex;"><span>runtime.main()
+</span></span><span style="display:flex;"><span>        /usr/local/Cellar/go/1.10.3/libexec/src/runtime/proc.go:198 +0x212 fp=0xc42004bfe0 sp=0xc42004bf88 pc=0x1027c62
+</span></span><span style="display:flex;"><span>runtime.goexit()
+</span></span><span style="display:flex;"><span>        /usr/local/Cellar/go/1.10.3/libexec/src/runtime/asm_amd64.s:2361 +0x1 fp=0xc42004bfe8 sp=0xc42004bfe0 pc=0x104e501
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>goroutine 5 [runnable]:
+</span></span><span style="display:flex;"><span>time.Sleep(0x3e8)
+</span></span><span style="display:flex;"><span>        /usr/local/Cellar/go/1.10.3/libexec/src/runtime/time.go:102 +0x166
+</span></span><span style="display:flex;"><span>main.main.func1(0xc42007e180)
+</span></span><span style="display:flex;"><span>        /Users/yusp/test/panic3/main.go:18 +0x61
+</span></span><span style="display:flex;"><span>created by main.main
+</span></span><span style="display:flex;"><span>        /Users/yusp/test/panic3/main.go:13 +0x59
+</span></span></code></pre></div><p>It seems straightforward; Golang&rsquo;s map is not thread-safe, and concurrent read and write cause a panic. However, look at the error information on line <code>/Users/yusp/test/panic3/main.go:18 +0x61</code>, which points to line 18 of main.go where <code>Sleep</code> is called, not the actual point of concurrency issue. In a vast stack trace, it becomes even harder to locate the problem.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/golang-panic/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/haproxy/">How to Use HAProxy to Test CockroachDB</a>
   </h1>
   <time datetime="2018-07-10T15:07:00&#43;0800" class="post-date">Tue, Jul 10, 2018</time>
+  <h2 id="installing-haproxy">Installing HAProxy</h2>
+<p><code>yum install haproxy</code> is effective for CentOS 7. After installation, you can start the service using <code>systemctl start haproxy</code>. But don&rsquo;t rush yet.</p>
+<h2 id="configuring-haproxy">Configuring HAProxy</h2>
+<p>Add the following content to /etc/haproxy/haproxy.cfg.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>global <span style="color:#75715e"># The content of global is generally fixed and quite understandable.</span>
+</span></span><span style="display:flex;"><span>        log 127.0.0.1   local2
+</span></span><span style="display:flex;"><span>        maxconn <span style="color:#ae81ff">4096</span>
+</span></span><span style="display:flex;"><span>        user haproxy
+</span></span><span style="display:flex;"><span>        group haproxy
+</span></span><span style="display:flex;"><span>        chroot /var/lib/haproxy
+</span></span><span style="display:flex;"><span>        daemon
+</span></span><span style="display:flex;"><span>        pidfile /var/run/haproxy.pid
+</span></span><span style="display:flex;"><span>        stats socket /var/run/haproxy.sock         <span style="color:#75715e"># Create a socket file for haproxy</span>
+</span></span><span style="display:flex;"><span>        nbproc <span style="color:#ae81ff">40</span>                                  <span style="color:#75715e"># Start 40 processes to forward concurrently, higher versions can use nbthread, a threaded approach.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>defaults <span style="color:#75715e"># This section is mostly copied, not entirely clear on the options.</span>
+</span></span><span style="display:flex;"><span>        log     global
+</span></span><span style="display:flex;"><span>        mode    http
+</span></span><span style="display:flex;"><span>        option  tcplog
+</span></span><span style="display:flex;"><span>        option  dontlognull
+</span></span><span style="display:flex;"><span>        retries <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>        option  redispatch
+</span></span><span style="display:flex;"><span>        maxconn <span style="color:#ae81ff">1024</span>
+</span></span><span style="display:flex;"><span>        timeout connect 5000ms
+</span></span><span style="display:flex;"><span>        timeout client 50000ms
+</span></span><span style="display:flex;"><span>        timeout server 50000ms
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>listen cdb_cluster 0.0.0.0:3030  <span style="color:#75715e"># The actual proxy name and address for receiving services.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## cdb balance leastconn - the cluster listening on port 3030.</span>
+</span></span><span style="display:flex;"><span>        mode tcp
+</span></span><span style="display:flex;"><span>        balance leastconn  <span style="color:#75715e"># This method is most suitable for databases; do not change.</span>
+</span></span><span style="display:flex;"><span>        server cdb1 172.16.30.3:26257 check <span style="color:#75715e"># Check seems to require a port for feedback status; without it, it might not work, but it doesn&#39;t matter.</span>
+</span></span><span style="display:flex;"><span>        server cdb2 172.16.30.3:26258 check
+</span></span><span style="display:flex;"><span>        server cdb3 172.16.30.3:26259 check
+</span></span><span style="display:flex;"><span>        server cdb4 172.16.30.3:26260 check
+</span></span></code></pre></div><h2 id="start-and-connect">Start and Connect</h2>
+<p><code>systemctl start haproxy</code> to start the service.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/haproxy/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/cockroachdb-tpcc/">How to Test CockroachDB Performance Using Benchmarksql</a>
   </h1>
   <time datetime="2018-07-06T21:21:00&#43;0800" class="post-date">Fri, Jul 6, 2018</time>
+  <h2 id="why-test-tpc-c">Why Test TPC-C</h2>
+<p>First of all, TPC-C is the de facto OLTP benchmark standard. It is a set of specifications, and any database can publish its test results under this standard, so there&rsquo;s no issue of quarreling over the testing tools used.</p>
+<p>Secondly, TPC-C is closer to real-world scenarios as it includes a transaction model within it. In the flow of this transaction model, there are both high-frequency simple transaction statements and low-frequency inventory query statements. Therefore, it tests the database more comprehensively and practically.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/cockroachdb-tpcc/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/cockroachdb-sysbench/">How to Test CockroachDB Performance Using Sysbench</a>
   </h1>
   <time datetime="2018-06-11T13:50:00&#43;0800" class="post-date">Mon, Jun 11, 2018</time>
+  <h2 id="compiling-sysbench-with-pgsql-support">Compiling Sysbench with pgsql Support</h2>
+<p>CockroachDB uses the PostgreSQL protocol. If you want to use Sysbench for testing, you need to enable pg protocol support in Sysbench. Sysbench already supports the pg protocol, but it is not enabled by default during compilation. You can configure it with the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>./configure --with-pgsql
+</span></span></code></pre></div><p>Of course, preliminary work involves downloading the Sysbench source code and installing the necessary PostgreSQL header files required for compilation (you can use <code>yum</code> or <code>sudo</code> to install them).</p>
   
+  <div class="read-more-link">
+    <a href="/posts/cockroachdb-sysbench/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/oltp-bench/">How to View CMU DB Group&#39;s OLTP-Bench</a>
   </h1>
   <time datetime="2018-02-23T00:00:00Z" class="post-date">Fri, Feb 23, 2018</time>
+  <h2 id="introduction-to-oltp-bench">Introduction to OLTP-Bench</h2>
+<p>OLTP-Bench is an open-source benchmarking tool platform for OLTP scenarios from CMU&rsquo;s DB Group. It was designed to provide a simple, easy-to-use, and extensible testing platform.</p>
+<p>It connects to databases via the JDBC interface, supporting the following test suites:</p>
+<ul>
+<li>TPC-C</li>
+<li>Wikipedia</li>
+<li>Synthetic Resource Stresser</li>
+<li>Twitter</li>
+<li>Epinions.com</li>
+<li>TATP</li>
+<li>AuctionMark</li>
+<li>SEATS</li>
+<li>YCSB</li>
+<li>JPAB (Hibernate)</li>
+<li>CH-benCHmark</li>
+<li>Voter (Japanese &ldquo;American Idol&rdquo;)</li>
+<li>SIBench (Snapshot Isolation)</li>
+<li>SmallBank</li>
+<li>LinkBench</li>
+</ul>
+<p>Detailed project information can be found <a href="http://db.cs.cmu.edu/projects/oltp-bench/">here</a>, and the GitHub page is <a href="https://github.com/oltpbenchmark/oltpbench">here</a>.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/oltp-bench/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/font/">How to Use Monospaced Fonts in VS Code</a>
   </h1>
   <time datetime="2017-12-26T22:21:06&#43;0800" class="post-date">Tue, Dec 26, 2017</time>
-  
+  <h2 id="background">Background</h2>
+<p>The English font set in Microsoft&rsquo;s VS Code is monospaced, while the Chinese font is not.</p>
+<h2 id="method">Method</h2>
+<ol>
+<li>Download and install the fonts from <a href="https://github.com/be5invis/Sarasa-Gothic">here</a>. This font combines Source Han Sans and is said to align punctuation strictly.</li>
+<li>Use the method described <a href="https://github.com/be5invis/Sarasa-Gothic/issues/8">here</a> to set up VS Code.</li>
+</ol>
+<p>PS: It is indeed aligned, although the English text appears a bit narrow.</p>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/f1/">How to Understand F1&#39;s Schema Change</a>
   </h1>
   <time datetime="2017-12-25T22:21:06&#43;0800" class="post-date">Mon, Dec 25, 2017</time>
+  <h2 id="background">Background</h2>
+<p>The DDL paper on F1 serves as the foundation for TiDB&rsquo;s DDL implementation. There are two main papers on F1: one provides an overview of F1&rsquo;s DDL, and the other specifically details the schema change method for DDL. I personally believe the second is key and more confusing to me. There is an <a href="http://www.ifi.uzh.ch/dbtg/teaching/courses/SDBS/Papaioannou.pdf">introduction to the second paper</a> here, which can help in understanding.</p>
+<h2 id="understanding">Understanding</h2>
+<h3 id="online-ddl-concept">Online DDL Concept</h3>
+<p>The DDL discussed here refers to online DDL. The concept of online DDL originates from databases like MySQL, whereas PostgreSQL and similar databases might not support it. This concept is also quite vague; the distinction is whether you need to use exclusive locks during DDL operations to block transactions. Therefore, all databases can perform online DDL; it just depends on whether they&rsquo;re willing to put in the effort. For traditional businesses where 24/7 availability isn&rsquo;t a priority, DDL operations can be performed during maintenance times or late at night. Even if a few users are online, at most, they might experience minor delays. However, modern internet businesses are strict about maintenance windows, creating a higher demand for non-blocking DDL, which MySQL, as a quintessential internet database, was first to support. The typical implementation involves creating a copy of the schema table, with operations being sent to both the new and old tables during the transition.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/f1/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/cap/">Understanding the CAP Theorem</a>
   </h1>
   <time datetime="2017-12-20T22:21:06&#43;0800" class="post-date">Wed, Dec 20, 2017</time>
+  <h2 id="background">Background</h2>
+<p>The CAP theorem has become one of the hottest theorems in recent years; when discussing distributed systems, CAP is inevitably mentioned. However, I feel that I haven&rsquo;t thoroughly understood it, so I wanted to write a blog post to record my understanding. I will update the content as I gain new insights.</p>
+<h2 id="understanding">Understanding</h2>
+<p>I read the first part of this <a href="https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/45855.pdf">paper</a>.</p>
+<blockquote>
+<p>The CAP theorem [Bre12] says that you can only have two of the three desirable properties of:</p>
   
+  <div class="read-more-link">
+    <a href="/posts/cap/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/travis-git-push/">How to Execute Git Push in Travis CI</a>
   </h1>
   <time datetime="2017-10-16T22:21:06&#43;0800" class="post-date">Mon, Oct 16, 2017</time>
+  <h2 id="background">Background</h2>
+<p>Travis CI is generally used for automating tests without needing to update the repository with the test outputs. This article explains how to automatically commit the results from Travis CI.</p>
+<h2 id="process">Process</h2>
+<p>The basic process references <a href="https://gist.github.com/Maumagnaguagno/84a9807ed71d233e5d3f">this gist</a>.</p>
+<p>Below is the <code>.travis.yml</code> from the gist.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">language</span>: <span style="color:#ae81ff">ruby</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">rvm</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">2.0.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">env</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">global</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">USER=&#34;username&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">EMAIL=&#34;username@mail.com&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">REPO=&#34;name of target repo&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">FILES=&#34;README.md foo.txt bar.txt&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">GH_REPO=&#34;github.com/${USER}/${REPO}.git&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">secure</span>: <span style="color:#e6db74">&#34;put travis gem output here =&gt; http://docs.travis-ci.com/user/encryption-keys/&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">script</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">ruby test.rb</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">after_success</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git clone git://${GH_REPO}</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">mv -f ${FILES} ${REPO}</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">cd ${REPO}</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git remote</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git config user.email ${EMAIL}</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git config user.name ${USER}</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git add ${FILES}</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git commit -m &#34;${MESSAGE}&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git push &#34;https://${GH_TOKEN}@${GH_REPO}&#34; master &gt; /dev/null 2&gt;&amp;1</span>
+</span></span></code></pre></div><p>Note here that MESSAGE should be quoted when committing, which the original gist did not include.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/travis-git-push/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/mysqlx-protocol/">How to Implement MySQL X Protocol on TiDB</a>
   </h1>
   <time datetime="2017-08-16T00:00:00Z" class="post-date">Wed, Aug 16, 2017</time>
+  <h2 id="some-documents-on-mysql">Some Documents on MySQL</h2>
+<ul>
+<li>Client Usage Guide <a href="https://dev.mysql.com/doc/refman/5.7/en/mysql-shell.html">MySQL Shell User Guide</a></li>
+<li>Server Configuration Guide <a href="https://dev.mysql.com/doc/refman/5.7/en/document-store.html">Using MySQL as a Document Store</a></li>
+<li>Application Development API Guide <a href="https://dev.mysql.com/doc/x-devapi-userguide/en/">X DevAPI User Guide</a></li>
+<li>Introduction to Server Internal Implementation <a href="https://dev.mysql.com/doc/internals/en/x-protocol.html">X Protocol</a>.</li>
+</ul>
+<h2 id="implementation-principle">Implementation Principle</h2>
+<ul>
+<li>Communication between client and server is over TCP and the protocol uses protobuf.</li>
+<li>After the server receives a message, it decodes and analyzes it. The protocol includes a concept called namespace, which specifically refers to whether the namespace is empty or &ldquo;sql&rdquo;, in which case the message content is executed as a SQL statement; if it is &ldquo;xplugin&rdquo; or &ldquo;mysqlx,&rdquo; the message is handled in another way. The other ways can be divided into:
+<ul>
+<li>Administrative commands</li>
+<li>CRUD operations</li>
+</ul>
+</li>
+<li>&ldquo;xplugin&rdquo; and &ldquo;mysqlx&rdquo; have the same function, with the latter being the new name for the former, retained temporarily for compatibility.</li>
+<li>The content of &ldquo;mysqlx&rdquo; messages, apart from explicit command content like kill_client, are mostly transformed into SQL statements which the server processes, essentially turning most into a form where the namespace is &ldquo;sql&rdquo;.</li>
+</ul>
+<h2 id="implementation-steps">Implementation Steps</h2>
+<ol>
+<li>Start a new server for TiDB. The relevant configuration parameters such as IP, port, and socket need to be set.</li>
+<li>Implement the reading and writing functionality for message communication.</li>
+<li>Write a process for this new server to establish connections, including authentication, that follows the protocol. Use tcpdump to capture messages between MySQL and the client to derive protocol content, implementing the process by understanding MySQL source code.</li>
+<li>The server should include contents like the Query Context from the original TiDB server, as it primarily translates into SQL for execution.</li>
+<li>Implement the decoding and handling of messages. Although only a sentence, the workload included is substantial.</li>
+</ol>
+<p>In <code>mysqlx_all_msgs.h</code>, all messages are initialized</p>
   
+  <div class="read-more-link">
+    <a href="/posts/mysqlx-protocol/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/centos6-nfs/">How to Configure CentOS 6 NFS Service</a>
   </h1>
   <time datetime="2014-06-05T22:21:06&#43;0800" class="post-date">Thu, Jun 5, 2014</time>
+  <h2 id="server-side">Server Side</h2>
+<ol>
+<li>
+<p><strong>Disable SeLinux</strong><br>
+Edit the configuration file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/selinux/config
+</span></span></code></pre></div><p>Modify as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#SELINUX=enforcing    # Comment out
+</span></span><span style="display:flex;"><span>#SELINUXTYPE=targeted # Comment out
+</span></span><span style="display:flex;"><span>SELINUX=disabled      # Add this line
+</span></span></code></pre></div><p>Then reboot the system:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>reboot  <span style="color:#75715e"># Restart the system</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Create a Directory</strong><br>
+Using the root user, create a directory named <code>/nfs</code>. Note: It&rsquo;s best to check which partition has the most space by running <code>df</code>, as the root (<code>/</code>) partition may not have the most space. In some automatic partitioning setups, the <code>/home</code> partition may have the most space.</p>
   
+  <div class="read-more-link">
+    <a href="/posts/centos6-nfs/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/centos6-kvm-net-bridge/">How to Configure CentOS KVM Network Bridging Mode</a>
   </h1>
   <time datetime="2014-06-05T22:21:06&#43;0800" class="post-date">Thu, Jun 5, 2014</time>
+  <h2 id="what-is-bridging">What Is Bridging</h2>
+<p>Bridging highly simulates a network card, making the router believe that the virtual machine&rsquo;s network card truly exists. Personally, I feel it&rsquo;s similar to resistors connected in parallel, whereas NAT (another common virtual machine network connection method) is more like parasitizing on the host&rsquo;s network card.</p>
+<h2 id="why-use-bridging">Why Use Bridging</h2>
+<p>It allows you to treat the virtual machine as a completely independent machine, enabling mutual access with the external network (which is not possible with NAT).</p>
   
+  <div class="read-more-link">
+    <a href="/posts/centos6-kvm-net-bridge/">Read More…</a>
+  </div>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/centos6-install/">How to Install CentOS as a Virtualization Host</a>
   </h1>
   <time datetime="2014-06-05T22:21:06&#43;0800" class="post-date">Thu, Jun 5, 2014</time>
-  
+  <h2 id="installation-process">Installation Process</h2>
+<p>Installed Version: CentOS 6.3</p>
+<ol>
+<li>Using Win32DiskImager to create a USB flash drive image was unsuccessful; installing from an external USB optical drive was successful.</li>
+<li>During the installation process, make sure to select the &ldquo;Virtual Host&rdquo; installation mode.</li>
+<li>The rest can be set to default or slightly modified, such as choosing the time zone.</li>
+<li>After installation, it will include the KVM suite and SSH.</li>
+</ol>
+<h2 id="installation-notes">Installation Notes</h2>
+<ul>
+<li>No internet connection is needed throughout the process, which is much better than Debian and Ubuntu.</li>
+<li>You&rsquo;re not forced to set up a non-root user.</li>
+<li>Before installation, be sure to check whether your CPU supports virtualization and enable the motherboard&rsquo;s virtualization setting. If the motherboard supports virtualization but doesn&rsquo;t have a virtualization option, you can still use virtualization as it&rsquo;s definitely enabled by default. There&rsquo;s a saying that Intel CPUs with a &lsquo;K&rsquo; cannot perform virtualization. &lsquo;K&rsquo; means Intel CPUs that can be overclocked. It seems that faster and newer CPUs are not necessarily better.</li>
+</ul>
   
 </article><article class="post">
   <h1 class="post-title">
     <a href="http://blog.minifish.org/posts/postgresql-practices/">How to Practice Using SQL</a>
   </h1>
   <time datetime="2014-06-05T00:00:00Z" class="post-date">Thu, Jun 5, 2014</time>
+  <p>The text provided is a detailed set of instructions and queries for practicing SQL using PostgreSQL 9.4 BETA 2, focusing on creating and querying tables related to students, courses, scores, and teachers. Here&rsquo;s a summary:</p>
+<h2 id="database-structure">Database Structure</h2>
+<p>The database consists of four tables:</p>
+<ol>
+<li><strong>STUDENT</strong>: Contains student number (SNO), name (SNAME), gender (SSEX), birthday (SBIRTHDAY), and class (CLASS).</li>
+<li><strong>COURSE</strong>: Includes course number (CNO), name (CNAME), and teacher number (TNO).</li>
+<li><strong>SCORE</strong>: Records student number (SNO), course number (CNO), and degree (DEGREE).</li>
+<li><strong>TEACHER</strong>: Holds teacher number (TNO), name (TNAME), gender (TSEX), birthday (TBIRTHDAY), professional title (PROF), and department (DEPART).</li>
+</ol>
+<h2 id="sample-data">Sample Data</h2>
+<ul>
+<li>Students such as Zeng Hua, Kang Ming, and Wang Fang are stored with specific details, including their class and gender.</li>
+<li>Courses like &ldquo;Introduction to Computers&rdquo; and &ldquo;Operating Systems&rdquo; are associated with teacher numbers.</li>
+<li>Scores are recorded for students across various courses.</li>
+<li>Teachers are described with their professional roles and departments.</li>
+</ul>
+<h2 id="query-problems">Query Problems</h2>
+<p>Several SQL queries are suggested for practice, such as:</p>
   
+  <div class="read-more-link">
+    <a href="/posts/postgresql-practices/">Read More…</a>
+  </div>
   
 </article>
 </div>

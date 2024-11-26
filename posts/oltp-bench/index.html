@@ -27,7 +27,7 @@
   
 </head>
 
-  <body class="theme-base-0d ">
+  <body class=" ">
   <aside class="sidebar">
   <div class="container sidebar-sticky">
     <div class="sidebar-about">
@@ -52,7 +52,7 @@
     <div class="post">
   <h1>How to View CMU DB Group&#39;s OLTP-Bench</h1>
   <time datetime=2018-02-23T00:00:00Z class="post-date">Fri, Feb 23, 2018</time>
-  <h1 id="introduction-to-oltp-bench">Introduction to OLTP-Bench</h1>
+  <h2 id="introduction-to-oltp-bench">Introduction to OLTP-Bench</h2>
 <p>OLTP-Bench is an open-source benchmarking tool platform for OLTP scenarios from CMU&rsquo;s DB Group. It was designed to provide a simple, easy-to-use, and extensible testing platform.</p>
 <p>It connects to databases via the JDBC interface, supporting the following test suites:</p>
 <ul>
@@ -75,7 +75,7 @@
 <p>Detailed project information can be found <a href="http://db.cs.cmu.edu/projects/oltp-bench/">here</a>, and the GitHub page is <a href="https://github.com/oltpbenchmark/oltpbench">here</a>.</p>
 <p>The project introduction page includes three papers published by the authors, with the one from 2013 being the most important, also linked on the GitHub page.</p>
 <p>Based on the GitHub page, the project does not seem to have a high level of attention and has not been very active recently. Most issues and pull requests come from within CMU.</p>
-<h1 id="oltp-bench-an-extensible-testbed-for-benchmarking-relational-databases">OLTP-Bench: An Extensible Testbed for Benchmarking Relational Databases</h1>
+<h2 id="oltp-bench-an-extensible-testbed-for-benchmarking-relational-databases">OLTP-Bench: An Extensible Testbed for Benchmarking Relational Databases</h2>
 <p>The paper &ldquo;OLTP-Bench: An Extensible Testbed for Benchmarking Relational Databases&rdquo; can be regarded as the most detailed introduction to this project.</p>
 <p>In the first and second chapters, the authors introduce the motivation for creating this framework, which is to integrate multiple test sets and provide features that simple benchmarking tools do not have, while offering excellent extensibility to attract developers to support more databases.</p>
 <p>From the activity on GitHub, it is evident that this extensibility is more about adding database support rather than test sets. However, the number of supported test suites is already quite extensive.</p>
@@ -121,12 +121,12 @@
 <p>In chapter eight, the authors compare OLTP-Bench with other similar tools, providing a favorable self-assessment.</p>
 <p>Chapter nine outlines the authors’ future plans, including support for pure NoSQL, additional databases&rsquo; proprietary SQL syntax, generating real-world load distributions from production data, and support for stored procedures.</p>
 <p>In conclusion, as the authors mentioned, this is an integrative framework where ease of use and extensibility are key.</p>
-<h1 id="usage-summary">Usage Summary</h1>
+<h2 id="usage-summary">Usage Summary</h2>
 <p>OLTP-Bench is relatively simple to install and use, especially the deployment. Its cross-platform nature provides a better user experience compared to traditional tpcc and sysbench. Usage is relatively straightforward due to the plethora of test configuration templates provided, allowing easy initiation of tests with simple configuration file modifications. The test results are stable, although certain features mentioned in papers, like server status monitoring, still require exploration.</p>
 <p>I tested all 15 test suites on MySQL 5.7 and TiDB, obtaining the following results:
 [table]</p>
 <p>Its usability is quite evident. As for the ease of secondary development, it should be relatively simple, considering the entire OLTP-Bench project is not particularly large, with around 40,000 lines of code.</p>
-<h1 id="other">Other</h1>
+<h2 id="other">Other</h2>
 <ul>
 <li>tpch: While the framework&rsquo;s code appears to support tpch, it proved unusable during practical tests, likely due to incomplete implementation and thus excluded from the README.</li>
 <li>Referring to future work mentioned in chapter nine of the paper, especially &ldquo;generating load to match production data distribution,&rdquo; this remains unimplemented, as seen in the codebase.</li>

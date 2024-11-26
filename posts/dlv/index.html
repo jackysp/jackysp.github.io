@@ -27,7 +27,7 @@
   
 </head>
 
-  <body class="theme-base-0d ">
+  <body class=" ">
   <aside class="sidebar">
   <div class="container sidebar-sticky">
     <div class="sidebar-about">
@@ -52,10 +52,10 @@
     <div class="post">
   <h1>Using delve to Debug Golang Programs</h1>
   <time datetime=2019-09-16T13:24:00&#43;0800 class="post-date">Mon, Sep 16, 2019</time>
-  <h1 id="background">Background</h1>
+  <h2 id="background">Background</h2>
 <p>When I first started writing Golang, I was always looking for a convenient debugging tool. Back then, I came across documentation about using <code>gdb</code> to debug and also tried <code>delve</code>, but neither felt easy to use. Later, on someone&rsquo;s advice, I went back to the good old <code>print</code> statements&hellip;</p>
 <p>Over the past couple of days, I was debugging <code>go test</code> and found that tests would always hang when run per package. I couldn&rsquo;t think of a suitable method at first, so I thought of <code>delve</code> again. After giving it a try, I found it has become much more mature than before.</p>
-<h1 id="usage">Usage</h1>
+<h2 id="usage">Usage</h2>
 <p><code>dlv attach ${pid}</code> is the method I use most often. After attaching, you can use debugging commands similar to <code>gdb</code>. You can use <code>help</code> to view specific commands.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>(dlv) help
 </span></span><span style="display:flex;"><span>The following commands are available:

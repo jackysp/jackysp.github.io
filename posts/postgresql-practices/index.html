@@ -27,7 +27,7 @@
   
 </head>
 
-  <body class="theme-base-0d ">
+  <body class=" ">
   <aside class="sidebar">
   <div class="container sidebar-sticky">
     <div class="sidebar-about">
@@ -53,7 +53,7 @@
   <h1>How to Practice Using SQL</h1>
   <time datetime=2014-06-05T00:00:00Z class="post-date">Thu, Jun 5, 2014</time>
   <p>The text provided is a detailed set of instructions and queries for practicing SQL using PostgreSQL 9.4 BETA 2, focusing on creating and querying tables related to students, courses, scores, and teachers. Here&rsquo;s a summary:</p>
-<h3 id="database-structure">Database Structure</h3>
+<h2 id="database-structure">Database Structure</h2>
 <p>The database consists of four tables:</p>
 <ol>
 <li><strong>STUDENT</strong>: Contains student number (SNO), name (SNAME), gender (SSEX), birthday (SBIRTHDAY), and class (CLASS).</li>
@@ -61,14 +61,14 @@
 <li><strong>SCORE</strong>: Records student number (SNO), course number (CNO), and degree (DEGREE).</li>
 <li><strong>TEACHER</strong>: Holds teacher number (TNO), name (TNAME), gender (TSEX), birthday (TBIRTHDAY), professional title (PROF), and department (DEPART).</li>
 </ol>
-<h3 id="sample-data">Sample Data</h3>
+<h2 id="sample-data">Sample Data</h2>
 <ul>
 <li>Students such as Zeng Hua, Kang Ming, and Wang Fang are stored with specific details, including their class and gender.</li>
 <li>Courses like &ldquo;Introduction to Computers&rdquo; and &ldquo;Operating Systems&rdquo; are associated with teacher numbers.</li>
 <li>Scores are recorded for students across various courses.</li>
 <li>Teachers are described with their professional roles and departments.</li>
 </ul>
-<h3 id="query-problems">Query Problems</h3>
+<h2 id="query-problems">Query Problems</h2>
 <p>Several SQL queries are suggested for practice, such as:</p>
 <ul>
 <li>Extracting specific columns like SNAME, SSEX, and CLASS from the STUDENT table.</li>
@@ -76,21 +76,20 @@
 <li>Calculating and sorting grades within the SCORE table.</li>
 <li>Performing database operations to find student averages, count of students per class, and comparing scores.</li>
 </ul>
-<h3 id="advanced-query-exercises">Advanced Query Exercises</h3>
+<h2 id="advanced-query-exercises">Advanced Query Exercises</h2>
 <ul>
 <li>Performing set operations and conditional joins to answer complex questions like finding students who scored more than others or comparing teachers&rsquo; scores.</li>
 <li>Use of SQL functions like <code>DATE_PART</code>, subqueries, and unions to gather specific data.</li>
 </ul>
-<h3 id="additional-queries">Additional Queries</h3>
+<h2 id="additional-queries">Additional Queries</h2>
 <ul>
 <li>Techniques to refine queries for performance, like avoiding the <code>NOT IN</code> method.</li>
 <li>Handling conditions like age calculations using <code>AGE(SBIRTHDAY)</code> and filtering by name patterns.</li>
 </ul>
 <p>Overall, these exercises provide a robust framework for practicing SQL skills on a structured set of sample data, focusing on various database manipulation and retrieval techniques.7. <strong>Query</strong>:</p>
-<ul>
-<li><code>SELECT A.TNAME, B.CNAME FROM TEACHER A JOIN COURSE B ON A.TNO = B.TNO WHERE A.TSEX='男';</code></li>
-<li>Explanation: Joins teacher and course tables to select male teachers and their course names.</li>
-</ul>
+<pre><code>- `SELECT A.TNAME, B.CNAME FROM TEACHER A JOIN COURSE B ON A.TNO = B.TNO WHERE A.TSEX='男';`
+- Explanation: Joins teacher and course tables to select male teachers and their course names.
+</code></pre>
 <ol start="8">
 <li>
 <p><strong>Query</strong>:</p>
