@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.139.0">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>How TiDB Implements the INSERT Statement &middot; Mini Fish</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class=" ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="http://blog.minifish.org/"><h1>Mini Fish</h1></a>
+      <p class="lead">
+       A collection of straightforward how-to guides. 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="http://blog.minifish.org/">Home</a> </li>
+        <li><a href="https://github.com/jackysp/"> GitHub </a></li><li><a href="https://www.linkedin.com/in/shuaipeng-yu-81280434/"> LinkedIn </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2024. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>How TiDB Implements the INSERT Statement</h1>
+  <time datetime=2018-07-11T14:18:00&#43;0800 class="post-date">Wed, Jul 11, 2018</time>
+  <p>In the previous article <a href="https://zhuanlan.zhihu.com/p/34512827">&ldquo;Overview of the Insert Statement&rdquo;</a>, the general process of the INSERT statement was introduced. This article will explain in detail the implementation of several types of INSERT statements in TiDB.</p>
+<h2 id="types-of-insert-statements">Types of INSERT Statements</h2>
+<p>In TiDB, there are the following types of INSERT statements:</p>
+<ul>
+<li>INSERT</li>
+<li>INSERT IGNORE</li>
+<li>INSERT ON DUPLICATE KEY UPDATE</li>
+<li>INSERT IGNORE ON DUPLICATE KEY UPDATE</li>
+<li>REPLACE</li>
+<li>LOAD DATA</li>
+</ul>
+<p>These six statements theoretically fall under the category of INSERT statements.</p>
+<p>The first type is the most common INSERT statement, which needs no further explanation.</p>
+<p>The second type, INSERT IGNORE, skips the current row when encountering a unique constraint conflict (primary key conflict, unique index conflict) and logs a warning. After the execution of the statement, you can see which rows were not inserted through <code>SHOW WARNINGS</code>.</p>
+<p>The third type, INSERT ON DUPLICATE KEY UPDATE, updates the conflicting row and then inserts the data. If the updated row conflicts with another row in the table, an error is returned.</p>
+<p>The fourth type, INSERT IGNORE ON DUPLICATE KEY UPDATE, does not insert the row and displays a warning when the updated row conflicts with another row after the initial conflict.</p>
+<p>The fifth type, REPLACE, deletes the conflicting row from the table and continues trying to insert data. If another conflict occurs, it continues deleting the conflicting data until there is no more conflicting data in the table, then inserts the data.</p>
+<p>The last type, LOAD DATA, follows the same rule as INSERT IGNORE—it ignores conflicts. However, LOAD DATA&rsquo;s purpose is to import data from a file into a table, meaning the data comes from a CSV data file.</p>
+<p>This article mainly focuses on the source code implementation of the first and second types (INSERT, INSERT IGNORE), while the third and fifth types (INSERT ON DUPLICATE KEY UPDATE, REPLACE) will be introduced later. INSERT IGNORE ON DUPLICATE KEY UPDATE involves some special handling on top of INSERT ON DUPLICATE KEY UPDATE, and LOAD DATA is a special implementation of INSERT IGNORE, so they will not be detailed here.</p>
+<h2 id="insert-statement">INSERT Statement</h2>
+<p>The major difference between these various INSERT statements lies in the execution layer. We will continue with the explanation from <a href="https://zhuanlan.zhihu.com/p/34512827">&ldquo;Overview of the Insert Statement&rdquo;</a>. If you don’t remember the previous content, feel free to refer back to the original article.</p>
+<p>The execution logic of INSERT is located in executor/insert.go. In fact, the execution logic of the first four INSERT types is all in this file. Let’s first discuss the most basic INSERT.</p>
+<p>InsertExec is the executor implementation for INSERT, which implements the Executor interface. It performs some initialization in the Open method, executes in the Next method, and does some cleanup in the Close method.</p>
+<p>In the Next method, based on whether the data is acquired through a SELECT statement (INSERT INTO &hellip; SELECT FROM), the Next process is divided into insertRows and insertRowsFromSelect. Both processes eventually enter the exec function to execute the INSERT.</p>
+<p>Within the exec function, the first four types of INSERT statements are handled, with the regular INSERT directly entering the insertOneRow.</p>
+<p>Before discussing insertOneRow, let&rsquo;s look at a piece of SQL.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT <span style="color:#66d9ef">UNIQUE</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">BEGIN</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">COMMIT</span>;
+</span></span></code></pre></div><p>Execute this SQL line by line in both TiDB and MySQL to see the results.</p>
+<p>MySQL:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>mysql&gt; CREATE TABLE t (i INT UNIQUE);
+</span></span><span style="display:flex;"><span>Query OK, 0 rows affected (0.15 sec)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mysql&gt; INSERT INTO t VALUES (1);
+</span></span><span style="display:flex;"><span>Query OK, 1 row affected (0.01 sec)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mysql&gt; BEGIN;
+</span></span><span style="display:flex;"><span>Query OK, 0 rows affected (0.00 sec)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mysql&gt; INSERT INTO t VALUES (1);
+</span></span><span style="display:flex;"><span>ERROR 1062 (23000): Duplicate entry &#39;1&#39; for key &#39;i&#39;
+</span></span><span style="display:flex;"><span>mysql&gt; COMMIT;
+</span></span><span style="display:flex;"><span>Query OK, 0 rows affected (0.11 sec)
+</span></span></code></pre></div><p>TiDB:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>mysql&gt; CREATE TABLE t (i INT UNIQUE);
+</span></span><span style="display:flex;"><span>Query OK, 0 rows affected (1.04 sec)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mysql&gt; INSERT INTO t VALUES (1);
+</span></span><span style="display:flex;"><span>Query OK, 1 row affected (0.12 sec)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mysql&gt; BEGIN;
+</span></span><span style="display:flex;"><span>Query OK, 0 rows affected (0.01 sec)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mysql&gt; INSERT INTO t VALUES (1);
+</span></span><span style="display:flex;"><span>Query OK, 1 row affected (0.00 sec)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mysql&gt; COMMIT;
+</span></span><span style="display:flex;"><span>ERROR 1062 (23000): Duplicate entry &#39;1&#39; for key &#39;i&#39;
+</span></span></code></pre></div><p>As can be seen, for the INSERT statement, TiDB performs conflict detection at the time of transaction commitment, while MySQL performs the detection when the statement is executed. This is because in insertOneRow, the PresumeKeyNotExists option is set, meaning all INSERTs initially assume that no conflicts will occur, and conflict detection is deferred to the commitment phase to perform a bulk check on all rows inserted in the transaction.</p>
+<h2 id="insert-ignore-statement">INSERT IGNORE Statement</h2>
+<p>The semantics of INSERT IGNORE have been introduced earlier. Since usual INSERTs are checked for conflicts at commitment, can INSERT IGNORE follow this approach as well? The answer is no, due to the following reasons:</p>
+<ol>
+<li>If INSERT IGNORE checks for conflicts at commitment, the transaction module would need to know which rows to ignore and which rows to error and rollback, greatly increasing module coupling.</li>
+<li>Users expect to immediately see which rows were not inserted under INSERT IGNORE. That is, they want to immediately use <code>SHOW WARNINGS</code> to know which rows were not actually written.</li>
+</ol>
+<p>This requires immediate conflict detection when executing INSERT IGNORE. An obvious approach would be to try reading out the data before insertion, log a warning upon discovering a conflict, and then proceed to the next row. However, for situations where multiple rows are inserted in one statement, it would repeatedly read data from TiKV for detection. Therefore, TiDB implements batchChecker, with code located in executor/batch_checker.go.</p>
+<p>In batchChecker:</p>
+<p>First, the unique constraints that could potentially conflict with the data to be inserted are constructed into keys via getKeysNeedCheck (TiDB uses unique keys to enforce uniqueness constraints, detailed in <a href="https://zhuanlan.zhihu.com/p/27108657">&ldquo;Three Articles to Understand the Technical Inside Story of TiDB - Computation&rdquo;</a>), and the constructed keys are read together via BatchGetValues, fetching only the conflicting data.</p>
+<p>Then, the keys of the data to be inserted are checked against the results from BatchGetValues. Rows found to be in conflict will have a warning constructed, before moving on to the next row. Rows without conflict can be safely INSERTed. This process is implemented in batchCheckAndInsert.</p>
+
+</div>
+
+<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jackysp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </main>
+
+    
+      
+    
+  </body>
+</html>
