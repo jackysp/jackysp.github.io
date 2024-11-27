@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.139.0">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Exploring Tailscale: Building Your Own Network Easily &middot; Mini Fish</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class=" ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="http://blog.minifish.org/"><h1>Mini Fish</h1></a>
+      <p class="lead">
+       A collection of straightforward how-to guides. 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="http://blog.minifish.org/">Home</a> </li>
+        <li><a href="https://github.com/jackysp/"> GitHub </a></li><li><a href="https://www.linkedin.com/in/shuaipeng-yu-81280434/"> LinkedIn </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2024. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>Exploring Tailscale: Building Your Own Network Easily</h1>
+  <time datetime=2024-11-27T18:18:38&#43;0800 class="post-date">Wed, Nov 27, 2024</time>
+  <p>I recently started experimenting with <strong>Tailscale</strong>, a tool that has significantly simplified the way I manage my personal network across devices. In this blog post, I&rsquo;ll share how I discovered Tailscale, its core features, and my personal setup that leverages this powerful tool.</p>
+<h2 id="discovering-tailscale-through-webvm">Discovering Tailscale Through WebVM</h2>
+<p>My journey with Tailscale began when I came across <a href="https://github.com/leaningtech/webvm">WebVM</a>, an impressive project that allows you to run a virtual machine directly in your browser. Intrigued by the possibilities, I delved deeper and discovered that Tailscale could help me create a seamless, private network across all my devices.</p>
+<h2 id="what-is-tailscale">What is Tailscale?</h2>
+<p>Tailscale is a mesh VPN network built on top of <strong>WireGuard</strong>, specifically using the <a href="https://github.com/WireGuard/wireguard-go">WireGuard-go</a> implementation. It allows you to create a secure, encrypted network between your devices, no matter where they are located.</p>
+<h3 id="key-features">Key Features</h3>
+<ul>
+<li><strong>Free Plan Available</strong>: Tailscale offers a free plan that is sufficient for personal use, allowing up to 20 devices.</li>
+<li><strong>Ease of Use</strong>: Setting up Tailscale is straightforward. With minimal configuration, you can have your own network up and running quickly.</li>
+<li><strong>Cross-Platform Support</strong>: Tailscale works exceptionally well across the Apple ecosystem, including <strong>iOS</strong>, <strong>tvOS</strong>, and <strong>macOS</strong>.</li>
+<li><strong>Magic DNS Service</strong>: It provides a built-in DNS service that makes it easy to address your devices by name.</li>
+</ul>
+<h2 id="performance-on-different-platforms">Performance on Different Platforms</h2>
+<p>While Tailscale shines on Apple devices, in my experience, it hasn&rsquo;t performed as well on Windows. I encountered some connectivity and stability issues on Windows machines, which may vary based on individual setups.</p>
+<h2 id="my-tailscale-setup">My Tailscale Setup</h2>
+<p>Here&rsquo;s how I leveraged Tailscale to connect my devices and access my home network seamlessly.</p>
+<h3 id="running-tailscale-on-apple-tv">Running Tailscale on Apple TV</h3>
+<p>I installed Tailscale on my <strong>Apple TV</strong>, which stays online <strong>24/7</strong>. This makes it an excellent candidate for a consistently available node in my network.</p>
+<ul>
+<li><strong>Enabling Subnet Routing</strong>: By enabling subnet routing on the Apple TV, I can access other devices on the same local network, such as my <strong>NAS</strong> and <strong>router</strong>, as if I were connected locally.</li>
+<li><strong>Setting Up an Exit Node</strong>: I configured the Apple TV as an <strong>exit node</strong>, allowing me to route internet traffic through my home network. This is useful when I need to access geo-restricted content or ensure a secure connection.</li>
+</ul>
+<h3 id="connecting-other-devices">Connecting Other Devices</h3>
+<p>I also installed Tailscale on my <strong>MacBook</strong> and <strong>iPhone</strong>, which allows all my personal devices to communicate over the secure network, no matter where I am.</p>
+<h2 id="benefits-ive-enjoyed">Benefits I&rsquo;ve Enjoyed</h2>
+<ul>
+<li><strong>Secure Remote Access</strong>: I can securely access my home network devices from anywhere.</li>
+<li><strong>Consistent Environment</strong>: All my devices appear on the same network, simplifying file sharing and remote management.</li>
+<li><strong>No Need for Complex VPN Setups</strong>: Tailscale eliminates the need for traditional VPN configurations, port forwarding, or dynamic DNS services.</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>Tailscale has transformed the way I interact with my devices across different locations. Its ease of use and robust feature set make it an excellent choice for anyone looking to create a personal, secure network.</p>
+<p>If you&rsquo;re interested in simplifying your network setup and want a hassle-free way to connect your devices, I highly recommend giving Tailscale a try.</p>
+<p><strong>Links:</strong></p>
+<ul>
+<li><a href="https://tailscale.com/">Tailscale Official Website</a></li>
+<li><a href="https://github.com/leaningtech/webvm">WebVM Project on GitHub</a></li>
+<li><a href="https://github.com/WireGuard/wireguard-go">WireGuard-go on GitHub</a></li>
+</ul>
+<p><em>Note: This post reflects my personal experiences with Tailscale. Performance may vary based on individual configurations and devices.</em></p>
+
+</div>
+
+<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jackysp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </main>
+
+    
+      
+    
+  </body>
+</html>

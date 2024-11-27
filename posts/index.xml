@@ -6,8 +6,15 @@
     <description>Recent content in Posts on Mini Fish</description>
     <generator>Hugo</generator>
     <language>en-US</language>
-    <lastBuildDate>Wed, 27 Nov 2024 18:13:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 27 Nov 2024 18:18:38 +0800</lastBuildDate>
     <atom:link href="http://blog.minifish.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Exploring Tailscale: Building Your Own Network Easily</title>
+      <link>http://blog.minifish.org/posts/tailscale/</link>
+      <pubDate>Wed, 27 Nov 2024 18:18:38 +0800</pubDate>
+      <guid>http://blog.minifish.org/posts/tailscale/</guid>
+      <description>&lt;p&gt;I recently started experimenting with &lt;strong&gt;Tailscale&lt;/strong&gt;, a tool that has significantly simplified the way I manage my personal network across devices. In this blog post, I&amp;rsquo;ll share how I discovered Tailscale, its core features, and my personal setup that leverages this powerful tool.&lt;/p&gt;&#xA;&lt;h2 id=&#34;discovering-tailscale-through-webvm&#34;&gt;Discovering Tailscale Through WebVM&lt;/h2&gt;&#xA;&lt;p&gt;My journey with Tailscale began when I came across &lt;a href=&#34;https://github.com/leaningtech/webvm&#34;&gt;WebVM&lt;/a&gt;, an impressive project that allows you to run a virtual machine directly in your browser. Intrigued by the possibilities, I delved deeper and discovered that Tailscale could help me create a seamless, private network across all my devices.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Tips for Traveling in Vietnam: My Personal Experiences</title>
       <link>http://blog.minifish.org/posts/vietnam/</link>
