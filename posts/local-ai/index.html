@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.139.0">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Exploring Local LLMs with Ollama: My Journey and Practices &middot; Mini Fish</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="http://blog.minifish.org/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class=" ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="http://blog.minifish.org/"><h1>Mini Fish</h1></a>
+      <p class="lead">
+       A collection of straightforward how-to guides. 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="http://blog.minifish.org/">Home</a> </li>
+        <li><a href="https://github.com/jackysp/"> GitHub </a></li><li><a href="https://www.linkedin.com/in/shuaipeng-yu-81280434/"> LinkedIn </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2024. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>Exploring Local LLMs with Ollama: My Journey and Practices</h1>
+  <time datetime=2024-11-27T18:26:14&#43;0800 class="post-date">Wed, Nov 27, 2024</time>
+  <p>Local Large Language Models (LLMs) have been gaining traction as developers and enthusiasts seek more control over their AI tools without relying solely on cloud-based solutions. In this blog post, I&rsquo;ll share my experiences with <strong>Ollama</strong>, a remarkable tool for running local LLMs, along with other tools like <strong>llamaindex</strong> and <strong>Candle</strong>. I&rsquo;ll also discuss various user interfaces (UI) that enhance the local LLM experience.</p>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#introduction-to-ollama">Introduction to Ollama</a>
+<ul>
+<li><a href="#a-popular-choice">A Popular Choice</a></li>
+<li><a href="#ease-of-use">Ease of Use</a></li>
+<li><a href="#built-with-golang">Built with Golang</a></li>
+</ul>
+</li>
+<li><a href="#my-practices-with-ollama">My Practices with Ollama</a>
+<ul>
+<li><a href="#preferred-models">Preferred Models</a>
+<ul>
+<li><a href="#llama-31">Llama 3.1</a></li>
+<li><a href="#mistral">Mistral</a></li>
+<li><a href="#phi-3">Phi-3</a></li>
+<li><a href="#qwen-2">Qwen-2</a></li>
+</ul>
+</li>
+<li><a href="#hardware-constraints">Hardware Constraints</a></li>
+</ul>
+</li>
+<li><a href="#exploring-uis-for-ollama">Exploring UIs for Ollama</a>
+<ul>
+<li><a href="#openwebui">OpenWebUI</a></li>
+<li><a href="#page-assist">Page Assist</a></li>
+<li><a href="#enchanted">Enchanted</a></li>
+<li><a href="#anythingllm">AnythingLLM</a></li>
+<li><a href="#dify">Dify</a></li>
+</ul>
+</li>
+<li><a href="#diving-into-llamaindex">Diving into llamaindex</a></li>
+<li><a href="#experimenting-with-candle">Experimenting with Candle</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+<hr>
+<h2 id="introduction-to-ollama">Introduction to Ollama</h2>
+<h3 id="a-popular-choice">A Popular Choice</h3>
+<p><a href="https://github.com/jmorganca/ollama">Ollama</a> has rapidly become a favorite among developers interested in local LLMs. Within a year, it has garnered significant attention on GitHub, reflecting its growing user base and community support.</p>
+<h3 id="ease-of-use">Ease of Use</h3>
+<p>One of Ollama&rsquo;s standout features is its simplicity. It&rsquo;s as easy to use as Docker, making it accessible even to those who may not be deeply familiar with machine learning frameworks. The straightforward command-line interface allows users to download and run models with minimal setup.</p>
+<h3 id="built-with-golang">Built with Golang</h3>
+<p>Ollama is written in <strong>Golang</strong>, ensuring performance and efficiency. Golang&rsquo;s concurrency features contribute to Ollama&rsquo;s ability to handle tasks effectively, which is crucial when working with resource-intensive LLMs.</p>
+<h2 id="my-practices-with-ollama">My Practices with Ollama</h2>
+<h3 id="preferred-models">Preferred Models</h3>
+<h4 id="llama-31">Llama 3.1</h4>
+<p>I&rsquo;ve found that <strong>Llama 3.1</strong> works exceptionally well with Ollama. It&rsquo;s my go-to choice due to its performance and compatibility.</p>
+<h4 id="mistral">Mistral</h4>
+<p>While <strong>Mistral</strong> also performs well, it hasn&rsquo;t gained as much popularity as Llama. Nevertheless, it&rsquo;s a solid option worth exploring.</p>
+<h4 id="phi-3">Phi-3</h4>
+<p>Developed by Microsoft, <strong>Phi-3</strong> is both fast and efficient. The 2B parameter model strikes a balance between size and performance, making it one of the best small-sized LLMs available.</p>
+<h4 id="qwen-2">Qwen-2</h4>
+<p>Despite its impressive benchmarks, <strong>Qwen-2</strong> didn&rsquo;t meet my expectations in practice. It might work well in certain contexts, but it didn&rsquo;t suit my specific needs.</p>
+<h3 id="hardware-constraints">Hardware Constraints</h3>
+<p>Running large models on hardware with limited resources can be challenging. On my 16GB MacBook, models around <strong>7B to 8B parameters</strong> are the upper limit. Attempting to run larger models results in performance issues.</p>
+<h2 id="exploring-uis-for-ollama">Exploring UIs for Ollama</h2>
+<p>Enhancing the user experience with UIs can make interacting with local LLMs more intuitive. Here&rsquo;s a look at some UIs I&rsquo;ve tried:</p>
+<h3 id="openwebui">OpenWebUI</h3>
+<p><a href="https://github.com/OpenWebUI/OpenWebUI">OpenWebUI</a> offers a smooth and user-friendly interface similar to Ollama&rsquo;s default UI. It requires Docker to run efficiently, which might be a barrier for some users.</p>
+<ul>
+<li><strong>Features</strong>:
+<ul>
+<li>Basic Retrieval-Augmented Generation (RAG) capabilities.</li>
+<li>Connection to OpenAI APIs.</li>
+</ul>
+</li>
+</ul>
+<h3 id="page-assist">Page Assist</h3>
+<p><a href="https://chrome.google.com/webstore/detail/page-assist/">Page Assist</a> is a Chrome extension that I&rsquo;ve chosen for its simplicity and convenience.</p>
+<ul>
+<li><strong>Advantages</strong>:
+<ul>
+<li>No requirement for Docker.</li>
+<li>Accesses the current browser page as input, enabling context-aware interactions.</li>
+</ul>
+</li>
+</ul>
+<h3 id="enchanted">Enchanted</h3>
+<p><a href="https://apps.apple.com/app/enchanted-ai-assistant/id">Enchanted</a> is unique as it provides an iOS UI for local LLMs with support for Ollama.</p>
+<ul>
+<li><strong>Usage</strong>:
+<ul>
+<li>By using <strong>Tailscale</strong>, I can connect it to Ollama running on my MacBook.</li>
+<li>Serves as an alternative to Apple’s native intelligence features.</li>
+</ul>
+</li>
+</ul>
+<h3 id="anythingllm">AnythingLLM</h3>
+<p><a href="https://github.com/Mintplex-Labs/anything-llm">AnythingLLM</a> offers enhanced RAG capabilities. However, in my experience, it hasn&rsquo;t performed consistently well enough for regular use.</p>
+<h3 id="dify">Dify</h3>
+<p><a href="https://github.com/langgenius/dify">Dify</a> is a powerful and feature-rich option.</p>
+<ul>
+<li><strong>Pros</strong>:
+<ul>
+<li>Easy to set up with an extensive feature set.</li>
+</ul>
+</li>
+<li><strong>Cons</strong>:
+<ul>
+<li>Resource-intensive, requiring Docker and running multiple containers like Redis and PostgreSQL.</li>
+</ul>
+</li>
+</ul>
+<h2 id="diving-into-llamaindex">Diving into llamaindex</h2>
+<p><a href="https://github.com/jerryjliu/llama_index">llamaindex</a> is geared towards developers who are comfortable writing code. While it offers robust functionalities, it does have a learning curve.</p>
+<ul>
+<li><strong>Observations</strong>:
+<ul>
+<li>Documentation is somewhat limited, often necessitating diving into the source code.</li>
+<li>The <code>llamaindex-cli</code> tool aims to simplify getting started but isn&rsquo;t entirely stable.
+<ul>
+<li>Works seamlessly with OpenAI.</li>
+<li>Requires code modifications to function with Ollama.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="experimenting-with-candle">Experimenting with Candle</h2>
+<p><strong>Candle</strong> is an intriguing project written in <strong>Rust</strong>.</p>
+<ul>
+<li>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Uses <a href="https://huggingface.co/">Hugging Face</a> to download models.</li>
+<li>Simple to run but exhibits slower performance compared to Ollama.</li>
+</ul>
+</li>
+<li>
+<p><strong>Additional Tools</strong>:</p>
+<ul>
+<li><strong>Cake</strong>: A distributed solution based on Candle, <strong>Cake</strong> opens up possibilities for scaling and extending use cases.</li>
+</ul>
+</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>Exploring local LLMs has been an exciting journey filled with learning and experimentation. Tools like Ollama, llamaindex, and Candle offer various pathways to harnessing the power of LLMs on personal hardware. While there are challenges, especially with hardware limitations and setup complexities, the control and privacy afforded by local models make the effort worthwhile.</p>
+<hr>
+<p><em>Feel free to share your experiences or ask questions in the comments below!</em></p>
+
+</div>
+
+<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "jackysp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </main>
+
+    
+      
+    
+  </body>
+</html>
