@@ -6,8 +6,15 @@
     <description>Recent content on Mini Fish</description>
     <generator>Hugo</generator>
     <language>en-US</language>
-    <lastBuildDate>Wed, 27 Nov 2024 18:26:14 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 28 Nov 2024 15:41:19 +0800</lastBuildDate>
     <atom:link href="http://blog.minifish.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Correct Way to Use `go build`</title>
+      <link>http://blog.minifish.org/posts/go-build/</link>
+      <pubDate>Thu, 28 Nov 2024 15:41:19 +0800</pubDate>
+      <guid>http://blog.minifish.org/posts/go-build/</guid>
+      <description>&lt;p&gt;When working with Go, it&amp;rsquo;s important to know the proper way to compile your programs to avoid common errors. Here are some tips on using the &lt;code&gt;go build&lt;/code&gt; command effectively.&lt;/p&gt;&#xA;&lt;h2 id=&#34;recommended-usage&#34;&gt;Recommended Usage&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;Compile all Go files in the current directory:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;go build&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;Compile all Go files explicitly:&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;go build *.go&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;common-pitfalls&#34;&gt;Common Pitfalls&lt;/h2&gt;&#xA;&lt;h3 id=&#34;compiling-a-single-file&#34;&gt;Compiling a Single File&lt;/h3&gt;&#xA;&lt;p&gt;Running:&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;go build main.go&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;will only build &lt;code&gt;main.go&lt;/code&gt;. This can lead to errors if &lt;code&gt;main.go&lt;/code&gt; depends on other Go files in the same package, as those files won&amp;rsquo;t be included in the build process.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Exploring Local LLMs with Ollama: My Journey and Practices</title>
       <link>http://blog.minifish.org/posts/local-ai/</link>
