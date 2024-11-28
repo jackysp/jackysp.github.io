@@ -6,8 +6,15 @@
     <description>Recent content on Mini Fish</description>
     <generator>Hugo</generator>
     <language>en-US</language>
-    <lastBuildDate>Thu, 28 Nov 2024 15:41:19 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 28 Nov 2024 16:10:43 +0800</lastBuildDate>
     <atom:link href="http://blog.minifish.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My Recent Purchases: A Review of Three Sanrenmu Folding Knives</title>
+      <link>http://blog.minifish.org/posts/folding-knives/</link>
+      <pubDate>Thu, 28 Nov 2024 16:10:43 +0800</pubDate>
+      <guid>http://blog.minifish.org/posts/folding-knives/</guid>
+      <description>&lt;p&gt;Recently, I decided to expand my collection of folding knives and purchased three models from &lt;strong&gt;&lt;a href=&#34;#&#34;&gt;Sanrenmu&lt;/a&gt;&lt;/strong&gt;. For anyone considering a new knife or looking for suggestions, I wanted to share my experiences with these three models: the 9201, 9008, and 820. Each has its own strengths and weaknesses, and hopefully, my insights can help you make an informed decision.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;sanrenmu-9201&#34;&gt;Sanrenmu 9201&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Price:&lt;/strong&gt; 198 Yuan&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Lock Type:&lt;/strong&gt; Axis Lock&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Handle Material:&lt;/strong&gt; Plastic&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Blade Material:&lt;/strong&gt; D2 Steel&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;first-impressions&#34;&gt;First Impressions&lt;/h3&gt;&#xA;&lt;p&gt;The 9201 features an axis lock mechanism, which I found to be &lt;strong&gt;very smooth and easy to open and close&lt;/strong&gt;. The D2 steel blade offers good edge retention, and the plastic handle keeps the knife lightweight.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>The Correct Way to Use `go build`</title>
       <link>http://blog.minifish.org/posts/go-build/</link>

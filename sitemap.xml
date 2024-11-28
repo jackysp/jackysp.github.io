@@ -3,10 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://blog.minifish.org/</loc>
-    <lastmod>2024-11-28T15:41:19+08:00</lastmod>
+    <lastmod>2024-11-28T16:10:43+08:00</lastmod>
+  </url><url>
+    <loc>http://blog.minifish.org/posts/folding-knives/</loc>
+    <lastmod>2024-11-28T16:10:43+08:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/posts/</loc>
-    <lastmod>2024-11-28T15:41:19+08:00</lastmod>
+    <lastmod>2024-11-28T16:10:43+08:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/posts/go-build/</loc>
     <lastmod>2024-11-28T15:41:19+08:00</lastmod>
