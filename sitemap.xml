@@ -2,13 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://blog.minifish.org/posts/brompton/</loc>
-    <lastmod>2024-12-09T19:27:06+08:00</lastmod>
+    <loc>http://blog.minifish.org/posts/notebooklm/</loc>
+    <lastmod>2024-12-11T17:11:00+08:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/</loc>
-    <lastmod>2024-12-09T19:27:06+08:00</lastmod>
+    <lastmod>2024-12-11T17:11:00+08:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/posts/</loc>
+    <lastmod>2024-12-11T17:11:00+08:00</lastmod>
+  </url><url>
+    <loc>http://blog.minifish.org/posts/brompton/</loc>
     <lastmod>2024-12-09T19:27:06+08:00</lastmod>
   </url><url>
     <loc>http://blog.minifish.org/posts/folding-knives/</loc>
