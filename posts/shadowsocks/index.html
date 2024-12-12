@@ -60,10 +60,7 @@
 <li>Deploy a Debian 9 or Ubuntu 17 VPS. Mainstream providers like Vultr should have these options available. Assume we are using Debian 9 here.</li>
 <li>Run <code>apt install shadowsocks-libev</code> to install.</li>
 <li>Edit the configuration file using <code>vim /etc/shadowsocks-libev/config.json</code>. It&rsquo;s best to set the Server IP to 0.0.0.0 to avoid IP issues similar to those on AWS Lightsail.
-<ol>
-<li>For AWS Lightsail, you need to bind a static IP and open firewall ports. Specific steps can be found on Google.</li>
-</ol>
-</li>
+*. For AWS Lightsail, you need to bind a static IP and open firewall ports. Specific steps can be found on Google.</li>
 <li>Restart the service using <code>systemctl restart shadowsocks-libev</code> to apply the changes.</li>
 <li>Enable TCP BBR. Specific instructions can be found on Google.</li>
 </ol>
