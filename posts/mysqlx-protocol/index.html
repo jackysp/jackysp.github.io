@@ -1,302 +1,234 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
-<head>
-  <link href="https://gmpg.org/xfn/11" rel="profile">
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.140.0-DEV">
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>How to Implement MySQL X Protocol on TiDB | Mini Fish</title><meta name=keywords content><meta name=description content="Some Documents on MySQL
 
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+Client Usage Guide MySQL Shell User Guide
+Server Configuration Guide Using MySQL as a Document Store
+Application Development API Guide X DevAPI User Guide
+Introduction to Server Internal Implementation X Protocol.
 
-  <title>How to Implement MySQL X Protocol on TiDB &middot; Mini Fish</title>
-  <meta name="description" content="" />
+Implementation Principle
 
-  
-  <link type="text/css" rel="stylesheet" href="https://blog.minifish.org/css/print.css" media="print">
-  <link type="text/css" rel="stylesheet" href="https://blog.minifish.org/css/poole.css">
-  <link type="text/css" rel="stylesheet" href="https://blog.minifish.org/css/syntax.css">
-  <link type="text/css" rel="stylesheet" href="https://blog.minifish.org/css/hyde.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+Communication between client and server is over TCP and the protocol uses protobuf.
+After the server receives a message, it decodes and analyzes it. The protocol includes a concept called namespace, which specifically refers to whether the namespace is empty or &ldquo;sql&rdquo;, in which case the message content is executed as a SQL statement; if it is &ldquo;xplugin&rdquo; or &ldquo;mysqlx,&rdquo; the message is handled in another way. The other ways can be divided into:
+
+Administrative commands
+CRUD operations
 
 
-  
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
-  <link rel="shortcut icon" href="/favicon.png">
+&ldquo;xplugin&rdquo; and &ldquo;mysqlx&rdquo; have the same function, with the latter being the new name for the former, retained temporarily for compatibility.
+The content of &ldquo;mysqlx&rdquo; messages, apart from explicit command content like kill_client, are mostly transformed into SQL statements which the server processes, essentially turning most into a form where the namespace is &ldquo;sql&rdquo;.
 
-  
-  
-</head>
+Implementation Steps
 
-  <body class=" ">
-  <aside class="sidebar">
-  <div class="container sidebar-sticky">
-    <div class="sidebar-about">
-      <a href="https://blog.minifish.org/"><h1>Mini Fish</h1></a>
-      <p class="lead">
-       A Collection of Straightforward HOW-TO Guides 
-      </p>
-    </div>
+Start a new server for TiDB. The relevant configuration parameters such as IP, port, and socket need to be set.
+Implement the reading and writing functionality for message communication.
+Write a process for this new server to establish connections, including authentication, that follows the protocol. Use tcpdump to capture messages between MySQL and the client to derive protocol content, implementing the process by understanding MySQL source code.
+The server should include contents like the Query Context from the original TiDB server, as it primarily translates into SQL for execution.
+Implement the decoding and handling of messages. Although only a sentence, the workload included is substantial.
 
-    <nav>
-      <ul class="sidebar-nav">
-        <li><a href="https://blog.minifish.org/">Home</a> </li>
-        <li><a href="https://github.com/jackysp/"> GitHub </a></li><li><a href="https://www.linkedin.com/in/shuaipeng-yu-81280434/"> LinkedIn </a></li>
-      </ul>
-    </nav>
+In mysqlx_all_msgs.h, all messages are initialized"><meta name=author content="map[email:i@minifish.org name:Jack Yu]"><link rel=canonical href=https://blog.minifish.org/posts/mysqlx-protocol/><link crossorigin=anonymous href=/assets/css/stylesheet.d6fcd20a4fb86efa4dfac8ec95da60244cc8871042183da1ef28e3a762ad79c8.css integrity="sha256-1vzSCk+4bvpN+sjsldpgJEzIhxBCGD2h7yjjp2Ktecg=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.minifish.org/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.minifish.org/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.minifish.org/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.minifish.org/apple-touch-icon.png><link rel=mask-icon href=https://blog.minifish.org/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://blog.minifish.org/posts/mysqlx-protocol/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script async src="https://www.googletagmanager.com/gtag/js?id=G-G0H8JF722Y"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-G0H8JF722Y")}</script><meta property="og:url" content="https://blog.minifish.org/posts/mysqlx-protocol/"><meta property="og:site_name" content="Mini Fish"><meta property="og:title" content="How to Implement MySQL X Protocol on TiDB"><meta property="og:description" content="Some Documents on MySQL Client Usage Guide MySQL Shell User Guide Server Configuration Guide Using MySQL as a Document Store Application Development API Guide X DevAPI User Guide Introduction to Server Internal Implementation X Protocol. Implementation Principle Communication between client and server is over TCP and the protocol uses protobuf. After the server receives a message, it decodes and analyzes it. The protocol includes a concept called namespace, which specifically refers to whether the namespace is empty or “sql”, in which case the message content is executed as a SQL statement; if it is “xplugin” or “mysqlx,” the message is handled in another way. The other ways can be divided into: Administrative commands CRUD operations “xplugin” and “mysqlx” have the same function, with the latter being the new name for the former, retained temporarily for compatibility. The content of “mysqlx” messages, apart from explicit command content like kill_client, are mostly transformed into SQL statements which the server processes, essentially turning most into a form where the namespace is “sql”. Implementation Steps Start a new server for TiDB. The relevant configuration parameters such as IP, port, and socket need to be set. Implement the reading and writing functionality for message communication. Write a process for this new server to establish connections, including authentication, that follows the protocol. Use tcpdump to capture messages between MySQL and the client to derive protocol content, implementing the process by understanding MySQL source code. The server should include contents like the Query Context from the original TiDB server, as it primarily translates into SQL for execution. Implement the decoding and handling of messages. Although only a sentence, the workload included is substantial. In mysqlx_all_msgs.h, all messages are initialized"><meta property="og:locale" content="en-US"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-08-16T00:00:00+00:00"><meta property="article:modified_time" content="2017-08-16T00:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="How to Implement MySQL X Protocol on TiDB"><meta name=twitter:description content="Some Documents on MySQL
 
-    <p>&copy; 2024. All rights reserved. </p>
-  </div>
-</aside>
+Client Usage Guide MySQL Shell User Guide
+Server Configuration Guide Using MySQL as a Document Store
+Application Development API Guide X DevAPI User Guide
+Introduction to Server Internal Implementation X Protocol.
 
-    <main class="content container">
-    <div class="post">
-  <h1>How to Implement MySQL X Protocol on TiDB</h1>
-  <time datetime=2017-08-16T00:00:00Z class="post-date">Wed, Aug 16, 2017</time>
-  <h2 id="some-documents-on-mysql">Some Documents on MySQL</h2>
-<ul>
-<li>Client Usage Guide <a href="https://dev.mysql.com/doc/refman/5.7/en/mysql-shell.html">MySQL Shell User Guide</a></li>
-<li>Server Configuration Guide <a href="https://dev.mysql.com/doc/refman/5.7/en/document-store.html">Using MySQL as a Document Store</a></li>
-<li>Application Development API Guide <a href="https://dev.mysql.com/doc/x-devapi-userguide/en/">X DevAPI User Guide</a></li>
-<li>Introduction to Server Internal Implementation <a href="https://dev.mysql.com/doc/internals/en/x-protocol.html">X Protocol</a>.</li>
-</ul>
-<h2 id="implementation-principle">Implementation Principle</h2>
-<ul>
-<li>Communication between client and server is over TCP and the protocol uses protobuf.</li>
-<li>After the server receives a message, it decodes and analyzes it. The protocol includes a concept called namespace, which specifically refers to whether the namespace is empty or &ldquo;sql&rdquo;, in which case the message content is executed as a SQL statement; if it is &ldquo;xplugin&rdquo; or &ldquo;mysqlx,&rdquo; the message is handled in another way. The other ways can be divided into:
-<ul>
-<li>Administrative commands</li>
-<li>CRUD operations</li>
-</ul>
-</li>
-<li>&ldquo;xplugin&rdquo; and &ldquo;mysqlx&rdquo; have the same function, with the latter being the new name for the former, retained temporarily for compatibility.</li>
-<li>The content of &ldquo;mysqlx&rdquo; messages, apart from explicit command content like kill_client, are mostly transformed into SQL statements which the server processes, essentially turning most into a form where the namespace is &ldquo;sql&rdquo;.</li>
-</ul>
-<h2 id="implementation-steps">Implementation Steps</h2>
-<ol>
-<li>Start a new server for TiDB. The relevant configuration parameters such as IP, port, and socket need to be set.</li>
-<li>Implement the reading and writing functionality for message communication.</li>
-<li>Write a process for this new server to establish connections, including authentication, that follows the protocol. Use tcpdump to capture messages between MySQL and the client to derive protocol content, implementing the process by understanding MySQL source code.</li>
-<li>The server should include contents like the Query Context from the original TiDB server, as it primarily translates into SQL for execution.</li>
-<li>Implement the decoding and handling of messages. Although only a sentence, the workload included is substantial.</li>
-</ol>
-<p>In <code>mysqlx_all_msgs.h</code>, all messages are initialized</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>  init_message_factory()
-</span></span><span style="display:flex;"><span>  {
-</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Connection<span style="color:#f92672">::</span>Capabilities<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>CONN_CAPABILITIES, <span style="color:#e6db74">&#34;CONN_CAPABILITIES&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Connection.Capabilities&#34;</span>);
-</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Error<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>ERROR, <span style="color:#e6db74">&#34;ERROR&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Error&#34;</span>);
-</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Notice<span style="color:#f92672">::</span>Frame<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>NOTICE, <span style="color:#e6db74">&#34;NOTICE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Notice.Frame&#34;</span>);
-</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Ok<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>OK, <span style="color:#e6db74">&#34;OK&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Ok&#34;</span>);
-</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Resultset<span style="color:#f92672">::</span>ColumnMetaData<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>RESULTSET_COLUMN_META_DATA, <span style="color:#e6db74">&#34;RESULTSET_COLUMN_META_DATA&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Resultset.ColumnMetaData&#34;</span>);
-</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Resultset<span style="color:#f92672">::</span>FetchDone<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>RESULTSET_FETCH_DONE, <span style="color:#e6db74">&#34;RESULTSET_FETCH_DONE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Resultset.FetchDone&#34;</span>);
-</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Resultset<span style="color:#f92672">::</span>FetchDoneMoreResultsets<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>RESULTSET_FETCH_DONE_MORE_RESULTSETS, <span style="color:#e6db74">&#34;RESULTSET_FETCH_DONE_MORE_RESULTSETS&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Resultset.FetchDoneMoreResultsets&#34;</span>);
-</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Resultset<span style="color:#f92672">::</span>Row<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>RESULTSET_ROW, <span style="color:#e6db74">&#34;RESULTSET_ROW&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Resultset.Row&#34;</span>);
-</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Session<span style="color:#f92672">::</span>AuthenticateOk<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>SESS_AUTHENTICATE_OK, <span style="color:#e6db74">&#34;SESS_AUTHENTICATE_OK&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Session.AuthenticateOk&#34;</span>);
-</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Sql<span style="color:#f92672">::</span>StmtExecuteOk<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>SQL_STMT_EXECUTE_OK, <span style="color:#e6db74">&#34;SQL_STMT_EXECUTE_OK&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Sql.StmtExecuteOk&#34;</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Connection<span style="color:#f92672">::</span>CapabilitiesGet<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CON_CAPABILITIES_GET, <span style="color:#e6db74">&#34;CON_CAPABILITIES_GET&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Connection.CapabilitiesGet&#34;</span>);
-</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Connection<span style="color:#f92672">::</span>CapabilitiesSet<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CON_CAPABILITIES_SET, <span style="color:#e6db74">&#34;CON_CAPABILITIES_SET&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Connection.CapabilitiesSet&#34;</span>);
-</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Connection<span style="color:#f92672">::</span>Close<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CON_CLOSE, <span style="color:#e6db74">&#34;CON_CLOSE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Connection.Close&#34;</span>);
-</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>Delete<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_DELETE, <span style="color:#e6db74">&#34;CRUD_DELETE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Crud.Delete&#34;</span>);
-</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>Find<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_FIND, <span style="color:#e6db74">&#34;CRUD_FIND&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Crud.Find&#34;</span>);
-</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>Insert<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_INSERT, <span style="color:#e6db74">&#34;CRUD_INSERT&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Crud.Insert&#34;</span>);
-</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>Update<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_UPDATE, <span style="color:#e6db74">&#34;CRUD_UPDATE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Crud.Update&#34;</span>);
-</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>CreateView<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_CREATE_VIEW, <span style="color:#e6db74">&#34;CRUD_CREATE_VIEW&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Crud.CreateView&#34;</span>);
-</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>ModifyView<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_MODIFY_VIEW, <span style="color:#e6db74">&#34;CRUD_MODIFY_VIEW&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Crud.ModifyView&#34;</span>);
-</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>DropView<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_DROP_VIEW, <span style="color:#e6db74">&#34;CRUD_DROP_VIEW&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Crud.DropView&#34;</span>);
-</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Expect<span style="color:#f92672">::</span>Close<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>EXPECT_CLOSE, <span style="color:#e6db74">&#34;EXPECT_CLOSE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Expect.Close&#34;</span>);
-</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Expect<span style="color:#f92672">::</span>Open<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>EXPECT_OPEN, <span style="color:#e6db74">&#34;EXPECT_OPEN&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Expect.Open&#34;</span>);
-</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Session<span style="color:#f92672">::</span>AuthenticateContinue<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>SESS_AUTHENTICATE_CONTINUE, <span style="color:#e6db74">&#34;SESS_AUTHENTICATE_CONTINUE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Session.AuthenticateContinue&#34;</span>);
-</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Session<span style="color:#f92672">::</span>AuthenticateStart<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>SESS_AUTHENTICATE_START, <span style="color:#e6db74">&#34;SESS_AUTHENTICATE_START&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Session.AuthenticateStart&#34;</span>);
-</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Session<span style="color:#f92672">::</span>Close<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>SESS_CLOSE, <span style="color:#e6db74">&#34;SESS_CLOSE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Session.Close&#34;</span>);
-</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Session<span style="color:#f92672">::</span>Reset<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>SESS_RESET, <span style="color:#e6db74">&#34;SESS_RESET&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Session.Reset&#34;</span>);
-</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Sql<span style="color:#f92672">::</span>StmtExecute<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>SQL_STMT_EXECUTE, <span style="color:#e6db74">&#34;SQL_STMT_EXECUTE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Sql.StmtExecute&#34;</span>);
-</span></span><span style="display:flex;"><span>  }
-</span></span></code></pre></div><p>Server and client messages are that many. Client messages are dispatched in <code>xpl_dispatcher.cc</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>ngs<span style="color:#f92672">::</span>Error_code do_dispatch_command(xpl<span style="color:#f92672">::</span>Session <span style="color:#f92672">&amp;</span>session, xpl<span style="color:#f92672">::</span>Crud_command_handler <span style="color:#f92672">&amp;</span>crudh,
-</span></span><span style="display:flex;"><span>                                    xpl<span style="color:#f92672">::</span>Expectation_stack <span style="color:#f92672">&amp;</span>expect, ngs<span style="color:#f92672">::</span>Request <span style="color:#f92672">&amp;</span>command)
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">switch</span> (command.get_type())
-</span></span><span style="display:flex;"><span>  {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>SQL_STMT_EXECUTE:
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> on_stmt_execute(session, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Sql<span style="color:#f92672">::</span>StmtExecute<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_FIND:
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> crudh.execute_crud_find(session, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>Find<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_INSERT:
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> crudh.execute_crud_insert(session, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>Insert<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_UPDATE:
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> crudh.execute_crud_update(session, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>Update<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_DELETE:
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> crudh.execute_crud_delete(session, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>Delete<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_CREATE_VIEW:
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> crudh.execute_create_view(session, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>CreateView<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_MODIFY_VIEW:
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> crudh.execute_modify_view(session, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>ModifyView<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_DROP_VIEW:
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> crudh.execute_drop_view(session, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>DropView<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>EXPECT_OPEN:
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> on_expect_open(session, expect, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Expect<span style="color:#f92672">::</span>Open<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>EXPECT_CLOSE:
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> on_expect_close(session, expect, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Expect<span style="color:#f92672">::</span>Close<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  session.proto().get_protocol_monitor().on_error_unknown_msg_type();
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> ngs<span style="color:#f92672">::</span>Error(ER_UNKNOWN_COM_ERROR, <span style="color:#e6db74">&#34;Unexpected message received&#34;</span>);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>The rest is filling in the gaps.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Client::run =&gt; Client::handle_message =&gt; Session::handle_message =&gt; Session::handle_auth_message =&gt; some auth handlers
-</span></span><span style="display:flex;"><span>                                                                 =&gt; Session::handle_ready_message =&gt; xpl::dispatcher::dispatch_command =&gt; ngs::Error_code do_dispatch_command =&gt; some crud handlers
-</span></span></code></pre></div><p>Mapping between MySQL type and X protocol type</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>//     ================= ============ ======= ========== ====== ========
-</span></span><span style="display:flex;"><span>//     SQL Type          .type        .length .frac_dig  .flags .charset
-</span></span><span style="display:flex;"><span>//     ================= ============ ======= ========== ====== ========
-</span></span><span style="display:flex;"><span>//     TINY              SINT         x
-</span></span><span style="display:flex;"><span>//     TINY UNSIGNED     UINT         x                  x
-</span></span><span style="display:flex;"><span>//     SHORT             SINT         x
-</span></span><span style="display:flex;"><span>//     SHORT UNSIGNED    UINT         x                  x
-</span></span><span style="display:flex;"><span>//     INT24             SINT         x
-</span></span><span style="display:flex;"><span>//     INT24 UNSIGNED    UINT         x                  x
-</span></span><span style="display:flex;"><span>//     INT               SINT         x
-</span></span><span style="display:flex;"><span>//     INT UNSIGNED      UINT         x                  x
-</span></span><span style="display:flex;"><span>//     LONGLONG          SINT         x
-</span></span><span style="display:flex;"><span>//     LONGLONG UNSIGNED UINT         x                  x
-</span></span><span style="display:flex;"><span>//     DOUBLE            DOUBLE       x       x          x
-</span></span><span style="display:flex;"><span>//     FLOAT             FLOAT        x       x          x
-</span></span><span style="display:flex;"><span>//     DECIMAL           DECIMAL      x       x          x
-</span></span><span style="display:flex;"><span>//     VARCHAR,CHAR,...  BYTES        x                  x      x
-</span></span><span style="display:flex;"><span>//     GEOMETRY          BYTES
-</span></span><span style="display:flex;"><span>//     TIME              TIME         x
-</span></span><span style="display:flex;"><span>//     DATE              DATETIME     x
-</span></span><span style="display:flex;"><span>//     DATETIME          DATETIME     x
-</span></span><span style="display:flex;"><span>//     YEAR              UINT         x                  x
-</span></span><span style="display:flex;"><span>//     TIMESTAMP         DATETIME     x
-</span></span><span style="display:flex;"><span>//     SET               SET                                    x
-</span></span><span style="display:flex;"><span>//     ENUM              ENUM                                   x
-</span></span><span style="display:flex;"><span>//     NULL              BYTES
-</span></span><span style="display:flex;"><span>//     BIT               BIT          x
-</span></span><span style="display:flex;"><span>//     ================= ============ ======= ========== ====== ========
-</span></span></code></pre></div><p>The first SQL field information of MySQL:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Field   1:  `@@lower_case_table_names`
-</span></span><span style="display:flex;"><span>Catalog:    `def`
-</span></span><span style="display:flex;"><span>Database:   ``
-</span></span><span style="display:flex;"><span>Table:      ``
-</span></span><span style="display:flex;"><span>Org_table:  ``
-</span></span><span style="display:flex;"><span>Type:       LONGLONG
-</span></span><span style="display:flex;"><span>Collation:  binary (63)
-</span></span><span style="display:flex;"><span>Length:     21
-</span></span><span style="display:flex;"><span>Max_length: 1
-</span></span><span style="display:flex;"><span>Decimals:   0
-</span></span><span style="display:flex;"><span>Flags:      UNSIGNED BINARY NUM 
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Field   2:  `connection_id()`
-</span></span><span style="display:flex;"><span>Catalog:    `def`
-</span></span><span style="display:flex;"><span>Database:   ``
-</span></span><span style="display:flex;"><span>Table:      ``
-</span></span><span style="display:flex;"><span>Org_table:  ``
-</span></span><span style="display:flex;"><span>Type:       LONGLONG
-</span></span><span style="display:flex;"><span>Collation:  binary (63)
-</span></span><span style="display:flex;"><span>Length:     21
-</span></span><span style="display:flex;"><span>Max_length: 1
-</span></span><span style="display:flex;"><span>Decimals:   0
-</span></span><span style="display:flex;"><span>Flags:      NOT_NULL UNSIGNED BINARY NUM 
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Field   3:  `variable_value`
-</span></span><span style="display:flex;"><span>Catalog:    `def`
-</span></span><span style="display:flex;"><span>Database:   `performance_schema`
-</span></span><span style="display:flex;"><span>Table:      `session_status`
-</span></span><span style="display:flex;"><span>Org_table:  `session_status`
-</span></span><span style="display:flex;"><span>Type:       VAR_STRING
-</span></span><span style="display:flex;"><span>Collation:  utf8_general_ci (33)
-</span></span><span style="display:flex;"><span>Length:     3072
-</span></span><span style="display:flex;"><span>Max_length: 0
-</span></span><span style="display:flex;"><span>Decimals:   0
-</span></span><span style="display:flex;"><span>Flags:      
-</span></span></code></pre></div><p>For TiDB:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Field   1:  `@@lower_case_table_names`
-</span></span><span style="display:flex;"><span>Catalog:    `def`
-</span></span><span style="display:flex;"><span>Database:   ``
-</span></span><span style="display:flex;"><span>Table:      ``
-</span></span><span style="display:flex;"><span>Org_table:  ``
-</span></span><span style="display:flex;"><span>Type:       STRING
-</span></span><span style="display:flex;"><span>Collation:  ? (0)
-</span></span><span style="display:flex;"><span>Length:     0
-</span></span><span style="display:flex;"><span>Max_length: 1
-</span></span><span style="display:flex;"><span>Decimals:   31
-</span></span><span style="display:flex;"><span>Flags:      
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Field   2:  `connection_id()`
-</span></span><span style="display:flex;"><span>Catalog:    `def`
-</span></span><span style="display:flex;"><span>Database:   ``
-</span></span><span style="display:flex;"><span>Table:      ``
-</span></span><span style="display:flex;"><span>Org_table:  ``
-</span></span><span style="display:flex;"><span>Type:       LONGLONG
-</span></span><span style="display:flex;"><span>Collation:  binary (63)
-</span></span><span style="display:flex;"><span>Length:     20
-</span></span><span style="display:flex;"><span>Max_length: 1
-</span></span><span style="display:flex;"><span>Decimals:   0
-</span></span><span style="display:flex;"><span>Flags:      UNSIGNED BINARY NUM 
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Field   3:  `variable_value`
-</span></span><span style="display:flex;"><span>Catalog:    `def`
-</span></span><span style="display:flex;"><span>Database:   ``
-</span></span><span style="display:flex;"><span>Table:      ``
-</span></span><span style="display:flex;"><span>Org_table:  ``
-</span></span><span style="display:flex;"><span>Type:       STRING
-</span></span><span style="display:flex;"><span>Collation:  utf8_general_ci (33)
-</span></span><span style="display:flex;"><span>Length:     1024
-</span></span><span style="display:flex;"><span>Max_length: 0
-</span></span><span style="display:flex;"><span>Decimals:   0
-</span></span><span style="display:flex;"><span>Flags:      
-</span></span></code></pre></div>
-</div>
+Implementation Principle
 
-<h2>Comments</h2>
-<div id="disqus_thread"></div>
-<script>
-    window.disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "jackysp" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-    </main>
+Communication between client and server is over TCP and the protocol uses protobuf.
+After the server receives a message, it decodes and analyzes it. The protocol includes a concept called namespace, which specifically refers to whether the namespace is empty or &ldquo;sql&rdquo;, in which case the message content is executed as a SQL statement; if it is &ldquo;xplugin&rdquo; or &ldquo;mysqlx,&rdquo; the message is handled in another way. The other ways can be divided into:
 
-    
-      
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-G0H8JF722Y"></script>
-      <script>
-        var doNotTrack = false;
-        if ( false ) {
-          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-          var doNotTrack = (dnt == "1" || dnt == "yes");
-        }
-        if (!doNotTrack) {
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-G0H8JF722Y');
-        }
-      </script>
-    
-  </body>
-</html>
+Administrative commands
+CRUD operations
+
+
+&ldquo;xplugin&rdquo; and &ldquo;mysqlx&rdquo; have the same function, with the latter being the new name for the former, retained temporarily for compatibility.
+The content of &ldquo;mysqlx&rdquo; messages, apart from explicit command content like kill_client, are mostly transformed into SQL statements which the server processes, essentially turning most into a form where the namespace is &ldquo;sql&rdquo;.
+
+Implementation Steps
+
+Start a new server for TiDB. The relevant configuration parameters such as IP, port, and socket need to be set.
+Implement the reading and writing functionality for message communication.
+Write a process for this new server to establish connections, including authentication, that follows the protocol. Use tcpdump to capture messages between MySQL and the client to derive protocol content, implementing the process by understanding MySQL source code.
+The server should include contents like the Query Context from the original TiDB server, as it primarily translates into SQL for execution.
+Implement the decoding and handling of messages. Although only a sentence, the workload included is substantial.
+
+In mysqlx_all_msgs.h, all messages are initialized"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.minifish.org/posts/"},{"@type":"ListItem","position":2,"name":"How to Implement MySQL X Protocol on TiDB","item":"https://blog.minifish.org/posts/mysqlx-protocol/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"How to Implement MySQL X Protocol on TiDB","name":"How to Implement MySQL X Protocol on TiDB","description":"Some Documents on MySQL Client Usage Guide MySQL Shell User Guide Server Configuration Guide Using MySQL as a Document Store Application Development API Guide X DevAPI User Guide Introduction to Server Internal Implementation X Protocol. Implementation Principle Communication between client and server is over TCP and the protocol uses protobuf. After the server receives a message, it decodes and analyzes it. The protocol includes a concept called namespace, which specifically refers to whether the namespace is empty or \u0026ldquo;sql\u0026rdquo;, in which case the message content is executed as a SQL statement; if it is \u0026ldquo;xplugin\u0026rdquo; or \u0026ldquo;mysqlx,\u0026rdquo; the message is handled in another way. The other ways can be divided into: Administrative commands CRUD operations \u0026ldquo;xplugin\u0026rdquo; and \u0026ldquo;mysqlx\u0026rdquo; have the same function, with the latter being the new name for the former, retained temporarily for compatibility. The content of \u0026ldquo;mysqlx\u0026rdquo; messages, apart from explicit command content like kill_client, are mostly transformed into SQL statements which the server processes, essentially turning most into a form where the namespace is \u0026ldquo;sql\u0026rdquo;. Implementation Steps Start a new server for TiDB. The relevant configuration parameters such as IP, port, and socket need to be set. Implement the reading and writing functionality for message communication. Write a process for this new server to establish connections, including authentication, that follows the protocol. Use tcpdump to capture messages between MySQL and the client to derive protocol content, implementing the process by understanding MySQL source code. The server should include contents like the Query Context from the original TiDB server, as it primarily translates into SQL for execution. Implement the decoding and handling of messages. Although only a sentence, the workload included is substantial. In mysqlx_all_msgs.h, all messages are initialized\n","keywords":[],"articleBody":"Some Documents on MySQL Client Usage Guide MySQL Shell User Guide Server Configuration Guide Using MySQL as a Document Store Application Development API Guide X DevAPI User Guide Introduction to Server Internal Implementation X Protocol. Implementation Principle Communication between client and server is over TCP and the protocol uses protobuf. After the server receives a message, it decodes and analyzes it. The protocol includes a concept called namespace, which specifically refers to whether the namespace is empty or “sql”, in which case the message content is executed as a SQL statement; if it is “xplugin” or “mysqlx,” the message is handled in another way. The other ways can be divided into: Administrative commands CRUD operations “xplugin” and “mysqlx” have the same function, with the latter being the new name for the former, retained temporarily for compatibility. The content of “mysqlx” messages, apart from explicit command content like kill_client, are mostly transformed into SQL statements which the server processes, essentially turning most into a form where the namespace is “sql”. Implementation Steps Start a new server for TiDB. The relevant configuration parameters such as IP, port, and socket need to be set. Implement the reading and writing functionality for message communication. Write a process for this new server to establish connections, including authentication, that follows the protocol. Use tcpdump to capture messages between MySQL and the client to derive protocol content, implementing the process by understanding MySQL source code. The server should include contents like the Query Context from the original TiDB server, as it primarily translates into SQL for execution. Implement the decoding and handling of messages. Although only a sentence, the workload included is substantial. In mysqlx_all_msgs.h, all messages are initialized\ninit_message_factory() { server_message\u003cMysqlx::Connection::Capabilities\u003e(Mysqlx::ServerMessages::CONN_CAPABILITIES, \"CONN_CAPABILITIES\", \"Mysqlx.Connection.Capabilities\"); server_message\u003cMysqlx::Error\u003e(Mysqlx::ServerMessages::ERROR, \"ERROR\", \"Mysqlx.Error\"); server_message\u003cMysqlx::Notice::Frame\u003e(Mysqlx::ServerMessages::NOTICE, \"NOTICE\", \"Mysqlx.Notice.Frame\"); server_message\u003cMysqlx::Ok\u003e(Mysqlx::ServerMessages::OK, \"OK\", \"Mysqlx.Ok\"); server_message\u003cMysqlx::Resultset::ColumnMetaData\u003e(Mysqlx::ServerMessages::RESULTSET_COLUMN_META_DATA, \"RESULTSET_COLUMN_META_DATA\", \"Mysqlx.Resultset.ColumnMetaData\"); server_message\u003cMysqlx::Resultset::FetchDone\u003e(Mysqlx::ServerMessages::RESULTSET_FETCH_DONE, \"RESULTSET_FETCH_DONE\", \"Mysqlx.Resultset.FetchDone\"); server_message\u003cMysqlx::Resultset::FetchDoneMoreResultsets\u003e(Mysqlx::ServerMessages::RESULTSET_FETCH_DONE_MORE_RESULTSETS, \"RESULTSET_FETCH_DONE_MORE_RESULTSETS\", \"Mysqlx.Resultset.FetchDoneMoreResultsets\"); server_message\u003cMysqlx::Resultset::Row\u003e(Mysqlx::ServerMessages::RESULTSET_ROW, \"RESULTSET_ROW\", \"Mysqlx.Resultset.Row\"); server_message\u003cMysqlx::Session::AuthenticateOk\u003e(Mysqlx::ServerMessages::SESS_AUTHENTICATE_OK, \"SESS_AUTHENTICATE_OK\", \"Mysqlx.Session.AuthenticateOk\"); server_message\u003cMysqlx::Sql::StmtExecuteOk\u003e(Mysqlx::ServerMessages::SQL_STMT_EXECUTE_OK, \"SQL_STMT_EXECUTE_OK\", \"Mysqlx.Sql.StmtExecuteOk\"); client_message\u003cMysqlx::Connection::CapabilitiesGet\u003e(Mysqlx::ClientMessages::CON_CAPABILITIES_GET, \"CON_CAPABILITIES_GET\", \"Mysqlx.Connection.CapabilitiesGet\"); client_message\u003cMysqlx::Connection::CapabilitiesSet\u003e(Mysqlx::ClientMessages::CON_CAPABILITIES_SET, \"CON_CAPABILITIES_SET\", \"Mysqlx.Connection.CapabilitiesSet\"); client_message\u003cMysqlx::Connection::Close\u003e(Mysqlx::ClientMessages::CON_CLOSE, \"CON_CLOSE\", \"Mysqlx.Connection.Close\"); client_message\u003cMysqlx::Crud::Delete\u003e(Mysqlx::ClientMessages::CRUD_DELETE, \"CRUD_DELETE\", \"Mysqlx.Crud.Delete\"); client_message\u003cMysqlx::Crud::Find\u003e(Mysqlx::ClientMessages::CRUD_FIND, \"CRUD_FIND\", \"Mysqlx.Crud.Find\"); client_message\u003cMysqlx::Crud::Insert\u003e(Mysqlx::ClientMessages::CRUD_INSERT, \"CRUD_INSERT\", \"Mysqlx.Crud.Insert\"); client_message\u003cMysqlx::Crud::Update\u003e(Mysqlx::ClientMessages::CRUD_UPDATE, \"CRUD_UPDATE\", \"Mysqlx.Crud.Update\"); client_message\u003cMysqlx::Crud::CreateView\u003e(Mysqlx::ClientMessages::CRUD_CREATE_VIEW, \"CRUD_CREATE_VIEW\", \"Mysqlx.Crud.CreateView\"); client_message\u003cMysqlx::Crud::ModifyView\u003e(Mysqlx::ClientMessages::CRUD_MODIFY_VIEW, \"CRUD_MODIFY_VIEW\", \"Mysqlx.Crud.ModifyView\"); client_message\u003cMysqlx::Crud::DropView\u003e(Mysqlx::ClientMessages::CRUD_DROP_VIEW, \"CRUD_DROP_VIEW\", \"Mysqlx.Crud.DropView\"); client_message\u003cMysqlx::Expect::Close\u003e(Mysqlx::ClientMessages::EXPECT_CLOSE, \"EXPECT_CLOSE\", \"Mysqlx.Expect.Close\"); client_message\u003cMysqlx::Expect::Open\u003e(Mysqlx::ClientMessages::EXPECT_OPEN, \"EXPECT_OPEN\", \"Mysqlx.Expect.Open\"); client_message\u003cMysqlx::Session::AuthenticateContinue\u003e(Mysqlx::ClientMessages::SESS_AUTHENTICATE_CONTINUE, \"SESS_AUTHENTICATE_CONTINUE\", \"Mysqlx.Session.AuthenticateContinue\"); client_message\u003cMysqlx::Session::AuthenticateStart\u003e(Mysqlx::ClientMessages::SESS_AUTHENTICATE_START, \"SESS_AUTHENTICATE_START\", \"Mysqlx.Session.AuthenticateStart\"); client_message\u003cMysqlx::Session::Close\u003e(Mysqlx::ClientMessages::SESS_CLOSE, \"SESS_CLOSE\", \"Mysqlx.Session.Close\"); client_message\u003cMysqlx::Session::Reset\u003e(Mysqlx::ClientMessages::SESS_RESET, \"SESS_RESET\", \"Mysqlx.Session.Reset\"); client_message\u003cMysqlx::Sql::StmtExecute\u003e(Mysqlx::ClientMessages::SQL_STMT_EXECUTE, \"SQL_STMT_EXECUTE\", \"Mysqlx.Sql.StmtExecute\"); } Server and client messages are that many. Client messages are dispatched in xpl_dispatcher.cc.\nngs::Error_code do_dispatch_command(xpl::Session \u0026session, xpl::Crud_command_handler \u0026crudh, xpl::Expectation_stack \u0026expect, ngs::Request \u0026command) { switch (command.get_type()) { case Mysqlx::ClientMessages::SQL_STMT_EXECUTE: return on_stmt_execute(session, static_cast\u003cconst Mysqlx::Sql::StmtExecute\u0026\u003e(*command.message())); case Mysqlx::ClientMessages::CRUD_FIND: return crudh.execute_crud_find(session, static_cast\u003cconst Mysqlx::Crud::Find\u0026\u003e(*command.message())); case Mysqlx::ClientMessages::CRUD_INSERT: return crudh.execute_crud_insert(session, static_cast\u003cconst Mysqlx::Crud::Insert\u0026\u003e(*command.message())); case Mysqlx::ClientMessages::CRUD_UPDATE: return crudh.execute_crud_update(session, static_cast\u003cconst Mysqlx::Crud::Update\u0026\u003e(*command.message())); case Mysqlx::ClientMessages::CRUD_DELETE: return crudh.execute_crud_delete(session, static_cast\u003cconst Mysqlx::Crud::Delete\u0026\u003e(*command.message())); case Mysqlx::ClientMessages::CRUD_CREATE_VIEW: return crudh.execute_create_view(session, static_cast\u003cconst Mysqlx::Crud::CreateView\u0026\u003e(*command.message())); case Mysqlx::ClientMessages::CRUD_MODIFY_VIEW: return crudh.execute_modify_view(session, static_cast\u003cconst Mysqlx::Crud::ModifyView\u0026\u003e(*command.message())); case Mysqlx::ClientMessages::CRUD_DROP_VIEW: return crudh.execute_drop_view(session, static_cast\u003cconst Mysqlx::Crud::DropView\u0026\u003e(*command.message())); case Mysqlx::ClientMessages::EXPECT_OPEN: return on_expect_open(session, expect, static_cast\u003cconst Mysqlx::Expect::Open\u0026\u003e(*command.message())); case Mysqlx::ClientMessages::EXPECT_CLOSE: return on_expect_close(session, expect, static_cast\u003cconst Mysqlx::Expect::Close\u0026\u003e(*command.message())); } session.proto().get_protocol_monitor().on_error_unknown_msg_type(); return ngs::Error(ER_UNKNOWN_COM_ERROR, \"Unexpected message received\"); } The rest is filling in the gaps.\nClient::run =\u003e Client::handle_message =\u003e Session::handle_message =\u003e Session::handle_auth_message =\u003e some auth handlers =\u003e Session::handle_ready_message =\u003e xpl::dispatcher::dispatch_command =\u003e ngs::Error_code do_dispatch_command =\u003e some crud handlers Mapping between MySQL type and X protocol type\n// ================= ============ ======= ========== ====== ======== // SQL Type .type .length .frac_dig .flags .charset // ================= ============ ======= ========== ====== ======== // TINY SINT x // TINY UNSIGNED UINT x x // SHORT SINT x // SHORT UNSIGNED UINT x x // INT24 SINT x // INT24 UNSIGNED UINT x x // INT SINT x // INT UNSIGNED UINT x x // LONGLONG SINT x // LONGLONG UNSIGNED UINT x x // DOUBLE DOUBLE x x x // FLOAT FLOAT x x x // DECIMAL DECIMAL x x x // VARCHAR,CHAR,... BYTES x x x // GEOMETRY BYTES // TIME TIME x // DATE DATETIME x // DATETIME DATETIME x // YEAR UINT x x // TIMESTAMP DATETIME x // SET SET x // ENUM ENUM x // NULL BYTES // BIT BIT x // ================= ============ ======= ========== ====== ======== The first SQL field information of MySQL:\nField 1: `@@lower_case_table_names` Catalog: `def` Database: `` Table: `` Org_table: `` Type: LONGLONG Collation: binary (63) Length: 21 Max_length: 1 Decimals: 0 Flags: UNSIGNED BINARY NUM Field 2: `connection_id()` Catalog: `def` Database: `` Table: `` Org_table: `` Type: LONGLONG Collation: binary (63) Length: 21 Max_length: 1 Decimals: 0 Flags: NOT_NULL UNSIGNED BINARY NUM Field 3: `variable_value` Catalog: `def` Database: `performance_schema` Table: `session_status` Org_table: `session_status` Type: VAR_STRING Collation: utf8_general_ci (33) Length: 3072 Max_length: 0 Decimals: 0 Flags: For TiDB:\nField 1: `@@lower_case_table_names` Catalog: `def` Database: `` Table: `` Org_table: `` Type: STRING Collation: ? (0) Length: 0 Max_length: 1 Decimals: 31 Flags: Field 2: `connection_id()` Catalog: `def` Database: `` Table: `` Org_table: `` Type: LONGLONG Collation: binary (63) Length: 20 Max_length: 1 Decimals: 0 Flags: UNSIGNED BINARY NUM Field 3: `variable_value` Catalog: `def` Database: `` Table: `` Org_table: `` Type: STRING Collation: utf8_general_ci (33) Length: 1024 Max_length: 0 Decimals: 0 Flags: ","wordCount":"798","inLanguage":"en","datePublished":"2017-08-16T00:00:00Z","dateModified":"2017-08-16T00:00:00Z","author":{"@type":"Person","name":{"email":"i@minifish.org","name":"Jack Yu"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.minifish.org/posts/mysqlx-protocol/"},"publisher":{"@type":"Organization","name":"Mini Fish","logo":{"@type":"ImageObject","url":"https://blog.minifish.org/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.minifish.org/ accesskey=h title="Mini Fish (Alt + H)">Mini Fish</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)">
+<svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://github.com/jackysp/ title=GitHub><span>GitHub</span>&nbsp;
+<svg fill="none" shape-rendering="geometricPrecision" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg></a></li><li><a href=https://www.linkedin.com/in/shuaipeng-yu-81280434/ title=LinkedIn><span>LinkedIn</span>&nbsp;
+<svg fill="none" shape-rendering="geometricPrecision" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.minifish.org/>Home</a>&nbsp;»&nbsp;<a href=https://blog.minifish.org/posts/>Posts</a></div><h1 class="post-title entry-hint-parent">How to Implement MySQL X Protocol on TiDB</h1><div class=post-meta><span title='2017-08-16 00:00:00 +0000 UTC'>August 16, 2017</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;798 words&nbsp;·&nbsp;map[email:i@minifish.org name:Jack Yu]&nbsp;|&nbsp;<a href=https://github.com/jackysp/blog/tree/master/content/posts/posts/mysqlx-protocol.md rel="noopener noreferrer" target=_blank>Suggest Changes</a></div></header><div class=post-content><h2 id=some-documents-on-mysql>Some Documents on MySQL<a hidden class=anchor aria-hidden=true href=#some-documents-on-mysql>#</a></h2><ul><li>Client Usage Guide <a href=https://dev.mysql.com/doc/refman/5.7/en/mysql-shell.html>MySQL Shell User Guide</a></li><li>Server Configuration Guide <a href=https://dev.mysql.com/doc/refman/5.7/en/document-store.html>Using MySQL as a Document Store</a></li><li>Application Development API Guide <a href=https://dev.mysql.com/doc/x-devapi-userguide/en/>X DevAPI User Guide</a></li><li>Introduction to Server Internal Implementation <a href=https://dev.mysql.com/doc/internals/en/x-protocol.html>X Protocol</a>.</li></ul><h2 id=implementation-principle>Implementation Principle<a hidden class=anchor aria-hidden=true href=#implementation-principle>#</a></h2><ul><li>Communication between client and server is over TCP and the protocol uses protobuf.</li><li>After the server receives a message, it decodes and analyzes it. The protocol includes a concept called namespace, which specifically refers to whether the namespace is empty or &ldquo;sql&rdquo;, in which case the message content is executed as a SQL statement; if it is &ldquo;xplugin&rdquo; or &ldquo;mysqlx,&rdquo; the message is handled in another way. The other ways can be divided into:<ul><li>Administrative commands</li><li>CRUD operations</li></ul></li><li>&ldquo;xplugin&rdquo; and &ldquo;mysqlx&rdquo; have the same function, with the latter being the new name for the former, retained temporarily for compatibility.</li><li>The content of &ldquo;mysqlx&rdquo; messages, apart from explicit command content like kill_client, are mostly transformed into SQL statements which the server processes, essentially turning most into a form where the namespace is &ldquo;sql&rdquo;.</li></ul><h2 id=implementation-steps>Implementation Steps<a hidden class=anchor aria-hidden=true href=#implementation-steps>#</a></h2><ol><li>Start a new server for TiDB. The relevant configuration parameters such as IP, port, and socket need to be set.</li><li>Implement the reading and writing functionality for message communication.</li><li>Write a process for this new server to establish connections, including authentication, that follows the protocol. Use tcpdump to capture messages between MySQL and the client to derive protocol content, implementing the process by understanding MySQL source code.</li><li>The server should include contents like the Query Context from the original TiDB server, as it primarily translates into SQL for execution.</li><li>Implement the decoding and handling of messages. Although only a sentence, the workload included is substantial.</li></ol><p>In <code>mysqlx_all_msgs.h</code>, all messages are initialized</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c++ data-lang=c++><span style=display:flex><span>  init_message_factory()
+</span></span><span style=display:flex><span>  {
+</span></span><span style=display:flex><span>    server_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Connection<span style=color:#f92672>::</span>Capabilities<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ServerMessages<span style=color:#f92672>::</span>CONN_CAPABILITIES, <span style=color:#e6db74>&#34;CONN_CAPABILITIES&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Connection.Capabilities&#34;</span>);
+</span></span><span style=display:flex><span>    server_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Error<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ServerMessages<span style=color:#f92672>::</span>ERROR, <span style=color:#e6db74>&#34;ERROR&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Error&#34;</span>);
+</span></span><span style=display:flex><span>    server_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Notice<span style=color:#f92672>::</span>Frame<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ServerMessages<span style=color:#f92672>::</span>NOTICE, <span style=color:#e6db74>&#34;NOTICE&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Notice.Frame&#34;</span>);
+</span></span><span style=display:flex><span>    server_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Ok<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ServerMessages<span style=color:#f92672>::</span>OK, <span style=color:#e6db74>&#34;OK&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Ok&#34;</span>);
+</span></span><span style=display:flex><span>    server_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Resultset<span style=color:#f92672>::</span>ColumnMetaData<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ServerMessages<span style=color:#f92672>::</span>RESULTSET_COLUMN_META_DATA, <span style=color:#e6db74>&#34;RESULTSET_COLUMN_META_DATA&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Resultset.ColumnMetaData&#34;</span>);
+</span></span><span style=display:flex><span>    server_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Resultset<span style=color:#f92672>::</span>FetchDone<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ServerMessages<span style=color:#f92672>::</span>RESULTSET_FETCH_DONE, <span style=color:#e6db74>&#34;RESULTSET_FETCH_DONE&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Resultset.FetchDone&#34;</span>);
+</span></span><span style=display:flex><span>    server_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Resultset<span style=color:#f92672>::</span>FetchDoneMoreResultsets<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ServerMessages<span style=color:#f92672>::</span>RESULTSET_FETCH_DONE_MORE_RESULTSETS, <span style=color:#e6db74>&#34;RESULTSET_FETCH_DONE_MORE_RESULTSETS&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Resultset.FetchDoneMoreResultsets&#34;</span>);
+</span></span><span style=display:flex><span>    server_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Resultset<span style=color:#f92672>::</span>Row<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ServerMessages<span style=color:#f92672>::</span>RESULTSET_ROW, <span style=color:#e6db74>&#34;RESULTSET_ROW&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Resultset.Row&#34;</span>);
+</span></span><span style=display:flex><span>    server_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Session<span style=color:#f92672>::</span>AuthenticateOk<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ServerMessages<span style=color:#f92672>::</span>SESS_AUTHENTICATE_OK, <span style=color:#e6db74>&#34;SESS_AUTHENTICATE_OK&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Session.AuthenticateOk&#34;</span>);
+</span></span><span style=display:flex><span>    server_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Sql<span style=color:#f92672>::</span>StmtExecuteOk<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ServerMessages<span style=color:#f92672>::</span>SQL_STMT_EXECUTE_OK, <span style=color:#e6db74>&#34;SQL_STMT_EXECUTE_OK&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Sql.StmtExecuteOk&#34;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    client_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Connection<span style=color:#f92672>::</span>CapabilitiesGet<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>CON_CAPABILITIES_GET, <span style=color:#e6db74>&#34;CON_CAPABILITIES_GET&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Connection.CapabilitiesGet&#34;</span>);
+</span></span><span style=display:flex><span>    client_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Connection<span style=color:#f92672>::</span>CapabilitiesSet<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>CON_CAPABILITIES_SET, <span style=color:#e6db74>&#34;CON_CAPABILITIES_SET&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Connection.CapabilitiesSet&#34;</span>);
+</span></span><span style=display:flex><span>    client_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Connection<span style=color:#f92672>::</span>Close<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>CON_CLOSE, <span style=color:#e6db74>&#34;CON_CLOSE&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Connection.Close&#34;</span>);
+</span></span><span style=display:flex><span>    client_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Crud<span style=color:#f92672>::</span>Delete<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>CRUD_DELETE, <span style=color:#e6db74>&#34;CRUD_DELETE&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Crud.Delete&#34;</span>);
+</span></span><span style=display:flex><span>    client_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Crud<span style=color:#f92672>::</span>Find<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>CRUD_FIND, <span style=color:#e6db74>&#34;CRUD_FIND&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Crud.Find&#34;</span>);
+</span></span><span style=display:flex><span>    client_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Crud<span style=color:#f92672>::</span>Insert<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>CRUD_INSERT, <span style=color:#e6db74>&#34;CRUD_INSERT&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Crud.Insert&#34;</span>);
+</span></span><span style=display:flex><span>    client_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Crud<span style=color:#f92672>::</span>Update<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>CRUD_UPDATE, <span style=color:#e6db74>&#34;CRUD_UPDATE&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Crud.Update&#34;</span>);
+</span></span><span style=display:flex><span>    client_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Crud<span style=color:#f92672>::</span>CreateView<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>CRUD_CREATE_VIEW, <span style=color:#e6db74>&#34;CRUD_CREATE_VIEW&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Crud.CreateView&#34;</span>);
+</span></span><span style=display:flex><span>    client_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Crud<span style=color:#f92672>::</span>ModifyView<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>CRUD_MODIFY_VIEW, <span style=color:#e6db74>&#34;CRUD_MODIFY_VIEW&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Crud.ModifyView&#34;</span>);
+</span></span><span style=display:flex><span>    client_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Crud<span style=color:#f92672>::</span>DropView<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>CRUD_DROP_VIEW, <span style=color:#e6db74>&#34;CRUD_DROP_VIEW&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Crud.DropView&#34;</span>);
+</span></span><span style=display:flex><span>    client_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Expect<span style=color:#f92672>::</span>Close<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>EXPECT_CLOSE, <span style=color:#e6db74>&#34;EXPECT_CLOSE&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Expect.Close&#34;</span>);
+</span></span><span style=display:flex><span>    client_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Expect<span style=color:#f92672>::</span>Open<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>EXPECT_OPEN, <span style=color:#e6db74>&#34;EXPECT_OPEN&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Expect.Open&#34;</span>);
+</span></span><span style=display:flex><span>    client_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Session<span style=color:#f92672>::</span>AuthenticateContinue<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>SESS_AUTHENTICATE_CONTINUE, <span style=color:#e6db74>&#34;SESS_AUTHENTICATE_CONTINUE&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Session.AuthenticateContinue&#34;</span>);
+</span></span><span style=display:flex><span>    client_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Session<span style=color:#f92672>::</span>AuthenticateStart<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>SESS_AUTHENTICATE_START, <span style=color:#e6db74>&#34;SESS_AUTHENTICATE_START&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Session.AuthenticateStart&#34;</span>);
+</span></span><span style=display:flex><span>    client_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Session<span style=color:#f92672>::</span>Close<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>SESS_CLOSE, <span style=color:#e6db74>&#34;SESS_CLOSE&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Session.Close&#34;</span>);
+</span></span><span style=display:flex><span>    client_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Session<span style=color:#f92672>::</span>Reset<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>SESS_RESET, <span style=color:#e6db74>&#34;SESS_RESET&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Session.Reset&#34;</span>);
+</span></span><span style=display:flex><span>    client_message<span style=color:#f92672>&lt;</span>Mysqlx<span style=color:#f92672>::</span>Sql<span style=color:#f92672>::</span>StmtExecute<span style=color:#f92672>&gt;</span>(Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>SQL_STMT_EXECUTE, <span style=color:#e6db74>&#34;SQL_STMT_EXECUTE&#34;</span>, <span style=color:#e6db74>&#34;Mysqlx.Sql.StmtExecute&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span></code></pre></div><p>Server and client messages are that many. Client messages are dispatched in <code>xpl_dispatcher.cc</code>.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c++ data-lang=c++><span style=display:flex><span>ngs<span style=color:#f92672>::</span>Error_code do_dispatch_command(xpl<span style=color:#f92672>::</span>Session <span style=color:#f92672>&amp;</span>session, xpl<span style=color:#f92672>::</span>Crud_command_handler <span style=color:#f92672>&amp;</span>crudh,
+</span></span><span style=display:flex><span>                                    xpl<span style=color:#f92672>::</span>Expectation_stack <span style=color:#f92672>&amp;</span>expect, ngs<span style=color:#f92672>::</span>Request <span style=color:#f92672>&amp;</span>command)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>switch</span> (command.get_type())
+</span></span><span style=display:flex><span>  {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>SQL_STMT_EXECUTE:
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> on_stmt_execute(session, <span style=color:#66d9ef>static_cast</span><span style=color:#f92672>&lt;</span><span style=color:#66d9ef>const</span> Mysqlx<span style=color:#f92672>::</span>Sql<span style=color:#f92672>::</span>StmtExecute<span style=color:#f92672>&amp;&gt;</span>(<span style=color:#f92672>*</span>command.message()));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>CRUD_FIND:
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> crudh.execute_crud_find(session, <span style=color:#66d9ef>static_cast</span><span style=color:#f92672>&lt;</span><span style=color:#66d9ef>const</span> Mysqlx<span style=color:#f92672>::</span>Crud<span style=color:#f92672>::</span>Find<span style=color:#f92672>&amp;&gt;</span>(<span style=color:#f92672>*</span>command.message()));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>CRUD_INSERT:
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> crudh.execute_crud_insert(session, <span style=color:#66d9ef>static_cast</span><span style=color:#f92672>&lt;</span><span style=color:#66d9ef>const</span> Mysqlx<span style=color:#f92672>::</span>Crud<span style=color:#f92672>::</span>Insert<span style=color:#f92672>&amp;&gt;</span>(<span style=color:#f92672>*</span>command.message()));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>CRUD_UPDATE:
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> crudh.execute_crud_update(session, <span style=color:#66d9ef>static_cast</span><span style=color:#f92672>&lt;</span><span style=color:#66d9ef>const</span> Mysqlx<span style=color:#f92672>::</span>Crud<span style=color:#f92672>::</span>Update<span style=color:#f92672>&amp;&gt;</span>(<span style=color:#f92672>*</span>command.message()));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>CRUD_DELETE:
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> crudh.execute_crud_delete(session, <span style=color:#66d9ef>static_cast</span><span style=color:#f92672>&lt;</span><span style=color:#66d9ef>const</span> Mysqlx<span style=color:#f92672>::</span>Crud<span style=color:#f92672>::</span>Delete<span style=color:#f92672>&amp;&gt;</span>(<span style=color:#f92672>*</span>command.message()));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>CRUD_CREATE_VIEW:
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> crudh.execute_create_view(session, <span style=color:#66d9ef>static_cast</span><span style=color:#f92672>&lt;</span><span style=color:#66d9ef>const</span> Mysqlx<span style=color:#f92672>::</span>Crud<span style=color:#f92672>::</span>CreateView<span style=color:#f92672>&amp;&gt;</span>(<span style=color:#f92672>*</span>command.message()));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>CRUD_MODIFY_VIEW:
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> crudh.execute_modify_view(session, <span style=color:#66d9ef>static_cast</span><span style=color:#f92672>&lt;</span><span style=color:#66d9ef>const</span> Mysqlx<span style=color:#f92672>::</span>Crud<span style=color:#f92672>::</span>ModifyView<span style=color:#f92672>&amp;&gt;</span>(<span style=color:#f92672>*</span>command.message()));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>CRUD_DROP_VIEW:
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> crudh.execute_drop_view(session, <span style=color:#66d9ef>static_cast</span><span style=color:#f92672>&lt;</span><span style=color:#66d9ef>const</span> Mysqlx<span style=color:#f92672>::</span>Crud<span style=color:#f92672>::</span>DropView<span style=color:#f92672>&amp;&gt;</span>(<span style=color:#f92672>*</span>command.message()));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>EXPECT_OPEN:
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> on_expect_open(session, expect, <span style=color:#66d9ef>static_cast</span><span style=color:#f92672>&lt;</span><span style=color:#66d9ef>const</span> Mysqlx<span style=color:#f92672>::</span>Expect<span style=color:#f92672>::</span>Open<span style=color:#f92672>&amp;&gt;</span>(<span style=color:#f92672>*</span>command.message()));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> Mysqlx<span style=color:#f92672>::</span>ClientMessages<span style=color:#f92672>::</span>EXPECT_CLOSE:
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> on_expect_close(session, expect, <span style=color:#66d9ef>static_cast</span><span style=color:#f92672>&lt;</span><span style=color:#66d9ef>const</span> Mysqlx<span style=color:#f92672>::</span>Expect<span style=color:#f92672>::</span>Close<span style=color:#f92672>&amp;&gt;</span>(<span style=color:#f92672>*</span>command.message()));
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  session.proto().get_protocol_monitor().on_error_unknown_msg_type();
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> ngs<span style=color:#f92672>::</span>Error(ER_UNKNOWN_COM_ERROR, <span style=color:#e6db74>&#34;Unexpected message received&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>The rest is filling in the gaps.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>Client::run =&gt; Client::handle_message =&gt; Session::handle_message =&gt; Session::handle_auth_message =&gt; some auth handlers
+</span></span><span style=display:flex><span>                                                                 =&gt; Session::handle_ready_message =&gt; xpl::dispatcher::dispatch_command =&gt; ngs::Error_code do_dispatch_command =&gt; some crud handlers
+</span></span></code></pre></div><p>Mapping between MySQL type and X protocol type</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>//     ================= ============ ======= ========== ====== ========
+</span></span><span style=display:flex><span>//     SQL Type          .type        .length .frac_dig  .flags .charset
+</span></span><span style=display:flex><span>//     ================= ============ ======= ========== ====== ========
+</span></span><span style=display:flex><span>//     TINY              SINT         x
+</span></span><span style=display:flex><span>//     TINY UNSIGNED     UINT         x                  x
+</span></span><span style=display:flex><span>//     SHORT             SINT         x
+</span></span><span style=display:flex><span>//     SHORT UNSIGNED    UINT         x                  x
+</span></span><span style=display:flex><span>//     INT24             SINT         x
+</span></span><span style=display:flex><span>//     INT24 UNSIGNED    UINT         x                  x
+</span></span><span style=display:flex><span>//     INT               SINT         x
+</span></span><span style=display:flex><span>//     INT UNSIGNED      UINT         x                  x
+</span></span><span style=display:flex><span>//     LONGLONG          SINT         x
+</span></span><span style=display:flex><span>//     LONGLONG UNSIGNED UINT         x                  x
+</span></span><span style=display:flex><span>//     DOUBLE            DOUBLE       x       x          x
+</span></span><span style=display:flex><span>//     FLOAT             FLOAT        x       x          x
+</span></span><span style=display:flex><span>//     DECIMAL           DECIMAL      x       x          x
+</span></span><span style=display:flex><span>//     VARCHAR,CHAR,...  BYTES        x                  x      x
+</span></span><span style=display:flex><span>//     GEOMETRY          BYTES
+</span></span><span style=display:flex><span>//     TIME              TIME         x
+</span></span><span style=display:flex><span>//     DATE              DATETIME     x
+</span></span><span style=display:flex><span>//     DATETIME          DATETIME     x
+</span></span><span style=display:flex><span>//     YEAR              UINT         x                  x
+</span></span><span style=display:flex><span>//     TIMESTAMP         DATETIME     x
+</span></span><span style=display:flex><span>//     SET               SET                                    x
+</span></span><span style=display:flex><span>//     ENUM              ENUM                                   x
+</span></span><span style=display:flex><span>//     NULL              BYTES
+</span></span><span style=display:flex><span>//     BIT               BIT          x
+</span></span><span style=display:flex><span>//     ================= ============ ======= ========== ====== ========
+</span></span></code></pre></div><p>The first SQL field information of MySQL:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>Field   1:  `@@lower_case_table_names`
+</span></span><span style=display:flex><span>Catalog:    `def`
+</span></span><span style=display:flex><span>Database:   ``
+</span></span><span style=display:flex><span>Table:      ``
+</span></span><span style=display:flex><span>Org_table:  ``
+</span></span><span style=display:flex><span>Type:       LONGLONG
+</span></span><span style=display:flex><span>Collation:  binary (63)
+</span></span><span style=display:flex><span>Length:     21
+</span></span><span style=display:flex><span>Max_length: 1
+</span></span><span style=display:flex><span>Decimals:   0
+</span></span><span style=display:flex><span>Flags:      UNSIGNED BINARY NUM 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Field   2:  `connection_id()`
+</span></span><span style=display:flex><span>Catalog:    `def`
+</span></span><span style=display:flex><span>Database:   ``
+</span></span><span style=display:flex><span>Table:      ``
+</span></span><span style=display:flex><span>Org_table:  ``
+</span></span><span style=display:flex><span>Type:       LONGLONG
+</span></span><span style=display:flex><span>Collation:  binary (63)
+</span></span><span style=display:flex><span>Length:     21
+</span></span><span style=display:flex><span>Max_length: 1
+</span></span><span style=display:flex><span>Decimals:   0
+</span></span><span style=display:flex><span>Flags:      NOT_NULL UNSIGNED BINARY NUM 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Field   3:  `variable_value`
+</span></span><span style=display:flex><span>Catalog:    `def`
+</span></span><span style=display:flex><span>Database:   `performance_schema`
+</span></span><span style=display:flex><span>Table:      `session_status`
+</span></span><span style=display:flex><span>Org_table:  `session_status`
+</span></span><span style=display:flex><span>Type:       VAR_STRING
+</span></span><span style=display:flex><span>Collation:  utf8_general_ci (33)
+</span></span><span style=display:flex><span>Length:     3072
+</span></span><span style=display:flex><span>Max_length: 0
+</span></span><span style=display:flex><span>Decimals:   0
+</span></span><span style=display:flex><span>Flags:      
+</span></span></code></pre></div><p>For TiDB:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>Field   1:  `@@lower_case_table_names`
+</span></span><span style=display:flex><span>Catalog:    `def`
+</span></span><span style=display:flex><span>Database:   ``
+</span></span><span style=display:flex><span>Table:      ``
+</span></span><span style=display:flex><span>Org_table:  ``
+</span></span><span style=display:flex><span>Type:       STRING
+</span></span><span style=display:flex><span>Collation:  ? (0)
+</span></span><span style=display:flex><span>Length:     0
+</span></span><span style=display:flex><span>Max_length: 1
+</span></span><span style=display:flex><span>Decimals:   31
+</span></span><span style=display:flex><span>Flags:      
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Field   2:  `connection_id()`
+</span></span><span style=display:flex><span>Catalog:    `def`
+</span></span><span style=display:flex><span>Database:   ``
+</span></span><span style=display:flex><span>Table:      ``
+</span></span><span style=display:flex><span>Org_table:  ``
+</span></span><span style=display:flex><span>Type:       LONGLONG
+</span></span><span style=display:flex><span>Collation:  binary (63)
+</span></span><span style=display:flex><span>Length:     20
+</span></span><span style=display:flex><span>Max_length: 1
+</span></span><span style=display:flex><span>Decimals:   0
+</span></span><span style=display:flex><span>Flags:      UNSIGNED BINARY NUM 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Field   3:  `variable_value`
+</span></span><span style=display:flex><span>Catalog:    `def`
+</span></span><span style=display:flex><span>Database:   ``
+</span></span><span style=display:flex><span>Table:      ``
+</span></span><span style=display:flex><span>Org_table:  ``
+</span></span><span style=display:flex><span>Type:       STRING
+</span></span><span style=display:flex><span>Collation:  utf8_general_ci (33)
+</span></span><span style=display:flex><span>Length:     1024
+</span></span><span style=display:flex><span>Max_length: 0
+</span></span><span style=display:flex><span>Decimals:   0
+</span></span><span style=display:flex><span>Flags:      
+</span></span></code></pre></div></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://blog.minifish.org/posts/travis-git-push/><span class=title>« Prev</span><br><span>How to Execute Git Push in Travis CI</span>
+</a><a class=next href=https://blog.minifish.org/posts/centos6-nfs/><span class=title>Next »</span><br><span>How to Configure CentOS 6 NFS Service</span></a></nav><ul class=share-buttons><li><a target=_blank rel="noopener noreferrer" aria-label="share How to Implement MySQL X Protocol on TiDB on x" href="https://x.com/intent/tweet/?text=How%20to%20Implement%20MySQL%20X%20Protocol%20on%20TiDB&amp;url=https%3a%2f%2fblog.minifish.org%2fposts%2fmysqlx-protocol%2f&amp;hashtags="><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783h61.366L235.9 310.383l96.667 126.4H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share How to Implement MySQL X Protocol on TiDB on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fblog.minifish.org%2fposts%2fmysqlx-protocol%2f&amp;title=How%20to%20Implement%20MySQL%20X%20Protocol%20on%20TiDB&amp;summary=How%20to%20Implement%20MySQL%20X%20Protocol%20on%20TiDB&amp;source=https%3a%2f%2fblog.minifish.org%2fposts%2fmysqlx-protocol%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share How to Implement MySQL X Protocol on TiDB on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fblog.minifish.org%2fposts%2fmysqlx-protocol%2f&title=How%20to%20Implement%20MySQL%20X%20Protocol%20on%20TiDB"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share How to Implement MySQL X Protocol on TiDB on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.minifish.org%2fposts%2fmysqlx-protocol%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share How to Implement MySQL X Protocol on TiDB on whatsapp" href="https://api.whatsapp.com/send?text=How%20to%20Implement%20MySQL%20X%20Protocol%20on%20TiDB%20-%20https%3a%2f%2fblog.minifish.org%2fposts%2fmysqlx-protocol%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share How to Implement MySQL X Protocol on TiDB on telegram" href="https://telegram.me/share/url?text=How%20to%20Implement%20MySQL%20X%20Protocol%20on%20TiDB&amp;url=https%3a%2f%2fblog.minifish.org%2fposts%2fmysqlx-protocol%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentcolor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share How to Implement MySQL X Protocol on TiDB on ycombinator" href="https://news.ycombinator.com/submitlink?t=How%20to%20Implement%20MySQL%20X%20Protocol%20on%20TiDB&u=https%3a%2f%2fblog.minifish.org%2fposts%2fmysqlx-protocol%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentcolor" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921h-62.034L230.6673 292.4508V424.0079h50.6655V292.4508L390.1575 87.9921H328.1233L256 238.2489z"/></svg></a></li></ul></footer></article></main><footer class=footer><span>&copy; 2024 <a href=https://blog.minifish.org/>Mini Fish</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
