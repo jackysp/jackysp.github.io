@@ -6,14 +6,12 @@
     <description>Recent content on Mini Fish</description>
     <generator>Hugo -- 0.140.0-DEV</generator>
     <language>en-US</language>
-    <managingEditor>i@minifish.org (Jack Yu)</managingEditor>
-    <webMaster>i@minifish.org (Jack Yu)</webMaster>
     <lastBuildDate>Wed, 11 Dec 2024 17:11:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Harnessing AI to Create High-Quality Podcasts Quickly and for Free</title>
       <link>https://blog.minifish.org/posts/notebooklm/</link>
-      <pubDate>Wed, 11 Dec 2024 17:11:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Wed, 11 Dec 2024 17:11:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/notebooklm/</guid>
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;As a long-time podcaster, I&amp;rsquo;ve always enjoyed sharing my thoughts and ideas through audio. While the world of video content—and the role of a YouTuber—has its allure, the complexities of video editing have kept me anchored in the realm of podcasting. My journey has involved leveraging platforms like &lt;a href=&#34;https://creators.spotify.com/&#34;&gt;&lt;strong&gt;Spotify Creator&lt;/strong&gt;&lt;/a&gt; (formerly &lt;strong&gt;Anchor&lt;/strong&gt;) for hosting and distributing my recordings. This platform offers a wide array of features for free, including audio recording, editing capabilities, and automatic promotion to Spotify.&lt;/p&gt;</description>
@@ -21,7 +19,7 @@
     <item>
       <title>Brompton-like Bikes: A Guide to Trifoldable Bicycles</title>
       <link>https://blog.minifish.org/posts/brompton/</link>
-      <pubDate>Mon, 09 Dec 2024 19:27:06 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Mon, 09 Dec 2024 19:27:06 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/brompton/</guid>
       <description>&lt;p&gt;Brompton-like bikes are renowned for their compactness and portability. Unlike the typical two-fold bikes, these are trifold bikes, making them exceptionally convenient for urban commuting and travel.&lt;/p&gt;
 &lt;h2 id=&#34;key-features&#34;&gt;Key Features&lt;/h2&gt;
@@ -39,7 +37,7 @@
     <item>
       <title>My Recent Purchases: A Review of Three Sanrenmu Folding Knives</title>
       <link>https://blog.minifish.org/posts/folding-knives/</link>
-      <pubDate>Thu, 28 Nov 2024 16:10:43 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Thu, 28 Nov 2024 16:10:43 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/folding-knives/</guid>
       <description>&lt;p&gt;Recently, I decided to expand my collection of folding knives and purchased three models from &lt;strong&gt;&lt;a href=&#34;#&#34;&gt;Sanrenmu&lt;/a&gt;&lt;/strong&gt;. For anyone considering a new knife or looking for suggestions, I wanted to share my experiences with these three models: the 9201, 9008, and 820. Each has its own strengths and weaknesses, and hopefully, my insights can help you make an informed decision.&lt;/p&gt;
 &lt;hr&gt;
@@ -56,7 +54,7 @@
     <item>
       <title>The Correct Way to Use `go build`</title>
       <link>https://blog.minifish.org/posts/go-build/</link>
-      <pubDate>Thu, 28 Nov 2024 15:41:19 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Thu, 28 Nov 2024 15:41:19 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/go-build/</guid>
       <description>&lt;p&gt;When working with Go, it&amp;rsquo;s important to know the proper way to compile your programs to avoid common errors. Here are some tips on using the &lt;code&gt;go build&lt;/code&gt; command effectively.&lt;/p&gt;
 &lt;h2 id=&#34;recommended-usage&#34;&gt;Recommended Usage&lt;/h2&gt;
@@ -79,7 +77,7 @@
     <item>
       <title>Exploring Local LLMs with Ollama: My Journey and Practices</title>
       <link>https://blog.minifish.org/posts/local-ai/</link>
-      <pubDate>Wed, 27 Nov 2024 18:26:14 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Wed, 27 Nov 2024 18:26:14 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/local-ai/</guid>
       <description>&lt;p&gt;Local Large Language Models (LLMs) have been gaining traction as developers and enthusiasts seek more control over their AI tools without relying solely on cloud-based solutions. In this blog post, I&amp;rsquo;ll share my experiences with &lt;strong&gt;Ollama&lt;/strong&gt;, a remarkable tool for running local LLMs, along with other tools like &lt;strong&gt;llamaindex&lt;/strong&gt; and &lt;strong&gt;Candle&lt;/strong&gt;. I&amp;rsquo;ll also discuss various user interfaces (UI) that enhance the local LLM experience.&lt;/p&gt;
 &lt;hr&gt;
@@ -126,7 +124,7 @@
     <item>
       <title>Exploring Tailscale: Building Your Own Network Easily</title>
       <link>https://blog.minifish.org/posts/tailscale/</link>
-      <pubDate>Wed, 27 Nov 2024 18:18:38 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Wed, 27 Nov 2024 18:18:38 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/tailscale/</guid>
       <description>&lt;p&gt;I recently started experimenting with &lt;strong&gt;Tailscale&lt;/strong&gt;, a tool that has significantly simplified the way I manage my personal network across devices. In this blog post, I&amp;rsquo;ll share how I discovered Tailscale, its core features, and my personal setup that leverages this powerful tool.&lt;/p&gt;
 &lt;h2 id=&#34;discovering-tailscale-through-webvm&#34;&gt;Discovering Tailscale Through WebVM&lt;/h2&gt;
@@ -135,7 +133,7 @@
     <item>
       <title>Tips for Traveling in Vietnam: My Personal Experiences</title>
       <link>https://blog.minifish.org/posts/vietnam/</link>
-      <pubDate>Wed, 27 Nov 2024 18:13:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Wed, 27 Nov 2024 18:13:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/vietnam/</guid>
       <description>&lt;p&gt;Vietnam is a vibrant country with a rich culture, friendly people, and stunning landscapes. Recently, I spent some time exploring Vietnam, and I wanted to share some of my experiences and tips to help fellow travelers make the most of their visit.&lt;/p&gt;
 &lt;h2 id=&#34;internet-access-and-blocked-websites&#34;&gt;Internet Access and Blocked Websites&lt;/h2&gt;
@@ -213,7 +211,7 @@
     <item>
       <title>How to Choose the Right Fishing Gear: Tips from My Fishing Experiences</title>
       <link>https://blog.minifish.org/posts/fishing-gears/</link>
-      <pubDate>Wed, 27 Nov 2024 17:46:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Wed, 27 Nov 2024 17:46:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/fishing-gears/</guid>
       <description>&lt;p&gt;&lt;em&gt;Note: All prices mentioned are in RMB.&lt;/em&gt;&lt;/p&gt;
 &lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
@@ -411,7 +409,7 @@
     <item>
       <title>Encounter with a Major Issue with Cloudflare Warp: A Life and Death Rescue for VPS</title>
       <link>https://blog.minifish.org/posts/warp-cli/</link>
-      <pubDate>Wed, 15 May 2024 20:31:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Wed, 15 May 2024 20:31:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/warp-cli/</guid>
       <description>&lt;p&gt;Today, I planned to use Warp to select an IP exit for my VPS, following the &lt;a href=&#34;https://developers.cloudflare.com/warp-client/get-started/linux/&#34;&gt;Cloudflare official documentation&lt;/a&gt;. When executing the &lt;code&gt;warp-cli connect&lt;/code&gt; step, the server immediately lost connection, and the problem persisted even after rebooting.&lt;/p&gt;
 &lt;p&gt;After researching, I found that this problem is not unique. For instance, in a &lt;a href=&#34;https://www.v2ex.com/t/933725&#34;&gt;discussion on V2EX&lt;/a&gt;, many users encountered similar issues. The solution is to run &lt;code&gt;warp-cli set-mode proxy&lt;/code&gt; before executing &lt;code&gt;warp-cli connect&lt;/code&gt; to bypass the local address. Surprisingly, Cloudflare&amp;rsquo;s official documentation does not mention this crucial step, undoubtedly increasing the complexity and risk of configuration.&lt;/p&gt;</description>
@@ -419,7 +417,7 @@
     <item>
       <title>How to Use the HTTP API in TiDB with TLS Enabled</title>
       <link>https://blog.minifish.org/posts/tls-api/</link>
-      <pubDate>Mon, 22 May 2023 21:45:00 -0700</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Mon, 22 May 2023 21:45:00 -0700</pubDate>
       <guid>https://blog.minifish.org/posts/tls-api/</guid>
       <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
 &lt;p&gt;Many customers have TLS enabled, which is different from the lab environment.&lt;/p&gt;
@@ -434,7 +432,7 @@
     <item>
       <title>How to Deploy a Secure Transparent Gateway</title>
       <link>https://blog.minifish.org/posts/transparent-gateway/</link>
-      <pubDate>Wed, 12 Oct 2022 21:07:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Wed, 12 Oct 2022 21:07:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/transparent-gateway/</guid>
       <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
 &lt;p&gt;After moving house, there are many more devices at home that need internet access. However, I don&amp;rsquo;t want to configure a proxy on each device, so I thought of using a transparent gateway.&lt;/p&gt;
@@ -444,7 +442,7 @@
     <item>
       <title>How to Set Up a Minecraft Bedrock Server Using Multipass</title>
       <link>https://blog.minifish.org/posts/mc-server/</link>
-      <pubDate>Mon, 02 May 2022 19:05:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Mon, 02 May 2022 19:05:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/mc-server/</guid>
       <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
 &lt;p&gt;Recently, both of my kids have become interested in Minecraft, and some of their peers are also playing it. We previously bought the Switch version, but its online capabilities are quite poor, and the device performance is subpar, resulting in a less-than-ideal experience. Thus, I began considering the idea of setting up our own server. Of course, you can play in multiplayer with friends, but the game ends as soon as the host goes offline, which is not as good as having a server that is always online.&lt;/p&gt;</description>
@@ -452,7 +450,7 @@
     <item>
       <title>How to Create GitHub Verified Commits on a MacBook M1</title>
       <link>https://blog.minifish.org/posts/gpg/</link>
-      <pubDate>Sat, 12 Feb 2022 11:54:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Sat, 12 Feb 2022 11:54:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/gpg/</guid>
       <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
 &lt;p&gt;One day, I impulsively turned on GitHub&amp;rsquo;s Vigilant mode.&lt;/p&gt;
@@ -467,7 +465,7 @@
     <item>
       <title>How to Play Minecraft (Bedrock Edition) Cross-Platform</title>
       <link>https://blog.minifish.org/posts/mc/</link>
-      <pubDate>Thu, 03 Feb 2022 00:00:00 +0000</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Thu, 03 Feb 2022 00:00:00 +0000</pubDate>
       <guid>https://blog.minifish.org/posts/mc/</guid>
       <description>&lt;h3 id=&#34;background&#34;&gt;Background&lt;/h3&gt;
 &lt;p&gt;During the Chinese New Year holiday, I spent some time at home playing on the Switch with my child, and I ended up purchasing Minecraft (Bedrock Edition). In order to play together, I also bought the Windows version. Additionally, I wanted to test if the GitHub Actions for this blog are still working properly.&lt;/p&gt;
@@ -477,7 +475,7 @@
     <item>
       <title>How to Compare Data Consistency between MySQL and PostgreSQL</title>
       <link>https://blog.minifish.org/posts/diff-mysql-pg/</link>
-      <pubDate>Sun, 09 May 2021 18:13:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Sun, 09 May 2021 18:13:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/diff-mysql-pg/</guid>
       <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
 &lt;p&gt;Recently, I encountered a problem where a user wanted to synchronize data from PostgreSQL to TiDB (which uses the same protocol as MySQL) and wanted to know whether the data after synchronization is consistent. I hadn&amp;rsquo;t dealt with this kind of issue before, so I did a bit of research.&lt;/p&gt;
@@ -488,7 +486,7 @@
     <item>
       <title>How to Configure a Chinese LaTeX Environment on Windows</title>
       <link>https://blog.minifish.org/posts/latex-win/</link>
-      <pubDate>Wed, 31 Mar 2021 00:00:00 +0000</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Wed, 31 Mar 2021 00:00:00 +0000</pubDate>
       <guid>https://blog.minifish.org/posts/latex-win/</guid>
       <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
 &lt;p&gt;Initially, I didn&amp;rsquo;t think this was something worth writing about, because CTex was previously working smoothly for everyone. However, it turns out that CTex hasn&amp;rsquo;t been updated since 2016. So, I wanted to find a replacement for Chinese LaTeX on Windows in 2021.&lt;/p&gt;
@@ -503,7 +501,7 @@
     <item>
       <title>How to Automatically Publish a Blog Using GitHub Actions</title>
       <link>https://blog.minifish.org/posts/github-action/</link>
-      <pubDate>Wed, 16 Dec 2020 16:11:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Wed, 16 Dec 2020 16:11:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/github-action/</guid>
       <description>&lt;p&gt;In &lt;a href=&#34;https://blog.minifish.org/posts/travis-git-push&#34;&gt;this post&lt;/a&gt;, I used Travis to enable automatic blog publishing. However, I recently discovered that Travis does not run automatically anymore (though it works manually). I haven’t looked into it closely because GitHub Actions have been introduced, so I decided to move all dependencies to GitHub.&lt;/p&gt;
 &lt;h2 id=&#34;go-action&#34;&gt;Go Action&lt;/h2&gt;
@@ -512,21 +510,21 @@
     <item>
       <title>How to Implement a Simple Load Using Sysbench</title>
       <link>https://blog.minifish.org/posts/sysbench/</link>
-      <pubDate>Mon, 14 Dec 2020 12:06:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Mon, 14 Dec 2020 12:06:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/sysbench/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://github.com/akopytov/sysbench&#34;&gt;Sysbench&lt;/a&gt; is a tool commonly used in database testing. Since version 1.0, it has supported more powerful custom functions, allowing users to conveniently write some Lua scripts to simulate load. The purpose of writing this article is, firstly, because I wanted to explore Sysbench&amp;rsquo;s custom load usage. Secondly, because I tried the mysqlslap tool provided by MySQL&amp;rsquo;s official source, and found that it freezes easily during database performance testing, which could mislead users into thinking there is an issue with the database, causing trouble for many. Therefore, I want to help people avoid these pitfalls.&lt;/p&gt;</description>
     </item>
     <item>
       <title>How to Read TiDB Source Code (Part 5)</title>
       <link>https://blog.minifish.org/posts/tidb5/</link>
-      <pubDate>Tue, 08 Sep 2020 11:36:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Tue, 08 Sep 2020 11:36:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/tidb5/</guid>
       <description>&lt;p&gt;When using TiDB, you may occasionally encounter some exceptions, such as the &amp;ldquo;Lost connection to MySQL server during query&amp;rdquo; error. This indicates that the connection between the client and the database has been disconnected (not due to user action). The reasons for disconnection can vary. This article attempts to analyze some common TiDB errors from the perspective of exception handling and code analysis. Additionally, some exceptions are not errors but performance issues due to slow execution. In the second half of this article, we will also introduce common tools for tracking performance.&lt;/p&gt;</description>
     </item>
     <item>
       <title>How to Read TiDB Source Code (Part 4)</title>
       <link>https://blog.minifish.org/posts/tidb4/</link>
-      <pubDate>Fri, 31 Jul 2020 10:58:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Fri, 31 Jul 2020 10:58:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/tidb4/</guid>
       <description>&lt;p&gt;This article will introduce some key functions and the interpretation of logs in TiDB.&lt;/p&gt;
 &lt;h2 id=&#34;key-functions&#34;&gt;Key Functions&lt;/h2&gt;
@@ -541,7 +539,7 @@
     <item>
       <title>How to Read the Source Code of TiDB (Part 3)</title>
       <link>https://blog.minifish.org/posts/tidb3/</link>
-      <pubDate>Tue, 28 Jul 2020 11:47:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Tue, 28 Jul 2020 11:47:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/tidb3/</guid>
       <description>&lt;p&gt;In the previous article, we introduced methods for viewing syntax and configurations. In this article, we will discuss how to view system variables, including default values, scopes, and how to monitor metrics.&lt;/p&gt;
 &lt;h2 id=&#34;system-variables&#34;&gt;System Variables&lt;/h2&gt;
@@ -552,7 +550,7 @@
     <item>
       <title>How to Read TiDB Source Code (Part 2)</title>
       <link>https://blog.minifish.org/posts/tidb2/</link>
-      <pubDate>Sun, 12 Jul 2020 12:09:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Sun, 12 Jul 2020 12:09:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/tidb2/</guid>
       <description>&lt;p&gt;Continuing from &lt;a href=&#34;https://blog.minifish.org/posts/tidb1&#34;&gt;the previous article&lt;/a&gt;, we learned how to set up the environment for reading code and where to start reading the code. In this part, we&amp;rsquo;ll introduce methods for viewing code based on some common needs.&lt;/p&gt;
 &lt;h2 id=&#34;how-to-check-the-support-level-of-a-syntax&#34;&gt;How to Check the Support Level of a Syntax&lt;/h2&gt;
@@ -566,7 +564,7 @@
     <item>
       <title>How to Read TiDB Source Code (Part 1)</title>
       <link>https://blog.minifish.org/posts/tidb1/</link>
-      <pubDate>Mon, 06 Jul 2020 16:51:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Mon, 06 Jul 2020 16:51:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/tidb1/</guid>
       <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
 &lt;p&gt;There are many articles on reading the source code of TiDB, often referred to as &lt;a href=&#34;https://pingcap.com/blog-cn/#TiDB-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB&#34;&gt;the &amp;ldquo;Twenty-Four Chapters Scriptures&amp;rdquo;&lt;/a&gt;. However, these introductions typically proceed from a macro to a micro perspective. This series attempts to introduce how to read TiDB&amp;rsquo;s source code from an easier angle. The goals we aim to achieve are:&lt;/p&gt;
@@ -579,7 +577,7 @@
     <item>
       <title>How to Use Docker on Windows</title>
       <link>https://blog.minifish.org/posts/docker-win/</link>
-      <pubDate>Mon, 13 Apr 2020 10:34:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Mon, 13 Apr 2020 10:34:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/docker-win/</guid>
       <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
 &lt;p&gt;I had to install Docker on Windows to reproduce a bug.&lt;/p&gt;
@@ -596,7 +594,7 @@
     <item>
       <title>How to Prevent a Linux Laptop from Entering Sleep Mode When the Lid is Closed</title>
       <link>https://blog.minifish.org/posts/nosleeplinux/</link>
-      <pubDate>Tue, 31 Mar 2020 20:31:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Tue, 31 Mar 2020 20:31:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/nosleeplinux/</guid>
       <description>&lt;p&gt;Initially, I thought it would be a simple setting adjustment, so I casually Googled it. Sure enough, there was a unanimous solution: modify &lt;code&gt;/etc/systemd/logind.conf&lt;/code&gt;, change &lt;code&gt;HandleLidSwitch&lt;/code&gt; to &lt;code&gt;ignore&lt;/code&gt; or &lt;code&gt;lock&lt;/code&gt;, and then restart &lt;code&gt;logind&lt;/code&gt; or reboot.&lt;/p&gt;
 &lt;p&gt;I tried this, but it didn&amp;rsquo;t work at all on my Thinkpad X230. I then tried changing some other options in the aforementioned file, but none worked, and surprisingly, &lt;code&gt;Ubuntu&lt;/code&gt; even reported errors.&lt;/p&gt;
@@ -605,7 +603,7 @@
     <item>
       <title>How to Dynamically Update DNS Records for Namesilo</title>
       <link>https://blog.minifish.org/posts/und/</link>
-      <pubDate>Sat, 01 Feb 2020 12:27:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Sat, 01 Feb 2020 12:27:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/und/</guid>
       <description>&lt;h2 id=&#34;dynamically-updating-dns-records&#34;&gt;Dynamically Updating DNS Records&lt;/h2&gt;
 &lt;p&gt;The purpose of dynamic updates is pretty simple. As a long-term user of China Unicom&amp;rsquo;s broadband, although Unicom provides a public address, it is essentially a dynamic address, not a fixed one. If you want to access your home devices using an IP address from outside, you need to use dynamic DNS (DDNS).&lt;/p&gt;
@@ -614,7 +612,7 @@
     <item>
       <title>How to Start a PowerShell Script in the Background at Windows Startup</title>
       <link>https://blog.minifish.org/posts/powershell-startup/</link>
-      <pubDate>Tue, 14 Jan 2020 08:56:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Tue, 14 Jan 2020 08:56:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/powershell-startup/</guid>
       <description>&lt;ul&gt;
 &lt;li&gt;
@@ -632,7 +630,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
     <item>
       <title>How to Deploy an HTTPS Proxy Service</title>
       <link>https://blog.minifish.org/posts/gost/</link>
-      <pubDate>Sun, 12 Jan 2020 19:43:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Sun, 12 Jan 2020 19:43:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/gost/</guid>
       <description>&lt;h2 id=&#34;preface&#34;&gt;Preface&lt;/h2&gt;
 &lt;p&gt;One day, I came across an article by Chen Hao on Twitter. Having benefited from several of his blog posts, I instinctively felt it was reliable, so I read it and decided to write this practical guide.&lt;/p&gt;
@@ -642,7 +640,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
     <item>
       <title>Using delve to Debug Golang Programs</title>
       <link>https://blog.minifish.org/posts/dlv/</link>
-      <pubDate>Mon, 16 Sep 2019 13:24:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Mon, 16 Sep 2019 13:24:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/dlv/</guid>
       <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
 &lt;p&gt;When I first started writing Golang, I was always looking for a convenient debugging tool. Back then, I came across documentation about using &lt;code&gt;gdb&lt;/code&gt; to debug and also tried &lt;code&gt;delve&lt;/code&gt;, but neither felt easy to use. Later, on someone&amp;rsquo;s advice, I went back to the good old &lt;code&gt;print&lt;/code&gt; statements&amp;hellip;&lt;/p&gt;
@@ -651,7 +649,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
     <item>
       <title>How to Deploy a Shadowsocks Server</title>
       <link>https://blog.minifish.org/posts/shadowsocks/</link>
-      <pubDate>Thu, 27 Sep 2018 15:48:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Thu, 27 Sep 2018 15:48:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/shadowsocks/</guid>
       <description>&lt;p&gt;There are multiple versions of the Shadowsocks server side implementation. The original version was written in Python, and later, enthusiasts implemented it in various programming languages of their liking.&lt;/p&gt;
 &lt;p&gt;Among all these implementations, I personally think the most reliable and stable one is the original Python version. The reason is simple - it has the most users. The Golang version is said to have the most features and also performs very well, making it quite powerful. This might be due to Golang’s inherent high performance and ease of implementation. There&amp;rsquo;s also an implementation using libev, a pure C implementation, which also offers good performance and is very lightweight.&lt;/p&gt;</description>
@@ -659,7 +657,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
     <item>
       <title>How Immediate is Golang&#39;s Panic</title>
       <link>https://blog.minifish.org/posts/golang-panic/</link>
-      <pubDate>Thu, 26 Jul 2018 14:24:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Thu, 26 Jul 2018 14:24:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/golang-panic/</guid>
       <description>&lt;p&gt;Let&amp;rsquo;s first look at the following code snippet:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
@@ -716,7 +714,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
     <item>
       <title>How TiDB Implements the INSERT Statement</title>
       <link>https://blog.minifish.org/posts/insert-opt/</link>
-      <pubDate>Wed, 11 Jul 2018 14:18:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Wed, 11 Jul 2018 14:18:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/insert-opt/</guid>
       <description>&lt;p&gt;In the previous article &lt;a href=&#34;https://zhuanlan.zhihu.com/p/34512827&#34;&gt;&amp;ldquo;Overview of the Insert Statement&amp;rdquo;&lt;/a&gt;, the general process of the INSERT statement was introduced. This article will explain in detail the implementation of several types of INSERT statements in TiDB.&lt;/p&gt;
 &lt;h2 id=&#34;types-of-insert-statements&#34;&gt;Types of INSERT Statements&lt;/h2&gt;
@@ -734,7 +732,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
     <item>
       <title>How to Use HAProxy to Test CockroachDB</title>
       <link>https://blog.minifish.org/posts/haproxy/</link>
-      <pubDate>Tue, 10 Jul 2018 15:07:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Tue, 10 Jul 2018 15:07:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/haproxy/</guid>
       <description>&lt;h2 id=&#34;installing-haproxy&#34;&gt;Installing HAProxy&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;yum install haproxy&lt;/code&gt; is effective for CentOS 7. After installation, you can start the service using &lt;code&gt;systemctl start haproxy&lt;/code&gt;. But don&amp;rsquo;t rush yet.&lt;/p&gt;
@@ -777,7 +775,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
     <item>
       <title>How to Test CockroachDB Performance Using Benchmarksql</title>
       <link>https://blog.minifish.org/posts/cockroachdb-tpcc/</link>
-      <pubDate>Fri, 06 Jul 2018 21:21:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Fri, 06 Jul 2018 21:21:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/cockroachdb-tpcc/</guid>
       <description>&lt;h2 id=&#34;why-test-tpc-c&#34;&gt;Why Test TPC-C&lt;/h2&gt;
 &lt;p&gt;First of all, TPC-C is the de facto OLTP benchmark standard. It is a set of specifications, and any database can publish its test results under this standard, so there&amp;rsquo;s no issue of quarreling over the testing tools used.&lt;/p&gt;
@@ -786,7 +784,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
     <item>
       <title>How to Test CockroachDB Performance Using Sysbench</title>
       <link>https://blog.minifish.org/posts/cockroachdb-sysbench/</link>
-      <pubDate>Mon, 11 Jun 2018 13:50:00 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Mon, 11 Jun 2018 13:50:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/cockroachdb-sysbench/</guid>
       <description>&lt;h2 id=&#34;compiling-sysbench-with-pgsql-support&#34;&gt;Compiling Sysbench with pgsql Support&lt;/h2&gt;
 &lt;p&gt;CockroachDB uses the PostgreSQL protocol. If you want to use Sysbench for testing, you need to enable pg protocol support in Sysbench. Sysbench already supports the pg protocol, but it is not enabled by default during compilation. You can configure it with the following command:&lt;/p&gt;
@@ -796,7 +794,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
     <item>
       <title>How to View CMU DB Group&#39;s OLTP-Bench</title>
       <link>https://blog.minifish.org/posts/oltp-bench/</link>
-      <pubDate>Fri, 23 Feb 2018 00:00:00 +0000</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Fri, 23 Feb 2018 00:00:00 +0000</pubDate>
       <guid>https://blog.minifish.org/posts/oltp-bench/</guid>
       <description>&lt;h2 id=&#34;introduction-to-oltp-bench&#34;&gt;Introduction to OLTP-Bench&lt;/h2&gt;
 &lt;p&gt;OLTP-Bench is an open-source benchmarking tool platform for OLTP scenarios from CMU&amp;rsquo;s DB Group. It was designed to provide a simple, easy-to-use, and extensible testing platform.&lt;/p&gt;
@@ -823,7 +821,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
     <item>
       <title>How to Use Monospaced Fonts in VS Code</title>
       <link>https://blog.minifish.org/posts/font/</link>
-      <pubDate>Tue, 26 Dec 2017 22:21:06 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Tue, 26 Dec 2017 22:21:06 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/font/</guid>
       <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
 &lt;p&gt;The English font set in Microsoft&amp;rsquo;s VS Code is monospaced, while the Chinese font is not.&lt;/p&gt;
@@ -837,7 +835,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
     <item>
       <title>How to Understand F1&#39;s Schema Change</title>
       <link>https://blog.minifish.org/posts/f1/</link>
-      <pubDate>Mon, 25 Dec 2017 22:21:06 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Mon, 25 Dec 2017 22:21:06 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/f1/</guid>
       <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
 &lt;p&gt;The DDL paper on F1 serves as the foundation for TiDB&amp;rsquo;s DDL implementation. There are two main papers on F1: one provides an overview of F1&amp;rsquo;s DDL, and the other specifically details the schema change method for DDL. I personally believe the second is key and more confusing to me. There is an &lt;a href=&#34;http://www.ifi.uzh.ch/dbtg/teaching/courses/SDBS/Papaioannou.pdf&#34;&gt;introduction to the second paper&lt;/a&gt; here, which can help in understanding.&lt;/p&gt;
@@ -848,7 +846,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
     <item>
       <title>Understanding the CAP Theorem</title>
       <link>https://blog.minifish.org/posts/cap/</link>
-      <pubDate>Wed, 20 Dec 2017 22:21:06 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Wed, 20 Dec 2017 22:21:06 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/cap/</guid>
       <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
 &lt;p&gt;The CAP theorem has become one of the hottest theorems in recent years; when discussing distributed systems, CAP is inevitably mentioned. However, I feel that I haven&amp;rsquo;t thoroughly understood it, so I wanted to write a blog post to record my understanding. I will update the content as I gain new insights.&lt;/p&gt;
@@ -860,7 +858,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
     <item>
       <title>How to Execute Git Push in Travis CI</title>
       <link>https://blog.minifish.org/posts/travis-git-push/</link>
-      <pubDate>Mon, 16 Oct 2017 22:21:06 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Mon, 16 Oct 2017 22:21:06 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/travis-git-push/</guid>
       <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
 &lt;p&gt;Travis CI is generally used for automating tests without needing to update the repository with the test outputs. This article explains how to automatically commit the results from Travis CI.&lt;/p&gt;
@@ -896,7 +894,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
     <item>
       <title>How to Implement MySQL X Protocol on TiDB</title>
       <link>https://blog.minifish.org/posts/mysqlx-protocol/</link>
-      <pubDate>Wed, 16 Aug 2017 00:00:00 +0000</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Wed, 16 Aug 2017 00:00:00 +0000</pubDate>
       <guid>https://blog.minifish.org/posts/mysqlx-protocol/</guid>
       <description>&lt;h2 id=&#34;some-documents-on-mysql&#34;&gt;Some Documents on MySQL&lt;/h2&gt;
 &lt;ul&gt;
@@ -930,7 +928,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
     <item>
       <title>How to Configure CentOS 6 NFS Service</title>
       <link>https://blog.minifish.org/posts/centos6-nfs/</link>
-      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/centos6-nfs/</guid>
       <description>&lt;h2 id=&#34;server-side&#34;&gt;Server Side&lt;/h2&gt;
 &lt;ol&gt;
@@ -952,7 +950,7 @@ Using the root user, create a directory named &lt;code&gt;/nfs&lt;/code&gt;. Not
     <item>
       <title>How to Configure CentOS KVM Network Bridging Mode</title>
       <link>https://blog.minifish.org/posts/centos6-kvm-net-bridge/</link>
-      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/centos6-kvm-net-bridge/</guid>
       <description>&lt;h2 id=&#34;what-is-bridging&#34;&gt;What Is Bridging&lt;/h2&gt;
 &lt;p&gt;Bridging highly simulates a network card, making the router believe that the virtual machine&amp;rsquo;s network card truly exists. Personally, I feel it&amp;rsquo;s similar to resistors connected in parallel, whereas NAT (another common virtual machine network connection method) is more like parasitizing on the host&amp;rsquo;s network card.&lt;/p&gt;
@@ -962,7 +960,7 @@ Using the root user, create a directory named &lt;code&gt;/nfs&lt;/code&gt;. Not
     <item>
       <title>How to Install CentOS as a Virtualization Host</title>
       <link>https://blog.minifish.org/posts/centos6-install/</link>
-      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/centos6-install/</guid>
       <description>&lt;h2 id=&#34;installation-process&#34;&gt;Installation Process&lt;/h2&gt;
 &lt;p&gt;Installed Version: CentOS 6.3&lt;/p&gt;
@@ -982,7 +980,7 @@ Using the root user, create a directory named &lt;code&gt;/nfs&lt;/code&gt;. Not
     <item>
       <title>How to Practice Using SQL</title>
       <link>https://blog.minifish.org/posts/postgresql-practices/</link>
-      <pubDate>Thu, 05 Jun 2014 00:00:00 +0000</pubDate><author>i@minifish.org (Jack Yu)</author>
+      <pubDate>Thu, 05 Jun 2014 00:00:00 +0000</pubDate>
       <guid>https://blog.minifish.org/posts/postgresql-practices/</guid>
       <description>&lt;p&gt;The text provided is a detailed set of instructions and queries for practicing SQL using PostgreSQL 9.4 BETA 2, focusing on creating and querying tables related to students, courses, scores, and teachers. Here&amp;rsquo;s a summary:&lt;/p&gt;
 &lt;h2 id=&#34;database-structure&#34;&gt;Database Structure&lt;/h2&gt;
