@@ -1,190 +1,141 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
-<head>
-  <link href="https://gmpg.org/xfn/11" rel="profile">
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.140.0-DEV">
-
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>How to Execute Git Push in Travis CI &middot; Mini Fish</title>
-  <meta name="description" content="" />
-
-  
-  <link type="text/css" rel="stylesheet" href="https://blog.minifish.org/css/print.css" media="print">
-  <link type="text/css" rel="stylesheet" href="https://blog.minifish.org/css/poole.css">
-  <link type="text/css" rel="stylesheet" href="https://blog.minifish.org/css/syntax.css">
-  <link type="text/css" rel="stylesheet" href="https://blog.minifish.org/css/hyde.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
-
-
-  
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
-  <link rel="shortcut icon" href="/favicon.png">
-
-  
-  
-</head>
-
-  <body class=" ">
-  <aside class="sidebar">
-  <div class="container sidebar-sticky">
-    <div class="sidebar-about">
-      <a href="https://blog.minifish.org/"><h1>Mini Fish</h1></a>
-      <p class="lead">
-       A Collection of Straightforward HOW-TO Guides 
-      </p>
-    </div>
-
-    <nav>
-      <ul class="sidebar-nav">
-        <li><a href="https://blog.minifish.org/">Home</a> </li>
-        <li><a href="https://github.com/jackysp/"> GitHub </a></li><li><a href="https://www.linkedin.com/in/shuaipeng-yu-81280434/"> LinkedIn </a></li>
-      </ul>
-    </nav>
-
-    <p>&copy; 2024. All rights reserved. </p>
-  </div>
-</aside>
-
-    <main class="content container">
-    <div class="post">
-  <h1>How to Execute Git Push in Travis CI</h1>
-  <time datetime=2017-10-16T22:21:06&#43;0800 class="post-date">Mon, Oct 16, 2017</time>
-  <h2 id="background">Background</h2>
-<p>Travis CI is generally used for automating tests without needing to update the repository with the test outputs. This article explains how to automatically commit the results from Travis CI.</p>
-<h2 id="process">Process</h2>
-<p>The basic process references <a href="https://gist.github.com/Maumagnaguagno/84a9807ed71d233e5d3f">this gist</a>.</p>
-<p>Below is the <code>.travis.yml</code> from the gist.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">language</span>: <span style="color:#ae81ff">ruby</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">rvm</span>:
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">2.0.0</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">env</span>:
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">global</span>:
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">USER=&#34;username&#34;</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">EMAIL=&#34;username@mail.com&#34;</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">REPO=&#34;name of target repo&#34;</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">FILES=&#34;README.md foo.txt bar.txt&#34;</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">GH_REPO=&#34;github.com/${USER}/${REPO}.git&#34;</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">secure</span>: <span style="color:#e6db74">&#34;put travis gem output here =&gt; http://docs.travis-ci.com/user/encryption-keys/&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">script</span>:
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">ruby test.rb</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">after_success</span>:
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git clone git://${GH_REPO}</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">mv -f ${FILES} ${REPO}</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">cd ${REPO}</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git remote</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git config user.email ${EMAIL}</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git config user.name ${USER}</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git add ${FILES}</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git commit -m &#34;${MESSAGE}&#34;</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git push &#34;https://${GH_TOKEN}@${GH_REPO}&#34; master &gt; /dev/null 2&gt;&amp;1</span>
-</span></span></code></pre></div><p>Note here that MESSAGE should be quoted when committing, which the original gist did not include.</p>
-<p>Original README:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># Travis-CI tested push
-</span></span><span style="display:flex;"><span>Sometimes we have a private repository to hold both problems and solutions as a reference for the class projects.
-</span></span><span style="display:flex;"><span>The students can see only the problems in a public repository where they are able to clone/fork and develop their own solutions.
-</span></span><span style="display:flex;"><span>We do not want the solution files in the public repository and each bug found/feature added in the project requires a push for each repository.
-</span></span><span style="display:flex;"><span>It would be cool to work only with the reference repo and use tests to see if our modification is good enough for the public release.
-</span></span><span style="display:flex;"><span>This is possible with Travis-CI following simple steps:
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Create private and public repos
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Download Ruby
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Install the travis gem ``gem install travis``
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Generate a token in the Github website to allow others to play with your repos (copy the hash)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Log into your git account
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Generate a secure token with the Travis gem (copy long hash)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Fill the environment variables in the ```.travis.yml``` file (USER, EMAIL, REPO, FILES)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Replace the value of <span style="font-weight:bold">**secure**</span> with your long hash
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Replace <span style="font-weight:bold">**GH_TOKEN**</span> with your Travis token name
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Push ```.travis.yml``` to private repo
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Go to Travis to unlock your private repo tests
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Push your files to the private repo to test
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Travis now has a [<span style="color:#f92672">deployment</span>](<span style="color:#a6e22e">https://docs.travis-ci.com/user/deployment/</span>) feature, which may be better for certain scenarios.
-</span></span></code></pre></div><p>A simple translation:</p>
-<ol>
-<li>Create a GitHub project. The original seems to have created two projects, one for updating another.</li>
-<li>Install Ruby. Usually, gem is installed alongside.</li>
-<li>Install travis via <code>gem install travis</code>.</li>
-<li>Apply for a token for your GitHub account. You can Google the details. When selecting token permissions, only tick all related to repo; others can be omitted.</li>
-<li>Copy the generated token.</li>
-<li>In the root directory of the local machine&rsquo;s repo (not sure if it must be the root) run <code>travis encrypt GH_TOKEN=&quot;copied token&quot;</code>. This creates an encrypted token to use as <code>${GH_TOKEN}</code>, essentially an environment variable. The command output, a string on the screen, needs to be pasted into the travis config file after secure:. Use <code>travis encrypt GH_TOKEN=&quot;copied token&quot; --add</code> to write directly into the config file.</li>
-<li>Commit the modified configuration file.</li>
-</ol>
-<p>This translation is not strictly literal. <strong>The above content is more suited to the following personal configuration:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">language</span>: <span style="color:#ae81ff">ruby</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">branches</span>:
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">only</span>:
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">master</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">rvm</span>:
-</span></span><span style="display:flex;"><span>- <span style="color:#ae81ff">2.4.1</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">exclude</span>:
-</span></span><span style="display:flex;"><span>- <span style="color:#ae81ff">vendor</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">sudo</span>: <span style="color:#66d9ef">false</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">env</span>:
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">global</span>:
-</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">secure</span>: <span style="color:#ae81ff">rxKkyttLE1L4VsVIhhDUYGoLlER33ijKbdAAJPE8vNDSHwyANYnsP1GXK/rcwQqsL/KcJa55wEjVwEBzTMCqZM4UYNVIWqrJepVYo4rL1WhO+jT5sCqVR3qxK9KbgodcSXbmySJnJs0iLGMIQ2bo8yE91OxIC/GKkLCIwr9x4EGwFd5EcE5bOqmVqoSRk1q/1/5yA0aVF+Pohc5ATCZGw9+IyprU2Dx7qbA7F/T/4FQTOQZ4CLZAgyh/Gp1P+uxf1OK4IMCc/P6jVeTmbzQIbUcX0uG09pR7F0GnlV1ZOutMjY7SF8tQ7LNv2Wf8iWdiqehcwKNe/4TFHjs6rm3lEc6F1ELB5s4Z+QXjIM70haENSwM1FI8K5biL7tndAC1TujKESm0XadxORy5yOz7TfQZDTuMXvmmH3j+NFL3vTYPyMwwFca+IQBwD67a4PKD0PWBgEFD9Kn3rAlAzhV5OYdUuxZhx5zuQjKX5szUbL166fgoRnUwDp8dsOjLgOUqQa47IRqR3CTPzbf3zZIxGuX5x6mWySezCNprnXKCpyCegJBLoxQusA+EEYkvl4AOzhnmkhxFbEbHp+DYBjcSEEgpd06l67l3KzjMkpF02vr9CHNj8r7lAtZxwBVxYmczk289D5csOVR1SZKxQLwhx7k+CuEcYds685tLjIMmB0ZU=</span>
-</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">USER=&#34;jackysp&#34;</span>
-</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">FULLNAME=&#34;Jack Yu&#34;</span>
-</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">EMAIL=&#34;jackysp@gmail.com&#34;</span>
-</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">REPO=&#34;jackysp.github.io&#34;</span>
-</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">GH_REPO=&#34;github.com/${USER}/${REPO}.git&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">before_script</span>:
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git clone https://${GH_TOKEN}@${GH_REPO}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">script</span>: <span style="color:#ae81ff">bundle exec jekyll b -d ${REPO}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">after_success</span>:
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">cd ${REPO}</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git config user.email ${EMAIL}</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git config user.name ${FULLNAME}</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git add --all</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git commit -m &#34;${MESSAGE}&#34;</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git push --force origin master</span>
-</span></span></code></pre></div><p>This configuration is used for automatically updating a blog created with Jekyll. There are two projects, one for source files and another for compiled HTML files. The purpose of this setup is to allow updating the blog without having to set up a Jekyll environment, even allowing updates directly from the GitHub website.</p>
-
-</div>
-
-<h2>Comments</h2>
-<div id="disqus_thread"></div>
-<script>
-    window.disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "jackysp" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-    </main>
-
-    
-      
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-G0H8JF722Y"></script>
-      <script>
-        var doNotTrack = false;
-        if ( false ) {
-          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
-          var doNotTrack = (dnt == "1" || dnt == "yes");
-        }
-        if (!doNotTrack) {
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-G0H8JF722Y');
-        }
-      </script>
-    
-  </body>
-</html>
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>How to Execute Git Push in Travis CI | Mini Fish</title><meta name=keywords content><meta name=description content='Background
+Travis CI is generally used for automating tests without needing to update the repository with the test outputs. This article explains how to automatically commit the results from Travis CI.
+Process
+The basic process references this gist.
+Below is the .travis.yml from the gist.
+language: ruby
+rvm:
+  - 2.0.0
+env:
+  global:
+  - USER="username"
+  - EMAIL="username@mail.com"
+  - REPO="name of target repo"
+  - FILES="README.md foo.txt bar.txt"
+  - GH_REPO="github.com/${USER}/${REPO}.git"
+  - secure: "put travis gem output here => http://docs.travis-ci.com/user/encryption-keys/"
+script:
+  - ruby test.rb
+after_success:
+  - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
+  - git clone git://${GH_REPO}
+  - mv -f ${FILES} ${REPO}
+  - cd ${REPO}
+  - git remote
+  - git config user.email ${EMAIL}
+  - git config user.name ${USER}
+  - git add ${FILES}
+  - git commit -m "${MESSAGE}"
+  - git push "https://${GH_TOKEN}@${GH_REPO}" master > /dev/null 2>&amp;1
+Note here that MESSAGE should be quoted when committing, which the original gist did not include.'><meta name=author content="Jack Yu"><link rel=canonical href=https://blog.minifish.org/posts/travis-git-push/><link crossorigin=anonymous href=/assets/css/stylesheet.d6fcd20a4fb86efa4dfac8ec95da60244cc8871042183da1ef28e3a762ad79c8.css integrity="sha256-1vzSCk+4bvpN+sjsldpgJEzIhxBCGD2h7yjjp2Ktecg=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.minifish.org/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.minifish.org/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.minifish.org/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.minifish.org/apple-touch-icon.png><link rel=mask-icon href=https://blog.minifish.org/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://blog.minifish.org/posts/travis-git-push/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script async src="https://www.googletagmanager.com/gtag/js?id=G-G0H8JF722Y"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-G0H8JF722Y")}</script><meta property="og:url" content="https://blog.minifish.org/posts/travis-git-push/"><meta property="og:site_name" content="Mini Fish"><meta property="og:title" content="How to Execute Git Push in Travis CI"><meta property="og:description" content='Background Travis CI is generally used for automating tests without needing to update the repository with the test outputs. This article explains how to automatically commit the results from Travis CI.
+Process The basic process references this gist.
+Below is the .travis.yml from the gist.
+language: ruby rvm: - 2.0.0 env: global: - USER="username" - EMAIL="username@mail.com" - REPO="name of target repo" - FILES="README.md foo.txt bar.txt" - GH_REPO="github.com/${USER}/${REPO}.git" - secure: "put travis gem output here => http://docs.travis-ci.com/user/encryption-keys/" script: - ruby test.rb after_success: - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT) - git clone git://${GH_REPO} - mv -f ${FILES} ${REPO} - cd ${REPO} - git remote - git config user.email ${EMAIL} - git config user.name ${USER} - git add ${FILES} - git commit -m "${MESSAGE}" - git push "https://${GH_TOKEN}@${GH_REPO}" master > /dev/null 2>&amp;1 Note here that MESSAGE should be quoted when committing, which the original gist did not include.'><meta property="og:locale" content="en-US"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-10-16T22:21:06+08:00"><meta property="article:modified_time" content="2017-10-16T22:21:06+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="How to Execute Git Push in Travis CI"><meta name=twitter:description content='Background
+Travis CI is generally used for automating tests without needing to update the repository with the test outputs. This article explains how to automatically commit the results from Travis CI.
+Process
+The basic process references this gist.
+Below is the .travis.yml from the gist.
+language: ruby
+rvm:
+  - 2.0.0
+env:
+  global:
+  - USER="username"
+  - EMAIL="username@mail.com"
+  - REPO="name of target repo"
+  - FILES="README.md foo.txt bar.txt"
+  - GH_REPO="github.com/${USER}/${REPO}.git"
+  - secure: "put travis gem output here => http://docs.travis-ci.com/user/encryption-keys/"
+script:
+  - ruby test.rb
+after_success:
+  - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)
+  - git clone git://${GH_REPO}
+  - mv -f ${FILES} ${REPO}
+  - cd ${REPO}
+  - git remote
+  - git config user.email ${EMAIL}
+  - git config user.name ${USER}
+  - git add ${FILES}
+  - git commit -m "${MESSAGE}"
+  - git push "https://${GH_TOKEN}@${GH_REPO}" master > /dev/null 2>&amp;1
+Note here that MESSAGE should be quoted when committing, which the original gist did not include.'><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://blog.minifish.org/posts/"},{"@type":"ListItem","position":2,"name":"How to Execute Git Push in Travis CI","item":"https://blog.minifish.org/posts/travis-git-push/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"How to Execute Git Push in Travis CI","name":"How to Execute Git Push in Travis CI","description":"Background Travis CI is generally used for automating tests without needing to update the repository with the test outputs. This article explains how to automatically commit the results from Travis CI.\nProcess The basic process references this gist.\nBelow is the .travis.yml from the gist.\nlanguage: ruby rvm: - 2.0.0 env: global: - USER=\u0026#34;username\u0026#34; - EMAIL=\u0026#34;username@mail.com\u0026#34; - REPO=\u0026#34;name of target repo\u0026#34; - FILES=\u0026#34;README.md foo.txt bar.txt\u0026#34; - GH_REPO=\u0026#34;github.com/${USER}/${REPO}.git\u0026#34; - secure: \u0026#34;put travis gem output here =\u0026gt; http://docs.travis-ci.com/user/encryption-keys/\u0026#34; script: - ruby test.rb after_success: - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT) - git clone git://${GH_REPO} - mv -f ${FILES} ${REPO} - cd ${REPO} - git remote - git config user.email ${EMAIL} - git config user.name ${USER} - git add ${FILES} - git commit -m \u0026#34;${MESSAGE}\u0026#34; - git push \u0026#34;https://${GH_TOKEN}@${GH_REPO}\u0026#34; master \u0026gt; /dev/null 2\u0026gt;\u0026amp;1 Note here that MESSAGE should be quoted when committing, which the original gist did not include.\n","keywords":[],"articleBody":"Background Travis CI is generally used for automating tests without needing to update the repository with the test outputs. This article explains how to automatically commit the results from Travis CI.\nProcess The basic process references this gist.\nBelow is the .travis.yml from the gist.\nlanguage: ruby rvm: - 2.0.0 env: global: - USER=\"username\" - EMAIL=\"username@mail.com\" - REPO=\"name of target repo\" - FILES=\"README.md foo.txt bar.txt\" - GH_REPO=\"github.com/${USER}/${REPO}.git\" - secure: \"put travis gem output here =\u003e http://docs.travis-ci.com/user/encryption-keys/\" script: - ruby test.rb after_success: - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT) - git clone git://${GH_REPO} - mv -f ${FILES} ${REPO} - cd ${REPO} - git remote - git config user.email ${EMAIL} - git config user.name ${USER} - git add ${FILES} - git commit -m \"${MESSAGE}\" - git push \"https://${GH_TOKEN}@${GH_REPO}\" master \u003e /dev/null 2\u003e\u00261 Note here that MESSAGE should be quoted when committing, which the original gist did not include.\nOriginal README:\n# Travis-CI tested push Sometimes we have a private repository to hold both problems and solutions as a reference for the class projects. The students can see only the problems in a public repository where they are able to clone/fork and develop their own solutions. We do not want the solution files in the public repository and each bug found/feature added in the project requires a push for each repository. It would be cool to work only with the reference repo and use tests to see if our modification is good enough for the public release. This is possible with Travis-CI following simple steps: - Create private and public repos - Download Ruby - Install the travis gem ``gem install travis`` - Generate a token in the Github website to allow others to play with your repos (copy the hash) - Log into your git account - Generate a secure token with the Travis gem (copy long hash) - Fill the environment variables in the ```.travis.yml``` file (USER, EMAIL, REPO, FILES) - Replace the value of **secure** with your long hash - Replace **GH_TOKEN** with your Travis token name - Push ```.travis.yml``` to private repo - Go to Travis to unlock your private repo tests - Push your files to the private repo to test Travis now has a [deployment](https://docs.travis-ci.com/user/deployment/) feature, which may be better for certain scenarios. A simple translation:\nCreate a GitHub project. The original seems to have created two projects, one for updating another. Install Ruby. Usually, gem is installed alongside. Install travis via gem install travis. Apply for a token for your GitHub account. You can Google the details. When selecting token permissions, only tick all related to repo; others can be omitted. Copy the generated token. In the root directory of the local machine’s repo (not sure if it must be the root) run travis encrypt GH_TOKEN=\"copied token\". This creates an encrypted token to use as ${GH_TOKEN}, essentially an environment variable. The command output, a string on the screen, needs to be pasted into the travis config file after secure:. Use travis encrypt GH_TOKEN=\"copied token\" --add to write directly into the config file. Commit the modified configuration file. This translation is not strictly literal. The above content is more suited to the following personal configuration:\nlanguage: ruby branches: only: - master rvm: - 2.4.1 exclude: - vendor sudo: false env: global: - secure: rxKkyttLE1L4VsVIhhDUYGoLlER33ijKbdAAJPE8vNDSHwyANYnsP1GXK/rcwQqsL/KcJa55wEjVwEBzTMCqZM4UYNVIWqrJepVYo4rL1WhO+jT5sCqVR3qxK9KbgodcSXbmySJnJs0iLGMIQ2bo8yE91OxIC/GKkLCIwr9x4EGwFd5EcE5bOqmVqoSRk1q/1/5yA0aVF+Pohc5ATCZGw9+IyprU2Dx7qbA7F/T/4FQTOQZ4CLZAgyh/Gp1P+uxf1OK4IMCc/P6jVeTmbzQIbUcX0uG09pR7F0GnlV1ZOutMjY7SF8tQ7LNv2Wf8iWdiqehcwKNe/4TFHjs6rm3lEc6F1ELB5s4Z+QXjIM70haENSwM1FI8K5biL7tndAC1TujKESm0XadxORy5yOz7TfQZDTuMXvmmH3j+NFL3vTYPyMwwFca+IQBwD67a4PKD0PWBgEFD9Kn3rAlAzhV5OYdUuxZhx5zuQjKX5szUbL166fgoRnUwDp8dsOjLgOUqQa47IRqR3CTPzbf3zZIxGuX5x6mWySezCNprnXKCpyCegJBLoxQusA+EEYkvl4AOzhnmkhxFbEbHp+DYBjcSEEgpd06l67l3KzjMkpF02vr9CHNj8r7lAtZxwBVxYmczk289D5csOVR1SZKxQLwhx7k+CuEcYds685tLjIMmB0ZU= - USER=\"jackysp\" - FULLNAME=\"Jack Yu\" - EMAIL=\"jackysp@gmail.com\" - REPO=\"jackysp.github.io\" - GH_REPO=\"github.com/${USER}/${REPO}.git\" before_script: - git clone https://${GH_TOKEN}@${GH_REPO} script: bundle exec jekyll b -d ${REPO} after_success: - MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT) - cd ${REPO} - git config user.email ${EMAIL} - git config user.name ${FULLNAME} - git add --all - git commit -m \"${MESSAGE}\" - git push --force origin master This configuration is used for automatically updating a blog created with Jekyll. There are two projects, one for source files and another for compiled HTML files. The purpose of this setup is to allow updating the blog without having to set up a Jekyll environment, even allowing updates directly from the GitHub website.\n","wordCount":"659","inLanguage":"en","datePublished":"2017-10-16T22:21:06+08:00","dateModified":"2017-10-16T22:21:06+08:00","author":{"@type":"Person","name":"Jack Yu"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.minifish.org/posts/travis-git-push/"},"publisher":{"@type":"Organization","name":"Mini Fish","logo":{"@type":"ImageObject","url":"https://blog.minifish.org/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.minifish.org/ accesskey=h title="Mini Fish (Alt + H)">Mini Fish</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)">
+<svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.minifish.org/>Home</a>&nbsp;»&nbsp;<a href=https://blog.minifish.org/posts/>Posts</a></div><h1 class="post-title entry-hint-parent">How to Execute Git Push in Travis CI</h1><div class=post-meta><span title='2017-10-16 22:21:06 +0800 +0800'>October 16, 2017</span>&nbsp;·&nbsp;4 min&nbsp;·&nbsp;659 words&nbsp;·&nbsp;Jack Yu&nbsp;|&nbsp;<a href=https://github.com/jackysp/blog/tree/master/content/posts/travis-git-push.md rel="noopener noreferrer" target=_blank>Suggest Changes</a></div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#background>Background</a></li><li><a href=#process>Process</a></li></ul></nav></div></details></div><div class=post-content><h2 id=background>Background<a hidden class=anchor aria-hidden=true href=#background>#</a></h2><p>Travis CI is generally used for automating tests without needing to update the repository with the test outputs. This article explains how to automatically commit the results from Travis CI.</p><h2 id=process>Process<a hidden class=anchor aria-hidden=true href=#process>#</a></h2><p>The basic process references <a href=https://gist.github.com/Maumagnaguagno/84a9807ed71d233e5d3f>this gist</a>.</p><p>Below is the <code>.travis.yml</code> from the gist.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span><span style=color:#f92672>language</span>: <span style=color:#ae81ff>ruby</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>rvm</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>2.0.0</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>env</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>global</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>USER=&#34;username&#34;</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>EMAIL=&#34;username@mail.com&#34;</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>REPO=&#34;name of target repo&#34;</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>FILES=&#34;README.md foo.txt bar.txt&#34;</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>GH_REPO=&#34;github.com/${USER}/${REPO}.git&#34;</span>
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>secure</span>: <span style=color:#e6db74>&#34;put travis gem output here =&gt; http://docs.travis-ci.com/user/encryption-keys/&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>script</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>ruby test.rb</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>after_success</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>git clone git://${GH_REPO}</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>mv -f ${FILES} ${REPO}</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>cd ${REPO}</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>git remote</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>git config user.email ${EMAIL}</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>git config user.name ${USER}</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>git add ${FILES}</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>git commit -m &#34;${MESSAGE}&#34;</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>git push &#34;https://${GH_TOKEN}@${GH_REPO}&#34; master &gt; /dev/null 2&gt;&amp;1</span>
+</span></span></code></pre></div><p>Note here that MESSAGE should be quoted when committing, which the original gist did not include.</p><p>Original README:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-markdown data-lang=markdown><span style=display:flex><span># Travis-CI tested push
+</span></span><span style=display:flex><span>Sometimes we have a private repository to hold both problems and solutions as a reference for the class projects.
+</span></span><span style=display:flex><span>The students can see only the problems in a public repository where they are able to clone/fork and develop their own solutions.
+</span></span><span style=display:flex><span>We do not want the solution files in the public repository and each bug found/feature added in the project requires a push for each repository.
+</span></span><span style=display:flex><span>It would be cool to work only with the reference repo and use tests to see if our modification is good enough for the public release.
+</span></span><span style=display:flex><span>This is possible with Travis-CI following simple steps:
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Create private and public repos
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Download Ruby
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Install the travis gem ``gem install travis``
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Generate a token in the Github website to allow others to play with your repos (copy the hash)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Log into your git account
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Generate a secure token with the Travis gem (copy long hash)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Fill the environment variables in the ```.travis.yml``` file (USER, EMAIL, REPO, FILES)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Replace the value of <span style=font-weight:700>**secure**</span> with your long hash
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Replace <span style=font-weight:700>**GH_TOKEN**</span> with your Travis token name
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Push ```.travis.yml``` to private repo
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Go to Travis to unlock your private repo tests
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> Push your files to the private repo to test
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Travis now has a [<span style=color:#f92672>deployment</span>](<span style=color:#a6e22e>https://docs.travis-ci.com/user/deployment/</span>) feature, which may be better for certain scenarios.
+</span></span></code></pre></div><p>A simple translation:</p><ol><li>Create a GitHub project. The original seems to have created two projects, one for updating another.</li><li>Install Ruby. Usually, gem is installed alongside.</li><li>Install travis via <code>gem install travis</code>.</li><li>Apply for a token for your GitHub account. You can Google the details. When selecting token permissions, only tick all related to repo; others can be omitted.</li><li>Copy the generated token.</li><li>In the root directory of the local machine&rsquo;s repo (not sure if it must be the root) run <code>travis encrypt GH_TOKEN="copied token"</code>. This creates an encrypted token to use as <code>${GH_TOKEN}</code>, essentially an environment variable. The command output, a string on the screen, needs to be pasted into the travis config file after secure:. Use <code>travis encrypt GH_TOKEN="copied token" --add</code> to write directly into the config file.</li><li>Commit the modified configuration file.</li></ol><p>This translation is not strictly literal. <strong>The above content is more suited to the following personal configuration:</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span><span style=color:#f92672>language</span>: <span style=color:#ae81ff>ruby</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>branches</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>only</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>master</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>rvm</span>:
+</span></span><span style=display:flex><span>- <span style=color:#ae81ff>2.4.1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>exclude</span>:
+</span></span><span style=display:flex><span>- <span style=color:#ae81ff>vendor</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>sudo</span>: <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>env</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>global</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>secure</span>: <span style=color:#ae81ff>rxKkyttLE1L4VsVIhhDUYGoLlER33ijKbdAAJPE8vNDSHwyANYnsP1GXK/rcwQqsL/KcJa55wEjVwEBzTMCqZM4UYNVIWqrJepVYo4rL1WhO+jT5sCqVR3qxK9KbgodcSXbmySJnJs0iLGMIQ2bo8yE91OxIC/GKkLCIwr9x4EGwFd5EcE5bOqmVqoSRk1q/1/5yA0aVF+Pohc5ATCZGw9+IyprU2Dx7qbA7F/T/4FQTOQZ4CLZAgyh/Gp1P+uxf1OK4IMCc/P6jVeTmbzQIbUcX0uG09pR7F0GnlV1ZOutMjY7SF8tQ7LNv2Wf8iWdiqehcwKNe/4TFHjs6rm3lEc6F1ELB5s4Z+QXjIM70haENSwM1FI8K5biL7tndAC1TujKESm0XadxORy5yOz7TfQZDTuMXvmmH3j+NFL3vTYPyMwwFca+IQBwD67a4PKD0PWBgEFD9Kn3rAlAzhV5OYdUuxZhx5zuQjKX5szUbL166fgoRnUwDp8dsOjLgOUqQa47IRqR3CTPzbf3zZIxGuX5x6mWySezCNprnXKCpyCegJBLoxQusA+EEYkvl4AOzhnmkhxFbEbHp+DYBjcSEEgpd06l67l3KzjMkpF02vr9CHNj8r7lAtZxwBVxYmczk289D5csOVR1SZKxQLwhx7k+CuEcYds685tLjIMmB0ZU=</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>USER=&#34;jackysp&#34;</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>FULLNAME=&#34;Jack Yu&#34;</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>EMAIL=&#34;jackysp@gmail.com&#34;</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>REPO=&#34;jackysp.github.io&#34;</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>GH_REPO=&#34;github.com/${USER}/${REPO}.git&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>before_script</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>git clone https://${GH_TOKEN}@${GH_REPO}</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>script</span>: <span style=color:#ae81ff>bundle exec jekyll b -d ${REPO}</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>after_success</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>cd ${REPO}</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>git config user.email ${EMAIL}</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>git config user.name ${FULLNAME}</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>git add --all</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>git commit -m &#34;${MESSAGE}&#34;</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>git push --force origin master</span>
+</span></span></code></pre></div><p>This configuration is used for automatically updating a blog created with Jekyll. There are two projects, one for source files and another for compiled HTML files. The purpose of this setup is to allow updating the blog without having to set up a Jekyll environment, even allowing updates directly from the GitHub website.</p></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://blog.minifish.org/posts/cap/><span class=title>« Prev</span><br><span>Understanding the CAP Theorem</span>
+</a><a class=next href=https://blog.minifish.org/posts/mysqlx-protocol/><span class=title>Next »</span><br><span>How to Implement MySQL X Protocol on TiDB</span></a></nav><ul class=share-buttons><li><a target=_blank rel="noopener noreferrer" aria-label="share How to Execute Git Push in Travis CI on x" href="https://x.com/intent/tweet/?text=How%20to%20Execute%20Git%20Push%20in%20Travis%20CI&amp;url=https%3a%2f%2fblog.minifish.org%2fposts%2ftravis-git-push%2f&amp;hashtags="><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783h61.366L235.9 310.383l96.667 126.4H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share How to Execute Git Push in Travis CI on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fblog.minifish.org%2fposts%2ftravis-git-push%2f&amp;title=How%20to%20Execute%20Git%20Push%20in%20Travis%20CI&amp;summary=How%20to%20Execute%20Git%20Push%20in%20Travis%20CI&amp;source=https%3a%2f%2fblog.minifish.org%2fposts%2ftravis-git-push%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share How to Execute Git Push in Travis CI on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fblog.minifish.org%2fposts%2ftravis-git-push%2f&title=How%20to%20Execute%20Git%20Push%20in%20Travis%20CI"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share How to Execute Git Push in Travis CI on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.minifish.org%2fposts%2ftravis-git-push%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share How to Execute Git Push in Travis CI on whatsapp" href="https://api.whatsapp.com/send?text=How%20to%20Execute%20Git%20Push%20in%20Travis%20CI%20-%20https%3a%2f%2fblog.minifish.org%2fposts%2ftravis-git-push%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentcolor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share How to Execute Git Push in Travis CI on telegram" href="https://telegram.me/share/url?text=How%20to%20Execute%20Git%20Push%20in%20Travis%20CI&amp;url=https%3a%2f%2fblog.minifish.org%2fposts%2ftravis-git-push%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentcolor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share How to Execute Git Push in Travis CI on ycombinator" href="https://news.ycombinator.com/submitlink?t=How%20to%20Execute%20Git%20Push%20in%20Travis%20CI&u=https%3a%2f%2fblog.minifish.org%2fposts%2ftravis-git-push%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentcolor" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921h-62.034L230.6673 292.4508V424.0079h50.6655V292.4508L390.1575 87.9921H328.1233L256 238.2489z"/></svg></a></li></ul></footer></article></main><footer class=footer><span>&copy; 2024 <a href=https://blog.minifish.org/>Mini Fish</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
