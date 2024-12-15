@@ -6,6 +6,8 @@
     <description>Recent content in Tags on Mini Fish</description>
     <generator>Hugo -- 0.140.0-DEV</generator>
     <language>en-US</language>
+    <managingEditor>i@minifish.org (Jack Yu)</managingEditor>
+    <webMaster>i@minifish.org (Jack Yu)</webMaster>
     <copyright>Mini Fish 2014-present</copyright>
     <atom:link href="https://blog.minifish.org/tags/index.xml" rel="self" type="application/rss+xml" />
   </channel>
