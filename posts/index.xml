@@ -2884,90 +2884,119 @@ Note 2: After the old window exits, the forked process seems to become an orphan
       <link>https://blog.minifish.org/posts/insert-opt/</link>
       <pubDate>Wed, 11 Jul 2018 14:18:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/insert-opt/</guid>
-      <description>&lt;p&gt;In the previous article &lt;a href=&#34;https://zhuanlan.zhihu.com/p/34512827&#34;&gt;&amp;ldquo;Overview of the Insert Statement&amp;rdquo;&lt;/a&gt;, the general process of the INSERT statement was introduced. This article will explain in detail the implementation of several types of INSERT statements in TiDB.&lt;/p&gt;
-&lt;h2 id=&#34;types-of-insert-statements&#34;&gt;Types of INSERT Statements&lt;/h2&gt;
-&lt;p&gt;In TiDB, there are the following types of INSERT statements:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;INSERT&lt;/li&gt;
-&lt;li&gt;INSERT IGNORE&lt;/li&gt;
-&lt;li&gt;INSERT ON DUPLICATE KEY UPDATE&lt;/li&gt;
-&lt;li&gt;INSERT IGNORE ON DUPLICATE KEY UPDATE&lt;/li&gt;
-&lt;li&gt;REPLACE&lt;/li&gt;
-&lt;li&gt;LOAD DATA&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;These six statements theoretically fall under the category of INSERT statements.&lt;/p&gt;</description>
-      <content:encoded><![CDATA[<p>In the previous article <a href="https://zhuanlan.zhihu.com/p/34512827">&ldquo;Overview of the Insert Statement&rdquo;</a>, the general process of the INSERT statement was introduced. This article will explain in detail the implementation of several types of INSERT statements in TiDB.</p>
+      <description>&lt;p&gt;In a previous article &lt;a href=&#34;https://cn.pingcap.com/blog/tidb-source-code-reading-4&#34;&gt;“TiDB Source Code Reading Series (4) Overview of INSERT Statement”&lt;/a&gt;, we introduced the general process of the INSERT statement. Why write a separate article for INSERT? Because in TiDB, simply inserting a piece of data is the simplest and most common case. It becomes more complex when defining various behaviors within the INSERT statement, such as how to handle situations with Unique Key conflicts: Should we return an error? Ignore the current data insertion? Or overwrite existing data? Therefore, this article will continue to delve into the INSERT statement.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>In a previous article <a href="https://cn.pingcap.com/blog/tidb-source-code-reading-4">“TiDB Source Code Reading Series (4) Overview of INSERT Statement”</a>, we introduced the general process of the INSERT statement. Why write a separate article for INSERT? Because in TiDB, simply inserting a piece of data is the simplest and most common case. It becomes more complex when defining various behaviors within the INSERT statement, such as how to handle situations with Unique Key conflicts: Should we return an error? Ignore the current data insertion? Or overwrite existing data? Therefore, this article will continue to delve into the INSERT statement.</p>
+<p>This article will first introduce the classification of INSERT statements in TiDB, along with the syntax and semantics of each statement, and then describe the source code implementation of the five types of INSERT statements.</p>
 <h2 id="types-of-insert-statements">Types of INSERT Statements</h2>
-<p>In TiDB, there are the following types of INSERT statements:</p>
+<p>In broad terms, TiDB has the following six types of INSERT statements:</p>
 <ul>
-<li>INSERT</li>
-<li>INSERT IGNORE</li>
-<li>INSERT ON DUPLICATE KEY UPDATE</li>
-<li>INSERT IGNORE ON DUPLICATE KEY UPDATE</li>
-<li>REPLACE</li>
-<li>LOAD DATA</li>
+<li><code>Basic INSERT</code></li>
+<li><code>INSERT IGNORE</code></li>
+<li><code>INSERT ON DUPLICATE KEY UPDATE</code></li>
+<li><code>INSERT IGNORE ON DUPLICATE KEY UPDATE</code></li>
+<li><code>REPLACE</code></li>
+<li><code>LOAD DATA</code></li>
 </ul>
-<p>These six statements theoretically fall under the category of INSERT statements.</p>
-<p>The first type is the most common INSERT statement, which needs no further explanation.</p>
-<p>The second type, INSERT IGNORE, skips the current row when encountering a unique constraint conflict (primary key conflict, unique index conflict) and logs a warning. After the execution of the statement, you can see which rows were not inserted through <code>SHOW WARNINGS</code>.</p>
-<p>The third type, INSERT ON DUPLICATE KEY UPDATE, updates the conflicting row and then inserts the data. If the updated row conflicts with another row in the table, an error is returned.</p>
-<p>The fourth type, INSERT IGNORE ON DUPLICATE KEY UPDATE, does not insert the row and displays a warning when the updated row conflicts with another row after the initial conflict.</p>
-<p>The fifth type, REPLACE, deletes the conflicting row from the table and continues trying to insert data. If another conflict occurs, it continues deleting the conflicting data until there is no more conflicting data in the table, then inserts the data.</p>
-<p>The last type, LOAD DATA, follows the same rule as INSERT IGNORE—it ignores conflicts. However, LOAD DATA&rsquo;s purpose is to import data from a file into a table, meaning the data comes from a CSV data file.</p>
-<p>This article mainly focuses on the source code implementation of the first and second types (INSERT, INSERT IGNORE), while the third and fifth types (INSERT ON DUPLICATE KEY UPDATE, REPLACE) will be introduced later. INSERT IGNORE ON DUPLICATE KEY UPDATE involves some special handling on top of INSERT ON DUPLICATE KEY UPDATE, and LOAD DATA is a special implementation of INSERT IGNORE, so they will not be detailed here.</p>
-<h2 id="insert-statement">INSERT Statement</h2>
-<p>The major difference between these various INSERT statements lies in the execution layer. We will continue with the explanation from <a href="https://zhuanlan.zhihu.com/p/34512827">&ldquo;Overview of the Insert Statement&rdquo;</a>. If you don’t remember the previous content, feel free to refer back to the original article.</p>
-<p>The execution logic of INSERT is located in executor/insert.go. In fact, the execution logic of the first four INSERT types is all in this file. Let’s first discuss the most basic INSERT.</p>
-<p>InsertExec is the executor implementation for INSERT, which implements the Executor interface. It performs some initialization in the Open method, executes in the Next method, and does some cleanup in the Close method.</p>
-<p>In the Next method, based on whether the data is acquired through a SELECT statement (INSERT INTO &hellip; SELECT FROM), the Next process is divided into insertRows and insertRowsFromSelect. Both processes eventually enter the exec function to execute the INSERT.</p>
-<p>Within the exec function, the first four types of INSERT statements are handled, with the regular INSERT directly entering the insertOneRow.</p>
-<p>Before discussing insertOneRow, let&rsquo;s look at a piece of SQL.</p>
+<p>In theory, all six statements belong to the category of INSERT statements.</p>
+<p>The first one, <code>Basic INSERT</code>, is the most common INSERT statement, using the syntax <code>INSERT INTO VALUES ()</code>. It implies inserting a record, and if a unique constraint conflict occurs (such as primary key conflict, unique index conflict), it returns an execution failure.</p>
+<p>The second, with the syntax <code>INSERT IGNORE INTO VALUES ()</code>, ignores the current INSERT row if a unique constraint conflict occurs and logs a warning. After the statement execution finishes, you can use <code>SHOW WARNINGS</code> to see which rows were not inserted.</p>
+<p>The third one, with the syntax <code>INSERT INTO VALUES () ON DUPLICATE KEY UPDATE</code>, updates the conflicting row, then inserts data if there is a conflict. If the updated row conflicts with another row in the table, it returns an error.</p>
+<p>The fourth one, similar to the previous case, if the updated row conflicts with another row, this does not insert the row and shows a warning.</p>
+<p>The fifth one, with the syntax <code>REPLACE INTO VALUES ()</code>, deletes the conflicting row in the table after a conflict and continues to attempt data insertion. If another conflict occurs again, it continues to delete conflicting data on the table until there is no conflicting data left in the table, then inserts the data.</p>
+<p>The last one, using the syntax <code>LOAD DATA INFILE INTO</code>, has semantics similar to <code>INSERT IGNORE</code>, both ignoring conflicts. The difference is that <code>LOAD DATA</code> imports data files into a table, meaning its data source is a CSV data file.</p>
+<p>Since <code>INSERT IGNORE ON DUPLICATE KEY UPDATE</code> involves special processing on <code>INSERT ON DUPLICATE KEY UPDATE</code>, it won&rsquo;t be explained in detail separately but will be covered in the same section. Due to the unique nature of <code>LOAD DATA</code>, it will be discussed in other chapters.</p>
+<h2 id="basic-insert-statement">Basic INSERT Statement</h2>
+<p>The major differences among the several INSERT statements lie in the execution level. Continuing from the <a href="https://cn.pingcap.com/blog/tidb-source-code-reading-4">“TiDB Source Code Reading Series (4) Overview of INSERT Statement”</a>, here is the statement execution process. Those who do not remember the previous content can refer back to the original article.</p>
+<p>INSERT&rsquo;s execution logic is located in <a href="https://github.com/pingcap/tidb/blob/ab332eba2a04bc0a996aa72e36190c779768d0f1/executor/insert.go">executor/insert.go</a>. In fact, the execution logic for all four types of INSERT statements covered previously is in this file. Here, we first discuss the most basic <code>Basic INSERT</code>.</p>
+<p><code>InsertExec</code> is an implementation of the INSERT executor, conforming to the Executor interface. The most important methods are the following three interfaces:</p>
+<ul>
+<li>Open: Performs some initialization</li>
+<li>Next: Executes the write operation</li>
+<li>Close: Performs some cleanup tasks</li>
+</ul>
+<p>Among them, the most important and complex is the Next method. Depending on whether a SELECT statement is used to retrieve data (<code>INSERT SELECT FROM</code>), the Next process is divided into two branches: <a href="https://github.com/pingcap/tidb/blob/ab332eba2a04bc0a996aa72e36190c779768d0f1/executor/insert_common.go#L180:24">insertRows</a> and <a href="https://github.com/pingcap/tidb/blob/ab332eba2a04bc0a996aa72e36190c779768d0f1/executor/insert_common.go#L277:24">insertRowsFromSelect</a>. Both processes eventually lead to the <code>exec</code> function to execute the INSERT.</p>
+<p>In the <code>exec</code> function, the first four types of INSERT statements are processed together. The standard INSERT covered in this section directly enters <a href="https://github.com/pingcap/tidb/blob/5bdf34b9bba3fc4d3e50a773fa8e14d5fca166d5/executor/insert.go#L42:22">insertOneRow</a>.</p>
+<p>Before discussing <a href="https://github.com/pingcap/tidb/blob/5bdf34b9bba3fc4d3e50a773fa8e14d5fca166d5/executor/insert.go#L42:22">insertOneRow</a>, let&rsquo;s look at a segment of SQL.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT <span style="color:#66d9ef">UNIQUE</span>);
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">1</span>);
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">BEGIN</span>;
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">1</span>);
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">COMMIT</span>;
-</span></span></code></pre></div><p>Execute this SQL line by line in both TiDB and MySQL to see the results.</p>
+</span></span></code></pre></div><p>Paste these lines of SQL sequentially into MySQL and TiDB to see the results.</p>
 <p>MySQL:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>mysql&gt; CREATE TABLE t (i INT UNIQUE);
-</span></span><span style="display:flex;"><span>Query OK, 0 rows affected (0.15 sec)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>mysql&gt; INSERT INTO t VALUES (1);
-</span></span><span style="display:flex;"><span>Query OK, 1 row affected (0.01 sec)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>mysql&gt; BEGIN;
-</span></span><span style="display:flex;"><span>Query OK, 0 rows affected (0.00 sec)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>mysql&gt; INSERT INTO t VALUES (1);
-</span></span><span style="display:flex;"><span>ERROR 1062 (23000): Duplicate entry &#39;1&#39; for key &#39;i&#39;
-</span></span><span style="display:flex;"><span>mysql&gt; COMMIT;
-</span></span><span style="display:flex;"><span>Query OK, 0 rows affected (0.11 sec)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT <span style="color:#66d9ef">UNIQUE</span>);
+</span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">rows</span> affected (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">15</span> sec)
+</span></span><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> affected (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">01</span> sec)
+</span></span><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">BEGIN</span>;
+</span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">rows</span> affected (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">00</span> sec)
+</span></span><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>ERROR <span style="color:#ae81ff">1062</span> (<span style="color:#ae81ff">23000</span>): Duplicate entry <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">key</span> <span style="color:#e6db74">&#39;i&#39;</span>
+</span></span><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">COMMIT</span>;
+</span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">rows</span> affected (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">11</span> sec)
 </span></span></code></pre></div><p>TiDB:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>mysql&gt; CREATE TABLE t (i INT UNIQUE);
-</span></span><span style="display:flex;"><span>Query OK, 0 rows affected (1.04 sec)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>mysql&gt; INSERT INTO t VALUES (1);
-</span></span><span style="display:flex;"><span>Query OK, 1 row affected (0.12 sec)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>mysql&gt; BEGIN;
-</span></span><span style="display:flex;"><span>Query OK, 0 rows affected (0.01 sec)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>mysql&gt; INSERT INTO t VALUES (1);
-</span></span><span style="display:flex;"><span>Query OK, 1 row affected (0.00 sec)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>mysql&gt; COMMIT;
-</span></span><span style="display:flex;"><span>ERROR 1062 (23000): Duplicate entry &#39;1&#39; for key &#39;i&#39;
-</span></span></code></pre></div><p>As can be seen, for the INSERT statement, TiDB performs conflict detection at the time of transaction commitment, while MySQL performs the detection when the statement is executed. This is because in insertOneRow, the PresumeKeyNotExists option is set, meaning all INSERTs initially assume that no conflicts will occur, and conflict detection is deferred to the commitment phase to perform a bulk check on all rows inserted in the transaction.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT <span style="color:#66d9ef">UNIQUE</span>);
+</span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">rows</span> affected (<span style="color:#ae81ff">1</span>.<span style="color:#ae81ff">04</span> sec)
+</span></span><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> affected (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">12</span> sec)
+</span></span><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">BEGIN</span>;
+</span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">rows</span> affected (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">01</span> sec)
+</span></span><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> affected (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">00</span> sec)
+</span></span><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">COMMIT</span>;
+</span></span><span style="display:flex;"><span>ERROR <span style="color:#ae81ff">1062</span> (<span style="color:#ae81ff">23000</span>): Duplicate entry <span style="color:#e6db74">&#39;1&#39;</span> <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">key</span> <span style="color:#e6db74">&#39;i&#39;</span>
+</span></span></code></pre></div><p>As you can see, for INSERT statements, TiDB performs conflict detection at the time of transaction commit, whereas MySQL does it when the statement is executed. The reason for this is that TiDB is designed with a layered structure with TiKV; to ensure efficient execution, only read operations within a transaction must retrieve data from the storage engine, while all write operations are initially placed within the transaction&rsquo;s own <a href="https://github.com/pingcap/tidb/blob/ab332eba2a04bc0a996aa72e36190c779768d0f1/kv/memdb_buffer.go#L31">memDbBuffer</a> in a single TiDB instance. The data is then written to TiKV as a batch during transaction commit. In the implementation, the <a href="https://github.com/pingcap/tidb/blob/e28a81813cfd290296df32056d437ccd17f321fe/kv/kv.go#L23">PresumeKeyNotExists</a> option is set within <a href="https://github.com/pingcap/tidb/blob/5bdf34b9bba3fc4d3e50a773fa8e14d5fca166d5/executor/insert.go#L42:22">insertOneRow</a>, assuming that insertions will not encounter conflicts if no conflicts are detected locally, without needing to check for conflicting data in TiKV. These data are marked as pending verification, and the <code>BatchGet</code> interface is used during the commit process to batch check the whole transaction&rsquo;s pending data.</p>
+<p>After all the data goes through <a href="https://github.com/pingcap/tidb/blob/5bdf34b9bba3fc4d3e50a773fa8e14d5fca166d5/executor/insert.go#L42:22">insertOneRow</a> and completes the insertion, the INSERT statement essentially concludes. The remaining tasks involve setting the lastInsertID and other return information, and then returning the results to the client.</p>
 <h2 id="insert-ignore-statement">INSERT IGNORE Statement</h2>
-<p>The semantics of INSERT IGNORE have been introduced earlier. Since usual INSERTs are checked for conflicts at commitment, can INSERT IGNORE follow this approach as well? The answer is no, due to the following reasons:</p>
+<p>The semantics of <code>INSERT IGNORE</code> were introduced earlier. It was mentioned how a standard INSERT checks at the time of commit, but can <code>INSERT IGNORE</code> do the same? The answer is no, because:</p>
 <ol>
-<li>If INSERT IGNORE checks for conflicts at commitment, the transaction module would need to know which rows to ignore and which rows to error and rollback, greatly increasing module coupling.</li>
-<li>Users expect to immediately see which rows were not inserted under INSERT IGNORE. That is, they want to immediately use <code>SHOW WARNINGS</code> to know which rows were not actually written.</li>
+<li>If <code>INSERT IGNORE</code> is checked at the commit, the transaction module will need to know which rows should be ignored and which should immediately raise errors and roll back, undoubtedly increasing module coupling.</li>
+<li>Users want to immediately know which rows were not inserted through <code>INSERT IGNORE</code>. In other words, they would like to see which rows were not actually inserted immediately through <code>SHOW WARNINGS</code>.</li>
 </ol>
-<p>This requires immediate conflict detection when executing INSERT IGNORE. An obvious approach would be to try reading out the data before insertion, log a warning upon discovering a conflict, and then proceed to the next row. However, for situations where multiple rows are inserted in one statement, it would repeatedly read data from TiKV for detection. Therefore, TiDB implements batchChecker, with code located in executor/batch_checker.go.</p>
-<p>In batchChecker:</p>
-<p>First, the unique constraints that could potentially conflict with the data to be inserted are constructed into keys via getKeysNeedCheck (TiDB uses unique keys to enforce uniqueness constraints, detailed in <a href="https://zhuanlan.zhihu.com/p/27108657">&ldquo;Three Articles to Understand the Technical Inside Story of TiDB - Computation&rdquo;</a>), and the constructed keys are read together via BatchGetValues, fetching only the conflicting data.</p>
-<p>Then, the keys of the data to be inserted are checked against the results from BatchGetValues. Rows found to be in conflict will have a warning constructed, before moving on to the next row. Rows without conflict can be safely INSERTed. This process is implemented in batchCheckAndInsert.</p>
+<p>This requires checking data conflicts promptly when executing <code>INSERT IGNORE</code>. One obvious approach is to try reading the data intended for insertion, logging a warning when finding a conflict, and proceeding to the next row. However, if the statement inserts multiple rows, it would require repetitive reads from TiKV for conflict detection, which would be inefficient. Therefore, TiDB implements a <a href="https://github.com/pingcap/tidb/blob/3c0bfc19b252c129f918ab645c5e7d34d0c3d154/executor/batch_checker.go#L43:6">batchChecker</a>, with the code located in <a href="https://github.com/pingcap/tidb/blob/ab332eba2a04bc0a996aa72e36190c779768d0f1/executor/batch_checker.go">executor/batch_checker.go</a>.</p>
+<p>In the <a href="https://github.com/pingcap/tidb/blob/3c0bfc19b252c129f918ab645c5e7d34d0c3d154/executor/batch_checker.go#L43:6">batchChecker</a>, first, prepare the data for insertion, constructing possible conflicting unique constraints into a key within <a href="https://github.com/pingcap/tidb/blob/3c0bfc19b252c129f918ab645c5e7d34d0c3d154/executor/batch_checker.go#L85:24">getKeysNeedCheck</a>. TiDB implements unique constraints by constructing unique keys, as detailed in <a href="https://cn.pingcap.com/blog/tidb-internal-2/">“Three Articles to Understand TiDB&rsquo;s Technical Inside Story – On Computation”</a>.</p>
+<p>Then, pass the constructed keys through <a href="https://github.com/pingcap/tidb/blob/c84a71d666b8732593e7a1f0ec3d9b730e50d7bf/kv/txn.go#L97:6">BatchGetValues</a> to read them all at once, resulting in a key-value map where those read are the conflicting data.</p>
+<p>Finally, check the keys of the data intended for insertion against the results from <a href="https://github.com/pingcap/tidb/blob/c84a71d666b8732593e7a1f0ec3d9b730e50d7bf/kv/txn.go#L97:6">BatchGetValues</a>. If a conflicting row is found, prepare a warning message and proceed to the next row. If a conflicting row isn’t found, a safe INSERT can proceed. The implementation of this portion is found in <a href="https://github.com/pingcap/tidb/blob/ab332eba2a04bc0a996aa72e36190c779768d0f1/executor/insert_common.go#L490:24">batchCheckAndInsert</a>.</p>
+<p>Similarly, after executing the insertion for all data, return information is set, and the execution results are returned to the client.</p>
+<h2 id="insert-on-duplicate-key-update-statement">INSERT ON DUPLICATE KEY UPDATE Statement</h2>
+<p><code>INSERT ON DUPLICATE KEY UPDATE</code> is the most complex among the INSERT statements. Its semantic essence includes both an INSERT and an UPDATE. The complexity arises since during an UPDATE, a row can be updated to any valid version.</p>
+<p>In the previous section, it was discussed how TiDB uses batching to implement conflict checking for special INSERT statements. The same method is used for <code>INSERT ON DUPLICATE KEY UPDATE</code>, but the implementation process is somewhat more complex due to the semantic complexity.</p>
+<p>Initially, similar to <code>INSERT IGNORE</code>, the keys constructed from the data to be inserted are read out at once using <a href="https://github.com/pingcap/tidb/blob/c84a71d666b8732593e7a1f0ec3d9b730e50d7bf/kv/txn.go#L97:6">BatchGetValues</a>, resulting in a key-value map. Then, all records corresponding to the read keys are again read using a batch <a href="https://github.com/pingcap/tidb/blob/c84a71d666b8732593e7a1f0ec3d9b730e50d7bf/kv/txn.go#L97:6">BatchGetValues</a>, prepared for possible future UPDATE operations. The specific implementation is in <a href="https://github.com/pingcap/tidb/blob/3c0bfc19b252c129f918ab645c5e7d34d0c3d154/executor/batch_checker.go#L225:24">initDupOldRowValue</a>.</p>
+<p>Then, during conflict checking, if a conflict occurs, an UPDATE is performed first. As discussed in the Basic INSERT section earlier, TiDB executes INSERT in TiKV during commit. Similarly, UPDATE is also executed in TiKV during commit. In this UPDATE process, unique constraint conflicts might still occur. If so, then an error is returned. If the statement is <code>INSERT IGNORE ON DUPLICATE KEY UPDATE</code>, this error is ignored, and the next row proceeds.</p>
+<p>In the UPDATE from the previous step, another scenario can occur, as in the SQL below:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT <span style="color:#66d9ef">UNIQUE</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">1</span>), (<span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">ON</span> DUPLICATE <span style="color:#66d9ef">KEY</span> <span style="color:#66d9ef">UPDATE</span> i <span style="color:#f92672">=</span> i;
+</span></span></code></pre></div><p>Here, it is clear that there are no original data in the table; the INSERT in the second line cannot read out possibly conflicting data, but there is a conflict between the two rows of data intended to be inserted themselves. Correct execution here should involve the first 1 being inserted normally, with the second 1 encountering conflict and updating the first 1. Thus, it is necessary to handle it as follows: remove the key-value of the data updated in the previous step from the initial step&rsquo;s key-value map, reconstruct unique constraint keys and values for the data from the UPDATE based on table information, and add this key-value pair back into the initial key-value map for subsequent data conflict checking. The detail implementation is in <a href="https://github.com/pingcap/tidb/blob/2fba9931c7ffbb6dd939d5b890508eaa21281b4f/executor/batch_checker.go#L232">fillBackKeys</a>. This scenario also arises in other INSERT statements like <code>INSERT IGNORE</code>, <code>REPLACE</code>, and <code>LOAD DATA</code>. It is introduced here because <code>INSERT ON DUPLICATE KEY UPDATE</code> showcases the full functionality of the <code>batchChecker</code>.</p>
+<p>Finally, after all data completes insertion/update, return information is set, and results are returned to the client.</p>
+<h2 id="replace-statement">REPLACE Statement</h2>
+<p>Although the REPLACE statement appears as a separate type of DML, in examining its syntax, it is merely replacing INSERT with REPLACE compared to a standard <code>Basic INSERT</code>. The difference is that REPLACE is a one-to-many statement. Briefly, for a typical INSERT statement which needs to INSERT a row and encounters a unique constraint conflict, various treatments are available:</p>
+<ul>
+<li>Abandon the insert and return an error: <code>Basic INSERT</code></li>
+<li>Abandon the insert without error: <code>INSERT IGNORE</code></li>
+<li>Abandon the insert, turning it into updating the conflicting row. If the updated value conflicts again,</li>
+<li>Return an error: <code>INSERT ON DUPLICATE KEY UPDATE</code></li>
+<li>No error: <code>INSERT IGNORE ON DUPLICATE KEY UPDATE</code>They all handle conflicts when a row of data conflicts with a row in the table differently. However, the REPLACE statement is distinct; it will delete all conflicting rows it encounters until there are no more conflicts, and then insert the data. If there are 5 unique indexes in the table, there could be 5 rows conflicting with the row waiting to be inserted. The REPLACE statement will delete these 5 rows all at once and then insert its own data. See the SQL below:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (
+</span></span><span style="display:flex;"><span>i int <span style="color:#66d9ef">unique</span>,
+</span></span><span style="display:flex;"><span>j int <span style="color:#66d9ef">unique</span>,
+</span></span><span style="display:flex;"><span>k int <span style="color:#66d9ef">unique</span>,
+</span></span><span style="display:flex;"><span>l int <span style="color:#66d9ef">unique</span>,
+</span></span><span style="display:flex;"><span>m int <span style="color:#66d9ef">unique</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span>
+</span></span><span style="display:flex;"><span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>),
+</span></span><span style="display:flex;"><span>(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>),
+</span></span><span style="display:flex;"><span>(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>),
+</span></span><span style="display:flex;"><span>(<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">4</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> t;
+</span></span><span style="display:flex;"><span>i j k l m
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">5</span>
+</span></span></code></pre></div><p>After execution, it actually affects 5 rows of data.</p>
+<p>Once we understand the uniqueness of the REPLACE statement, we can more easily comprehend its specific implementation.</p>
+<p>Similar to the INSERT statement, the main execution part of the REPLACE statement is also in its Next method. Unlike INSERT, it passes its own <a href="https://github.com/pingcap/tidb/blob/f6dbad0f5c3cc42cafdfa00275abbd2197b8376b/executor/replace.go#L160">exec</a> method through <a href="https://github.com/pingcap/tidb/blob/ab332eba2a04bc0a996aa72e36190c779768d0f1/executor/insert_common.go#L277:24">insertRowsFromSelect</a> and <a href="https://github.com/pingcap/tidb/blob/ab332eba2a04bc0a996aa72e36190c779768d0f1/executor/insert_common.go#L180:24">insertRows</a>. In <a href="https://github.com/pingcap/tidb/blob/f6dbad0f5c3cc42cafdfa00275abbd2197b8376b/executor/replace.go#L160">exec</a>, it calls <a href="https://github.com/pingcap/tidb/blob/f6dbad0f5c3cc42cafdfa00275abbd2197b8376b/executor/replace.go#L95">replaceRow</a>, which also uses batch conflict detection in <a href="https://github.com/pingcap/tidb/blob/3c0bfc19b252c129f918ab645c5e7d34d0c3d154/executor/batch_checker.go#L43:6">batchChecker</a>. The difference from INSERT is that all detected conflicts are deleted here, and finally, the row to be inserted is written in.</p>
+<h2 id="in-conclusion">In Conclusion</h2>
+<p>The INSERT statement is among the most complex, versatile, and powerful of all DML statements. It includes statements like <code>INSERT ON DUPLICATE UPDATE</code>, which can perform both INSERT and UPDATE operations, and REPLACE, where a single row of data can impact many rows. The INSERT statement itself can be connected to a SELECT statement as input for the data to be inserted, thus its implementation is influenced by the planner (for more on the planner, see related source code reading articles: <a href="https://cn.pingcap.com/blog/tidb-source-code-reading-7/">Part 7: Rule-Based Optimization</a> and <a href="https://cn.pingcap.com/blog/tidb-source-code-reading-8/">Part 8: Cost-Based Optimization</a>). Familiarity with the implementation of various INSERT-related statements in TiDB can help readers use these statements more reasonably and efficiently in the future. Additionally, readers interested in contributing code to TiDB can also gain a quicker understanding of this part of the implementation through this article.</p>
 ]]></content:encoded>
     </item>
     <item>
