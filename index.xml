@@ -4,6 +4,11 @@
     <title>Mini Fish</title>
     <link>https://blog.minifish.org/</link>
     <description>Recent content on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
     <generator>Hugo -- 0.140.0-DEV</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present</copyright>
