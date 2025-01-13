@@ -12,8 +12,76 @@
     <generator>Hugo -- 0.140.0-DEV</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present</copyright>
-    <lastBuildDate>Fri, 10 Jan 2025 18:07:06 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 13 Jan 2025 19:54:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Introduction to WebVM</title>
+      <link>https://blog.minifish.org/posts/webvm/</link>
+      <pubDate>Mon, 13 Jan 2025 19:54:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/webvm/</guid>
+      <description>&lt;h2 id=&#34;what-is-webvm&#34;&gt;What is WebVM?&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/leaningtech/webvm&#34;&gt;WebVM&lt;/a&gt; is a virtual machine (VM) that executes entirely within a web browser. It&amp;rsquo;s an innovative project that brings the power of a Linux environment straight to your browser, eliminating the need for traditional virtual machine setups. WebVM operates within a sandboxed environment, ensuring secure execution of applications without affecting the host system.&lt;/p&gt;
+&lt;h2 id=&#34;understanding-webvm&#34;&gt;Understanding WebVM&lt;/h2&gt;
+&lt;p&gt;The source repository provides a frontend for the WebVM demo. By forking the repository and following the instructions outlined in the GitHub Actions, you can build an image using the Dockerfile located at:&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="what-is-webvm">What is WebVM?</h2>
+<p><a href="https://github.com/leaningtech/webvm">WebVM</a> is a virtual machine (VM) that executes entirely within a web browser. It&rsquo;s an innovative project that brings the power of a Linux environment straight to your browser, eliminating the need for traditional virtual machine setups. WebVM operates within a sandboxed environment, ensuring secure execution of applications without affecting the host system.</p>
+<h2 id="understanding-webvm">Understanding WebVM</h2>
+<p>The source repository provides a frontend for the WebVM demo. By forking the repository and following the instructions outlined in the GitHub Actions, you can build an image using the Dockerfile located at:</p>
+<ul>
+<li><a href="https://github.com/leaningtech/webvm/blob/main/dockerfiles/debian_large">Debian Large Dockerfile</a></li>
+</ul>
+<p>This image can then be hosted on GitHub Pages, as demonstrated in my <a href="https://blog.minifish.org/webvm/">demo</a>.</p>
+<p><img loading="lazy" src="/posts/images/20250113_195726_image.png"></p>
+<p>WebVM&rsquo;s primary functionality is to stream resources to the browser, minimizing client-side resource consumption. It enables the execution of various applications that are typically restricted to virtual machines, all within a browser. Additionally, WebVM allows for the embedding of these applications through custom front-ends.</p>
+<h2 id="default-image-and-capabilities">Default Image and Capabilities</h2>
+<p>The default WebVM image is <strong>Debian-mini</strong>, which may have limited capabilities. To enhance its functionality, I have opted for the <strong>Debian-large</strong> image, which has been extended to a 2GB disk capacity. This provides a more robust environment with additional tools and packages.</p>
+<h2 id="usage-and-benefits">Usage and Benefits</h2>
+<p>WebVM offers a range of applications and capabilities:</p>
+<ol>
+<li>
+<p><strong>Custom Image Creation:</strong> Create custom images tailored to your specific requirements, allowing for a personalized virtual environment.</p>
+</li>
+<li>
+<p><strong>Web-Based Linux Terminal:</strong> Access a web-based Linux terminal to execute Linux commands directly within the browser. This includes:</p>
+<ul>
+<li><strong>SSH/SCP File Transfers:</strong> Securely transfer files using SSH and SCP protocols.</li>
+<li><strong>HTTP Server Initiation:</strong> Start an HTTP server using <code>python3 -m http.server</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Sandboxed Security:</strong> Operates within a sandbox environment, ensuring secure execution of applications without affecting the host system.</p>
+</li>
+<li>
+<p><strong>Serverless Architecture:</strong> Embraces a serverless architecture by executing entirely on the client side. Running a Linux server within a browser presents a unique and innovative approach to virtualization.</p>
+</li>
+</ol>
+<h2 id="alternative-options">Alternative Options</h2>
+<p>Yes, there are alternative options. <a href="https://bellard.org/jslinux/">JSLinux</a> is a preferred and faster option. However, it does not allow modifications to the image, which can be a limitation if you require a customized environment.</p>
+<h2 id="additional-tips">Additional Tips</h2>
+<ul>
+<li>
+<p><strong>Internet Connectivity via Tailscale:</strong></p>
+<p>WebVM can connect to the internet via <a href="https://tailscale.com/">Tailscale</a>. It utilizes the first available node as an exit node. If you execute:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl https://ifconfig.me
+</span></span></code></pre></div><p>You will obtain your current node&rsquo;s IP address.</p>
+</li>
+<li>
+<p><strong>DNS Functionality:</strong></p>
+<p>The DNS functionality of Tailscale is currently experiencing issues. It&rsquo;s recommended to use IP addresses to connect to other nodes within your Tailscale network instead of domain names.</p>
+</li>
+<li>
+<p><strong>Default Credentials:</strong></p>
+<p>You can obtain the default <code>user:password</code> and <code>root:password</code> credentials by checking the Dockerfile:</p>
+<ul>
+<li><a href="https://github.com/leaningtech/webvm/blob/main/dockerfiles/debian_large#L15-L18">Default Credentials in Dockerfile</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>WebVM is a powerful tool that brings the versatility of a Linux environment to your browser. Whether you&rsquo;re looking to experiment with Linux commands, develop applications, or require a portable and sandboxed environment, WebVM offers a serverless and secure solution. Its ability to create custom images and operate entirely on the client side sets it apart from other web-based virtual machines.</p>
+<p>Feel free to explore WebVM and customize it to suit your needs. Happy coding!</p>
+]]></content:encoded>
+    </item>
     <item>
       <title>Brompton Clone Bike Modification</title>
       <link>https://blog.minifish.org/posts/brompton-modification/</link>
