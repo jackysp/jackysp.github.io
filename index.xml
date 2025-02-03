@@ -2152,69 +2152,31 @@
 </span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.317 +08:00] [INFO] [domain.go:144] [&#34;full load InfoSchema success&#34;] [usedSchemaVersion=0] [neededSchemaVersion=0] [&#34;start time&#34;=2.0015ms]
 </span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.317 +08:00] [INFO] [domain.go:368] [&#34;full load and reset schema validator&#34;]
 </span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.317 +08:00] [INFO] [tidb.go:199] [&#34;rollbackTxn for ddl/autocommit failed&#34;]
-</span></span><span style="display:flex;"><span>```Here is the translation of the provided text:
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>---
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.317 +08:00] [WARN] [session.go:1040] [&#34;run statement failed&#34;] [schemaVersion=0] [error=&#34;[schema:1049]Unknown database &#39;mysql&#39;&#34;] [session=&#34;{\n  \&#34;currDBName\&#34;: \&#34;\&#34;,\n  \&#34;id\&#34;: 0,\n  \&#34;status\&#34;: 2,\n  \&#34;strictMode\&#34;: true,\n  \&#34;user\&#34;: null\n}&#34;]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.318 +08:00] [WARN] [session.go:1136] [&#34;compile SQL failed&#34;] [error=&#34;[schema:1146]Table &#39;mysql.tidb&#39; doesn&#39;t exist&#34;] [SQL=&#34;SELECT HIGH_PRIORITY VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME=\&#34;bootstrapped\&#34;&#34;]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.318 +08:00] [INFO] [session.go:2121] [&#34;CRUCIAL OPERATION&#34;] [conn=0] [schemaVersion=0] [cur_db=] [sql=&#34;CREATE DATABASE IF NOT EXISTS test&#34;] [user=]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.320 +08:00] [INFO] [ddl_worker.go:253] [&#34;[ddl] add DDL jobs&#34;] [&#34;batch count&#34;=1] [jobs=&#34;ID:2, Type:create schema, State:none, SchemaState:none, SchemaID:1, TableID:0, RowCount:0, ArgLen:1, start time: 2020-08-12 16:12:07.318 +0800 CST, Err:&lt;nil&gt;, ErrCount:0, SnapshotVersion:0; &#34;]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.320 +08:00] [INFO] [ddl.go:500] [&#34;[ddl] start DDL job&#34;] [job=&#34;ID:2, Type:create schema, State:none, SchemaState:none, SchemaID:1, TableID:0, RowCount:0, ArgLen:1, start time: 2020-08-12 16:12:07.318 +0800 CST, Err:&lt;nil&gt;, ErrCount:0, SnapshotVersion:0&#34;] [query=&#34;CREATE DATABASE IF NOT EXISTS test&#34;]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.320 +08:00] [INFO] [ddl_worker.go:568] [&#34;[ddl] run DDL job&#34;] [worker=&#34;worker 1, tp general&#34;] [job=&#34;ID:2, Type:create schema, State:none, SchemaState:none, SchemaID:1, TableID:0, RowCount:0, ArgLen:0, start time: 2020-08-12 16:12:07.318 +0800 CST, Err:&lt;nil&gt;, ErrCount:0, SnapshotVersion:0&#34;]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.322 +08:00] [INFO] [domain.go:144] [&#34;full load InfoSchema success&#34;] [usedSchemaVersion=0] [neededSchemaVersion=1] [&#34;start time&#34;=1.0003ms]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.322 +08:00] [INFO] [domain.go:368] [&#34;full load and reset schema validator&#34;]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.324 +08:00] [INFO] [ddl_worker.go:757] [&#34;[ddl] wait latest schema version changed&#34;] [worker=&#34;worker 1, tp general&#34;] [ver=1] [&#34;take time&#34;=3.0094ms] [job=&#34;ID:2, Type:create schema, State:done, SchemaState:public, SchemaID:1, TableID:0, RowCount:0, ArgLen:1, start time: 2020-08-12 16:12:07.318 +0800 CST, Err:&lt;nil&gt;, ErrCount:0, SnapshotVersion:0&#34;]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.324 +08:00] [INFO] [ddl_worker.go:359] [&#34;[ddl] finish DDL job&#34;] [worker=&#34;worker 1, tp general&#34;] [job=&#34;ID:2, Type:create schema, State:synced, SchemaState:public, SchemaID:1, TableID:0, RowCount:0, ArgLen:0, start time: 2020-08-12 16:12:07.318 +0800 CST, Err:&lt;nil&gt;, ErrCount:0, SnapshotVersion:0&#34;]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.325 +08:00] [INFO] [ddl.go:532] [&#34;[ddl] DDL job is finished&#34;] [jobID=2]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.325 +08:00] [INFO] [domain.go:619] [&#34;performing DDL change, must reload&#34;]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.325 +08:00] [INFO] [session.go:2121] [&#34;CRUCIAL OPERATION&#34;] [conn=0] [schemaVersion=1] [cur_db=] [sql=&#34;CREATE DATABASE IF NOT EXISTS mysql;&#34;] [user=]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.325 +08:00] [INFO] [ddl_worker.go:253] [&#34;[ddl] add DDL jobs&#34;] [&#34;batch count&#34;=1] [jobs=&#34;ID:4, Type:create schema, State:none, SchemaState:none, SchemaID:3, TableID:0, RowCount:0, ArgLen:1, start time: 2020-08-12 16:12:07.325 +0800 CST, Err:&lt;nil&gt;, ErrCount:0, SnapshotVersion:0; &#34;]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.325 +08:00] [INFO] [ddl.go:500] [&#34;[ddl] start DDL job&#34;] [job=&#34;ID:4, Type:create schema, State:none, SchemaState:none, SchemaID:3, TableID:0, RowCount:0, ArgLen:1, start time: 2020-08-12 16:12:07.325 +0800 CST, Err:&lt;nil&gt;, ErrCount:0, SnapshotVersion:0&#34;] [query=&#34;CREATE DATABASE IF NOT EXISTS mysql;&#34;]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.326 +08:00] [INFO] [ddl_worker.go:568] [&#34;[ddl] run DDL job&#34;] [worker=&#34;worker 1, tp general&#34;] [job=&#34;ID:4, Type:create schema, State:none, SchemaState:none, SchemaID:3, TableID:0, RowCount:0, ArgLen:0, start time: 2020-08-12 16:12:07.325 +0800 CST, Err:&lt;nil&gt;, ErrCount:0, SnapshotVersion:0&#34;]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.326 +08:00] [INFO] [domain.go:126] [&#34;diff load InfoSchema success&#34;] [usedSchemaVersion=1] [neededSchemaVersion=2] [&#34;start time&#34;=0s] [tblIDs=&#34;[]&#34;]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.329 +08:00] [INFO] [ddl_worker.go:757] [&#34;[ddl] wait latest schema version changed&#34;] [worker=&#34;worker 1, tp general&#34;] [ver=2] [&#34;take time&#34;=2.9965ms] [job=&#34;ID:4, Type:create schema, State:done, SchemaState:public, SchemaID:3, TableID:0, RowCount:0, ArgLen:1, start time: 2020-08-12 16:12:07.325 +0800 CST, Err:&lt;nil&gt;, ErrCount:0, SnapshotVersion:0&#34;]
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.329 +08:00] [INFO] [ddl_worker.go:359] [&#34;[ddl] finish DDL job&#34;] [worker=&#34;worker 1, tp general&#34;] [job=&#34;ID:4, Type:create schema, State:synced, SchemaState:public, SchemaID:3, TableID:0, RowCount:0, ArgLen:0, start time: 2020-08-12 16:12:07.325
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Because DDL logs are very numerous, the TiDB logs basically record each step of the DDL execution, so I&#39;ve truncated this part of the log here. However, the basic outline can be sorted out. Firstly, the DDL execution is initiated from ddl_api, at this time recording `[&#34;CRUCIAL OPERATION&#34;]` style logs. DDL is a crucial operation, so it belongs to CRUCIAL type logs. Then, we can see a series of logs with the ddl keyword linked together, such as `[ddl] add DDL jobs`, `[ddl] start DDL job`, `[ddl] run DDL job`, `[ddl] finish DDL job`, and `[ddl] DDL job is finished`. These represent the process from when the DDL owner acquires a job to its final execution completion. Moreover, they have a unique job ID, which can be used to link a DDL in the log with something like `jobs=&#34;ID:2`.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>---
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.518 +08:00] [INFO] [server.go:235] [&#34;server is running MySQL protocol&#34;] [addr=0.0.0.0:4000]
+</span></span></code></pre></div><p>Because DDL logs are very numerous, the TiDB logs basically record each step of the DDL execution, so I&rsquo;ve truncated this part of the log here. However, the basic outline can be sorted out. Firstly, the DDL execution is initiated from ddl_api, at this time recording <code>[&quot;CRUCIAL OPERATION&quot;]</code> style logs. DDL is a crucial operation, so it belongs to CRUCIAL type logs. Then, we can see a series of logs with the ddl keyword linked together, such as <code>[ddl] add DDL jobs</code>, <code>[ddl] start DDL job</code>, <code>[ddl] run DDL job</code>, <code>[ddl] finish DDL job</code>, and <code>[ddl] DDL job is finished</code>. These represent the process from when the DDL owner acquires a job to its final execution completion. Moreover, they have a unique job ID, which can be used to link a DDL in the log with something like <code>jobs=&quot;ID:2</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[2020/08/12 16:12:07.518 +08:00] [INFO] [server.go:235] [&#34;server is running MySQL protocol&#34;] [addr=0.0.0.0:4000]
 </span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.518 +08:00] [INFO] [http_status.go:80] [&#34;for status and metrics report&#34;] [&#34;listening on addr&#34;=0.0.0.0:10080]
 </span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.520 +08:00] [INFO] [domain.go:1015] [&#34;init stats info time&#34;] [&#34;take time&#34;=3.0126ms]
 </span></span><span style="display:flex;"><span>[2020/08/12 16:15:41.482 +08:00] [INFO] [server.go:388] [&#34;new connection&#34;] [conn=1] [remoteAddr=127.0.0.1:64888]
 </span></span><span style="display:flex;"><span>[2020/08/12 21:03:19.954 +08:00] [INFO] [server.go:391] [&#34;connection closed&#34;] [conn=1]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Thereafter, the appearance of `server is running MySQL protocol` means that TiDB can provide services externally. Later, there are logs corresponding to the creation and closing of each connection, namely `new connection` and `connection closed`. Of course, they also have their corresponding connection ID, which is unique for a TiDB. You can use the keyword `conn=1` in the log to contextually link them together.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>### Stack Logs
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Most of TiDB&#39;s SQL errors (except for duplicate entry and syntax errors) will output the complete stack information. Due to the requirements of unified log format, the stack now looks very unsightly...
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>```text
-</span></span><span style="display:flex;"><span>For this stack trace, I believe no one really enjoys reading it. Therefore, we need to paste it into Vim and execute `%s/\\n/\r/g` and `%s/\\t/    /g` to turn it into a Golang-style stack.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>![func](/posts/images/20200812211203.png)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>When you see which module it&#39;s stuck in, like the plan part here, you can find the corresponding colleague for support.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>However, there is a more user-friendly tool for dealing with Golang’s lengthy stack called [panicparse](https://github.com/maruel/panicparse). To install it, simply run
-</span></span><span style="display:flex;"><span>`go get github.com/maruel/panicparse/v2/cmd/pp`. The effect is as follows:
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>![func](/posts/images/20200813172149.png)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Whether it&#39;s TiDB running goroutines or panic outputs, it can be parsed using this. It has several features:
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>1. It can display active and inactive goroutines.
-</span></span><span style="display:flex;"><span>2. It can show the relationships between goroutines.
-</span></span><span style="display:flex;"><span>3. Keyword highlighting.
-</span></span><span style="display:flex;"><span>4. Supports Windows.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>The latest 2.0.0 version supports race detector and HTML formatted output.
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>This concludes the introduction to the analysis of key functions and logs (startup, DDL, connection, error stack).
-</span></span></code></pre></div>]]></content:encoded>
+</span></span></code></pre></div><p>Thereafter, the appearance of <code>server is running MySQL protocol</code> means that TiDB can provide services externally. Later, there are logs corresponding to the creation and closing of each connection, namely <code>new connection</code> and <code>connection closed</code>. Of course, they also have their corresponding connection ID, which is unique for a TiDB. You can use the keyword <code>conn=1</code> in the log to contextually link them together.</p>
+<h3 id="stack-logs">Stack Logs</h3>
+<p>Most of TiDB&rsquo;s SQL errors (except for duplicate entry and syntax errors) will output the complete stack information. Due to the requirements of unified log format, the stack now looks very unsightly&hellip;</p>
+<p>For this stack trace, I believe no one really enjoys reading it. Therefore, we need to paste it into Vim and execute <code>%s/\\n/\r/g</code> and <code>%s/\\t/    /g</code> to turn it into a Golang-style stack.</p>
+<p><img alt="func" loading="lazy" src="/posts/images/20200812211203.png"></p>
+<p>When you see which module it&rsquo;s stuck in, like the plan part here, you can find the corresponding colleague for support.</p>
+<p>However, there is a more user-friendly tool for dealing with Golang’s lengthy stack called <a href="https://github.com/maruel/panicparse">panicparse</a>. To install it, simply run
+<code>go get github.com/maruel/panicparse/v2/cmd/pp</code>. The effect is as follows:</p>
+<p><img alt="func" loading="lazy" src="/posts/images/20200813172149.png"></p>
+<p>Whether it&rsquo;s TiDB running goroutines or panic outputs, it can be parsed using this. It has several features:</p>
+<ol>
+<li>It can display active and inactive goroutines.</li>
+<li>It can show the relationships between goroutines.</li>
+<li>Keyword highlighting.</li>
+<li>Supports Windows.</li>
+</ol>
+<p>The latest 2.0.0 version supports race detector and HTML formatted output.</p>
+<p>This concludes the introduction to the analysis of key functions and logs (startup, DDL, connection, error stack).</p>
+]]></content:encoded>
     </item>
     <item>
       <title>How to Read TiDB Source Code (Part 3)</title>
