@@ -2359,10 +2359,14 @@ All Metrics in TiDB are uniformly located <a href="https://github.com/pingcap/ti
 <p>In this representation, the final states of transactions are commit, abort, and rollback. A commit indicates a successful user-initiated transaction, rollback indicates a user-initiated rollback (which cannot fail), and abort indicates a user-initiated commit that failed.</p>
 <p>The second label, txn_mode, refers to two modes: optimistic and pessimistic transactions. There&rsquo;s nothing further to explain about these modes.</p>
 <p>Corresponding to the code:</p>
+<p><img alt="alt text" loading="lazy" src="/posts/images/20200729211352.png"></p>
 <p>This segment of code shows that <code>tidb_session_transaction_duration_seconds</code> is divided into several parts, including namespace and subsystem. Generally, to find a variable in a formula like <code>tidb_session_transaction_duration_seconds_count</code> within TiDB code, you need to remove the first two words and the last word.</p>
 <p>From this code snippet, you can see it&rsquo;s a histogram, specifically a HistogramVec, which is an array of histograms because it records data with several different labels. The labels LblTxnMode and LblType are these two labels.</p>
+<p><img alt="alt text" loading="lazy" src="/posts/images/20200729211511.png"></p>
 <p>Checking the references, there is a place for registration, which is in the main function we discussed in the first article, where metrics are registered.</p>
+<p><img alt="alt text" loading="lazy" src="/posts/images/20200729211725.png"></p>
 <p>Other references show how metrics are instantiated. Why do we do this? Mainly because as the number of labels increases, the performance of metrics becomes poorer, which is related to Prometheus&rsquo;s implementation. We had no choice but to create many instantiated global variables.</p>
+<p><img alt="alt text" loading="lazy" src="/posts/images/20200729211935.png"></p>
 <p>Taking the implementation of Rollback as an example, its essence is to record the actual execution time of a transaction when Rollback is truly executed. Since it’s a histogram, it is also used as a counter in this instance.</p>
 ]]></content:encoded>
     </item>
