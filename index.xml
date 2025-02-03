@@ -2390,7 +2390,6 @@ All Metrics in TiDB are uniformly located <a href="https://github.com/pingcap/ti
 <p>There are many Metrics, and from a beginner&rsquo;s perspective, it&rsquo;s best to focus on a specific monitoring example. Let&rsquo;s take the TPS (transactions per second) panel as an example.</p>
 <p><img alt="tps" loading="lazy" src="/posts/images/20200729205545.png"></p>
 <p>Click EDIT and you will see the monitoring formula is:</p>
-<p>[The remaining text seems cut off]Translate the following text to English:</p>
 <p>The <code>tidb_session_transaction_duration_seconds</code> is the name of this specific metric. Since it is a histogram, it can actually be expressed as three types of values: sum, count, and bucket, which represent the total sum of values, the count (which functions the same as a counter), and the distribution by bucket, respectively.</p>
 <p>In this context, [1m] represents a time window of 1 minute, indicating the precision of the measurement. The rate function calculates the slope, essentially the rate of change, indicating how many times something occurs per second. The sum function is used for aggregation, and when combined with by (type, txn_mode), it represents aggregation by the dimensions of type and txn_mode.</p>
 <p>The Legend below displays the dimensions above using {{type}}-{{txn_mode}}. When surrounded by {{}}, it can display the actual label names.</p>
