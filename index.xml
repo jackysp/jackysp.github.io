@@ -9,11 +9,123 @@
       <url>https://blog.minifish.org/android-chrome-512x512.png</url>
       <link>https://blog.minifish.org/android-chrome-512x512.png</link>
     </image>
-    <generator>Hugo -- 0.140.0-DEV</generator>
+    <generator>Hugo -- 0.154.5</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present</copyright>
-    <lastBuildDate>Mon, 13 Jan 2025 19:54:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 17 Jan 2026 10:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OceanBase Internals: Transactions, Replay, SQL Engine, and Unit Placement</title>
+      <link>https://blog.minifish.org/posts/oceanbase-internals-transaction-replay-sql-unit-placement/</link>
+      <pubDate>Sat, 17 Jan 2026 10:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/oceanbase-internals-transaction-replay-sql-unit-placement/</guid>
+      <description>A code-guided tour of OceanBase write transactions, tablet replay, SQL compile-execute, and unit placement, focusing on motivation, design, implementation details, and tradeoffs.</description>
+      <content:encoded><![CDATA[<h2 id="why-these-paths-matter">Why These Paths Matter</h2>
+<p>OceanBase targets high availability and scalability in a shared-nothing cluster. The core engineering challenge is to make four critical subsystems work together with predictable latency and correctness:</p>
+<ul>
+<li>Write transactions must be durable, replicated, and efficiently committed.</li>
+<li>Tablet replay must recover state quickly and safely.</li>
+<li>SQL parse to execute must optimize well while respecting multi-tenant constraints.</li>
+<li>Unit placement must map tenants to physical resources without fragmentation.</li>
+</ul>
+<p>This article focuses on motivation, design, implementation highlights, and tradeoffs, using concrete code entry points from the OceanBase codebase.</p>
+<h2 id="design-overview">Design Overview</h2>
+<p>At a high level, each node runs a full SQL engine, storage engine, and transaction engine. Data is organized into tablets, which belong to log streams. Log streams replicate changes using Paxos-based log service. Tenants slice resources via unit configurations and pools, while rootserver components place those units on servers.</p>
+<p>The following sections walk through each path with the relevant implementation anchors.</p>
+<h2 id="write-transaction-from-memtable-to-replicated-log">Write Transaction: From Memtable to Replicated Log</h2>
+<h3 id="motivation">Motivation</h3>
+<p>A write transaction must be both fast and durable. OceanBase uses memtables for in-memory writes, and a log stream for redo replication. The design must allow low-latency commit while supporting parallel redo submission and multi-participant (2PC) transactions.</p>
+<h3 id="design-sketch">Design Sketch</h3>
+<ul>
+<li>Each transaction is represented by a per-LS context (<code>ObPartTransCtx</code>).</li>
+<li>Redo is flushed based on pressure or explicit triggers.</li>
+<li>Commit chooses one-phase or two-phase based on participants.</li>
+<li>Logs are submitted via a log adapter backed by logservice.</li>
+</ul>
+<h3 id="implementation-highlights">Implementation Highlights</h3>
+<ul>
+<li>Transaction context lifecycle and commit logic are in <code>src/storage/tx/ob_trans_part_ctx.cpp</code>.</li>
+<li>Redo submission is driven by <code>submit_redo_after_write</code>, which switches between serial and parallel logging based on thresholds.</li>
+<li>Commit decides between one-phase and two-phase commit depending on participant count.</li>
+<li>The log writer (<code>ObTxLSLogWriter</code>) submits serialized logs via <code>ObITxLogAdapter</code>, which is wired to logservice (<code>ObLogHandler</code>).</li>
+</ul>
+<h3 id="tradeoffs">Tradeoffs</h3>
+<ul>
+<li><strong>Serial vs parallel redo</strong>: Serial logging is simpler and cheaper for small transactions, but parallel logging reduces tail latency for large transactions at the cost of more coordination.</li>
+<li><strong>1PC vs 2PC</strong>: 1PC is fast for single-participant transactions; 2PC is required for distributed consistency but increases coordination overhead.</li>
+<li><strong>In-memory batching vs durability</strong>: Larger batching improves throughput but can delay durability and increase replay time.</li>
+</ul>
+<h2 id="tablet-replay-reconstructing-state-safely">Tablet Replay: Reconstructing State Safely</h2>
+<h3 id="motivation-1">Motivation</h3>
+<p>Recovery needs to be deterministic and safe: the system must replay logs to reconstruct tablet state without violating invariants or applying obsolete data.</p>
+<h3 id="design-sketch-1">Design Sketch</h3>
+<ul>
+<li>Logservice schedules replay tasks per log stream.</li>
+<li>Tablet replay executor fetches the LS, locates the tablet, validates replay conditions, and applies the log.</li>
+<li>Specialized replay executors handle different log types (e.g., schema updates, split operations).</li>
+</ul>
+<h3 id="implementation-highlights-1">Implementation Highlights</h3>
+<ul>
+<li>Replay orchestration lives in <code>src/logservice/replayservice/ob_log_replay_service.cpp</code>.</li>
+<li>Tablet replay logic is in <code>src/logservice/replayservice/ob_tablet_replay_executor.cpp</code>.</li>
+<li>Specific tablet operations are applied in dedicated executors, such as <code>ObTabletServiceClogReplayExecutor</code> in <code>src/storage/tablet/ob_tablet_service_clog_replay_executor.cpp</code>.</li>
+</ul>
+<h3 id="tradeoffs-1">Tradeoffs</h3>
+<ul>
+<li><strong>Strictness vs throughput</strong>: Replay barriers enforce ordering for correctness but can reduce parallelism.</li>
+<li><strong>Tablet existence checks</strong>: Allowing missing tablets can speed recovery but requires careful validation to avoid partial state.</li>
+<li><strong>MDS synchronization</strong>: Metadata state updates improve correctness but add contention via locks.</li>
+</ul>
+<h2 id="sql-parse-to-execute-compile-pipeline-for-performance">SQL Parse to Execute: Compile Pipeline for Performance</h2>
+<h3 id="motivation-2">Motivation</h3>
+<p>OceanBase supports MySQL and Oracle compatibility with rich SQL features. The compile pipeline must be fast, cache-friendly, and yield efficient execution plans.</p>
+<h3 id="design-sketch-2">Design Sketch</h3>
+<ul>
+<li>SQL text enters the engine via <code>ObSql::stmt_query</code>.</li>
+<li>Parsing produces a parse tree.</li>
+<li>Resolution turns the parse tree into a typed statement tree.</li>
+<li>Rewrite and optimization generate a logical plan.</li>
+<li>Code generation produces a physical plan and execution context.</li>
+</ul>
+<h3 id="implementation-highlights-2">Implementation Highlights</h3>
+<ul>
+<li>Entry and query handling: <code>src/sql/ob_sql.cpp</code> (<code>stmt_query</code>, <code>handle_text_query</code>).</li>
+<li>Resolver: <code>ObResolver</code> in <code>src/sql/resolver/ob_resolver.h</code>.</li>
+<li>Transform and optimize: <code>ObSql::transform_stmt</code> and <code>ObSql::optimize_stmt</code> in <code>src/sql/ob_sql.cpp</code>.</li>
+<li>Code generation: <code>ObSql::code_generate</code> in <code>src/sql/ob_sql.cpp</code>.</li>
+</ul>
+<h3 id="tradeoffs-2">Tradeoffs</h3>
+<ul>
+<li><strong>Plan cache vs compile accuracy</strong>: Plan caching reduces latency but may reuse suboptimal plans under changing data distributions.</li>
+<li><strong>Rewrite aggressiveness</strong>: More transformations can yield better plans but increase compile cost.</li>
+<li><strong>JIT and rich formats</strong>: Faster execution for some workloads, but added complexity and memory pressure.</li>
+</ul>
+<h2 id="unit-placement-scheduling-tenant-resources">Unit Placement: Scheduling Tenant Resources</h2>
+<h3 id="motivation-3">Motivation</h3>
+<p>Multi-tenancy requires predictable isolation and efficient resource utilization. Unit placement must respect CPU, memory, and disk constraints while minimizing fragmentation.</p>
+<h3 id="design-sketch-3">Design Sketch</h3>
+<ul>
+<li>Unit config defines resource demands.</li>
+<li>Resource pool groups units by tenant and zone.</li>
+<li>Placement strategy scores candidate servers to pick a host for each unit.</li>
+</ul>
+<h3 id="implementation-highlights-3">Implementation Highlights</h3>
+<ul>
+<li>Resource types and pools: <code>src/share/unit/ob_unit_config.h</code>, <code>src/share/unit/ob_resource_pool.h</code>, <code>src/share/unit/ob_unit_info.h</code>.</li>
+<li>Placement policy: <code>src/rootserver/ob_unit_placement_strategy.cpp</code> uses a weighted dot-product of remaining resources to choose a server.</li>
+<li>Orchestration: <code>src/rootserver/ob_unit_manager.cpp</code> handles creation, alteration, and migration of units and pools.</li>
+</ul>
+<h3 id="tradeoffs-3">Tradeoffs</h3>
+<ul>
+<li><strong>Greedy placement vs global optimality</strong>: Dot-product scoring is efficient and practical but may not be globally optimal.</li>
+<li><strong>Capacity normalization</strong>: Assuming comparable server capacities simplifies scoring but may bias placement in heterogeneous clusters.</li>
+<li><strong>Latency vs stability</strong>: Fast placement decisions can lead to more churn; conservative placement improves stability but can reduce utilization.</li>
+</ul>
+<h2 id="closing-thoughts">Closing Thoughts</h2>
+<p>These four paths demonstrate how OceanBase balances correctness, performance, and operability. The code structure follows clear separation of responsibilities: transaction logic is in <code>storage/tx</code>, replication and replay are in <code>logservice</code>, SQL compilation is in <code>sql</code>, and scheduling is in <code>rootserver</code> and <code>share/unit</code>. The tradeoffs are explicit and largely encoded in thresholds and policies, which makes tuning feasible without invasive rewrites.</p>
+<p>If you are extending OceanBase, start with the entry points highlighted above and follow the call chains into the relevant subsystem. It is the fastest way to build a mental model grounded in the actual implementation.</p>
+]]></content:encoded>
+    </item>
     <item>
       <title>Introduction to WebVM</title>
       <link>https://blog.minifish.org/posts/webvm/</link>
@@ -1469,7 +1581,7 @@
 <p><strong>Update:</strong></p>
 <p>For systemd startup, you can refer to <a href="https://gist.github.com/gatopeich/36ed7fab3850367bbcd8e6f40becd4e5">this gist</a>. The server&rsquo;s console has some commands, like &ldquo;stop&rdquo;, that perform graceful shutdowns, so it&rsquo;s necessary to rely on a screen session to create it. Additionally, the server startup has some environmental dependencies, so it’s best to write a small script for starting it, like:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>cd /home/user/bedrock-server
 </span></span><span style="display:flex;"><span>LD_LIBRARY_PATH<span style="color:#f92672">=</span>. ./bedrock_server
 </span></span></code></pre></div><p>Using absolute paths can lead to core dumps.</p>
@@ -1908,7 +2020,7 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        if [ -f Gopkg.toml ]; then
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            dep ensure
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        fi</span>        
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        fi</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Check out my other private repo</span>
 </span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v2</span>
@@ -2208,18 +2320,18 @@
 <p>Take <code>performance_schema_max_mutex_classes</code> as an example,</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>performance_schema_max_mutex_classes;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">----------------------------------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>performance_schema_max_mutex_classes <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>performance_schema_max_mutex_classes <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">----------------------------------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#ae81ff">200</span>                                    <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#ae81ff">200</span>                                    <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">----------------------------------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0002</span> sec)
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0002</span> sec)
 </span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.performance_schema_max_mutex_classes;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-----------------------------------------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.performance_schema_max_mutex_classes <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.performance_schema_max_mutex_classes <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-----------------------------------------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#ae81ff">200</span>                                           <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#ae81ff">200</span>                                           <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-----------------------------------------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0004</span> sec)
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0004</span> sec)
 </span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">session</span>.performance_schema_max_mutex_classes;
 </span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1238</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;performance_schema_max_mutex_classes&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">GLOBAL</span> <span style="color:#66d9ef">variable</span>
 </span></span></code></pre></div><p>As you can see, the scope of ScopeNone can be read as a global variable,</p>
@@ -2240,18 +2352,18 @@ From a theoretical standpoint, these ScopeNone variables are essentially a singl
 <p>Using <code>gtid_mode</code> as an example,</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>gtid_mode;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>gtid_mode <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>gtid_mode <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#66d9ef">OFF</span>         <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#66d9ef">OFF</span>         <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0003</span> sec)
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0003</span> sec)
 </span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.gtid_mode;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.gtid_mode <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.gtid_mode <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#66d9ef">OFF</span>                <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#66d9ef">OFF</span>                <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0006</span> sec)
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0006</span> sec)
 </span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">session</span>.gtid_mode;
 </span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1238</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;gtid_mode&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">GLOBAL</span> <span style="color:#66d9ef">variable</span>
 </span></span></code></pre></div><p>It works the same way as MySQL global variable reading,</p>
@@ -2263,26 +2375,26 @@ From a theoretical standpoint, these ScopeNone variables are essentially a singl
 </span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">rows</span> affected (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0029</span> sec)
 </span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.gtid_mode;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.gtid_mode <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.gtid_mode <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#66d9ef">ON</span>                 <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#66d9ef">ON</span>                 <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0005</span> sec)
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0005</span> sec)
 </span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>gtid_mode;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>gtid_mode <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>gtid_mode <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#66d9ef">ON</span>          <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#66d9ef">ON</span>          <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0006</span> sec)
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0006</span> sec)
 </span></span></code></pre></div><p>The setting method is also compatible with MySQL. At this point, we can shut down the single-instance TiDB and restart it,</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>gtid_mode;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>gtid_mode <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>gtid_mode <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#66d9ef">ON</span>          <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#66d9ef">ON</span>          <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0003</span> sec)
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0003</span> sec)
 </span></span></code></pre></div><p>And you can see that the result can still be read, meaning that this setting was persisted to the storage engine.
 Looking closely at the code, you can see:</p>
 <p><img alt="defaultSysVars" loading="lazy" src="/posts/images/20200728164505.png"></p>
@@ -2291,18 +2403,18 @@ Looking closely at the code, you can see:</p>
 <p>Using <code>rand_seed2</code> as an example,</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>rand_seed2;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>rand_seed2 <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>rand_seed2 <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span>              <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>              <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0005</span> sec)
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0005</span> sec)
 </span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">session</span>.rand_seed2;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">----------------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">session</span>.rand_seed2 <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">session</span>.rand_seed2 <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">----------------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span>                      <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>                      <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">----------------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0003</span> sec)
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0003</span> sec)
 </span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.rand_seed2;
 </span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1238</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;rand_seed2&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">SESSION</span> <span style="color:#66d9ef">variable</span>
 </span></span></code></pre></div><p>Reading is compatible with MySQL.</p>
@@ -3299,9 +3411,9 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 </span></span></code></pre></div><h3 id="data">Data</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>root<span style="color:#f92672">@</span>:<span style="color:#ae81ff">26257</span><span style="color:#f92672">/</span>sbtest<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> id <span style="color:#66d9ef">FROM</span> sbtest1 <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> id <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">1</span>;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span>         id         <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>         id         <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#ae81ff">354033003848892419</span> <span style="color:#f92672">|</span>
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#ae81ff">354033003848892419</span> <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
 </span></span></span></code></pre></div><p>As you can see, the data does not start from <code>1</code>, nor is it sequential. Normally, the <code>id</code> in a Sysbench table should be within the range <code>[1, table_size]</code>.</p>
 <h3 id="sql">SQL</h3>
@@ -3309,10 +3421,10 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 </span></span></code></pre></div><p>Taking the <code>UPDATE</code> statement as an example, <code>id</code> is used as the query condition. Sysbench assumes that this <code>id</code> should be between <code>[1, table_size]</code>, but in reality, it&rsquo;s not.</p>
 <h3 id="example-of-correct-testing-command-line">Example of Correct Testing Command Line</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sysbench --db-driver<span style="color:#f92672">=</span>pgsql --pgsql-host<span style="color:#f92672">=</span>127.0.0.1 --pgsql-port<span style="color:#f92672">=</span><span style="color:#ae81ff">26257</span> --pgsql-user<span style="color:#f92672">=</span>root --pgsql-db<span style="color:#f92672">=</span>sbtest <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>        --time<span style="color:#f92672">=</span><span style="color:#ae81ff">180</span> --threads<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span> --report-interval<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span> --tables<span style="color:#f92672">=</span><span style="color:#ae81ff">32</span> --table-size<span style="color:#f92672">=</span><span style="color:#ae81ff">10000000</span> <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>        oltp_update_index <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>        --sum_ranges<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span> --distinct_ranges<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span> --range_size<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> --simple_ranges<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> --order_ranges<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>        --index_updates<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> --non_index_updates<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span> --auto_inc<span style="color:#f92672">=</span>off prepare/run/cleanup
+</span></span></span><span style="display:flex;"><span>        --time<span style="color:#f92672">=</span><span style="color:#ae81ff">180</span> --threads<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span> --report-interval<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span> --tables<span style="color:#f92672">=</span><span style="color:#ae81ff">32</span> --table-size<span style="color:#f92672">=</span><span style="color:#ae81ff">10000000</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>        oltp_update_index <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>        --sum_ranges<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span> --distinct_ranges<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span> --range_size<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> --simple_ranges<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> --order_ranges<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>        --index_updates<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> --non_index_updates<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span> --auto_inc<span style="color:#f92672">=</span>off prepare/run/cleanup
 </span></span></code></pre></div><h3 id="insert-testing">INSERT Testing</h3>
 <p>Let&rsquo;s discuss the INSERT test separately. The INSERT test refers to Sysbench&rsquo;s <code>oltp_insert</code>. The characteristic of this test is that when <code>auto_inc</code> is <code>on</code>, data is inserted during the prepare phase of the test; otherwise, only the table is created without inserting data. Because when <code>auto_inc</code> is <code>on</code>, after the prepare phase, during the run phase, the inserted data will not cause conflicts due to the guarantee of the auto-increment column. When <code>auto_inc</code> is <code>off</code>, the <code>id</code> of the data inserted during the run phase is randomly assigned, which aligns with some actual testing scenarios.</p>
 <p>For CockroachDB, when testing INSERT operations with <code>auto_inc</code> set to <code>off</code>, after the prepare phase, during the run phase of data insertion, you can observe the monitoring metrics (by connecting to CockroachDB&rsquo;s HTTP port) under the &ldquo;Distribution&rdquo; section in &ldquo;KV Transactions&rdquo;. You&rsquo;ll notice a large number of &ldquo;Fast-path Committed&rdquo; transactions. This indicates that transactions are committed using one-phase commit (1PC). That is, the data involved in the transaction does not span across CockroachDB nodes, so there&rsquo;s no need to ensure consistency through two-phase commit transactions. This is an optimization in CockroachDB, which is very effective in INSERT tests and can deliver excellent performance.</p>
@@ -3671,14 +3783,14 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 </span></span><span style="display:flex;"><span>This is possible with Travis-CI following simple steps:
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Create private and public repos
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Download Ruby
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Install the travis gem ``gem install travis``
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Install the travis gem `<span style="color:#e6db74">`gem install travis`</span>`
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Generate a token in the Github website to allow others to play with your repos (copy the hash)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Log into your git account
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Generate a secure token with the Travis gem (copy long hash)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Fill the environment variables in the ```.travis.yml``` file (USER, EMAIL, REPO, FILES)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Fill the environment variables in the ``<span style="color:#e6db74">`.travis.yml`</span>`` file (USER, EMAIL, REPO, FILES)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Replace the value of <span style="font-weight:bold">**secure**</span> with your long hash
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Replace <span style="font-weight:bold">**GH_TOKEN**</span> with your Travis token name
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Push ```.travis.yml``` to private repo
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Push ``<span style="color:#e6db74">`.travis.yml`</span>`` to private repo
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Go to Travis to unlock your private repo tests
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Push your files to the private repo to test
 </span></span><span style="display:flex;"><span>

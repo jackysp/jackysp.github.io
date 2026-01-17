@@ -2,13 +2,40 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://blog.minifish.org/posts/webvm/</loc>
-    <lastmod>2025-01-13T19:54:00+08:00</lastmod>
+    <loc>https://blog.minifish.org/tags/database/</loc>
+    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/distributed-systems/</loc>
+    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/</loc>
-    <lastmod>2025-01-13T19:54:00+08:00</lastmod>
+    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/oceanbase/</loc>
+    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/oceanbase-internals-transaction-replay-sql-unit-placement/</loc>
+    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/</loc>
+    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/scheduling/</loc>
+    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/sql-engine/</loc>
+    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/storage/</loc>
+    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/</loc>
+    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/transactions/</loc>
+    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/webvm/</loc>
     <lastmod>2025-01-13T19:54:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/brompton-modification/</loc>
@@ -154,7 +181,5 @@
     <loc>https://blog.minifish.org/categories/</loc>
   </url><url>
     <loc>https://blog.minifish.org/search/</loc>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/</loc>
   </url>
 </urlset>

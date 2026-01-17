@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Distributed-Systems on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/distributed-systems/</link>
+    <description>Recent content in Distributed-Systems on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Sat, 17 Jan 2026 10:00:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/distributed-systems/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OceanBase Internals: Transactions, Replay, SQL Engine, and Unit Placement</title>
+      <link>https://blog.minifish.org/posts/oceanbase-internals-transaction-replay-sql-unit-placement/</link>
+      <pubDate>Sat, 17 Jan 2026 10:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/oceanbase-internals-transaction-replay-sql-unit-placement/</guid>
+      <description>A code-guided tour of OceanBase write transactions, tablet replay, SQL compile-execute, and unit placement, focusing on motivation, design, implementation details, and tradeoffs.</description>
+      <content:encoded><![CDATA[<h2 id="why-these-paths-matter">Why These Paths Matter</h2>
+<p>OceanBase targets high availability and scalability in a shared-nothing cluster. The core engineering challenge is to make four critical subsystems work together with predictable latency and correctness:</p>
+<ul>
+<li>Write transactions must be durable, replicated, and efficiently committed.</li>
+<li>Tablet replay must recover state quickly and safely.</li>
+<li>SQL parse to execute must optimize well while respecting multi-tenant constraints.</li>
+<li>Unit placement must map tenants to physical resources without fragmentation.</li>
+</ul>
+<p>This article focuses on motivation, design, implementation highlights, and tradeoffs, using concrete code entry points from the OceanBase codebase.</p>
+<h2 id="design-overview">Design Overview</h2>
+<p>At a high level, each node runs a full SQL engine, storage engine, and transaction engine. Data is organized into tablets, which belong to log streams. Log streams replicate changes using Paxos-based log service. Tenants slice resources via unit configurations and pools, while rootserver components place those units on servers.</p>
+<p>The following sections walk through each path with the relevant implementation anchors.</p>
+<h2 id="write-transaction-from-memtable-to-replicated-log">Write Transaction: From Memtable to Replicated Log</h2>
+<h3 id="motivation">Motivation</h3>
+<p>A write transaction must be both fast and durable. OceanBase uses memtables for in-memory writes, and a log stream for redo replication. The design must allow low-latency commit while supporting parallel redo submission and multi-participant (2PC) transactions.</p>
+<h3 id="design-sketch">Design Sketch</h3>
+<ul>
+<li>Each transaction is represented by a per-LS context (<code>ObPartTransCtx</code>).</li>
+<li>Redo is flushed based on pressure or explicit triggers.</li>
+<li>Commit chooses one-phase or two-phase based on participants.</li>
+<li>Logs are submitted via a log adapter backed by logservice.</li>
+</ul>
+<h3 id="implementation-highlights">Implementation Highlights</h3>
+<ul>
+<li>Transaction context lifecycle and commit logic are in <code>src/storage/tx/ob_trans_part_ctx.cpp</code>.</li>
+<li>Redo submission is driven by <code>submit_redo_after_write</code>, which switches between serial and parallel logging based on thresholds.</li>
+<li>Commit decides between one-phase and two-phase commit depending on participant count.</li>
+<li>The log writer (<code>ObTxLSLogWriter</code>) submits serialized logs via <code>ObITxLogAdapter</code>, which is wired to logservice (<code>ObLogHandler</code>).</li>
+</ul>
+<h3 id="tradeoffs">Tradeoffs</h3>
+<ul>
+<li><strong>Serial vs parallel redo</strong>: Serial logging is simpler and cheaper for small transactions, but parallel logging reduces tail latency for large transactions at the cost of more coordination.</li>
+<li><strong>1PC vs 2PC</strong>: 1PC is fast for single-participant transactions; 2PC is required for distributed consistency but increases coordination overhead.</li>
+<li><strong>In-memory batching vs durability</strong>: Larger batching improves throughput but can delay durability and increase replay time.</li>
+</ul>
+<h2 id="tablet-replay-reconstructing-state-safely">Tablet Replay: Reconstructing State Safely</h2>
+<h3 id="motivation-1">Motivation</h3>
+<p>Recovery needs to be deterministic and safe: the system must replay logs to reconstruct tablet state without violating invariants or applying obsolete data.</p>
+<h3 id="design-sketch-1">Design Sketch</h3>
+<ul>
+<li>Logservice schedules replay tasks per log stream.</li>
+<li>Tablet replay executor fetches the LS, locates the tablet, validates replay conditions, and applies the log.</li>
+<li>Specialized replay executors handle different log types (e.g., schema updates, split operations).</li>
+</ul>
+<h3 id="implementation-highlights-1">Implementation Highlights</h3>
+<ul>
+<li>Replay orchestration lives in <code>src/logservice/replayservice/ob_log_replay_service.cpp</code>.</li>
+<li>Tablet replay logic is in <code>src/logservice/replayservice/ob_tablet_replay_executor.cpp</code>.</li>
+<li>Specific tablet operations are applied in dedicated executors, such as <code>ObTabletServiceClogReplayExecutor</code> in <code>src/storage/tablet/ob_tablet_service_clog_replay_executor.cpp</code>.</li>
+</ul>
+<h3 id="tradeoffs-1">Tradeoffs</h3>
+<ul>
+<li><strong>Strictness vs throughput</strong>: Replay barriers enforce ordering for correctness but can reduce parallelism.</li>
+<li><strong>Tablet existence checks</strong>: Allowing missing tablets can speed recovery but requires careful validation to avoid partial state.</li>
+<li><strong>MDS synchronization</strong>: Metadata state updates improve correctness but add contention via locks.</li>
+</ul>
+<h2 id="sql-parse-to-execute-compile-pipeline-for-performance">SQL Parse to Execute: Compile Pipeline for Performance</h2>
+<h3 id="motivation-2">Motivation</h3>
+<p>OceanBase supports MySQL and Oracle compatibility with rich SQL features. The compile pipeline must be fast, cache-friendly, and yield efficient execution plans.</p>
+<h3 id="design-sketch-2">Design Sketch</h3>
+<ul>
+<li>SQL text enters the engine via <code>ObSql::stmt_query</code>.</li>
+<li>Parsing produces a parse tree.</li>
+<li>Resolution turns the parse tree into a typed statement tree.</li>
+<li>Rewrite and optimization generate a logical plan.</li>
+<li>Code generation produces a physical plan and execution context.</li>
+</ul>
+<h3 id="implementation-highlights-2">Implementation Highlights</h3>
+<ul>
+<li>Entry and query handling: <code>src/sql/ob_sql.cpp</code> (<code>stmt_query</code>, <code>handle_text_query</code>).</li>
+<li>Resolver: <code>ObResolver</code> in <code>src/sql/resolver/ob_resolver.h</code>.</li>
+<li>Transform and optimize: <code>ObSql::transform_stmt</code> and <code>ObSql::optimize_stmt</code> in <code>src/sql/ob_sql.cpp</code>.</li>
+<li>Code generation: <code>ObSql::code_generate</code> in <code>src/sql/ob_sql.cpp</code>.</li>
+</ul>
+<h3 id="tradeoffs-2">Tradeoffs</h3>
+<ul>
+<li><strong>Plan cache vs compile accuracy</strong>: Plan caching reduces latency but may reuse suboptimal plans under changing data distributions.</li>
+<li><strong>Rewrite aggressiveness</strong>: More transformations can yield better plans but increase compile cost.</li>
+<li><strong>JIT and rich formats</strong>: Faster execution for some workloads, but added complexity and memory pressure.</li>
+</ul>
+<h2 id="unit-placement-scheduling-tenant-resources">Unit Placement: Scheduling Tenant Resources</h2>
+<h3 id="motivation-3">Motivation</h3>
+<p>Multi-tenancy requires predictable isolation and efficient resource utilization. Unit placement must respect CPU, memory, and disk constraints while minimizing fragmentation.</p>
+<h3 id="design-sketch-3">Design Sketch</h3>
+<ul>
+<li>Unit config defines resource demands.</li>
+<li>Resource pool groups units by tenant and zone.</li>
+<li>Placement strategy scores candidate servers to pick a host for each unit.</li>
+</ul>
+<h3 id="implementation-highlights-3">Implementation Highlights</h3>
+<ul>
+<li>Resource types and pools: <code>src/share/unit/ob_unit_config.h</code>, <code>src/share/unit/ob_resource_pool.h</code>, <code>src/share/unit/ob_unit_info.h</code>.</li>
+<li>Placement policy: <code>src/rootserver/ob_unit_placement_strategy.cpp</code> uses a weighted dot-product of remaining resources to choose a server.</li>
+<li>Orchestration: <code>src/rootserver/ob_unit_manager.cpp</code> handles creation, alteration, and migration of units and pools.</li>
+</ul>
+<h3 id="tradeoffs-3">Tradeoffs</h3>
+<ul>
+<li><strong>Greedy placement vs global optimality</strong>: Dot-product scoring is efficient and practical but may not be globally optimal.</li>
+<li><strong>Capacity normalization</strong>: Assuming comparable server capacities simplifies scoring but may bias placement in heterogeneous clusters.</li>
+<li><strong>Latency vs stability</strong>: Fast placement decisions can lead to more churn; conservative placement improves stability but can reduce utilization.</li>
+</ul>
+<h2 id="closing-thoughts">Closing Thoughts</h2>
+<p>These four paths demonstrate how OceanBase balances correctness, performance, and operability. The code structure follows clear separation of responsibilities: transaction logic is in <code>storage/tx</code>, replication and replay are in <code>logservice</code>, SQL compilation is in <code>sql</code>, and scheduling is in <code>rootserver</code> and <code>share/unit</code>. The tradeoffs are explicit and largely encoded in thresholds and policies, which makes tuning feasible without invasive rewrites.</p>
+<p>If you are extending OceanBase, start with the entry points highlighted above and follow the call chains into the relevant subsystem. It is the fastest way to build a mental model grounded in the actual implementation.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>
