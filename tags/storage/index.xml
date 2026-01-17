@@ -34,21 +34,21 @@
 <h3 id="cluster-zone-and-node-organization">Cluster, Zone, and Node Organization</h3>
 <pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">graph TB
     subgraph Cluster[&#34;OceanBase Cluster&#34;]
-        subgraph Z1[&#34;Zone 1 - Availability Zone&#34;]
+        subgraph Z1[&#34;Zone 1&#34;]
             N1[&#34;OBServer Node 1&#34;]
             N2[&#34;OBServer Node 2&#34;]
         end
-        subgraph Z2[&#34;Zone 2 - Availability Zone&#34;]
+        subgraph Z2[&#34;Zone 2&#34;]
             N3[&#34;OBServer Node 3&#34;]
             N4[&#34;OBServer Node 4&#34;]
         end
-        subgraph Z3[&#34;Zone 3 - Availability Zone&#34;]
+        subgraph Z3[&#34;Zone 3&#34;]
             N5[&#34;OBServer Node 5&#34;]
             N6[&#34;OBServer Node 6&#34;]
         end
     end
     
-    subgraph Proxy[&#34;obproxy Layer - Stateless&#34;]
+    subgraph Proxy[&#34;obproxy Layer&#34;]
         P1[&#34;obproxy 1&#34;]
         P2[&#34;obproxy 2&#34;]
     end
@@ -108,8 +108,8 @@
 <h3 id="multi-tenant-resource-model">Multi-Tenant Resource Model</h3>
 <pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">graph TB
     subgraph Tenant[&#34;Tenant&#34;]
-        T1[&#34;Tenant 1 - MySQL Mode&#34;]
-        T2[&#34;Tenant 2 - Oracle Mode&#34;]
+        T1[&#34;Tenant 1 MySQL Mode&#34;]
+        T2[&#34;Tenant 2 Oracle Mode&#34;]
         T3[&#34;System Tenant&#34;]
     end
     
@@ -120,9 +120,9 @@
     end
     
     subgraph Unit[&#34;Resource Unit&#34;]
-        U1[&#34;Unit 1 - CPU Memory Disk&#34;]
-        U2[&#34;Unit 2 - CPU Memory Disk&#34;]
-        U3[&#34;Unit 3 - CPU Memory Disk&#34;]
+        U1[&#34;Unit 1 CPU Memory Disk&#34;]
+        U2[&#34;Unit 2 CPU Memory Disk&#34;]
+        U3[&#34;Unit 3 CPU Memory Disk&#34;]
     end
     
     subgraph Server[&#34;Physical Server&#34;]
@@ -156,7 +156,7 @@
     end
     
     subgraph Proxy[&#34;Proxy Layer&#34;]
-        ODP[&#34;obproxy - Stateless Router&#34;]
+        ODP[&#34;obproxy Router&#34;]
     end
     
     subgraph OBServer[&#34;OBServer Layer&#34;]
