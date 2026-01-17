@@ -32,7 +32,51 @@
 <h2 id="design-overview">Design Overview</h2>
 <p>At a high level, each node runs a full SQL engine, storage engine, and transaction engine. Data is organized into tablets, which belong to log streams. Log streams replicate changes using Paxos-based log service. Tenants slice resources via unit configurations and pools, while rootserver components place those units on servers.</p>
 <p>The following sections walk through each path with the relevant implementation anchors.</p>
-<h2 id="write-transaction-from-memtable-to-replicated-log">Write Transaction: From Memtable to Replicated Log</h2>
+<h2 id="architecture-diagrams">Architecture Diagrams</h2>
+<h3 id="transaction-write-path">Transaction Write Path</h3>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart LR
+  subgraph A[&#34;Transaction Write Path&#34;]
+    C[&#34;Client&#34;] --&gt; S[&#34;SQL Engine&#34;]
+    S --&gt; T[&#34;Transaction Context&#34;]
+    T --&gt; M[&#34;Memtable Write&#34;]
+    M --&gt; R[&#34;Redo Buffer&#34;]
+    R --&gt; L[&#34;Log Service&#34;]
+    L --&gt; P[&#34;Replicated Log&#34;]
+    P --&gt; K[&#34;Commit Result&#34;]
+  end
+</code></pre><h3 id="tablet-replay-path">Tablet Replay Path</h3>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart LR
+  subgraph B[&#34;Tablet Replay Path&#34;]
+    L[&#34;Log Service&#34;] --&gt; RS[&#34;Replay Service&#34;]
+    RS --&gt; E[&#34;Tablet Replay Executor&#34;]
+    E --&gt; LS[&#34;Log Stream&#34;]
+    LS --&gt; TB[&#34;Tablet&#34;]
+    TB --&gt; CK[&#34;Replay Checks&#34;]
+    CK --&gt; AP[&#34;Apply Operation&#34;]
+    AP --&gt; ST[&#34;Updated Tablet State&#34;]
+  end
+</code></pre><h3 id="sql-compile-and-execute">SQL Compile and Execute</h3>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart LR
+  subgraph C[&#34;SQL Compile and Execute&#34;]
+    Q[&#34;SQL Text&#34;] --&gt; P[&#34;Parser&#34;]
+    P --&gt; R[&#34;Resolver&#34;]
+    R --&gt; W[&#34;Rewriter&#34;]
+    W --&gt; O[&#34;Optimizer&#34;]
+    O --&gt; LP[&#34;Logical Plan&#34;]
+    LP --&gt; CG[&#34;Code Generator&#34;]
+    CG --&gt; PP[&#34;Physical Plan&#34;]
+    PP --&gt; EX[&#34;Executor&#34;]
+  end
+</code></pre><h3 id="unit-placement">Unit Placement</h3>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart LR
+  subgraph D[&#34;Unit Placement&#34;]
+    UC[&#34;Unit Config&#34;] --&gt; RP[&#34;Resource Pool&#34;]
+    RP --&gt; PS[&#34;Placement Strategy&#34;]
+    PS --&gt; CS[&#34;Candidate Servers&#34;]
+    CS --&gt; CH[&#34;Chosen Server&#34;]
+    CH --&gt; UN[&#34;Unit Instance&#34;]
+  end
+</code></pre><h2 id="write-transaction-from-memtable-to-replicated-log">Write Transaction: From Memtable to Replicated Log</h2>
 <h3 id="motivation">Motivation</h3>
 <p>A write transaction must be both fast and durable. OceanBase uses memtables for in-memory writes, and a log stream for redo replication. The design must allow low-latency commit while supporting parallel redo submission and multi-participant (2PC) transactions.</p>
 <h3 id="design-sketch">Design Sketch</h3>
