@@ -29,6 +29,182 @@
 <li>Unit placement must map tenants to physical resources without fragmentation.</li>
 </ul>
 <p>This article focuses on motivation, design, implementation highlights, and tradeoffs, using concrete code entry points from the OceanBase codebase.</p>
+<h2 id="system-architecture">System Architecture</h2>
+<p>OceanBase adopts a shared-nothing architecture where each node is equal and runs its own SQL engine, storage engine, and transaction engine. Understanding the overall architecture is essential before diving into implementation details.</p>
+<h3 id="cluster-zone-and-node-organization">Cluster, Zone, and Node Organization</h3>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">graph TB
+    subgraph Cluster[&#34;OceanBase Cluster&#34;]
+        subgraph Z1[&#34;Zone 1 - Availability Zone&#34;]
+            N1[&#34;OBServer Node 1&#34;]
+            N2[&#34;OBServer Node 2&#34;]
+        end
+        subgraph Z2[&#34;Zone 2 - Availability Zone&#34;]
+            N3[&#34;OBServer Node 3&#34;]
+            N4[&#34;OBServer Node 4&#34;]
+        end
+        subgraph Z3[&#34;Zone 3 - Availability Zone&#34;]
+            N5[&#34;OBServer Node 5&#34;]
+            N6[&#34;OBServer Node 6&#34;]
+        end
+    end
+    
+    subgraph Proxy[&#34;obproxy Layer - Stateless&#34;]
+        P1[&#34;obproxy 1&#34;]
+        P2[&#34;obproxy 2&#34;]
+    end
+    
+    Client[&#34;Client Applications&#34;] --&gt; Proxy
+    Proxy --&gt; N1
+    Proxy --&gt; N3
+    Proxy --&gt; N5
+    
+    N1 -.Paxos Replication.-&gt; N3
+    N3 -.Paxos Replication.-&gt; N5
+    N5 -.Paxos Replication.-&gt; N1
+</code></pre><p><strong>Key Concepts:</strong></p>
+<ul>
+<li><strong>Cluster</strong>: A collection of nodes working together</li>
+<li><strong>Zone</strong>: Logical availability zones for high availability and disaster recovery</li>
+<li><strong>OBServer</strong>: Service process on each node handling SQL, storage, and transactions</li>
+<li><strong>obproxy</strong>: Stateless proxy layer routing SQL requests to appropriate OBServer nodes</li>
+</ul>
+<h3 id="data-organization-partition-tablet-and-log-stream">Data Organization: Partition, Tablet, and Log Stream</h3>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">graph TB
+    subgraph Table[&#34;Table&#34;]
+        P1[&#34;Partition 1&#34;]
+        P2[&#34;Partition 2&#34;]
+        P3[&#34;Partition 3&#34;]
+    end
+    
+    subgraph LS1[&#34;Log Stream 1&#34;]
+        T1[&#34;Tablet 1&#34;]
+        T2[&#34;Tablet 2&#34;]
+    end
+    
+    subgraph LS2[&#34;Log Stream 2&#34;]
+        T3[&#34;Tablet 3&#34;]
+    end
+    
+    subgraph LS3[&#34;Log Stream 3&#34;]
+        T4[&#34;Tablet 4&#34;]
+    end
+    
+    P1 --&gt; T1
+    P1 --&gt; T2
+    P2 --&gt; T3
+    P3 --&gt; T4
+    
+    T1 --&gt; LS1
+    T2 --&gt; LS1
+    T3 --&gt; LS2
+    T4 --&gt; LS3
+    
+    LS1 -.Multi-Paxos.-&gt; LS1
+    LS2 -.Multi-Paxos.-&gt; LS2
+    LS3 -.Multi-Paxos.-&gt; LS3
+</code></pre><p><strong>Key Concepts:</strong></p>
+<ul>
+<li><strong>Partition</strong>: Logical shard of a table (hash, range, list partitioning)</li>
+<li><strong>Tablet</strong>: Physical storage object storing ordered data records for a partition</li>
+<li><strong>Log Stream (LS)</strong>: Replication unit using Multi-Paxos for data consistency</li>
+<li><strong>Replication</strong>: Each tablet has multiple replicas across zones, with one leader accepting writes</li>
+</ul>
+<h3 id="multi-tenant-resource-model">Multi-Tenant Resource Model</h3>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">graph TB
+    subgraph Tenant[&#34;Tenant&#34;]
+        T1[&#34;Tenant 1 - MySQL Mode&#34;]
+        T2[&#34;Tenant 2 - Oracle Mode&#34;]
+        T3[&#34;System Tenant&#34;]
+    end
+    
+    subgraph Pool[&#34;Resource Pool&#34;]
+        RP1[&#34;Pool 1&#34;]
+        RP2[&#34;Pool 2&#34;]
+        RP3[&#34;Pool 3&#34;]
+    end
+    
+    subgraph Unit[&#34;Resource Unit&#34;]
+        U1[&#34;Unit 1 - CPU Memory Disk&#34;]
+        U2[&#34;Unit 2 - CPU Memory Disk&#34;]
+        U3[&#34;Unit 3 - CPU Memory Disk&#34;]
+    end
+    
+    subgraph Server[&#34;Physical Server&#34;]
+        S1[&#34;Server 1&#34;]
+        S2[&#34;Server 2&#34;]
+        S3[&#34;Server 3&#34;]
+    end
+    
+    T1 --&gt; RP1
+    T2 --&gt; RP2
+    T3 --&gt; RP3
+    
+    RP1 --&gt; U1
+    RP2 --&gt; U2
+    RP3 --&gt; U3
+    
+    U1 --&gt; S1
+    U2 --&gt; S2
+    U3 --&gt; S3
+</code></pre><p><strong>Key Concepts:</strong></p>
+<ul>
+<li><strong>Tenant</strong>: Isolated database instance (MySQL or Oracle compatibility)</li>
+<li><strong>Resource Pool</strong>: Groups resource units for a tenant across zones</li>
+<li><strong>Resource Unit</strong>: Virtual container with CPU, memory, and disk resources</li>
+<li><strong>Unit Placement</strong>: Rootserver schedules units to physical servers based on resource constraints</li>
+</ul>
+<h3 id="layered-architecture">Layered Architecture</h3>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">graph TB
+    subgraph App[&#34;Application Layer&#34;]
+        Client[&#34;Client Applications&#34;]
+    end
+    
+    subgraph Proxy[&#34;Proxy Layer&#34;]
+        ODP[&#34;obproxy - Stateless Router&#34;]
+    end
+    
+    subgraph OBServer[&#34;OBServer Layer&#34;]
+        subgraph Node[&#34;OBServer Node&#34;]
+            SQL[&#34;SQL Engine&#34;]
+            TX[&#34;Transaction Engine&#34;]
+            ST[&#34;Storage Engine&#34;]
+        end
+    end
+    
+    subgraph Storage[&#34;Storage Layer&#34;]
+        subgraph LS[&#34;Log Stream&#34;]
+            Tablet[&#34;Tablet&#34;]
+            Memtable[&#34;Memtable&#34;]
+            SSTable[&#34;SSTable&#34;]
+        end
+        Palf[&#34;Paxos Log Service&#34;]
+    end
+    
+    subgraph Resource[&#34;Resource Layer&#34;]
+        Tenant[&#34;Tenant&#34;]
+        Unit[&#34;Resource Unit&#34;]
+        Pool[&#34;Resource Pool&#34;]
+        RS[&#34;Rootserver&#34;]
+    end
+    
+    Client --&gt; ODP
+    ODP --&gt; SQL
+    SQL --&gt; TX
+    TX --&gt; ST
+    ST --&gt; LS
+    LS --&gt; Palf
+    Tenant --&gt; Unit
+    Unit --&gt; Pool
+    Pool --&gt; RS
+    RS --&gt; Node
+</code></pre><p><strong>Key Concepts:</strong></p>
+<ul>
+<li><strong>SQL Engine</strong>: Parses, optimizes, and executes SQL statements</li>
+<li><strong>Transaction Engine</strong>: Manages transaction lifecycle, commit protocols, and consistency</li>
+<li><strong>Storage Engine</strong>: Handles data organization, memtables, and SSTables</li>
+<li><strong>Log Service</strong>: Provides Paxos-based replication and durability</li>
+<li><strong>Rootserver</strong>: Manages cluster metadata, resource scheduling, and placement</li>
+</ul>
 <h2 id="design-overview">Design Overview</h2>
 <p>At a high level, each node runs a full SQL engine, storage engine, and transaction engine. Data is organized into tablets, which belong to log streams. Log streams replicate changes using Paxos-based log service. Tenants slice resources via unit configurations and pools, while rootserver components place those units on servers.</p>
 <p>The following sections walk through each path with the relevant implementation anchors.</p>
