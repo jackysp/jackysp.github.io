@@ -58,9 +58,9 @@
     Proxy --&gt; N3
     Proxy --&gt; N5
     
-    N1 -.Paxos Replication.-&gt; N3
-    N3 -.Paxos Replication.-&gt; N5
-    N5 -.Paxos Replication.-&gt; N1
+    N1 -.-&gt; N3
+    N3 -.-&gt; N5
+    N5 -.-&gt; N1
 </code></pre><p><strong>Key Concepts:</strong></p>
 <ul>
 <li><strong>Cluster</strong>: A collection of nodes working together</li>
@@ -98,16 +98,12 @@
     T2 --&gt; LS1
     T3 --&gt; LS2
     T4 --&gt; LS3
-    
-    LS1 -.Multi-Paxos.-&gt; LS1
-    LS2 -.Multi-Paxos.-&gt; LS2
-    LS3 -.Multi-Paxos.-&gt; LS3
 </code></pre><p><strong>Key Concepts:</strong></p>
 <ul>
 <li><strong>Partition</strong>: Logical shard of a table (hash, range, list partitioning)</li>
 <li><strong>Tablet</strong>: Physical storage object storing ordered data records for a partition</li>
 <li><strong>Log Stream (LS)</strong>: Replication unit using Multi-Paxos for data consistency</li>
-<li><strong>Replication</strong>: Each tablet has multiple replicas across zones, with one leader accepting writes</li>
+<li><strong>Replication</strong>: Each tablet has multiple replicas across zones, with one leader accepting writes. Log streams replicate data via Multi-Paxos protocol across different zones.</li>
 </ul>
 <h3 id="multi-tenant-resource-model">Multi-Tenant Resource Model</h3>
 <pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">graph TB
