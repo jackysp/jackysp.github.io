@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Moka on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/moka/</link>
+    <description>Recent content in Moka on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Sun, 18 Jan 2026 10:00:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/moka/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Brikka on Induction: An Engineering View of a Triggered Extraction System</title>
+      <link>https://blog.minifish.org/posts/brikka-induction-triggered-extraction/</link>
+      <pubDate>Sun, 18 Jan 2026 10:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/brikka-induction-triggered-extraction/</guid>
+      <description>A systems-engineering analysis of using a Bialetti Brikka on an induction hob. We examine why traditional Moka assumptions fail, how Brikka behaves as a pressure-triggered system, and how engineers should reason about heat, inertia, and control boundaries.</description>
+      <content:encoded><![CDATA[<h2 id="motivation-why-this-is-an-engineering-problem">Motivation: Why This Is an Engineering Problem</h2>
+<p>Most Moka pot guides treat brewing as a <em>recipe problem</em>:
+grind size, water temperature, and heat level.</p>
+<p>That framing breaks down completely when you introduce:</p>
+<ul>
+<li>A <strong>Brikka</strong> (pressure valve + burst extraction)</li>
+<li>An <strong>induction hob</strong></li>
+<li>A <strong>steel induction adapter plate</strong></li>
+</ul>
+<p>At this point, you are no longer “brewing coffee”.
+You are operating a <strong>multi-stage thermal + pressure system with delayed feedback</strong>.</p>
+<p>This article reframes Brikka-on-induction as a <strong>control problem</strong>, not a recipe.</p>
+<h2 id="brikka-vs-classic-moka-a-structural-difference">Brikka vs Classic Moka: A Structural Difference</h2>
+<p>Classic Moka pots operate as <strong>continuous-flow systems</strong>.</p>
+<p>Brikka is fundamentally different.</p>
+<h3 id="brikka-is-a-triggered-system">Brikka is a Triggered System</h3>
+<ul>
+<li>No flow occurs until a <strong>pressure threshold</strong> is reached</li>
+<li>Once triggered, the valve opens abruptly</li>
+<li>Extraction happens in a <strong>very short, high-energy window</strong></li>
+</ul>
+<p>From a systems perspective:</p>
+<blockquote>
+<p><strong>Classic Moka = streaming pipeline</strong><br>
+<strong>Brikka = edge-triggered event</strong></p>
+</blockquote>
+<h2 id="induction--adapter-plate-where-the-model-changes">Induction + Adapter Plate: Where the Model Changes</h2>
+<p>With an induction hob and the official Bialetti adapter plate, the heat path becomes:</p>
+<p>Induction coil<br>
+→ Steel adapter plate<br>
+→ Aluminum boiler<br>
+→ Water</p>
+<p>The adapter plate introduces <strong>significant thermal inertia</strong>.</p>
+<p>Low or medium power levels often never leave the heat accumulation phase.</p>
+<h2 id="engineering-goal-reach-the-trigger-then-stop">Engineering Goal: Reach the Trigger, Then Stop</h2>
+<p>Because Brikka extracts only after the valve opens, the primary goal is:</p>
+<blockquote>
+<p>Drive the system to the trigger point as efficiently as possible — then stop.</p>
+</blockquote>
+<p>Any energy added after triggering only increases bitterness.</p>
+<h2 id="parameter-design">Parameter Design</h2>
+<h3 id="water">Water</h3>
+<ul>
+<li>Cold water to the fill line</li>
+</ul>
+<p>Cold water ensures a linear pressure ramp.</p>
+<h3 id="beans">Beans</h3>
+<ul>
+<li>Medium to medium-light roast</li>
+</ul>
+<p>Brikka amplifies front-loaded flavors.</p>
+<h3 id="grind">Grind</h3>
+<ul>
+<li>Timemore C5 ESP: baseline <strong>1.1.5</strong></li>
+<li>Adjust only ±0.0.5</li>
+</ul>
+<p>Brikka has a narrow operating window.</p>
+<h3 id="heat-strategy">Heat Strategy</h3>
+<ul>
+<li>Phase 1: <strong>Level 9</strong> until trigger</li>
+<li>Phase 2: <strong>Cut power immediately at first continuous output</strong></li>
+<li>Rinse boiler bottom with cold water</li>
+</ul>
+<p>Residual heat is sufficient.</p>
+<h2 id="timing-as-validation">Timing as Validation</h2>
+<ul>
+<li>Trigger time: <strong>3–5 minutes</strong></li>
+<li>Much longer indicates system inefficiency</li>
+</ul>
+<p>Time validates the system, not flavor.</p>
+<h2 id="design-trade-offs">Design Trade-offs</h2>
+<p>High initial power stresses equipment but exits the thermal dead zone.</p>
+<p>Immediate cutoff sacrifices volume but preserves flavor boundaries.</p>
+<h2 id="final-mental-model">Final Mental Model</h2>
+<blockquote>
+<p><strong>Brikka is not a brewer.<br>
+It is a pressure-triggered extraction event.</strong></p>
+</blockquote>
+<p>Once the event fires, the system should coast.</p>
+<p>Respecting that boundary makes the system predictable and repeatable.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

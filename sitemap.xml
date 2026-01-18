@@ -2,22 +2,52 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://blog.minifish.org/tags/brikka/</loc>
+    <lastmod>2026-01-18T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/brikka-induction-triggered-extraction/</loc>
+    <lastmod>2026-01-18T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/</loc>
+    <lastmod>2026-01-18T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/control-systems/</loc>
+    <lastmod>2026-01-18T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/engineering/</loc>
+    <lastmod>2026-01-18T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/engineering-mindset/</loc>
+    <lastmod>2026-01-18T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/induction/</loc>
+    <lastmod>2026-01-18T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/</loc>
+    <lastmod>2026-01-18T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/moka/</loc>
+    <lastmod>2026-01-18T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/</loc>
+    <lastmod>2026-01-18T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/systems-thinking/</loc>
+    <lastmod>2026-01-18T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/</loc>
+    <lastmod>2026-01-18T10:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/tags/database/</loc>
     <lastmod>2026-01-17T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/distributed-systems/</loc>
     <lastmod>2026-01-17T10:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/</loc>
-    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/oceanbase/</loc>
     <lastmod>2026-01-17T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/oceanbase-internals-transaction-replay-sql-unit-placement/</loc>
-    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/posts/</loc>
     <lastmod>2026-01-17T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/scheduling/</loc>
@@ -27,9 +57,6 @@
     <lastmod>2026-01-17T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/storage/</loc>
-    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/</loc>
     <lastmod>2026-01-17T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/transactions/</loc>
@@ -177,8 +204,6 @@
     <lastmod>2014-06-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/archives/</loc>
-  </url><url>
-    <loc>https://blog.minifish.org/categories/</loc>
   </url><url>
     <loc>https://blog.minifish.org/search/</loc>
   </url>
