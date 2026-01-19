@@ -200,10 +200,10 @@
 </span></span><span style="display:flex;"><span><span style="color:#f92672">env</span>:
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">global</span>:
 </span></span><span style="display:flex;"><span>    - <span style="color:#f92672">secure</span>: <span style="color:#ae81ff">rxKkyttLE1L4VsVIhhDUYGoLlER33ijKbdAAJPE8vNDSHwyANYnsP1GXK/rcwQqsL/KcJa55wEjVwEBzTMCqZM4UYNVIWqrJepVYo4rL1WhO+jT5sCqVR3qxK9KbgodcSXbmySJnJs0iLGMIQ2bo8yE91OxIC/GKkLCIwr9x4EGwFd5EcE5bOqmVqoSRk1q/1/5yA0aVF+Pohc5ATCZGw9+IyprU2Dx7qbA7F/T/4FQTOQZ4CLZAgyh/Gp1P+uxf1OK4IMCc/P6jVeTmbzQIbUcX0uG09pR7F0GnlV1ZOutMjY7SF8tQ7LNv2Wf8iWdiqehcwKNe/4TFHjs6rm3lEc6F1ELB5s4Z+QXjIM70haENSwM1FI8K5biL7tndAC1TujKESm0XadxORy5yOz7TfQZDTuMXvmmH3j+NFL3vTYPyMwwFca+IQBwD67a4PKD0PWBgEFD9Kn3rAlAzhV5OYdUuxZhx5zuQjKX5szUbL166fgoRnUwDp8dsOjLgOUqQa47IRqR3CTPzbf3zZIxGuX5x6mWySezCNprnXKCpyCegJBLoxQusA+EEYkvl4AOzhnmkhxFbEbHp+DYBjcSEEgpd06l67l3KzjMkpF02vr9CHNj8r7lAtZxwBVxYmczk289D5csOVR1SZKxQLwhx7k+CuEcYds685tLjIMmB0ZU=</span>
-</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">USER=&#34;jackysp&#34;</span>
-</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">FULLNAME=&#34;Jack Yu&#34;</span>
-</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">EMAIL=&#34;jackysp@gmail.com&#34;</span>
-</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">REPO=&#34;jackysp.github.io&#34;</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">USER=&#34;username&#34;</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">FULLNAME=&#34;Your Name&#34;</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">EMAIL=&#34;your-email@example.com&#34;</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">REPO=&#34;your-username.github.io&#34;</span>
 </span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">GH_REPO=&#34;github.com/${USER}/${REPO}.git&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">before_script</span>:
 </span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git clone https://${GH_TOKEN}@${GH_REPO}</span>
