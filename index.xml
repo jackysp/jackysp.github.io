@@ -12,14 +12,210 @@
     <generator>Hugo -- 0.154.5</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present</copyright>
-    <lastBuildDate>Sun, 18 Jan 2026 10:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 19 Jan 2026 10:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>From AI Conversations to Published Blog: The MCP-Powered Publishing Revolution</title>
+      <link>https://blog.minifish.org/posts/ai-mcp-blog-publishing-workflow/</link>
+      <pubDate>Mon, 19 Jan 2026 10:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/ai-mcp-blog-publishing-workflow/</guid>
+      <description>&lt;h2 id=&#34;the-problem-lost-context-lost-thoughts&#34;&gt;The Problem: Lost Context, Lost Thoughts&lt;/h2&gt;
+&lt;p&gt;We&amp;rsquo;ve all been there. You&amp;rsquo;re deep in a technical discussion with an AI assistant—analyzing code, exploring architecture, or debugging a complex issue. The conversation is rich with insights, and you think: &amp;ldquo;This would make a great blog post.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;But then reality hits: you need to switch to your blog repository, format the content, commit it, push it, and wait for the build. By the time you&amp;rsquo;re back, the original context is gone, and the momentum is lost.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="the-problem-lost-context-lost-thoughts">The Problem: Lost Context, Lost Thoughts</h2>
+<p>We&rsquo;ve all been there. You&rsquo;re deep in a technical discussion with an AI assistant—analyzing code, exploring architecture, or debugging a complex issue. The conversation is rich with insights, and you think: &ldquo;This would make a great blog post.&rdquo;</p>
+<p>But then reality hits: you need to switch to your blog repository, format the content, commit it, push it, and wait for the build. By the time you&rsquo;re back, the original context is gone, and the momentum is lost.</p>
+<p><strong>What if you could publish directly from where you are?</strong></p>
+<h2 id="building-on-existing-automation">Building on Existing Automation</h2>
+<p>In <a href="/posts/github-action">my previous post about automatically publishing a blog using GitHub Actions</a>, I set up a workflow where pushing to the blog repository triggers an automatic build and deployment to GitHub Pages. This solved the build and deployment automation, but there was still one manual step remaining: creating the post file itself.</p>
+<p>The workflow I described there handles:</p>
+<ol>
+<li>Checking out the blog repository</li>
+<li>Building the Hugo site with <code>make</code></li>
+<li>Deploying to <code>jackysp.github.io</code></li>
+</ol>
+<p>But you still needed to be in the blog repository to create the post. That&rsquo;s where MCP changes everything.</p>
+<h2 id="enter-mcp-the-missing-link">Enter MCP: The Missing Link</h2>
+<p>The <a href="https://modelcontextprotocol.io/">Model Context Protocol (MCP)</a> is revolutionizing how AI agents interact with external systems. Instead of treating AI as a passive tool, MCP enables agents to act as autonomous agents with direct access to your tools and workflows.</p>
+<p>In my setup, I&rsquo;ve connected MCP-enabled agents (like Cursor) directly to my blog repository via GitHub MCP. This means:</p>
+<ul>
+<li><strong>No context switching</strong>: Stay in your current working directory, whether it&rsquo;s a random project folder or a deep codebase exploration</li>
+<li><strong>Preserve conversation flow</strong>: The AI maintains the full context of your discussion</li>
+<li><strong>Direct publishing</strong>: Create and publish posts without leaving your IDE</li>
+</ul>
+<h2 id="the-architecture-seamless-integration">The Architecture: Seamless Integration</h2>
+<p>Here&rsquo;s how the complete workflow operates:</p>
+<pre tabindex="0"><code>┌─────────────────────────────────────────────────────────┐
+│  AI Agent (Cursor/Claude) with MCP enabled              │
+│  - Context: Any code repository or discussion            │
+│  - Tool: GitHub MCP Server                               │
+└──────────────────┬──────────────────────────────────────┘
+                   │
+                   │ Creates post via GitHub MCP
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────┐
+│  Blog Repository (jackysp/blog)                         │
+│  - content/posts/[new-post].md                          │
+│  - Commit: &#34;Publish: [title]&#34;                           │
+└──────────────────┬──────────────────────────────────────┘
+                   │
+                   │ Push to master branch
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────┐
+│  GitHub Actions (from previous post)                     │
+│  - Build: Hugo static site generation                   │
+│  - Deploy: Push to jackysp.github.io                    │
+└──────────────────┬──────────────────────────────────────┘
+                   │
+                   │ Published
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────┐
+│  Live Site (jackysp.github.io)                          │
+│  - Post is live and accessible                           │
+└─────────────────────────────────────────────────────────┘
+</code></pre><p>The GitHub Actions part remains exactly as described in the previous post—no changes needed there. The MCP layer adds the ability to trigger it from anywhere.</p>
+<h2 id="the-workflow-in-action">The Workflow in Action</h2>
+<h3 id="1-ai-powered-content-creation">1. AI-Powered Content Creation</h3>
+<p>When you&rsquo;re discussing a technical topic with an AI agent, you can simply ask:</p>
+<blockquote>
+<p>&ldquo;Turn this discussion into a blog post and publish it.&rdquo;</p>
+</blockquote>
+<p>The AI agent, with access to GitHub via MCP, can:</p>
+<ul>
+<li>Extract key insights from your conversation</li>
+<li>Format content according to Hugo front matter requirements</li>
+<li>Create properly structured markdown files</li>
+<li>Handle images and assets</li>
+<li>Commit and push to the repository</li>
+</ul>
+<h3 id="2-automated-build--deploy">2. Automated Build &amp; Deploy</h3>
+<p>The moment a post is pushed to the <code>master</code> branch, the same GitHub Actions workflow from the previous post kicks in:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">master ]</span>
+</span></span></code></pre></div><p>The workflow (as detailed in <a href="/posts/github-action">the previous post</a>):</p>
+<ol>
+<li>Checks out the blog repository with submodules</li>
+<li>Builds the Hugo site using <code>make</code></li>
+<li>Deploys the built artifacts to <code>jackysp.github.io</code></li>
+</ol>
+<p>All without manual intervention.</p>
+<h3 id="3-governance-through-contracts">3. Governance Through Contracts</h3>
+<p>To ensure quality and prevent accidents, I&rsquo;ve implemented an <strong>AI Publishing Contract</strong> (<code>docs/ai-publishing.md</code>) that defines:</p>
+<ul>
+<li><strong>Allowed paths</strong>: Only <code>content/**</code> and <code>static/**</code> can be modified</li>
+<li><strong>Post format</strong>: Required front matter fields (title, date, tags, slug, summary)</li>
+<li><strong>Image handling</strong>: Standardized location and reference format</li>
+<li><strong>Commit conventions</strong>: Single commit per post with descriptive messages</li>
+</ul>
+<p>This contract ensures that AI agents can publish content while respecting the repository structure and quality standards.</p>
+<h2 id="why-this-matters-the-developer-experience-revolution">Why This Matters: The Developer Experience Revolution</h2>
+<h3 id="zero-context-switching">Zero Context Switching</h3>
+<p>Traditional workflow:</p>
+<ol>
+<li>Copy conversation → Switch to blog repo → Format → Commit → Push → Wait</li>
+<li><strong>Context lost</strong>, momentum broken</li>
+</ol>
+<p>New workflow:</p>
+<ol>
+<li>Ask AI to publish → Done</li>
+<li><strong>Context preserved</strong>, workflow continuous</li>
+</ol>
+<h3 id="capturing-technical-insights">Capturing Technical Insights</h3>
+<p>The best technical insights often emerge during active problem-solving. With this workflow, you can:</p>
+<ul>
+<li>Document discoveries in real-time</li>
+<li>Turn debugging sessions into tutorials</li>
+<li>Transform architecture discussions into deep-dives</li>
+<li>Share codebase explorations as learning resources</li>
+</ul>
+<h3 id="scaling-knowledge-sharing">Scaling Knowledge Sharing</h3>
+<p>Previously, the friction of publishing meant many valuable insights were never written down. Now, the barrier to publishing is minimal, making it easier to:</p>
+<ul>
+<li>Share learnings with your team</li>
+<li>Build a personal knowledge base</li>
+<li>Contribute to the developer community</li>
+<li>Document your problem-solving journey</li>
+</ul>
+<h2 id="technical-implementation-details">Technical Implementation Details</h2>
+<h3 id="mcp-server-configuration">MCP Server Configuration</h3>
+<p>The GitHub MCP server provides the AI agent with:</p>
+<ul>
+<li>Repository read/write access</li>
+<li>File creation and modification</li>
+<li>Commit and push capabilities</li>
+<li>Branch management</li>
+</ul>
+<h3 id="github-actions-workflow">GitHub Actions Workflow</h3>
+<p>The CI/CD pipeline (as described in <a href="/posts/github-action">the previous post</a>) handles:</p>
+<ul>
+<li>Go environment setup (for Hugo builds)</li>
+<li>Repository checkout with submodules</li>
+<li>Site generation via <code>make</code></li>
+<li>Deployment to GitHub Pages repository</li>
+</ul>
+<p>No changes needed to the existing workflow—it just gets triggered from a new entry point.</p>
+<h3 id="hugo-site-configuration">Hugo Site Configuration</h3>
+<p>Posts follow Hugo&rsquo;s standard structure:</p>
+<ul>
+<li><strong>Location</strong>: <code>content/posts/</code></li>
+<li><strong>Format</strong>: YAML front matter + Markdown content</li>
+<li><strong>Images</strong>: Stored in <code>content/posts/images/</code></li>
+<li><strong>Draft control</strong>: <code>draft: true/false</code> for preview/publish</li>
+</ul>
+<h2 id="the-future-ai-augmented-documentation">The Future: AI-Augmented Documentation</h2>
+<p>This workflow represents a shift toward <strong>AI-augmented documentation</strong>. Instead of treating AI as a writing assistant, we&rsquo;re treating it as a publishing agent that can:</p>
+<ul>
+<li>Understand context from code discussions</li>
+<li>Extract technical insights automatically</li>
+<li>Format and structure content appropriately</li>
+<li>Publish without breaking workflow</li>
+</ul>
+<p>As MCP and similar protocols mature, we&rsquo;ll see more sophisticated capabilities:</p>
+<ul>
+<li>Automatic code analysis and explanation</li>
+<li>Multi-post series generation from extended discussions</li>
+<li>Cross-referencing with existing content</li>
+<li>SEO and metadata optimization</li>
+</ul>
+<h2 id="getting-started">Getting Started</h2>
+<p>If you want to set up a similar workflow:</p>
+<ol>
+<li><strong>Set up automated publishing</strong> (see <a href="/posts/github-action">my previous post</a>)</li>
+<li><strong>Enable MCP in your AI agent</strong> (Cursor, Claude Desktop, etc.)</li>
+<li><strong>Configure GitHub MCP server</strong> with repository access</li>
+<li><strong>Define publishing contracts</strong> for governance</li>
+<li><strong>Start publishing</strong> from your conversations</li>
+</ol>
+<p>The technical details are straightforward, but the impact on productivity and knowledge capture is profound.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The intersection of AI agents, MCP protocols, and automated CI/CD creates a new paradigm for technical publishing. By building on the existing GitHub Actions automation and adding MCP as the entry point, we eliminate context switching and reduce friction.</p>
+<p>This isn&rsquo;t just about automating blog posts—it&rsquo;s about <strong>preserving the flow state of technical discovery</strong> and making knowledge sharing as natural as having a conversation.</p>
+<p>The future of technical documentation is here, and it&rsquo;s conversational.</p>
+<hr>
+<p><em>This post was created and published using the exact workflow described above—from a discussion about workflow automation to a live blog post, all without leaving the conversation context.</em></p>
+]]></content:encoded>
+    </item>
     <item>
       <title>Brikka on Induction: An Engineering View of a Triggered Extraction System</title>
       <link>https://blog.minifish.org/posts/brikka-induction-triggered-extraction/</link>
       <pubDate>Sun, 18 Jan 2026 10:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/brikka-induction-triggered-extraction/</guid>
-      <description>A systems-engineering analysis of using a Bialetti Brikka on an induction hob. We examine why traditional Moka assumptions fail, how Brikka behaves as a pressure-triggered system, and how engineers should reason about heat, inertia, and control boundaries.</description>
+      <description>&lt;h2 id=&#34;motivation-why-this-is-an-engineering-problem&#34;&gt;Motivation: Why This Is an Engineering Problem&lt;/h2&gt;
+&lt;p&gt;Most Moka pot guides treat brewing as a &lt;em&gt;recipe problem&lt;/em&gt;:
+grind size, water temperature, and heat level.&lt;/p&gt;
+&lt;p&gt;That framing breaks down completely when you introduce:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A &lt;strong&gt;Brikka&lt;/strong&gt; (pressure valve + burst extraction)&lt;/li&gt;
+&lt;li&gt;An &lt;strong&gt;induction hob&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;A &lt;strong&gt;steel induction adapter plate&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;At this point, you are no longer “brewing coffee”.
+You are operating a &lt;strong&gt;multi-stage thermal + pressure system with delayed feedback&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;This article reframes Brikka-on-induction as a &lt;strong&gt;control problem&lt;/strong&gt;, not a recipe.&lt;/p&gt;</description>
       <content:encoded><![CDATA[<h2 id="motivation-why-this-is-an-engineering-problem">Motivation: Why This Is an Engineering Problem</h2>
 <p>Most Moka pot guides treat brewing as a <em>recipe problem</em>:
 grind size, water temperature, and heat level.</p>
@@ -107,7 +303,15 @@ It is a pressure-triggered extraction event.</strong></p>
       <link>https://blog.minifish.org/posts/oceanbase-internals-transaction-replay-sql-unit-placement/</link>
       <pubDate>Sat, 17 Jan 2026 10:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/oceanbase-internals-transaction-replay-sql-unit-placement/</guid>
-      <description>A code-guided tour of OceanBase write transactions, tablet replay, SQL compile-execute, and unit placement, focusing on motivation, design, implementation details, and tradeoffs.</description>
+      <description>&lt;h2 id=&#34;why-these-paths-matter&#34;&gt;Why These Paths Matter&lt;/h2&gt;
+&lt;p&gt;OceanBase targets high availability and scalability in a shared-nothing cluster. The core engineering challenge is to make four critical subsystems work together with predictable latency and correctness:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Write transactions must be durable, replicated, and efficiently committed.&lt;/li&gt;
+&lt;li&gt;Tablet replay must recover state quickly and safely.&lt;/li&gt;
+&lt;li&gt;SQL parse to execute must optimize well while respecting multi-tenant constraints.&lt;/li&gt;
+&lt;li&gt;Unit placement must map tenants to physical resources without fragmentation.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This article focuses on motivation, design, implementation highlights, and tradeoffs, using concrete code entry points from the OceanBase codebase.&lt;/p&gt;</description>
       <content:encoded><![CDATA[<h2 id="why-these-paths-matter">Why These Paths Matter</h2>
 <p>OceanBase targets high availability and scalability in a shared-nothing cluster. The core engineering challenge is to make four critical subsystems work together with predictable latency and correctness:</p>
 <ul>

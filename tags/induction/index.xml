@@ -19,7 +19,18 @@
       <link>https://blog.minifish.org/posts/brikka-induction-triggered-extraction/</link>
       <pubDate>Sun, 18 Jan 2026 10:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/brikka-induction-triggered-extraction/</guid>
-      <description>A systems-engineering analysis of using a Bialetti Brikka on an induction hob. We examine why traditional Moka assumptions fail, how Brikka behaves as a pressure-triggered system, and how engineers should reason about heat, inertia, and control boundaries.</description>
+      <description>&lt;h2 id=&#34;motivation-why-this-is-an-engineering-problem&#34;&gt;Motivation: Why This Is an Engineering Problem&lt;/h2&gt;
+&lt;p&gt;Most Moka pot guides treat brewing as a &lt;em&gt;recipe problem&lt;/em&gt;:
+grind size, water temperature, and heat level.&lt;/p&gt;
+&lt;p&gt;That framing breaks down completely when you introduce:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A &lt;strong&gt;Brikka&lt;/strong&gt; (pressure valve + burst extraction)&lt;/li&gt;
+&lt;li&gt;An &lt;strong&gt;induction hob&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;A &lt;strong&gt;steel induction adapter plate&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;At this point, you are no longer “brewing coffee”.
+You are operating a &lt;strong&gt;multi-stage thermal + pressure system with delayed feedback&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;This article reframes Brikka-on-induction as a &lt;strong&gt;control problem&lt;/strong&gt;, not a recipe.&lt;/p&gt;</description>
       <content:encoded><![CDATA[<h2 id="motivation-why-this-is-an-engineering-problem">Motivation: Why This Is an Engineering Problem</h2>
 <p>Most Moka pot guides treat brewing as a <em>recipe problem</em>:
 grind size, water temperature, and heat level.</p>
