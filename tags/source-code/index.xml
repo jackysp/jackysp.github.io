@@ -352,8 +352,7 @@ All Metrics in TiDB are uniformly located <a href="https://github.com/pingcap/ti
 <h2 id="environment-setup">Environment Setup</h2>
 <ol>
 <li>
-<p>After installing the Golang environment, remember to set the GOPATH, which is usually:</p>
-<p><img alt="goenv" loading="lazy" src="/posts/images/20200706172327.webp"></p>
+<p>After installing the Golang environment, remember to set the GOPATH.</p>
 </li>
 <li>
 <p>The TiDB code doesn&rsquo;t need to be developed under the GOPATH, so you can place it anywhere. I usually create a directory called work and throw various codes in there.</p>

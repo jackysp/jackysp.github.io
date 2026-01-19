@@ -510,8 +510,7 @@
 <ol>
 <li>
 <p>The initial version of tracing only supported the JSON format, requiring the output to be copied and pasted into a TiDB-specific web page at a special host port to view it. Although novel, the multiple steps involved prevented widespread adoption.</p>
-<p><img alt="lost" loading="lazy" src="/posts/images/20200908164836.webp">
-<img alt="lost" loading="lazy" src="/posts/images/trace-view.webp"></p>
+<p><img alt="lost" loading="lazy" src="/posts/images/trace-view.webp"></p>
 </li>
 <li>
 <p>Another issue is that tracing provides insight only after a problem is known. If developers suspect a problem or slow execution in advance, they must proactively add events at those points. Often, unforeseen issues cannot be covered, leaving gaps.</p>
@@ -520,16 +519,12 @@
 <p>Once the framework of tracing is in place, adding events is relatively straightforward and involves adding code like the snippet below at the desired points:</p>
 <p><img alt="lost" loading="lazy" src="/posts/images/20200908165442.webp"></p>
 <p>Interested individuals can add events to TiDB as needed, offering a good hands-on experience.</p>
-<p>Eventually, tracing added <code>format='row'</code> and <code>format='log'</code> features,</p>
-<p><img alt="lost" loading="lazy" src="/posts/images/20200908165729.webp"></p>
-<p><img alt="lost" loading="lazy" src="/posts/images/20200908165805.webp"></p>
-<p>I personally favor <code>format='log'</code>.</p>
+<p>Eventually, tracing added <code>format='row'</code> and <code>format='log'</code> features. I personally favor <code>format='log'</code>.</p>
 <h3 id="difference-between-tracing-and-explain-analyze">Difference between Tracing and Explain (Analyze)</h3>
 <ol>
 <li>Tracing operates at the function level, while Explain operates at the operator level. Tracing is easier to add and more granular and does not need to be part of a plan.</li>
 <li>Tracing can trace any SQL, while Explain only shows data reading parts. For example, with an Insert, Explain shows almost nothing, whereas tracing provides detailed insights from SQL parsing to the full transaction commit.</li>
 </ol>
-<p><img alt="lost" loading="lazy" src="/posts/images/20200908170040.webp"></p>
 ]]></content:encoded>
     </item>
     <item>
@@ -565,7 +560,6 @@
 </li>
 </ol>
 <h3 id="runstmt">runStmt</h3>
-<p><img alt="func" loading="lazy" src="/posts/images/20200731111912.webp"></p>
 <p>Judging from the call graph of <code>runStmt</code>, this function is almost the mandatory pathway for all SQL execution. Except for point query statements using the binary protocol with automatic commit, all other statements go through this function. This function is responsible for executing SQL, excluding SQL parsing and compilation (the binary protocol does not need repeated SQL parsing, nor does SQL compilation require plan caching).</p>
 <p><img alt="func" loading="lazy" src="/posts/images/20200731112400.webp"></p>
 <p>The core part of the <code>runStmt</code> function is as shown above. From top to bottom:</p>
@@ -625,7 +619,6 @@
 <h3 id="stack-logs">Stack Logs</h3>
 <p>Most of TiDB&rsquo;s SQL errors (except for duplicate entry and syntax errors) will output the complete stack information. Due to the requirements of unified log format, the stack now looks very unsightly&hellip;</p>
 <p>For this stack trace, I believe no one really enjoys reading it. Therefore, we need to paste it into Vim and execute <code>%s/\\n/\r/g</code> and <code>%s/\\t/    /g</code> to turn it into a Golang-style stack.</p>
-<p><img alt="func" loading="lazy" src="/posts/images/20200812211203.webp"></p>
 <p>When you see which module it&rsquo;s stuck in, like the plan part here, you can find the corresponding colleague for support.</p>
 <p>However, there is a more user-friendly tool for dealing with Golang’s lengthy stack called <a href="https://github.com/maruel/panicparse">panicparse</a>. To install it, simply run
 <code>go get github.com/maruel/panicparse/v2/cmd/pp</code>. The effect is as follows:</p>
@@ -979,8 +972,7 @@ All Metrics in TiDB are uniformly located <a href="https://github.com/pingcap/ti
 <h2 id="environment-setup">Environment Setup</h2>
 <ol>
 <li>
-<p>After installing the Golang environment, remember to set the GOPATH, which is usually:</p>
-<p><img alt="goenv" loading="lazy" src="/posts/images/20200706172327.webp"></p>
+<p>After installing the Golang environment, remember to set the GOPATH.</p>
 </li>
 <li>
 <p>The TiDB code doesn&rsquo;t need to be developed under the GOPATH, so you can place it anywhere. I usually create a directory called work and throw various codes in there.</p>
