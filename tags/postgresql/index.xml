@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Postgresql on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/postgresql/</link>
+    <description>Recent content in Postgresql on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Sun, 09 May 2021 18:13:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/postgresql/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Compare Data Consistency between MySQL and PostgreSQL</title>
+      <link>https://blog.minifish.org/posts/how-to-compare-data-consistency-between-mysql-and-postgresql/</link>
+      <pubDate>Sun, 09 May 2021 18:13:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-compare-data-consistency-between-mysql-and-postgresql/</guid>
+      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
+&lt;p&gt;Recently, I encountered a problem where a user wanted to synchronize data from PostgreSQL to TiDB (which uses the same protocol as MySQL) and wanted to know whether the data after synchronization is consistent. I hadn&amp;rsquo;t dealt with this kind of issue before, so I did a bit of research.&lt;/p&gt;
+&lt;p&gt;Typically, to verify data consistency, you compute a checksum on both sides and compare them.&lt;/p&gt;
+&lt;h2 id=&#34;tidb-mysql-side&#34;&gt;TiDB (MySQL) Side&lt;/h2&gt;
+&lt;p&gt;For the verification of a specific table, the following SQL is used:&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="background">Background</h2>
+<p>Recently, I encountered a problem where a user wanted to synchronize data from PostgreSQL to TiDB (which uses the same protocol as MySQL) and wanted to know whether the data after synchronization is consistent. I hadn&rsquo;t dealt with this kind of issue before, so I did a bit of research.</p>
+<p>Typically, to verify data consistency, you compute a checksum on both sides and compare them.</p>
+<h2 id="tidb-mysql-side">TiDB (MySQL) Side</h2>
+<p>For the verification of a specific table, the following SQL is used:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> bit_xor(
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">CAST</span>(crc32(
+</span></span><span style="display:flex;"><span>        concat_ws(<span style="color:#e6db74">&#39;,&#39;</span>,
+</span></span><span style="display:flex;"><span>            col1, col2, col3, <span style="color:#960050;background-color:#1e0010">…</span>, colN,
+</span></span><span style="display:flex;"><span>            concat(<span style="color:#66d9ef">isnull</span>(col1), <span style="color:#66d9ef">isnull</span>(col2), <span style="color:#960050;background-color:#1e0010">…</span>, <span style="color:#66d9ef">isnull</span>(colN))
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    ) <span style="color:#66d9ef">AS</span> UNSIGNED)
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> t;
+</span></span></code></pre></div><p>Let&rsquo;s look at a specific example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> t;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT, j INT);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>), (<span style="color:#66d9ef">NULL</span>, <span style="color:#66d9ef">NULL</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> bit_xor(
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">CAST</span>(crc32(
+</span></span><span style="display:flex;"><span>        concat_ws(<span style="color:#e6db74">&#39;,&#39;</span>,
+</span></span><span style="display:flex;"><span>            i, j,
+</span></span><span style="display:flex;"><span>            concat(<span style="color:#66d9ef">isnull</span>(i), <span style="color:#66d9ef">isnull</span>(j))
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    ) <span style="color:#66d9ef">AS</span> UNSIGNED)
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> t;
+</span></span></code></pre></div><p>The result is:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>+-------------------------------------------------------------------------------------------------------------------------------------------+
+</span></span><span style="display:flex;"><span>| bit_xor(
+</span></span><span style="display:flex;"><span>    CAST(crc32(
+</span></span><span style="display:flex;"><span>        concat_ws(&#39;,&#39;,
+</span></span><span style="display:flex;"><span>            i, j,
+</span></span><span style="display:flex;"><span>            concat(isnull(i), isnull(j))
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    ) AS UNSIGNED)
+</span></span><span style="display:flex;"><span>) |
+</span></span><span style="display:flex;"><span>+-------------------------------------------------------------------------------------------------------------------------------------------+
+</span></span><span style="display:flex;"><span>|                                                           5062371 |
+</span></span><span style="display:flex;"><span>+-------------------------------------------------------------------------------------------------------------------------------------------+
+</span></span><span style="display:flex;"><span>1 row in set (0.00 sec)
+</span></span></code></pre></div><h2 id="postgresql-side">PostgreSQL Side</h2>
+<p>The goal is simply to write the same SQL as above, but PostgreSQL does not support <code>bit_xor</code>, <code>crc32</code>, <code>isnull</code>, nor does it have unsigned types. Therefore, the solution is relatively straightforward—relying on UDFs (User-Defined Functions).</p>
+<p>After some research, the main missing functions can be addressed with a few custom implementations.</p>
+<p><code>bit_xor</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">AGGREGATE</span> bit_xor(<span style="color:#66d9ef">IN</span> v bigint) (SFUNC <span style="color:#f92672">=</span> int8xor, <span style="color:#66d9ef">STYPE</span> <span style="color:#f92672">=</span> bigint);
+</span></span></code></pre></div><p><code>crc32</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">FUNCTION</span> crc32(text_string text) <span style="color:#66d9ef">RETURNS</span> bigint <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">$$</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">DECLARE</span>
+</span></span><span style="display:flex;"><span>    tmp bigint;
+</span></span><span style="display:flex;"><span>    i int;
+</span></span><span style="display:flex;"><span>    j int;
+</span></span><span style="display:flex;"><span>    byte_length int;
+</span></span><span style="display:flex;"><span>    binary_string bytea;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">BEGIN</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">IF</span> text_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span> <span style="color:#66d9ef">THEN</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">RETURN</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">END</span> <span style="color:#66d9ef">IF</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    tmp <span style="color:#f92672">=</span> <span style="color:#ae81ff">4294967295</span>;
+</span></span><span style="display:flex;"><span>    byte_length <span style="color:#f92672">=</span> <span style="color:#66d9ef">bit_length</span>(text_string) <span style="color:#f92672">/</span> <span style="color:#ae81ff">8</span>;
+</span></span><span style="display:flex;"><span>    binary_string <span style="color:#f92672">=</span> decode(<span style="color:#66d9ef">replace</span>(text_string, E<span style="color:#e6db74">&#39;\\&#39;</span>, E<span style="color:#e6db74">&#39;\\\\&#39;</span>), <span style="color:#e6db74">&#39;escape&#39;</span>);
+</span></span><span style="display:flex;"><span>    LOOP
+</span></span><span style="display:flex;"><span>        tmp <span style="color:#f92672">=</span> (tmp <span style="color:#f92672">#</span> get_byte(binary_string, i))::bigint;
+</span></span><span style="display:flex;"><span>        i <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>        j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>        LOOP
+</span></span><span style="display:flex;"><span>            tmp <span style="color:#f92672">=</span> ((tmp <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">#</span> (<span style="color:#ae81ff">3988292384</span> <span style="color:#f92672">*</span> (tmp <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span>)))::bigint;
+</span></span><span style="display:flex;"><span>            j <span style="color:#f92672">=</span> j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">IF</span> j <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">8</span> <span style="color:#66d9ef">THEN</span>
+</span></span><span style="display:flex;"><span>                EXIT;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">END</span> <span style="color:#66d9ef">IF</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">END</span> LOOP;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">IF</span> i <span style="color:#f92672">&gt;=</span> byte_length <span style="color:#66d9ef">THEN</span>
+</span></span><span style="display:flex;"><span>            EXIT;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">END</span> <span style="color:#66d9ef">IF</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">END</span> LOOP;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">RETURN</span> (tmp <span style="color:#f92672">#</span> <span style="color:#ae81ff">4294967295</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">END</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$$</span> <span style="color:#66d9ef">IMMUTABLE</span> <span style="color:#66d9ef">LANGUAGE</span> plpgsql;
+</span></span></code></pre></div><p><code>isnull</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">FUNCTION</span> <span style="color:#66d9ef">isnull</span>(anyelement) <span style="color:#66d9ef">RETURNS</span> int <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">$$</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">BEGIN</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">RETURN</span> <span style="color:#66d9ef">CAST</span>((<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span>) <span style="color:#66d9ef">AS</span> INT);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">END</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$$</span> <span style="color:#66d9ef">LANGUAGE</span> plpgsql;
+</span></span></code></pre></div><p>After creating the three UDFs above, let&rsquo;s test the previous example. Note that <code>UNSIGNED</code> should be changed to <code>BIGINT</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> t;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT, j INT);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>), (<span style="color:#66d9ef">NULL</span>, <span style="color:#66d9ef">NULL</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> bit_xor(
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">CAST</span>(crc32(
+</span></span><span style="display:flex;"><span>        concat_ws(<span style="color:#e6db74">&#39;,&#39;</span>,
+</span></span><span style="display:flex;"><span>            i, j,
+</span></span><span style="display:flex;"><span>            concat(<span style="color:#66d9ef">isnull</span>(i), <span style="color:#66d9ef">isnull</span>(j))
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    ) <span style="color:#66d9ef">AS</span> BIGINT)
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> t;
+</span></span></code></pre></div><p>The result:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span> bit_xor
+</span></span><span style="display:flex;"><span>---------
+</span></span><span style="display:flex;"><span> 5062371
+</span></span><span style="display:flex;"><span>(1 row)
+</span></span></code></pre></div><p>It&rsquo;s exactly the same as on the TiDB (MySQL) side.</p>
+<h2 id="postscript">Postscript</h2>
+<ol>
+<li>I haven&rsquo;t tested more extensively; this is just a simple test.</li>
+<li>UDFs are indeed a great feature that greatly enhance flexibility.</li>
+</ol>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Practice Using SQL</title>
+      <link>https://blog.minifish.org/posts/how-to-practice-using-sql/</link>
+      <pubDate>Thu, 05 Jun 2014 00:00:00 +0000</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-practice-using-sql/</guid>
+      <description>&lt;p&gt;The text provided is a detailed set of instructions and queries for practicing SQL using PostgreSQL 9.4 BETA 2, focusing on creating and querying tables related to students, courses, scores, and teachers. Here&amp;rsquo;s a summary:&lt;/p&gt;
+&lt;h2 id=&#34;database-structure&#34;&gt;Database Structure&lt;/h2&gt;
+&lt;p&gt;The database consists of four tables:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;STUDENT&lt;/strong&gt;: Contains student number (SNO), name (SNAME), gender (SSEX), birthday (SBIRTHDAY), and class (CLASS).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;COURSE&lt;/strong&gt;: Includes course number (CNO), name (CNAME), and teacher number (TNO).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SCORE&lt;/strong&gt;: Records student number (SNO), course number (CNO), and degree (DEGREE).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;TEACHER&lt;/strong&gt;: Holds teacher number (TNO), name (TNAME), gender (TSEX), birthday (TBIRTHDAY), professional title (PROF), and department (DEPART).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;sample-data&#34;&gt;Sample Data&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Students such as Zeng Hua, Kang Ming, and Wang Fang are stored with specific details, including their class and gender.&lt;/li&gt;
+&lt;li&gt;Courses like &amp;ldquo;Introduction to Computers&amp;rdquo; and &amp;ldquo;Operating Systems&amp;rdquo; are associated with teacher numbers.&lt;/li&gt;
+&lt;li&gt;Scores are recorded for students across various courses.&lt;/li&gt;
+&lt;li&gt;Teachers are described with their professional roles and departments.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;query-problems&#34;&gt;Query Problems&lt;/h2&gt;
+&lt;p&gt;Several SQL queries are suggested for practice, such as:&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>The text provided is a detailed set of instructions and queries for practicing SQL using PostgreSQL 9.4 BETA 2, focusing on creating and querying tables related to students, courses, scores, and teachers. Here&rsquo;s a summary:</p>
+<h2 id="database-structure">Database Structure</h2>
+<p>The database consists of four tables:</p>
+<ol>
+<li><strong>STUDENT</strong>: Contains student number (SNO), name (SNAME), gender (SSEX), birthday (SBIRTHDAY), and class (CLASS).</li>
+<li><strong>COURSE</strong>: Includes course number (CNO), name (CNAME), and teacher number (TNO).</li>
+<li><strong>SCORE</strong>: Records student number (SNO), course number (CNO), and degree (DEGREE).</li>
+<li><strong>TEACHER</strong>: Holds teacher number (TNO), name (TNAME), gender (TSEX), birthday (TBIRTHDAY), professional title (PROF), and department (DEPART).</li>
+</ol>
+<h2 id="sample-data">Sample Data</h2>
+<ul>
+<li>Students such as Zeng Hua, Kang Ming, and Wang Fang are stored with specific details, including their class and gender.</li>
+<li>Courses like &ldquo;Introduction to Computers&rdquo; and &ldquo;Operating Systems&rdquo; are associated with teacher numbers.</li>
+<li>Scores are recorded for students across various courses.</li>
+<li>Teachers are described with their professional roles and departments.</li>
+</ul>
+<h2 id="query-problems">Query Problems</h2>
+<p>Several SQL queries are suggested for practice, such as:</p>
+<ul>
+<li>Extracting specific columns like SNAME, SSEX, and CLASS from the STUDENT table.</li>
+<li>Listing distinct departments for teachers.</li>
+<li>Calculating and sorting grades within the SCORE table.</li>
+<li>Performing database operations to find student averages, count of students per class, and comparing scores.</li>
+</ul>
+<h2 id="advanced-query-exercises">Advanced Query Exercises</h2>
+<ul>
+<li>Performing set operations and conditional joins to answer complex questions like finding students who scored more than others or comparing teachers&rsquo; scores.</li>
+<li>Use of SQL functions like <code>DATE_PART</code>, subqueries, and unions to gather specific data.</li>
+</ul>
+<h2 id="additional-queries">Additional Queries</h2>
+<ul>
+<li>Techniques to refine queries for performance, like avoiding the <code>NOT IN</code> method.</li>
+<li>Handling conditions like age calculations using <code>AGE(SBIRTHDAY)</code> and filtering by name patterns.</li>
+</ul>
+<p>Overall, these exercises provide a robust framework for practicing SQL skills on a structured set of sample data, focusing on various database manipulation and retrieval techniques.7. <strong>Query</strong>:</p>
+<pre><code>- `SELECT A.TNAME, B.CNAME FROM TEACHER A JOIN COURSE B ON A.TNO = B.TNO WHERE A.TSEX='男';`
+- Explanation: Joins teacher and course tables to select male teachers and their course names.
+</code></pre>
+<ol>
+<li>
+<p><strong>Query</strong>:</p>
+<ul>
+<li><code>SELECT A.* FROM SCORE A WHERE DEGREE=(SELECT MAX(DEGREE) FROM SCORE B);</code></li>
+<li>Explanation: Selects all columns from the highest score in the score table.</li>
+</ul>
+</li>
+<li>
+<p><strong>Query</strong>:</p>
+<ul>
+<li><code>SELECT SNAME FROM STUDENT A WHERE SSEX=(SELECT SSEX FROM STUDENT B WHERE B.SNAME='李军');</code></li>
+<li>Explanation: Selects student names who have the same gender as the student named &lsquo;Li Jun.&rsquo;</li>
+</ul>
+</li>
+<li>
+<p><strong>Query</strong>:</p>
+<ul>
+<li><code>SELECT SNAME FROM STUDENT A WHERE SSEX=(SELECT SSEX FROM STUDENT B WHERE B.SNAME='李军') AND CLASS=(SELECT CLASS FROM STUDENT C WHERE C.SNAME='李军');</code></li>
+<li>Explanation: Selects student names who have the same gender and class as the student named &lsquo;Li Jun.&rsquo;</li>
+</ul>
+</li>
+<li>
+<p><strong>Two Answers:</strong></p>
+<ul>
+<li><code>SELECT A.* FROM SCORE A JOIN STUDENT B ON A.SNO = B.SNO JOIN COURSE C ON A.CNO = C.CNO WHERE B.SSEX='男' AND C.CNAME='计算机导论';</code></li>
+<li><code>SELECT * FROM SCORE WHERE SNO IN(SELECT SNO FROM STUDENT WHERE SSEX='男') AND CNO=(SELECT CNO FROM COURSE WHERE CNAME='计算机导论');</code></li>
+<li>Explanation: Both queries select scores of male students for the course &lsquo;Introduction to Computer Science.&rsquo;</li>
+</ul>
+</li>
+</ol>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

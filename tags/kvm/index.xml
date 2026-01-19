@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Kvm on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/kvm/</link>
+    <description>Recent content in Kvm on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Thu, 05 Jun 2014 22:21:06 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/kvm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Configure CentOS KVM Network Bridging Mode</title>
+      <link>https://blog.minifish.org/posts/how-to-configure-centos-kvm-network-bridging-mode/</link>
+      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-configure-centos-kvm-network-bridging-mode/</guid>
+      <description>&lt;h2 id=&#34;what-is-bridging&#34;&gt;What Is Bridging&lt;/h2&gt;
+&lt;p&gt;Bridging highly simulates a network card, making the router believe that the virtual machine&amp;rsquo;s network card truly exists. Personally, I feel it&amp;rsquo;s similar to resistors connected in parallel, whereas NAT (another common virtual machine network connection method) is more like parasitizing on the host&amp;rsquo;s network card.&lt;/p&gt;
+&lt;h2 id=&#34;why-use-bridging&#34;&gt;Why Use Bridging&lt;/h2&gt;
+&lt;p&gt;It allows you to treat the virtual machine as a completely independent machine, enabling mutual access with the external network (which is not possible with NAT).&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="what-is-bridging">What Is Bridging</h2>
+<p>Bridging highly simulates a network card, making the router believe that the virtual machine&rsquo;s network card truly exists. Personally, I feel it&rsquo;s similar to resistors connected in parallel, whereas NAT (another common virtual machine network connection method) is more like parasitizing on the host&rsquo;s network card.</p>
+<h2 id="why-use-bridging">Why Use Bridging</h2>
+<p>It allows you to treat the virtual machine as a completely independent machine, enabling mutual access with the external network (which is not possible with NAT).</p>
+<h2 id="how-to-configure-bridging">How to Configure Bridging</h2>
+<p>In CentOS 6, refer to the command-line method in <a href="http://www.techotopia.com/index.php/Creating_a_CentOS_6_KVM_Networked_Bridge_Interface">this article</a>.</p>
+<p>We don&rsquo;t use the GUI method because:</p>
+<ul>
+<li>We&rsquo;re unsure which options to fill in on the last screen.</li>
+<li>We don&rsquo;t know how to reset if we make a wrong selection.</li>
+</ul>
+<p>Command-line steps:</p>
+<ol>
+<li>
+<p><strong>Check if <code>bridge-utils</code> is installed:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpm -q bridge-utils
+</span></span></code></pre></div><p>Usually, it&rsquo;s already installed. If not, install it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su -
+</span></span><span style="display:flex;"><span>yum install bridge-utils
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Verify your network interfaces:</strong></p>
+<p>Run <code>ifconfig</code> to ensure you have at least three network interfaces:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>eth0      Link encap:Ethernet  HWaddr 00:18:E7:16:DA:65
+</span></span><span style="display:flex;"><span>          inet addr:192.168.0.117  Bcast:192.168.0.255  Mask:255.255.255.0
+</span></span><span style="display:flex;"><span>          inet6 addr: fe80::218:e7ff:fe16:da65/64 Scope:Link
+</span></span><span style="display:flex;"><span>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span></span><span style="display:flex;"><span>          RX packets:556 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>          TX packets:414 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>          collisions:0 txqueuelen:1000
+</span></span><span style="display:flex;"><span>          RX bytes:222834 (217.6 KiB)  TX bytes:48430 (47.2 KiB)
+</span></span><span style="display:flex;"><span>          Interrupt:16 Base address:0x4f00
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lo        Link encap:Local Loopback
+</span></span><span style="display:flex;"><span>          inet addr:127.0.0.1  Mask:255.0.0.0
+</span></span><span style="display:flex;"><span>          inet6 addr: ::1/128 Scope:Host
+</span></span><span style="display:flex;"><span>          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+</span></span><span style="display:flex;"><span>          RX packets:8 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>          collisions:0 txqueuelen:0
+</span></span><span style="display:flex;"><span>          RX bytes:480 (480.0 b)  TX bytes:480 (480.0 b)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>virbr0    Link encap:Ethernet  HWaddr 52:54:00:2A:C1:7E
+</span></span><span style="display:flex;"><span>          inet addr:192.168.122.1  Bcast:192.168.122.255  Mask:255.255.255.0
+</span></span><span style="display:flex;"><span>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span></span><span style="display:flex;"><span>          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>          TX packets:13 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>          collisions:0 txqueuelen:0
+</span></span><span style="display:flex;"><span>          RX bytes:0 (0.0 b)  TX bytes:2793 (2.7 KiB)
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Navigate to the network scripts directory:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su –
+</span></span><span style="display:flex;"><span>cd /etc/sysconfig/network-scripts
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Bring down the <code>eth0</code> interface:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifdown eth0
+</span></span></code></pre></div><p><em>This step is crucial and must be performed locally.</em> When I first configured this, I didn&rsquo;t shut down the network (since I was working remotely). I didn&rsquo;t realize that updating the <code>ifcfg-eth0</code> configuration without restarting the network would immediately apply changes, resulting in loss of network connectivity.</p>
+</li>
+<li>
+<p><strong>Edit <code>ifcfg-eth0</code>:</strong></p>
+<p>In the <code>ifcfg-eth0</code> file, include:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=eth0
+</span></span><span style="display:flex;"><span>ONBOOT=yes
+</span></span><span style="display:flex;"><span>BRIDGE=br0
+</span></span></code></pre></div><p>Keep only these three lines in the file. There&rsquo;s no need to configure an IP address here. Bridging seems to replace the original network card with the bridge, so you can delegate the configuration to the bridge.</p>
+</li>
+<li>
+<p><strong>Create a new file <code>ifcfg-br0</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=br0
+</span></span><span style="display:flex;"><span>ONBOOT=yes
+</span></span><span style="display:flex;"><span>TYPE=Bridge
+</span></span><span style="display:flex;"><span>BOOTPROTO=static
+</span></span><span style="display:flex;"><span>IPADDR=xxx.xxx.xxx.xxx   # Use the IP you originally had in ifcfg-eth0
+</span></span><span style="display:flex;"><span>GATEWAY=xxx.xxx.xxx.xxx  # Your gateway address
+</span></span><span style="display:flex;"><span>NETMASK=255.255.255.0    # Your netmask
+</span></span><span style="display:flex;"><span>DNS1=xxx.xxx.xxx.xxx     # Your primary DNS server
+</span></span><span style="display:flex;"><span>DNS2=xxx.xxx.xxx.xxx     # Your secondary DNS server (if any)
+</span></span><span style="display:flex;"><span>STP=on
+</span></span><span style="display:flex;"><span>DELAY=0
+</span></span></code></pre></div><p><em>Note:</em> Replace <code>xxx.xxx.xxx.xxx</code> with your actual network settings.</p>
+</li>
+<li>
+<p><strong>Bring up the interfaces:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifup br0
+</span></span><span style="display:flex;"><span>ifup eth0
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Verify the bridge interface:</strong></p>
+<p>Check <code>ifconfig</code> to ensure that <code>br0</code> is now present.</p>
+</li>
+<li>
+<p><strong>Update firewall rules:</strong></p>
+<p>Edit <code>/etc/sysconfig/iptables</code> and add:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>-A INPUT -i br0 -j ACCEPT
+</span></span></code></pre></div><p><em>(This is a general example; you may need to adjust it based on your specific firewall configuration.)</em></p>
+</li>
+<li>
+<p><strong>Restart the firewall:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service iptables restart
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Configure bridging in <code>virt-manager</code>:</strong></p>
+<p>When creating a new virtual machine using <code>virt-manager</code>, you can now select <code>br0</code> for the network interface. Without this bridge, the bridging option would not be available.</p>
+</li>
+</ol>
+<p><strong>Note:</strong> When configuring the IP inside the virtual machine, be sure to specify the <code>GATEWAY</code>. Otherwise, the virtual machine will only be able to access the internal network and not the external network. At this point, the virtual machine won&rsquo;t automatically discover the gateway.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

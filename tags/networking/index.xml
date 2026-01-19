@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Networking on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/networking/</link>
+    <description>Recent content in Networking on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Wed, 27 Nov 2024 18:18:38 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/networking/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Exploring Tailscale: Building Your Own Network Easily</title>
+      <link>https://blog.minifish.org/posts/exploring-tailscale-building-your-own-network-easily/</link>
+      <pubDate>Wed, 27 Nov 2024 18:18:38 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/exploring-tailscale-building-your-own-network-easily/</guid>
+      <description>&lt;p&gt;I recently started experimenting with &lt;strong&gt;Tailscale&lt;/strong&gt;, a tool that has significantly simplified the way I manage my personal network across devices. In this blog post, I&amp;rsquo;ll share how I discovered Tailscale, its core features, and my personal setup that leverages this powerful tool.&lt;/p&gt;
+&lt;h2 id=&#34;discovering-tailscale-through-webvm&#34;&gt;Discovering Tailscale Through WebVM&lt;/h2&gt;
+&lt;p&gt;My journey with Tailscale began when I came across &lt;a href=&#34;https://github.com/leaningtech/webvm&#34;&gt;WebVM&lt;/a&gt;, an impressive project that allows you to run a virtual machine directly in your browser. Intrigued by the possibilities, I delved deeper and discovered that Tailscale could help me create a seamless, private network across all my devices.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>I recently started experimenting with <strong>Tailscale</strong>, a tool that has significantly simplified the way I manage my personal network across devices. In this blog post, I&rsquo;ll share how I discovered Tailscale, its core features, and my personal setup that leverages this powerful tool.</p>
+<h2 id="discovering-tailscale-through-webvm">Discovering Tailscale Through WebVM</h2>
+<p>My journey with Tailscale began when I came across <a href="https://github.com/leaningtech/webvm">WebVM</a>, an impressive project that allows you to run a virtual machine directly in your browser. Intrigued by the possibilities, I delved deeper and discovered that Tailscale could help me create a seamless, private network across all my devices.</p>
+<h2 id="what-is-tailscale">What is Tailscale?</h2>
+<p>Tailscale is a mesh VPN network built on top of <strong>WireGuard</strong>, specifically using the <a href="https://github.com/WireGuard/wireguard-go">WireGuard-go</a> implementation. It allows you to create a secure, encrypted network between your devices, no matter where they are located.</p>
+<h3 id="key-features">Key Features</h3>
+<ul>
+<li><strong>Free Plan Available</strong>: Tailscale offers a free plan that is sufficient for personal use, allowing up to 20 devices.</li>
+<li><strong>Ease of Use</strong>: Setting up Tailscale is straightforward. With minimal configuration, you can have your own network up and running quickly.</li>
+<li><strong>Cross-Platform Support</strong>: Tailscale works exceptionally well across the Apple ecosystem, including <strong>iOS</strong>, <strong>tvOS</strong>, and <strong>macOS</strong>.</li>
+<li><strong>Magic DNS Service</strong>: It provides a built-in DNS service that makes it easy to address your devices by name.</li>
+</ul>
+<h2 id="performance-on-different-platforms">Performance on Different Platforms</h2>
+<p>While Tailscale shines on Apple devices, in my experience, it hasn&rsquo;t performed as well on Windows. I encountered some connectivity and stability issues on Windows machines, which may vary based on individual setups.</p>
+<h2 id="my-tailscale-setup">My Tailscale Setup</h2>
+<p>Here&rsquo;s how I leveraged Tailscale to connect my devices and access my home network seamlessly.</p>
+<h3 id="running-tailscale-on-apple-tv">Running Tailscale on Apple TV</h3>
+<p>I installed Tailscale on my <strong>Apple TV</strong>, which stays online <strong>24/7</strong>. This makes it an excellent candidate for a consistently available node in my network.</p>
+<ul>
+<li><strong>Enabling Subnet Routing</strong>: By enabling subnet routing on the Apple TV, I can access other devices on the same local network, such as my <strong>NAS</strong> and <strong>router</strong>, as if I were connected locally.</li>
+<li><strong>Setting Up an Exit Node</strong>: I configured the Apple TV as an <strong>exit node</strong>, allowing me to route internet traffic through my home network. This is useful when I need to access geo-restricted content or ensure a secure connection.</li>
+</ul>
+<h3 id="connecting-other-devices">Connecting Other Devices</h3>
+<p>I also installed Tailscale on my <strong>MacBook</strong> and <strong>iPhone</strong>, which allows all my personal devices to communicate over the secure network, no matter where I am.</p>
+<h2 id="benefits-ive-enjoyed">Benefits I&rsquo;ve Enjoyed</h2>
+<ul>
+<li><strong>Secure Remote Access</strong>: I can securely access my home network devices from anywhere.</li>
+<li><strong>Consistent Environment</strong>: All my devices appear on the same network, simplifying file sharing and remote management.</li>
+<li><strong>No Need for Complex VPN Setups</strong>: Tailscale eliminates the need for traditional VPN configurations, port forwarding, or dynamic DNS services.</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>Tailscale has transformed the way I interact with my devices across different locations. Its ease of use and robust feature set make it an excellent choice for anyone looking to create a personal, secure network.</p>
+<p>If you&rsquo;re interested in simplifying your network setup and want a hassle-free way to connect your devices, I highly recommend giving Tailscale a try.</p>
+<p><strong>Links:</strong></p>
+<ul>
+<li><a href="https://tailscale.com/">Tailscale Official Website</a></li>
+<li><a href="https://github.com/leaningtech/webvm">WebVM Project on GitHub</a></li>
+<li><a href="https://github.com/WireGuard/wireguard-go">WireGuard-go on GitHub</a></li>
+</ul>
+<p><em>Note: This post reflects my personal experiences with Tailscale. Performance may vary based on individual configurations and devices.</em></p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Deploy a Secure Transparent Gateway</title>
+      <link>https://blog.minifish.org/posts/how-to-deploy-a-secure-transparent-gateway/</link>
+      <pubDate>Wed, 12 Oct 2022 21:07:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-deploy-a-secure-transparent-gateway/</guid>
+      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
+&lt;p&gt;After moving house, there are many more devices at home that need internet access. However, I don&amp;rsquo;t want to configure a proxy on each device, so I thought of using a transparent gateway.&lt;/p&gt;
+&lt;h2 id=&#34;transparent-gateway&#34;&gt;Transparent Gateway&lt;/h2&gt;
+&lt;p&gt;After some research, I found that the easiest way is to use the premium version of Clash, although I didn&amp;rsquo;t know when Clash released a premium version. I mainly referred to &lt;a href=&#34;https://www.cfmem.com/2022/05/clash.html&#34;&gt;this article&lt;/a&gt;. It&amp;rsquo;s much simpler than setting up iptables.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="background">Background</h2>
+<p>After moving house, there are many more devices at home that need internet access. However, I don&rsquo;t want to configure a proxy on each device, so I thought of using a transparent gateway.</p>
+<h2 id="transparent-gateway">Transparent Gateway</h2>
+<p>After some research, I found that the easiest way is to use the premium version of Clash, although I didn&rsquo;t know when Clash released a premium version. I mainly referred to <a href="https://www.cfmem.com/2022/05/clash.html">this article</a>. It&rsquo;s much simpler than setting up iptables.</p>
+<h3 id="network-topology">Network Topology</h3>
+<p>I have a 10-year-old Thinkpad x230 at home, which is perfect for this purpose. Here is a simple topology diagram.</p>
+<p>Router1 is a fiber-optic modem with routing capabilities, Router2 is a regular router, with the gateway and DNS pointing to the Thinkpad, where Linux is running to act as a transparent gateway with Clash on top.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>                                 +------------+
+</span></span><span style="display:flex;"><span>                                 |            |
+</span></span><span style="display:flex;"><span>                                 |  Internet  |
+</span></span><span style="display:flex;"><span>                                 |            |
+</span></span><span style="display:flex;"><span>                                 +-----+------+
+</span></span><span style="display:flex;"><span>                                       |
+</span></span><span style="display:flex;"><span>                                 +-----+------+
+</span></span><span style="display:flex;"><span>                                 |            |
+</span></span><span style="display:flex;"><span>                      +----------+  Router1   +-----------+
+</span></span><span style="display:flex;"><span>                      |          |            |           |
+</span></span><span style="display:flex;"><span>                      |          +------------+           |
+</span></span><span style="display:flex;"><span>                      |                                   |
+</span></span><span style="display:flex;"><span>                      |                                   |
+</span></span><span style="display:flex;"><span>                +-----+-----+                       +-----+------+
+</span></span><span style="display:flex;"><span>                |           |                       |            |
+</span></span><span style="display:flex;"><span>     +----------+  Router2  +----------+            |  Thinkpad  |
+</span></span><span style="display:flex;"><span>     |          |           |          |            |            |
+</span></span><span style="display:flex;"><span>     |          +-----+-----+          |            +------------+
+</span></span><span style="display:flex;"><span>     |                |                |
+</span></span><span style="display:flex;"><span>     |                |                |
+</span></span><span style="display:flex;"><span>     |                |                |
+</span></span><span style="display:flex;"><span>+----+-----+     +----+-----+    +-----+-----+
+</span></span><span style="display:flex;"><span>|          |     |          |    |           |
+</span></span><span style="display:flex;"><span>|   Mac    |     |  iPad    |    |  iPhone   |
+</span></span><span style="display:flex;"><span>|          |     |          |    |           |
+</span></span><span style="display:flex;"><span>+----------+     +----------+    +-----------+
+</span></span></code></pre></div><h3 id="add-dns-section-in-clash-configuration">Add DNS Section in Clash Configuration</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">dns</span>:
+</span></span><span style="display:flex;"><span><span style="color:#f92672">enable</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">listen</span>: <span style="color:#ae81ff">0.0.0.0</span>:<span style="color:#ae81ff">53</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">enhanced-mode</span>: <span style="color:#ae81ff">fake-ip</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">nameserver</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">114.114.114.114</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">fallback</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">8.8.8.8</span>
+</span></span></code></pre></div><h3 id="clash-tun-feature-section">Clash tun Feature Section</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">tun</span>:
+</span></span><span style="display:flex;"><span><span style="color:#f92672">enable</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">stack</span>: <span style="color:#ae81ff">system</span> <span style="color:#75715e"># or gvisor</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">dns-hijack</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">any:53</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">tcp://any:53</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">auto-route</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">auto-detect-interface</span>: <span style="color:#66d9ef">true</span>
+</span></span></code></pre></div><p>For traffic forwarding, simply edit <code>/etc/sysctl.conf</code> on the Thinkpad and add <code>net.ipv4.ip_forward=1</code>, then execute <code>sysctl -p</code> to apply it. After that, point the gateway and DNS of Router2 to the Thinkpad, and you&rsquo;re done.</p>
+<h2 id="network-protocols">Network Protocols</h2>
+<p>Initially, I used native HTTP2 for unblocking, but it cannot proxy UDP. When only a few devices need unblocking, it doesn&rsquo;t matter whether UDP is used, but with many devices at home, some of them can only use UDP. I considered socks + tls, but it didn&rsquo;t feel secure and required opening odd ports like UDP 443. It felt like giving away my intentions. Eventually, I chose Trojan, which essentially mimics native HTTPS. Trojan has two versions; I used Trojan-go simply because I didn&rsquo;t want to manage dependencies. Also, I&rsquo;m more familiar with Go.</p>
+<p>Trojan-go has a requirement for a genuinely accessible HTTP server, so I used the simplest Python <code>http.server</code>. Back in Python 2, it was called <code>simplehttp</code>. You can simply use <code>python3 -m http.server 80</code> and optionally add <code>--directory</code> to specify a directory.</p>
+<p>Additionally, Trojan-go requires the client to fill in the SNI, which means using the domain used during key application. Therefore, prerequisites like applying for the <a href="https://github.com/haoel/haoel.github.io">domain</a>, applying for Let&rsquo;s Encrypt certificates, and configuring crontab must all be completed. There&rsquo;s a learning curve, but I had done it before, so I just skipped that part.</p>
+<p>For the client part, you can use Clash directly, and refer to <a href="https://github.com/Dreamacro/clash/wiki/configuration">here</a> for guidance.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Configure CentOS KVM Network Bridging Mode</title>
+      <link>https://blog.minifish.org/posts/how-to-configure-centos-kvm-network-bridging-mode/</link>
+      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-configure-centos-kvm-network-bridging-mode/</guid>
+      <description>&lt;h2 id=&#34;what-is-bridging&#34;&gt;What Is Bridging&lt;/h2&gt;
+&lt;p&gt;Bridging highly simulates a network card, making the router believe that the virtual machine&amp;rsquo;s network card truly exists. Personally, I feel it&amp;rsquo;s similar to resistors connected in parallel, whereas NAT (another common virtual machine network connection method) is more like parasitizing on the host&amp;rsquo;s network card.&lt;/p&gt;
+&lt;h2 id=&#34;why-use-bridging&#34;&gt;Why Use Bridging&lt;/h2&gt;
+&lt;p&gt;It allows you to treat the virtual machine as a completely independent machine, enabling mutual access with the external network (which is not possible with NAT).&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="what-is-bridging">What Is Bridging</h2>
+<p>Bridging highly simulates a network card, making the router believe that the virtual machine&rsquo;s network card truly exists. Personally, I feel it&rsquo;s similar to resistors connected in parallel, whereas NAT (another common virtual machine network connection method) is more like parasitizing on the host&rsquo;s network card.</p>
+<h2 id="why-use-bridging">Why Use Bridging</h2>
+<p>It allows you to treat the virtual machine as a completely independent machine, enabling mutual access with the external network (which is not possible with NAT).</p>
+<h2 id="how-to-configure-bridging">How to Configure Bridging</h2>
+<p>In CentOS 6, refer to the command-line method in <a href="http://www.techotopia.com/index.php/Creating_a_CentOS_6_KVM_Networked_Bridge_Interface">this article</a>.</p>
+<p>We don&rsquo;t use the GUI method because:</p>
+<ul>
+<li>We&rsquo;re unsure which options to fill in on the last screen.</li>
+<li>We don&rsquo;t know how to reset if we make a wrong selection.</li>
+</ul>
+<p>Command-line steps:</p>
+<ol>
+<li>
+<p><strong>Check if <code>bridge-utils</code> is installed:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpm -q bridge-utils
+</span></span></code></pre></div><p>Usually, it&rsquo;s already installed. If not, install it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su -
+</span></span><span style="display:flex;"><span>yum install bridge-utils
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Verify your network interfaces:</strong></p>
+<p>Run <code>ifconfig</code> to ensure you have at least three network interfaces:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>eth0      Link encap:Ethernet  HWaddr 00:18:E7:16:DA:65
+</span></span><span style="display:flex;"><span>          inet addr:192.168.0.117  Bcast:192.168.0.255  Mask:255.255.255.0
+</span></span><span style="display:flex;"><span>          inet6 addr: fe80::218:e7ff:fe16:da65/64 Scope:Link
+</span></span><span style="display:flex;"><span>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span></span><span style="display:flex;"><span>          RX packets:556 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>          TX packets:414 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>          collisions:0 txqueuelen:1000
+</span></span><span style="display:flex;"><span>          RX bytes:222834 (217.6 KiB)  TX bytes:48430 (47.2 KiB)
+</span></span><span style="display:flex;"><span>          Interrupt:16 Base address:0x4f00
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lo        Link encap:Local Loopback
+</span></span><span style="display:flex;"><span>          inet addr:127.0.0.1  Mask:255.0.0.0
+</span></span><span style="display:flex;"><span>          inet6 addr: ::1/128 Scope:Host
+</span></span><span style="display:flex;"><span>          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+</span></span><span style="display:flex;"><span>          RX packets:8 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>          collisions:0 txqueuelen:0
+</span></span><span style="display:flex;"><span>          RX bytes:480 (480.0 b)  TX bytes:480 (480.0 b)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>virbr0    Link encap:Ethernet  HWaddr 52:54:00:2A:C1:7E
+</span></span><span style="display:flex;"><span>          inet addr:192.168.122.1  Bcast:192.168.122.255  Mask:255.255.255.0
+</span></span><span style="display:flex;"><span>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span></span><span style="display:flex;"><span>          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>          TX packets:13 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>          collisions:0 txqueuelen:0
+</span></span><span style="display:flex;"><span>          RX bytes:0 (0.0 b)  TX bytes:2793 (2.7 KiB)
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Navigate to the network scripts directory:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su –
+</span></span><span style="display:flex;"><span>cd /etc/sysconfig/network-scripts
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Bring down the <code>eth0</code> interface:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifdown eth0
+</span></span></code></pre></div><p><em>This step is crucial and must be performed locally.</em> When I first configured this, I didn&rsquo;t shut down the network (since I was working remotely). I didn&rsquo;t realize that updating the <code>ifcfg-eth0</code> configuration without restarting the network would immediately apply changes, resulting in loss of network connectivity.</p>
+</li>
+<li>
+<p><strong>Edit <code>ifcfg-eth0</code>:</strong></p>
+<p>In the <code>ifcfg-eth0</code> file, include:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=eth0
+</span></span><span style="display:flex;"><span>ONBOOT=yes
+</span></span><span style="display:flex;"><span>BRIDGE=br0
+</span></span></code></pre></div><p>Keep only these three lines in the file. There&rsquo;s no need to configure an IP address here. Bridging seems to replace the original network card with the bridge, so you can delegate the configuration to the bridge.</p>
+</li>
+<li>
+<p><strong>Create a new file <code>ifcfg-br0</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=br0
+</span></span><span style="display:flex;"><span>ONBOOT=yes
+</span></span><span style="display:flex;"><span>TYPE=Bridge
+</span></span><span style="display:flex;"><span>BOOTPROTO=static
+</span></span><span style="display:flex;"><span>IPADDR=xxx.xxx.xxx.xxx   # Use the IP you originally had in ifcfg-eth0
+</span></span><span style="display:flex;"><span>GATEWAY=xxx.xxx.xxx.xxx  # Your gateway address
+</span></span><span style="display:flex;"><span>NETMASK=255.255.255.0    # Your netmask
+</span></span><span style="display:flex;"><span>DNS1=xxx.xxx.xxx.xxx     # Your primary DNS server
+</span></span><span style="display:flex;"><span>DNS2=xxx.xxx.xxx.xxx     # Your secondary DNS server (if any)
+</span></span><span style="display:flex;"><span>STP=on
+</span></span><span style="display:flex;"><span>DELAY=0
+</span></span></code></pre></div><p><em>Note:</em> Replace <code>xxx.xxx.xxx.xxx</code> with your actual network settings.</p>
+</li>
+<li>
+<p><strong>Bring up the interfaces:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifup br0
+</span></span><span style="display:flex;"><span>ifup eth0
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Verify the bridge interface:</strong></p>
+<p>Check <code>ifconfig</code> to ensure that <code>br0</code> is now present.</p>
+</li>
+<li>
+<p><strong>Update firewall rules:</strong></p>
+<p>Edit <code>/etc/sysconfig/iptables</code> and add:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>-A INPUT -i br0 -j ACCEPT
+</span></span></code></pre></div><p><em>(This is a general example; you may need to adjust it based on your specific firewall configuration.)</em></p>
+</li>
+<li>
+<p><strong>Restart the firewall:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service iptables restart
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Configure bridging in <code>virt-manager</code>:</strong></p>
+<p>When creating a new virtual machine using <code>virt-manager</code>, you can now select <code>br0</code> for the network interface. Without this bridge, the bridging option would not be available.</p>
+</li>
+</ol>
+<p><strong>Note:</strong> When configuring the IP inside the virtual machine, be sure to specify the <code>GATEWAY</code>. Otherwise, the virtual machine will only be able to access the internal network and not the external network. At this point, the virtual machine won&rsquo;t automatically discover the gateway.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

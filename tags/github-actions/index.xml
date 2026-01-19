@@ -199,5 +199,82 @@
 <p><em>This post was created and published using the exact workflow described above—from a discussion about workflow automation to a live blog post, all without leaving the conversation context.</em></p>
 ]]></content:encoded>
     </item>
+    <item>
+      <title>How to Automatically Publish a Blog Using GitHub Actions</title>
+      <link>https://blog.minifish.org/posts/how-to-automatically-publish-a-blog-using-github-actions/</link>
+      <pubDate>Wed, 16 Dec 2020 16:11:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-automatically-publish-a-blog-using-github-actions/</guid>
+      <description>&lt;p&gt;In &lt;a href=&#34;https://blog.minifish.org/posts/travis-git-push&#34;&gt;this post&lt;/a&gt;, I used Travis to enable automatic blog publishing. However, I recently discovered that Travis does not run automatically anymore (though it works manually). I haven’t looked into it closely because GitHub Actions have been introduced, so I decided to move all dependencies to GitHub.&lt;/p&gt;
+&lt;h2 id=&#34;go-action&#34;&gt;Go Action&lt;/h2&gt;
+&lt;p&gt;Click on Actions on the repository page, and then New Workflow to see recommended actions. Since this blog uses Go code, it shows the Go Action.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>In <a href="/posts/travis-git-push">this post</a>, I used Travis to enable automatic blog publishing. However, I recently discovered that Travis does not run automatically anymore (though it works manually). I haven’t looked into it closely because GitHub Actions have been introduced, so I decided to move all dependencies to GitHub.</p>
+<h2 id="go-action">Go Action</h2>
+<p>Click on Actions on the repository page, and then New Workflow to see recommended actions. Since this blog uses Go code, it shows the Go Action.</p>
+<p><img alt="goaction" loading="lazy" src="/posts/images/20201216163209.webp"></p>
+<p>The rest involves following Travis&rsquo;s approach to set up the workflow.</p>
+<ol>
+<li>Check out the blog&rsquo;s repo</li>
+<li>Check out the publishing site repo</li>
+<li><code>make</code></li>
+<li>Commit the changes to the publishing site</li>
+</ol>
+<p>Note that write permissions are required for the publishing site, so you need to configure a token, similar to Travis.</p>
+<ol>
+<li>Generate a token with only repo permissions</li>
+<li>Go to a particular repo and set up secrets (enter the token). Ideally, this should be set up on the publishing site, but it works when set in the blog repo. I haven&rsquo;t explored why yet.</li>
+</ol>
+<p>You will need two actions in total: one is GitHub&rsquo;s own <a href="https://github.com/actions/checkout">checkout</a>, and the other is a third-party action called <a href="https://github.com/marketplace/actions/push-directory-to-another-repository">“Push directory to another repository”</a>. There might be better options available, and I’ll explore them when I have more time.</p>
+<p>Finally, here is my simple GitHub Action CI file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">CI</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">master ]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">build</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Set up Go 1.x</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/setup-go@v2</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">go-version</span>: <span style="color:#ae81ff">^1.13</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Check out code into the Go module directory</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Get dependencies</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">run</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        go get -v -t -d ./...
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        if [ -f Gopkg.toml ]; then
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            dep ensure
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Check out my other private repo</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v2</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">repository</span>: <span style="color:#ae81ff">jackysp/jackysp.github.io</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">token</span>: <span style="color:#ae81ff">${{ secrets.UPDATE_BLOG }}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">path</span>: <span style="color:#ae81ff">public</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">run</span>: <span style="color:#ae81ff">make</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Pushes to another repository</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">id</span>: <span style="color:#ae81ff">public</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">cpina/github-action-push-to-another-repository@cp_instead_of_deleting</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">env</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">API_TOKEN_GITHUB</span>: <span style="color:#ae81ff">${{ secrets.UPDATE_BLOG }}</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">source-directory</span>: <span style="color:#e6db74">&#39;public&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">destination-github-username</span>: <span style="color:#e6db74">&#39;jackysp&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">destination-repository-name</span>: <span style="color:#e6db74">&#39;jackysp.github.io&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">user-email</span>: <span style="color:#ae81ff">your@email.com</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">commit-message</span>: <span style="color:#ae81ff">See ORIGIN_COMMIT</span>
+</span></span></code></pre></div>]]></content:encoded>
+    </item>
   </channel>
 </rss>

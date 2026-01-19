@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Font on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/font/</link>
+    <description>Recent content in Font on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Tue, 26 Dec 2017 22:21:06 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/font/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Use Monospaced Fonts in VS Code</title>
+      <link>https://blog.minifish.org/posts/how-to-use-monospaced-fonts-in-vs-code/</link>
+      <pubDate>Tue, 26 Dec 2017 22:21:06 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-use-monospaced-fonts-in-vs-code/</guid>
+      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
+&lt;p&gt;The English font set in Microsoft&amp;rsquo;s VS Code is monospaced, while the Chinese font is not.&lt;/p&gt;
+&lt;h2 id=&#34;method&#34;&gt;Method&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Download and install the fonts from &lt;a href=&#34;https://github.com/be5invis/Sarasa-Gothic&#34;&gt;here&lt;/a&gt;. This font combines Source Han Sans and is said to align punctuation strictly.&lt;/li&gt;
+&lt;li&gt;Use the method described &lt;a href=&#34;https://github.com/be5invis/Sarasa-Gothic/issues/8&#34;&gt;here&lt;/a&gt; to set up VS Code.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;PS: It is indeed aligned, although the English text appears a bit narrow.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="background">Background</h2>
+<p>The English font set in Microsoft&rsquo;s VS Code is monospaced, while the Chinese font is not.</p>
+<h2 id="method">Method</h2>
+<ol>
+<li>Download and install the fonts from <a href="https://github.com/be5invis/Sarasa-Gothic">here</a>. This font combines Source Han Sans and is said to align punctuation strictly.</li>
+<li>Use the method described <a href="https://github.com/be5invis/Sarasa-Gothic/issues/8">here</a> to set up VS Code.</li>
+</ol>
+<p>PS: It is indeed aligned, although the English text appears a bit narrow.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

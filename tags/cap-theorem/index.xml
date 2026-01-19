@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Cap-Theorem on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/cap-theorem/</link>
+    <description>Recent content in Cap-Theorem on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Wed, 20 Dec 2017 22:21:06 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/cap-theorem/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Understanding the CAP Theorem</title>
+      <link>https://blog.minifish.org/posts/understanding-the-cap-theorem/</link>
+      <pubDate>Wed, 20 Dec 2017 22:21:06 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/understanding-the-cap-theorem/</guid>
+      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
+&lt;p&gt;The CAP theorem has become one of the hottest theorems in recent years; when discussing distributed systems, CAP is inevitably mentioned. However, I feel that I haven&amp;rsquo;t thoroughly understood it, so I wanted to write a blog post to record my understanding. I will update the content as I gain new insights.&lt;/p&gt;
+&lt;h2 id=&#34;understanding&#34;&gt;Understanding&lt;/h2&gt;
+&lt;p&gt;I read the first part of this &lt;a href=&#34;https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/45855.pdf&#34;&gt;paper&lt;/a&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The CAP theorem [Bre12] says that you can only have two of the three desirable properties of:&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="background">Background</h2>
+<p>The CAP theorem has become one of the hottest theorems in recent years; when discussing distributed systems, CAP is inevitably mentioned. However, I feel that I haven&rsquo;t thoroughly understood it, so I wanted to write a blog post to record my understanding. I will update the content as I gain new insights.</p>
+<h2 id="understanding">Understanding</h2>
+<p>I read the first part of this <a href="https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/45855.pdf">paper</a>.</p>
+<blockquote>
+<p>The CAP theorem [Bre12] says that you can only have two of the three desirable properties of:</p>
+<ul>
+<li>C: Consistency, which we can think of as serializability for this discussion;</li>
+<li>A: 100% availability, for both reads and updates;</li>
+<li>P: tolerance to network partitions.</li>
+</ul>
+<p>This leads to three kinds of systems: CA, CP and AP, based on what letter you leave out.</p>
+</blockquote>
+<p>Let me share my understanding, using a network composed of three machines (x, y, and z) as an example:</p>
+<ul>
+<li>
+<p><strong>C (Consistency)</strong>: The three machines appear as one. Operations of addition, deletion, modification, and query on any one machine should always be consistent. That is, if you read data from x and then read from y, the results are the same. If you write data to x and then read from y, you should also read the newly written data. Wikipedia also specifically mentions that it&rsquo;s acceptable to read the data just written to x from y after a short period of time (eventual consistency).</p>
+</li>
+<li>
+<p><strong>A (Availability)</strong>: The three machines, as a whole, must always be readable and writable; even if some parts fail, it must be readable and writable.</p>
+</li>
+<li>
+<p><strong>P (Partition Tolerance)</strong>: If the network between x, y, and z is broken, any machine cannot or refuses to provide services; it is neither readable nor writable.</p>
+</li>
+</ul>
+<p>Here, <strong>C</strong> is the easiest to understand. The concepts of <strong>A</strong> and <strong>P</strong> are somewhat vague and easy to confuse.</p>
+<p>Now let&rsquo;s discuss the three combinations:</p>
+<p>If the network between x, y, and z is disconnected:</p>
+<ul>
+<li>
+<p><strong>CA</strong>: Ensure data consistency (<strong>C</strong>). When x writes data, y can read it (<strong>C</strong>). Allow the system to continue providing services—even if only x and y are operational—ensuring it is readable and writable (<strong>A</strong>). We can only tolerate z not providing service; it cannot read or write, nor return incorrect data (losing <strong>P</strong>).</p>
+</li>
+<li>
+<p><strong>CP</strong>: Ensure data consistency (<strong>C</strong>). Allow all three machines to provide services (even if only for reads) (<strong>P</strong>). We can only tolerate that x, y, and z cannot write (losing <strong>A</strong>).</p>
+</li>
+<li>
+<p><strong>AP</strong>: Allow all three machines to write (<strong>A</strong>). Allow all three machines to provide services (reads count) (<strong>P</strong>). We can only tolerate that the data written by x and y doesn&rsquo;t reach z; z will return data inconsistent with x and y (losing <strong>C</strong>).</p>
+</li>
+</ul>
+<p><strong>CA</strong> is exemplified by Paxos/Raft, which are majority protocols that sacrifice <strong>P</strong>; minority nodes remain completely silent. <strong>CP</strong> represents a read-only system; if a system is read-only, whether there&rsquo;s a network partition doesn&rsquo;t really matter—the tolerance to network partitions is infinitely large. <strong>AP</strong> is suitable for systems that only append and do not update—only inserts, no deletes or updates. Finally, by merging the results together, it can still function.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

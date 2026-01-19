@@ -62,32 +62,50 @@
     <loc>https://blog.minifish.org/posts/oceanbase-internals-transaction-replay-sql-unit-placement/</loc>
     <lastmod>2026-01-17T10:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/tags/scheduling/</loc>
-    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/sql-engine/</loc>
-    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/storage/</loc>
-    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/transactions/</loc>
-    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
+    <loc>https://blog.minifish.org/tags/browser/</loc>
+    <lastmod>2025-01-13T19:54:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/introduction-to-webvm/</loc>
     <lastmod>2025-01-13T19:54:00+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/virtualization/</loc>
+    <lastmod>2025-01-13T19:54:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/webvm/</loc>
+    <lastmod>2025-01-13T19:54:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/bicycle/</loc>
+    <lastmod>2025-01-10T18:07:06+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/brompton/</loc>
+    <lastmod>2025-01-10T18:07:06+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/brompton-clone-bike-modification/</loc>
+    <lastmod>2025-01-10T18:07:06+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/cycling/</loc>
     <lastmod>2025-01-10T18:07:06+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/harnessing-ai-to-create-high-quality-podcasts-quickly-and-for-free/</loc>
     <lastmod>2024-12-11T17:11:00+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/notebooklm/</loc>
+    <lastmod>2024-12-11T17:11:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/brompton-like-bikes-a-guide-to-trifoldable-bicycles/</loc>
     <lastmod>2024-12-09T19:27:06+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/knife/</loc>
+    <lastmod>2024-11-28T16:10:43+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/my-recent-purchases-a-review-of-three-sanrenmu-folding-knives/</loc>
     <lastmod>2024-11-28T16:10:43+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/golang/</loc>
+    <lastmod>2024-11-28T15:41:19+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/programming/</loc>
+    <lastmod>2024-11-28T15:41:19+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/the-correct-way-to-use-go-build/</loc>
     <lastmod>2024-11-28T15:41:19+08:00</lastmod>
@@ -95,26 +113,77 @@
     <loc>https://blog.minifish.org/posts/exploring-local-llms-with-ollama-my-journey-and-practices/</loc>
     <lastmod>2024-11-27T18:26:14+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/llm/</loc>
+    <lastmod>2024-11-27T18:26:14+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/ollama/</loc>
+    <lastmod>2024-11-27T18:26:14+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/exploring-tailscale-building-your-own-network-easily/</loc>
+    <lastmod>2024-11-27T18:18:38+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/networking/</loc>
+    <lastmod>2024-11-27T18:18:38+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/tailscale/</loc>
+    <lastmod>2024-11-27T18:18:38+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/vpn/</loc>
     <lastmod>2024-11-27T18:18:38+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/tips-for-traveling-in-vietnam-my-personal-experiences/</loc>
     <lastmod>2024-11-27T18:13:00+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/travel/</loc>
+    <lastmod>2024-11-27T18:13:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/vietnam/</loc>
+    <lastmod>2024-11-27T18:13:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/fishing/</loc>
+    <lastmod>2024-11-27T17:46:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/how-to-choose-the-right-fishing-gear-tips-from-my-fishing-experiences/</loc>
     <lastmod>2024-11-27T17:46:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/cloudflare/</loc>
+    <lastmod>2024-05-15T20:31:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/encounter-with-a-major-issue-with-cloudflare-warp-a-life-and-death-rescue-for-vps/</loc>
     <lastmod>2024-05-15T20:31:00+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/warp/</loc>
+    <lastmod>2024-05-15T20:31:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/how-to-use-the-http-api-in-tidb-with-tls-enabled/</loc>
     <lastmod>2023-05-22T21:45:00-07:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/security/</loc>
+    <lastmod>2023-05-22T21:45:00-07:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/tls/</loc>
+    <lastmod>2023-05-22T21:45:00-07:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/gateway/</loc>
+    <lastmod>2022-10-12T21:07:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/how-to-deploy-a-secure-transparent-gateway/</loc>
     <lastmod>2022-10-12T21:07:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/how-to-set-up-a-minecraft-bedrock-server-using-multipass/</loc>
     <lastmod>2022-05-02T19:05:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/minecraft/</loc>
+    <lastmod>2022-05-02T19:05:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/server/</loc>
+    <lastmod>2022-05-02T19:05:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/encryption/</loc>
+    <lastmod>2022-02-12T11:54:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/gpg/</loc>
+    <lastmod>2022-02-12T11:54:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/how-to-create-github-verified-commits-on-a-macbook-m1/</loc>
     <lastmod>2022-02-12T11:54:00+08:00</lastmod>
@@ -125,16 +194,40 @@
     <loc>https://blog.minifish.org/posts/how-to-compare-data-consistency-between-mysql-and-postgresql/</loc>
     <lastmod>2021-05-09T18:13:00+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/mysql/</loc>
+    <lastmod>2021-05-09T18:13:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/postgresql/</loc>
+    <lastmod>2021-05-09T18:13:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/how-to-configure-a-chinese-latex-environment-on-windows/</loc>
     <lastmod>2021-03-31T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/latex/</loc>
+    <lastmod>2021-03-31T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/windows/</loc>
+    <lastmod>2021-03-31T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/ci-cd/</loc>
+    <lastmod>2020-12-16T16:11:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/how-to-automatically-publish-a-blog-using-github-actions/</loc>
     <lastmod>2020-12-16T16:11:00+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/benchmark/</loc>
+    <lastmod>2020-12-14T12:06:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/how-to-implement-a-simple-load-using-sysbench/</loc>
     <lastmod>2020-12-14T12:06:00+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/sysbench/</loc>
+    <lastmod>2020-12-14T12:06:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-5/</loc>
+    <lastmod>2020-09-08T11:36:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/tidb/</loc>
     <lastmod>2020-09-08T11:36:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-4/</loc>
@@ -143,11 +236,17 @@
     <loc>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-3/</loc>
     <lastmod>2020-07-28T11:47:00+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/source-code/</loc>
+    <lastmod>2020-07-28T11:47:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-2/</loc>
     <lastmod>2020-07-12T12:09:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-1/</loc>
     <lastmod>2020-07-06T16:51:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/docker/</loc>
+    <lastmod>2020-04-13T10:34:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/how-to-use-docker-on-windows/</loc>
     <lastmod>2020-04-13T10:34:00+08:00</lastmod>
@@ -155,19 +254,43 @@
     <loc>https://blog.minifish.org/posts/how-to-prevent-a-linux-laptop-from-entering-sleep-mode-when-the-lid-is-closed/</loc>
     <lastmod>2020-03-31T20:31:00+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/linux/</loc>
+    <lastmod>2020-03-31T20:31:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/how-to-dynamically-update-dns-records-for-namesilo/</loc>
+    <lastmod>2020-02-01T12:27:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/und/</loc>
     <lastmod>2020-02-01T12:27:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/how-to-start-a-powershell-script-in-the-background-at-windows-startup/</loc>
     <lastmod>2020-01-14T08:56:00+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/powershell/</loc>
+    <lastmod>2020-01-14T08:56:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/gost/</loc>
+    <lastmod>2020-01-12T19:43:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/how-to-deploy-an-https-proxy-service/</loc>
     <lastmod>2020-01-12T19:43:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/proxy/</loc>
+    <lastmod>2020-01-12T19:43:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/debugging/</loc>
+    <lastmod>2019-09-16T13:24:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/delve/</loc>
+    <lastmod>2019-09-16T13:24:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/using-delve-to-debug-golang-programs/</loc>
     <lastmod>2019-09-16T13:24:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/how-to-deploy-a-shadowsocks-server/</loc>
+    <lastmod>2018-09-27T15:48:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/shadowsocks/</loc>
     <lastmod>2018-09-27T15:48:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/how-immediate-is-golangs-panic/</loc>
@@ -176,10 +299,25 @@
     <loc>https://blog.minifish.org/posts/how-tidb-implements-the-insert-statement/</loc>
     <lastmod>2018-07-11T14:18:00+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/optimization/</loc>
+    <lastmod>2018-07-11T14:18:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/haproxy/</loc>
+    <lastmod>2018-07-10T15:07:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/how-to-use-haproxy-to-test-cockroachdb/</loc>
     <lastmod>2018-07-10T15:07:00+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/load-balancer/</loc>
+    <lastmod>2018-07-10T15:07:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/cockroachdb/</loc>
+    <lastmod>2018-07-06T21:21:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-benchmarksql/</loc>
+    <lastmod>2018-07-06T21:21:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/tpcc/</loc>
     <lastmod>2018-07-06T21:21:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-sysbench/</loc>
@@ -188,11 +326,26 @@
     <loc>https://blog.minifish.org/posts/how-to-view-cmu-db-groups-oltp-bench/</loc>
     <lastmod>2018-02-23T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/font/</loc>
+    <lastmod>2017-12-26T22:21:06+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/how-to-use-monospaced-fonts-in-vs-code/</loc>
     <lastmod>2017-12-26T22:21:06+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/typography/</loc>
+    <lastmod>2017-12-26T22:21:06+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/f1/</loc>
+    <lastmod>2017-12-25T22:21:06+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/how-to-understand-f1s-schema-change/</loc>
     <lastmod>2017-12-25T22:21:06+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/racing/</loc>
+    <lastmod>2017-12-25T22:21:06+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/cap-theorem/</loc>
+    <lastmod>2017-12-20T22:21:06+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/understanding-the-cap-theorem/</loc>
     <lastmod>2017-12-20T22:21:06+08:00</lastmod>
@@ -200,8 +353,17 @@
     <loc>https://blog.minifish.org/posts/how-to-execute-git-push-in-travis-ci/</loc>
     <lastmod>2017-10-16T22:21:06+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/travis/</loc>
+    <lastmod>2017-10-16T22:21:06+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/how-to-implement-mysql-x-protocol-on-tidb/</loc>
     <lastmod>2017-08-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/protocol/</loc>
+    <lastmod>2017-08-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/centos/</loc>
+    <lastmod>2014-06-05T22:21:06+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/how-to-configure-centos-6-nfs-service/</loc>
     <lastmod>2014-06-05T22:21:06+08:00</lastmod>
@@ -210,6 +372,12 @@
     <lastmod>2014-06-05T22:21:06+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/how-to-install-centos-as-a-virtualization-host/</loc>
+    <lastmod>2014-06-05T22:21:06+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/kvm/</loc>
+    <lastmod>2014-06-05T22:21:06+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/nfs/</loc>
     <lastmod>2014-06-05T22:21:06+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/how-to-practice-using-sql/</loc>

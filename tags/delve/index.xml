@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Delve on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/delve/</link>
+    <description>Recent content in Delve on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Mon, 16 Sep 2019 13:24:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/delve/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Using delve to Debug Golang Programs</title>
+      <link>https://blog.minifish.org/posts/using-delve-to-debug-golang-programs/</link>
+      <pubDate>Mon, 16 Sep 2019 13:24:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/using-delve-to-debug-golang-programs/</guid>
+      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
+&lt;p&gt;When I first started writing Golang, I was always looking for a convenient debugging tool. Back then, I came across documentation about using &lt;code&gt;gdb&lt;/code&gt; to debug and also tried &lt;code&gt;delve&lt;/code&gt;, but neither felt easy to use. Later, on someone&amp;rsquo;s advice, I went back to the good old &lt;code&gt;print&lt;/code&gt; statements&amp;hellip;&lt;/p&gt;
+&lt;p&gt;Over the past couple of days, I was debugging &lt;code&gt;go test&lt;/code&gt; and found that tests would always hang when run per package. I couldn&amp;rsquo;t think of a suitable method at first, so I thought of &lt;code&gt;delve&lt;/code&gt; again. After giving it a try, I found it has become much more mature than before.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="background">Background</h2>
+<p>When I first started writing Golang, I was always looking for a convenient debugging tool. Back then, I came across documentation about using <code>gdb</code> to debug and also tried <code>delve</code>, but neither felt easy to use. Later, on someone&rsquo;s advice, I went back to the good old <code>print</code> statements&hellip;</p>
+<p>Over the past couple of days, I was debugging <code>go test</code> and found that tests would always hang when run per package. I couldn&rsquo;t think of a suitable method at first, so I thought of <code>delve</code> again. After giving it a try, I found it has become much more mature than before.</p>
+<h2 id="usage">Usage</h2>
+<p><code>dlv attach ${pid}</code> is the method I use most often. After attaching, you can use debugging commands similar to <code>gdb</code>. You can use <code>help</code> to view specific commands.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>(dlv) help
+</span></span><span style="display:flex;"><span>The following commands are available:
+</span></span><span style="display:flex;"><span>    args ------------------------ Print function arguments.
+</span></span><span style="display:flex;"><span>    break (alias: b) ------------ Sets a breakpoint.
+</span></span><span style="display:flex;"><span>    breakpoints (alias: bp) ----- Print out info for active breakpoints.
+</span></span><span style="display:flex;"><span>    call ------------------------ Resumes process, injecting a function call (EXPERIMENTAL!!!)
+</span></span><span style="display:flex;"><span>    clear ----------------------- Deletes breakpoint.
+</span></span><span style="display:flex;"><span>    clearall -------------------- Deletes multiple breakpoints.
+</span></span><span style="display:flex;"><span>    condition (alias: cond) ----- Set breakpoint condition.
+</span></span><span style="display:flex;"><span>    config ---------------------- Changes configuration parameters.
+</span></span><span style="display:flex;"><span>    continue (alias: c) --------- Run until breakpoint or program termination.
+</span></span><span style="display:flex;"><span>    deferred -------------------- Executes command in the context of a deferred call.
+</span></span><span style="display:flex;"><span>    disassemble (alias: disass) - Disassembler.
+</span></span><span style="display:flex;"><span>    down ------------------------ Move the current frame down.
+</span></span><span style="display:flex;"><span>    edit (alias: ed) ------------ Open where you are in $DELVE_EDITOR or $EDITOR
+</span></span><span style="display:flex;"><span>    exit (alias: quit | q) ------ Exit the debugger.
+</span></span><span style="display:flex;"><span>    frame ----------------------- Set the current frame, or execute command on a different frame.
+</span></span><span style="display:flex;"><span>    funcs ----------------------- Print list of functions.
+</span></span><span style="display:flex;"><span>    goroutine (alias: gr) ------- Shows or changes current goroutine.
+</span></span><span style="display:flex;"><span>    goroutines (alias: grs) ----- List program goroutines.
+</span></span><span style="display:flex;"><span>    help (alias: h) ------------- Prints the help message.
+</span></span><span style="display:flex;"><span>    libraries ------------------- List loaded dynamic libraries.
+</span></span><span style="display:flex;"><span>    list (alias: ls | l) -------- Show source code.
+</span></span><span style="display:flex;"><span>    locals ---------------------- Print local variables.
+</span></span><span style="display:flex;"><span>    next (alias: n) ------------- Step over to next source line.
+</span></span><span style="display:flex;"><span>    on -------------------------- Executes a command when a breakpoint is hit.
+</span></span><span style="display:flex;"><span>    print (alias: p) ------------ Evaluate an expression.
+</span></span><span style="display:flex;"><span>    regs ------------------------ Print contents of CPU registers.
+</span></span><span style="display:flex;"><span>    restart (alias: r) ---------- Restart process.
+</span></span><span style="display:flex;"><span>    set ------------------------- Changes the value of a variable.
+</span></span><span style="display:flex;"><span>    source ---------------------- Executes a file containing a list of delve commands.
+</span></span><span style="display:flex;"><span>    sources --------------------- Print list of source files.
+</span></span><span style="display:flex;"><span>    stack (alias: bt) ----------- Print stack trace.
+</span></span><span style="display:flex;"><span>    step (alias: s) ------------- Single step through program.
+</span></span><span style="display:flex;"><span>    step-instruction (alias: si)  Single step a single CPU instruction.
+</span></span><span style="display:flex;"><span>    stepout (alias: so) --------- Step out of the current function.
+</span></span><span style="display:flex;"><span>    thread (alias: tr) ---------- Switch to the specified thread.
+</span></span><span style="display:flex;"><span>    threads --------------------- Print out info for every traced thread.
+</span></span><span style="display:flex;"><span>    trace (alias: t) ------------ Set tracepoint.
+</span></span><span style="display:flex;"><span>    types ----------------------- Print list of types.
+</span></span><span style="display:flex;"><span>    up -------------------------- Move the current frame up.
+</span></span><span style="display:flex;"><span>    vars ------------------------ Print package variables.
+</span></span><span style="display:flex;"><span>    whatis ---------------------- Prints type of an expression.
+</span></span><span style="display:flex;"><span>Type help followed by a command for full documentation.
+</span></span></code></pre></div><p>Many of these commands are the same as those in <code>gdb</code>. Another command I use frequently is <code>grs</code>, which outputs all goroutines. You can also use <code>grs -t</code>, which is equivalent to <code>gdb</code>&rsquo;s <code>t a a bt</code>. The only slight drawback is that it only outputs 10 stack frames, and any additional ones are truncated.</p>
+<p>Additionally, it seems that processes forked by <code>go test</code> can&rsquo;t be attached to. If you want to test, you must first compile it into a test file and then execute it. You can refer to <a href="https://github.com/pingcap/tidb/issues/12184">this issue</a> for more details.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>$ dlv attach 19654
+</span></span><span style="display:flex;"><span>could not attach to pid 19654: decoding dwarf section info at offset 0x0: too short
+</span></span></code></pre></div><p>Furthermore, by default, Go&rsquo;s <code>test</code> caches results, which can be controlled via environment variables. However, with Go modules (<code>go mod</code>), it&rsquo;s recommended to use <code>./ddl.test -test.count=1</code> to disable caching. It doesn&rsquo;t feel very elegant.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

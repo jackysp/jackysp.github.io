@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Source-Code on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/source-code/</link>
+    <description>Recent content in Source-Code on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Tue, 28 Jul 2020 11:47:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/source-code/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Read TiDB Source Code (Part 3)</title>
+      <link>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-3/</link>
+      <pubDate>Tue, 28 Jul 2020 11:47:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-3/</guid>
+      <description>&lt;p&gt;In the previous article, we introduced methods for viewing syntax and configurations. In this article, we will discuss how to view system variables, including default values, scopes, and how to monitor metrics.&lt;/p&gt;
+&lt;h2 id=&#34;system-variables&#34;&gt;System Variables&lt;/h2&gt;
+&lt;p&gt;The system variable names in TiDB are defined in &lt;a href=&#34;https://github.com/pingcap/tidb/blob/db0310b17901b1a59f7f728294455ed9667f88ac/sessionctx/variable/tidb_vars.go&#34;&gt;tidb_vars.go&lt;/a&gt;. This file also includes some default values for variables, but the place where they are actually assembled is &lt;a href=&#34;https://github.com/pingcap/tidb/blob/12aac547a9068c404ad18093ae4d0ea4d060a465/sessionctx/variable/sysvar.go#L96&#34;&gt;defaultSysVars&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;defaultSysVars&#34; loading=&#34;lazy&#34; src=&#34;https://blog.minifish.org/posts/images/20200728151254.webp&#34;&gt;&lt;/p&gt;
+&lt;p&gt;This large struct array defines the scope, variable names, and default values for all variables in TiDB. Besides TiDB&amp;rsquo;s own system variables, it also includes compatibility with MySQL&amp;rsquo;s system variables.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>In the previous article, we introduced methods for viewing syntax and configurations. In this article, we will discuss how to view system variables, including default values, scopes, and how to monitor metrics.</p>
+<h2 id="system-variables">System Variables</h2>
+<p>The system variable names in TiDB are defined in <a href="https://github.com/pingcap/tidb/blob/db0310b17901b1a59f7f728294455ed9667f88ac/sessionctx/variable/tidb_vars.go">tidb_vars.go</a>. This file also includes some default values for variables, but the place where they are actually assembled is <a href="https://github.com/pingcap/tidb/blob/12aac547a9068c404ad18093ae4d0ea4d060a465/sessionctx/variable/sysvar.go#L96">defaultSysVars</a>.</p>
+<p><img alt="defaultSysVars" loading="lazy" src="/posts/images/20200728151254.webp"></p>
+<p>This large struct array defines the scope, variable names, and default values for all variables in TiDB. Besides TiDB&rsquo;s own system variables, it also includes compatibility with MySQL&rsquo;s system variables.</p>
+<h3 id="scope">Scope</h3>
+<p>In TiDB, there are three types of variable scopes literally:</p>
+<p><img alt="defaultSysVars" loading="lazy" src="/posts/images/20200728151833.webp"></p>
+<p>They are ScopeNone, ScopeGlobal, and ScopeSession. They represent:</p>
+<ul>
+<li>ScopeNone: Read-only variables</li>
+<li>ScopeGlobal: Global variables</li>
+<li>ScopeSession: Session variables</li>
+</ul>
+<p>The actual effect of these scopes is that when you use SQL to read or write them, you need to use the corresponding syntax. If the SQL fails, the SQL operation does not take effect. If the SQL executes successfully, it merely means the setting is complete, but it does not mean that it takes effect according to the corresponding scope.</p>
+<p>Let&rsquo;s use the method mentioned in the first article to start a single-node TiDB for demonstration:</p>
+<h4 id="scopenone">ScopeNone</h4>
+<p>Take <code>performance_schema_max_mutex_classes</code> as an example,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>performance_schema_max_mutex_classes;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">----------------------------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>performance_schema_max_mutex_classes <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">----------------------------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#ae81ff">200</span>                                    <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">----------------------------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0002</span> sec)
+</span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.performance_schema_max_mutex_classes;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-----------------------------------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.performance_schema_max_mutex_classes <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-----------------------------------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#ae81ff">200</span>                                           <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-----------------------------------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0004</span> sec)
+</span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">session</span>.performance_schema_max_mutex_classes;
+</span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1238</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;performance_schema_max_mutex_classes&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">GLOBAL</span> <span style="color:#66d9ef">variable</span>
+</span></span></code></pre></div><p>As you can see, the scope of ScopeNone can be read as a global variable,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">global</span> performance_schema_max_mutex_classes <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1105</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;performance_schema_max_mutex_classes&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">read</span><span style="color:#f92672">-</span><span style="color:#66d9ef">only</span> <span style="color:#66d9ef">variable</span>
+</span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> performance_schema_max_mutex_classes <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1105</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;performance_schema_max_mutex_classes&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">read</span><span style="color:#f92672">-</span><span style="color:#66d9ef">only</span> <span style="color:#66d9ef">variable</span>
+</span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">session</span> performance_schema_max_mutex_classes <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1105</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;performance_schema_max_mutex_classes&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">read</span><span style="color:#f92672">-</span><span style="color:#66d9ef">only</span> <span style="color:#66d9ef">variable</span>
+</span></span></code></pre></div><p>But it cannot be set in any way.</p>
+<p>To trace the usage of ScopeNone, you will see</p>
+<p><img alt="defaultSysVars" loading="lazy" src="/posts/images/20200728155134.webp"></p>
+<p>In <code>setSysVariable</code>, when this type of scope variable is encountered, an error is directly returned.</p>
+<p><img alt="defaultSysVars" loading="lazy" src="/posts/images/20200728155332.webp"></p>
+<p>In <code>ValidateGetSystemVar</code>, it is handled as a global variable.
+From a theoretical standpoint, these ScopeNone variables are essentially a single copy in the code. Once TiDB is started, they exist in memory as read-only and are not actually stored in TiKV.</p>
+<h4 id="scopeglobal">ScopeGlobal</h4>
+<p>Using <code>gtid_mode</code> as an example,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>gtid_mode;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>gtid_mode <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#66d9ef">OFF</span>         <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0003</span> sec)
+</span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.gtid_mode;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.gtid_mode <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#66d9ef">OFF</span>                <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0006</span> sec)
+</span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">session</span>.gtid_mode;
+</span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1238</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;gtid_mode&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">GLOBAL</span> <span style="color:#66d9ef">variable</span>
+</span></span></code></pre></div><p>It works the same way as MySQL global variable reading,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> gtid_mode<span style="color:#f92672">=</span><span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1105</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;gtid_mode&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">GLOBAL</span> <span style="color:#66d9ef">variable</span> <span style="color:#66d9ef">and</span> should be <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">with</span> <span style="color:#66d9ef">SET</span> <span style="color:#66d9ef">GLOBAL</span>
+</span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">session</span> gtid_mode<span style="color:#f92672">=</span><span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1105</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;gtid_mode&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">GLOBAL</span> <span style="color:#66d9ef">variable</span> <span style="color:#66d9ef">and</span> should be <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">with</span> <span style="color:#66d9ef">SET</span> <span style="color:#66d9ef">GLOBAL</span>
+</span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">global</span> gtid_mode<span style="color:#f92672">=</span><span style="color:#66d9ef">on</span>;
+</span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">rows</span> affected (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0029</span> sec)
+</span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.gtid_mode;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.gtid_mode <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#66d9ef">ON</span>                 <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0005</span> sec)
+</span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>gtid_mode;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>gtid_mode <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#66d9ef">ON</span>          <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0006</span> sec)
+</span></span></code></pre></div><p>The setting method is also compatible with MySQL. At this point, we can shut down the single-instance TiDB and restart it,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>gtid_mode;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>gtid_mode <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#66d9ef">ON</span>          <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0003</span> sec)
+</span></span></code></pre></div><p>And you can see that the result can still be read, meaning that this setting was persisted to the storage engine.
+Looking closely at the code, you can see:</p>
+<p><img alt="defaultSysVars" loading="lazy" src="/posts/images/20200728164505.webp"></p>
+<p>The actual implementation involves executing an internal replace statement to update the original value. This constitutes a complete transaction involving acquiring two TSOs and committing the entire process, making it slower compared to setting session variables.</p>
+<h4 id="scopesession">ScopeSession</h4>
+<p>Using <code>rand_seed2</code> as an example,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>rand_seed2;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>rand_seed2 <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>              <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0005</span> sec)
+</span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">session</span>.rand_seed2;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">----------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">session</span>.rand_seed2 <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">----------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>                      <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">----------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0003</span> sec)
+</span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.rand_seed2;
+</span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1238</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;rand_seed2&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">SESSION</span> <span style="color:#66d9ef">variable</span>
+</span></span></code></pre></div><p>Reading is compatible with MySQL.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> rand_seed2<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;abc&#39;</span>;
+</span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">rows</span> affected (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0006</span> sec)
+</span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">session</span> rand_seed2<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;bcd&#39;</span>;
+</span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">rows</span> affected (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0004</span> sec)
+</span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">global</span> rand_seed2<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;cde&#39;</span>;
+</span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1105</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;rand_seed2&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">SESSION</span> <span style="color:#66d9ef">variable</span> <span style="color:#66d9ef">and</span> can<span style="color:#e6db74">&#39;t be used with SET GLOBAL
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">MySQL  127.0.0.1:4000  SQL &gt; select @@rand_seed2;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">+--------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">| @@rand_seed2 |
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">+--------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">| bcd          |
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">+--------------+
+</span></span></span></code></pre></div><p>The setting is also compatible with MySQL. It can be simply observed that this operation only changes the session&rsquo;s memory.
+The actual place where it finally takes effect is <a href="https://github.com/pingcap/tidb/blob/f360ad7a434e4edd4d7ebce5ed5dc2b9826b6ed0/sessionctx/variable/session.go#L998">SetSystemVar</a>.</p>
+<p><img alt="defaultSysVars" loading="lazy" src="/posts/images/20200728171914.webp"></p>
+<p>There are some tricks here.</p>
+<h3 id="actual-scope-of-variables">Actual Scope of Variables</h3>
+<p>The previous section covered setting session variables. Based on MySQL&rsquo;s variable rules, setting a global variable does not affect the current session. Only newly created sessions will load global variables for session variable assignment. Ultimately, the active session variable take effect. Global variables without session properties still have unique characteristics, and this chapter will cover:</p>
+<ol>
+<li>Activation of session variables</li>
+<li>Activation of pure global variables</li>
+<li>Mechanism of global variable function</li>
+</ol>
+<p>These three aspects.</p>
+<h4 id="activation-of-session-variables">Activation of Session Variables</h4>
+<p>Whether a session variable is also a global variable only affects whether it needs to load global variable data from the storage engine when the session starts. The default value in the code is the initial value for eternity if no loading is required.</p>
+<p>The actual range where a variable operates can only be observed in <a href="https://github.com/pingcap/tidb/blob/f360ad7a434e4edd4d7ebce5ed5dc2b9826b6ed0/sessionctx/variable/session.go#L998">SetSystemVar</a>.</p>
+<p><img alt="defaultSysVars" loading="lazy" src="/posts/images/20200728173351.webp"></p>
+<p>For example, in this part, <code>s.MemQuotaNestedLoopApply = tidbOptInt64(val, DefTiDBMemQuotaNestedLoopApply)</code> changes the <code>s</code> structure, effectively changing the current session,</p>
+<p>Whereas <code>atomic.StoreUint32(&amp;ProcessGeneralLog, uint32(tidbOptPositiveInt32(val, DefTiDBGeneralLog)))</code> changes the value of the global variable <code>ProcessGeneralLog</code>, thereby affecting the entire TiDB instance when <code>set tidb_general_log = 1</code> is executed.</p>
+<h4 id="activation-of-pure-global-variables">Activation of Pure Global Variables</h4>
+<p>Pure global variables in current TiDB are used for background threads like DDL, statistics, etc.</p>
+<p><img alt="defaultSysVars" loading="lazy" src="/posts/images/20200728174207.webp">
+<img alt="defaultSysVars" loading="lazy" src="/posts/images/20200728174243.webp"></p>
+<p>Because only one TiDB server requires them, session-level variables hold no meaning for these.</p>
+<h4 id="mechanism-of-global-variable-function">Mechanism of Global Variable Function</h4>
+<p>Global variables in TiDB don&rsquo;t activate immediately after setting. A connection fetches the latest global system variables from TiKV to assign them to the current session the first time it&rsquo;s established. Concurrent connection creation results in frequent access to the TiKV node holding a few global variables. Thus, TiDB caches global variables, updating them every two seconds, significantly reducing TiKV load.
+The problem arises that after setting a global variable, a brief wait is necessary before creating a new connection, ensuring new connections will read the latest global variable. This is one of the few eventual consistency locations within TiDB.</p>
+<p>For specific details, see <a href="https://github.com/pingcap/tidb/blob/838b6a0cf2df2d1907508e56d9de9ba7fab502e5/session/session.go#L1990">this commentary</a> in <code>loadCommonGlobalVariablesIfNeeded</code>.</p>
+<p><img alt="defaultSysVars" loading="lazy" src="/posts/images/20200728191527.webp"></p>
+<h2 id="metrics">Metrics</h2>
+<p>Compared to system variables, Metrics in TiDB are simpler, or straightforward. The most common Metrics are Histogram and Counter, the former is used to record actual values for an operation and the latter records occurrences of fixed events.
+All Metrics in TiDB are uniformly located <a href="https://github.com/pingcap/tidb/tree/cbc225fa17c93a3f58bef41b5accb57beb0d9586/metrics">here</a>, with AlertManager and Grafana scripts also available separately under alertmanager and grafana.</p>
+<p>There are many Metrics, and from a beginner&rsquo;s perspective, it&rsquo;s best to focus on a specific monitoring example. Let&rsquo;s take the TPS (transactions per second) panel as an example.</p>
+<p><img alt="tps" loading="lazy" src="/posts/images/20200729205545.webp"></p>
+<p>Click EDIT and you will see the monitoring formula is:</p>
+<p><img alt="tps2" loading="lazy" src="/posts/images/20200729210124.webp"></p>
+<p>The <code>tidb_session_transaction_duration_seconds</code> is the name of this specific metric. Since it is a histogram, it can actually be expressed as three types of values: sum, count, and bucket, which represent the total sum of values, the count (which functions the same as a counter), and the distribution by bucket, respectively.</p>
+<p>In this context, [1m] represents a time window of 1 minute, indicating the precision of the measurement. The rate function calculates the slope, essentially the rate of change, indicating how many times something occurs per second. The sum function is used for aggregation, and when combined with by (type, txn_mode), it represents aggregation by the dimensions of type and txn_mode.</p>
+<p>The Legend below displays the dimensions above using {{type}}-{{txn_mode}}. When surrounded by {{}}, it can display the actual label names.</p>
+<p>In this representation, the final states of transactions are commit, abort, and rollback. A commit indicates a successful user-initiated transaction, rollback indicates a user-initiated rollback (which cannot fail), and abort indicates a user-initiated commit that failed.</p>
+<p>The second label, txn_mode, refers to two modes: optimistic and pessimistic transactions. There&rsquo;s nothing further to explain about these modes.</p>
+<p>Corresponding to the code:</p>
+<p><img alt="alt text" loading="lazy" src="/posts/images/20200729211352.webp"></p>
+<p>This segment of code shows that <code>tidb_session_transaction_duration_seconds</code> is divided into several parts, including namespace and subsystem. Generally, to find a variable in a formula like <code>tidb_session_transaction_duration_seconds_count</code> within TiDB code, you need to remove the first two words and the last word.</p>
+<p>From this code snippet, you can see it&rsquo;s a histogram, specifically a HistogramVec, which is an array of histograms because it records data with several different labels. The labels LblTxnMode and LblType are these two labels.</p>
+<p><img alt="alt text" loading="lazy" src="/posts/images/20200729211511.webp"></p>
+<p>Checking the references, there is a place for registration, which is in the main function we discussed in the first article, where metrics are registered.</p>
+<p><img alt="alt text" loading="lazy" src="/posts/images/20200729211725.webp"></p>
+<p>Other references show how metrics are instantiated. Why do we do this? Mainly because as the number of labels increases, the performance of metrics becomes poorer, which is related to Prometheus&rsquo;s implementation. We had no choice but to create many instantiated global variables.</p>
+<p><img alt="alt text" loading="lazy" src="/posts/images/20200729211935.webp"></p>
+<p>Taking the implementation of Rollback as an example, its essence is to record the actual execution time of a transaction when Rollback is truly executed. Since it’s a histogram, it is also used as a counter in this instance.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Read TiDB Source Code (Part 2)</title>
+      <link>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-2/</link>
+      <pubDate>Sun, 12 Jul 2020 12:09:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-2/</guid>
+      <description>&lt;p&gt;Continuing from &lt;a href=&#34;https://blog.minifish.org/posts/tidb1&#34;&gt;the previous article&lt;/a&gt;, we learned how to set up the environment for reading code and where to start reading the code. In this part, we&amp;rsquo;ll introduce methods for viewing code based on some common needs.&lt;/p&gt;
+&lt;h2 id=&#34;how-to-check-the-support-level-of-a-syntax&#34;&gt;How to Check the Support Level of a Syntax&lt;/h2&gt;
+&lt;p&gt;There are usually two methods:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Check through the parser repo&lt;/li&gt;
+&lt;li&gt;Directly check within the TiDB repo&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Both of these methods require the &lt;a href=&#34;https://blog.minifish.org/posts/tidb1#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA&#34;&gt;environment setup from the previous article&lt;/a&gt;. If you haven&amp;rsquo;t tried that yet, give it a go.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>Continuing from <a href="/posts/tidb1">the previous article</a>, we learned how to set up the environment for reading code and where to start reading the code. In this part, we&rsquo;ll introduce methods for viewing code based on some common needs.</p>
+<h2 id="how-to-check-the-support-level-of-a-syntax">How to Check the Support Level of a Syntax</h2>
+<p>There are usually two methods:</p>
+<ol>
+<li>Check through the parser repo</li>
+<li>Directly check within the TiDB repo</li>
+</ol>
+<p>Both of these methods require the <a href="/posts/tidb1#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA">environment setup from the previous article</a>. If you haven&rsquo;t tried that yet, give it a go.</p>
+<h3 id="preparation">Preparation</h3>
+<ol>
+<li>
+<p>Install GoYacc Support</p>
+<p><img alt="goyacc" loading="lazy" src="/posts/images/20200712124300.webp"></p>
+<p>The GoYacc Support plugin is a creation by a colleague at our company, a third-party plugin officially accepted by JetBrains, a well-regarded product. It includes syntax highlighting and intelligence, which is great!</p>
+</li>
+<li>
+<p>Download <a href="https://github.com/pingcap/parser">parser repo</a></p>
+<p>If you&rsquo;re checking syntax directly from the parser, you need to download it manually. If you&rsquo;re navigating from TiDB, IDEA will automatically download the code, so no extra steps are needed.</p>
+</li>
+</ol>
+<h3 id="check-via-parser-repo">Check via parser repo</h3>
+<p>Open the parser using IDEA, switch to the branch you need, and locate the parser.y file. However, it is more recommended to check from within TiDB.</p>
+<h3 id="check-via-tidb-repo">Check via TiDB repo</h3>
+<ol>
+<li>
+<p>Open the TiDB project with IDEA and switch to the required branch</p>
+<p><img alt="co" loading="lazy" src="/posts/images/20200712183012.webp"></p>
+</li>
+<li>
+<p>Find the parser.y file; make sure to select the broadest search scope</p>
+<p><img alt="parser.y" loading="lazy" src="/posts/images/20200712183658.webp"></p>
+<p>Alternatively, you can find it in the file list,</p>
+<p><img alt="parser.y2" loading="lazy" src="/posts/images/20200712184101.webp"></p>
+<p><img alt="parser.y3" loading="lazy" src="/posts/images/20200712184157.webp"></p>
+</li>
+</ol>
+<p>Let&rsquo;s take checking the <code>SHOW ENGINES</code> SQL statement as an example.</p>
+<p>The entry point for the entire statement parsing is <a href="https://github.com/pingcap/parser/blob/f56688124d8bbba98ca103dbcc667d0e3b9bef30/parser.y#L1309-L1308">Start</a>. Below it is the StatementList, followed by Statement. Under the large list of Statements, you can find ShowStmt.</p>
+<p><img alt="parser.y4" loading="lazy" src="/posts/images/20200712184841.webp"></p>
+<p>However, ShowStmt is actually quite complex. Another way is to directly search for <code>ShowEngines</code> within parser.y, since naming follows Golang conventions, with camel case and capitalized letters for public exposure. Naturally, if familiar with the code, you&rsquo;d know <code>ShowEngines</code> is under <code>ShowTargetFilterable</code>. Its first branch is <code>ShowEngines</code>.</p>
+<p><img alt="parser.y5" loading="lazy" src="/posts/images/20200712185533.webp"></p>
+<p><strong>What is the level of support for <code>SHOW ENGINES</code>?</strong></p>
+<p>You can look at how <code>ast.ShowEngines</code> is processed. Here, you can&rsquo;t just jump to it; you need to copy and search.</p>
+<p><img alt="parser.y6" loading="lazy" src="/posts/images/20200712190242.webp"></p>
+<p>You only need to see how it&rsquo;s processed under TiDB, and you can skip test files.</p>
+<p><img alt="parser.y7" loading="lazy" src="/posts/images/20200712190752.webp"></p>
+<p>One is the actual implementation,</p>
+<p><img alt="parser.y7" loading="lazy" src="/posts/images/20200712190839.webp"></p>
+<p>The other is the build schema, which you can ignore for now,</p>
+<p><img alt="parser.y7" loading="lazy" src="/posts/images/20200712190956.webp"></p>
+<p>Entering <code>fetchShowEngines</code>, you can see the specific implementation is simple, running an internal SQL to read a system table.</p>
+<p><img alt="parser.y7" loading="lazy" src="/posts/images/20200712191054.webp"></p>
+<p>Checking <code>SHOW ENGINES</code> ends here. You can see that it&rsquo;s fully supported.</p>
+<p><strong>Which statements only have syntax support?</strong></p>
+<p>Taking the temporary table creation syntax as an example, find its position in the parser.y file.</p>
+<p><img alt="parser.y8" loading="lazy" src="/posts/images/20200712191711.webp"></p>
+<p>It&rsquo;s an option.</p>
+<p><img alt="parser.y9" loading="lazy" src="/posts/images/20200712191843.webp"></p>
+<p>You can see that if the temporary table option is specified, it simply returns true with an attached warning, stating that the table is still treated as a regular table. Previously, the parser had a lot of operations that only returned without doing anything, not even a warning, but these are now rare.</p>
+<h4 id="advantages-of-querying-via-tidb-repo">Advantages of Querying via TiDB repo</h4>
+<p>You can see that checking via the TiDB repo allows you to find the parser&rsquo;s detailed hash using IDEA. If you check directly via the parser, you need to first look up the parser’s hash in TiDB’s go.mod, then check out to the corresponding hash in the parser. If you need to check specific implementations, you have to go back to TiDB, making back-and-forth checks less convenient compared to looking within a single project. The only advantage is the ease of blaming commit history.</p>
+<h2 id="viewing-and-modifying-default-configuration">Viewing and Modifying Default Configuration</h2>
+<p>The default configurations can be easily viewed in TiDB, specifically the variable <a href="https://github.com/pingcap/tidb/blob/72f6a0405837b92e40de979a4f3134d9aa19a5b3/config/config.go#L547">defaultConf</a>. The configurations listed here are the actual default settings.</p>
+<p><img alt="conf1" loading="lazy" src="/posts/images/20200713172228.webp"></p>
+<p>Taking the first Host configuration as an example, it has a mapping to toml and json files.</p>
+<p><img alt="conf2" loading="lazy" src="/posts/images/20200713172535.webp"></p>
+<p>This essentially shows how it&rsquo;s written in a toml file. The <code>DefHost</code> following it is the specific default value.</p>
+<p><img alt="conf3" loading="lazy" src="/posts/images/20200713180137.webp"></p>
+<p>Something important to note is that configurations have a hierarchical relationship. For example, the log-related configuration in the configuration file is:</p>
+<p><img alt="conf4" loading="lazy" src="/posts/images/20200715164756.webp"></p>
+<p>In the code, it is represented as:</p>
+<p><img alt="conf5" loading="lazy" src="/posts/images/20200715164930.webp"></p>
+<p>This denotes a configuration called &ldquo;level&rdquo; under the log configuration.</p>
+<p>What if you want to add more levels? For instance, the most complex configuration for CopCache adds another layer under tikv-client called copr-cache.</p>
+<p><img alt="conf6" loading="lazy" src="/posts/images/20200715165243.webp"></p>
+<p>Since toml files do not support multi-level nesting, this leads to the most complex configuration writing in TiDB.</p>
+<p><img alt="conf6" loading="lazy" src="/posts/images/20200715165456.webp"></p>
+<p>To use non-default configurations with the TiDB started through IDEA as mentioned above, the simplest way is to modify this defaultConf.</p>
+<h2 id="summary">Summary</h2>
+<p>From this, you can see that checking whether a statement is supported, and whether it’s just syntax support or has a specific implementation, can be achieved with the described methods. You also learned how to view and modify default configurations, allowing you to conduct some verifications yourself. In the next article, I plan to introduce TiDB’s system variables.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Read TiDB Source Code (Part 1)</title>
+      <link>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-1/</link>
+      <pubDate>Mon, 06 Jul 2020 16:51:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-1/</guid>
+      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
+&lt;p&gt;There are many articles on reading the source code of TiDB, often referred to as &lt;a href=&#34;https://pingcap.com/blog-cn/#TiDB-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB&#34;&gt;the &amp;ldquo;Twenty-Four Chapters Scriptures&amp;rdquo;&lt;/a&gt;. However, these introductions typically proceed from a macro to a micro perspective. This series attempts to introduce how to read TiDB&amp;rsquo;s source code from an easier angle. The goals we aim to achieve are:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Enable readers to start reading TiDB&amp;rsquo;s code themselves, rather than understanding it passively through pre-written articles.&lt;/li&gt;
+&lt;li&gt;Provide some common examples of looking into the details of the code, such as examining the scope of a variable.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;After all, teaching people to fish is better than giving them fish. While the code changes often, the methods remain mostly unchanged.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="background">Background</h2>
+<p>There are many articles on reading the source code of TiDB, often referred to as <a href="https://pingcap.com/blog-cn/#TiDB-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB">the &ldquo;Twenty-Four Chapters Scriptures&rdquo;</a>. However, these introductions typically proceed from a macro to a micro perspective. This series attempts to introduce how to read TiDB&rsquo;s source code from an easier angle. The goals we aim to achieve are:</p>
+<ol>
+<li>Enable readers to start reading TiDB&rsquo;s code themselves, rather than understanding it passively through pre-written articles.</li>
+<li>Provide some common examples of looking into the details of the code, such as examining the scope of a variable.</li>
+</ol>
+<p>After all, teaching people to fish is better than giving them fish. While the code changes often, the methods remain mostly unchanged.</p>
+<p>Why choose TiDB to read?</p>
+<ol>
+<li>
+<p>I am not familiar with TiKV or PD.</p>
+</li>
+<li>
+<p>TiDB is the entry point directly interacting with users and is also the most likely to be questioned.</p>
+</li>
+<li>
+<p>TiDB can run independently and be debugged. If you want to run some SQL after reading the code to verify your understanding, it can be easily done.</p>
+</li>
+</ol>
+<h2 id="preparations">Preparations</h2>
+<ol>
+<li>
+<p>A development machine</p>
+<p>TiDB is a pure Golang project. It can be conveniently developed on Linux, MacOS, and even Windows. My environment is Windows 10.</p>
+</li>
+<li>
+<p>A copy of the TiDB source code, available for download at the <a href="https://github.com/pingcap/tidb">official repo</a>.</p>
+</li>
+<li>
+<p><a href="https://golang.org/">Golang</a> environment, following the official guide is straightforward.</p>
+</li>
+<li>
+<p>Goland or IntelliJ IDEA + Golang plugin</p>
+<p>I personally feel there&rsquo;s no difference between the two. Why not recommend VSCode + Golang plugin? Mainly because I&rsquo;m used to the JetBrains suite, and indeed commercial software tends to be higher quality than community software. For long-term use, it&rsquo;s recommended to pay for it. Students can use it for free, but need to renew the license every year.</p>
+</li>
+</ol>
+<h2 id="environment-setup">Environment Setup</h2>
+<ol>
+<li>
+<p>After installing the Golang environment, remember to set the GOPATH, which is usually:</p>
+<p><img alt="goenv" loading="lazy" src="/posts/images/20200706172327.webp"></p>
+</li>
+<li>
+<p>The TiDB code doesn&rsquo;t need to be developed under the GOPATH, so you can place it anywhere. I usually create a directory called work and throw various codes in there.</p>
+</li>
+<li>
+<p>Open Goland/IDEA. I use IDEA because I often look at code in other languages.</p>
+</li>
+<li>
+<p>Open with IDEA, select the tidb directory.</p>
+<p><img alt="src" loading="lazy" src="/posts/images/20200706174108.webp"></p>
+</li>
+<li>
+<p>At this point, IDEA typically prompts you to set up GOROOT and enable Go Modules. Follow the recommendations.</p>
+</li>
+</ol>
+<p>The environment setup is now complete.</p>
+<h2 id="entry-points">Entry Points</h2>
+<p>At the beginning, someone advised me to start with the session package. However, after some experience, I personally feel there are two better entry points: the <code>main</code> function and the <code>dispatch</code> function.</p>
+<h3 id="main-function">main Function</h3>
+<p>The <code>main</code> function of TiDB can be seen at <a href="https://github.com/pingcap/tidb/blob/6b6096f1f18a03d655d04d67a2f21d7fbfca2e3f/tidb-server/main.go#L160">link</a>. You can roughly go through what happens when starting a tidb-server from top to bottom.</p>
+<p><img alt="main" loading="lazy" src="/posts/images/20200706220211.webp"></p>
+<p>From top to bottom:</p>
+<ul>
+<li>
+<p>Parse flags</p>
+</li>
+<li>
+<p>Output version information and exit</p>
+</li>
+<li>
+<p>Register store and monitoring</p>
+</li>
+<li>
+<p>Configuration file check</p>
+</li>
+<li>
+<p>Initialize temporary folders, etc.</p>
+</li>
+<li>
+<p>Set global variables, CPU affinity, log, trace, print server information, set binlog, set monitoring</p>
+</li>
+<li>
+<p>Create store and domain</p>
+<p>The <code>createStoreAndDomain</code> method is important, as critical background threads are created here.</p>
+</li>
+<li>
+<p>Create server and register stop signal function</p>
+</li>
+<li>
+<p>Start the server</p>
+<p>Within <code>runServer</code>, the <code>srv.Run()</code> actually brings up the tidb-server.
+<img alt="run" loading="lazy" src="/posts/images/20200706221611.webp">
+In the <code>Run()</code> function here, the server continuously listens to network requests, creating a new connection for each new request and using a new goroutine to serve it continually.</p>
+</li>
+<li>
+<p>After this, cleanup work is done when the server needs to stop, ultimately writing out the logs.</p>
+</li>
+</ul>
+<p>Thus, the entire <code>main</code> function process ends. Through the <code>main</code> function, you can see the complete lifecycle of a server from creation to destruction.</p>
+<p>Additionally, with IDEA, you can easily start and debug TiDB. Click on this triangle symbol as shown in the image below:</p>
+<p><img alt="run1" loading="lazy" src="/posts/images/20200706222247.webp"></p>
+<p><img alt="run2" loading="lazy" src="/posts/images/20200706222457.webp"></p>
+<p>A pop-up with options to run and debug the <code>main</code> function will appear. Essentially, this starts a TiDB with default configurations. TiDB defaults to using mocktikv as the storage engine, so it can be started on a single machine for various testing and validation.</p>
+<p>As for how to modify the configuration for starting and debugging, this will be introduced in subsequent articles in the series.</p>
+<h3 id="dispatch-function">dispatch Function</h3>
+<p>From here, we can proceed further to another suitable entry point function, <code>dispatch</code>.</p>
+<p>The <code>dispatch</code> function has several characteristics:</p>
+<ol>
+<li>
+<p>Requests coming from clients only enter the <code>dispatch</code> function, meaning from this point onward, user requests are executed. If you set breakpoints here, you can conveniently filter out SQL executed by internal threads.</p>
+</li>
+<li>
+<p>From here, various requests are dispatched into different processing logic, ensuring you don’t miss any user requests. It avoids situations like spending significant time reading text protocol code only to find out the user is actually using a binary protocol.</p>
+</li>
+<li>
+<p><code>dispatch</code> itself is located at a very early stage, meaning its parameters mostly come directly from the client&rsquo;s initial information. If it&rsquo;s a text protocol, directly reading parameters can parse out the SQL text.</p>
+</li>
+</ol>
+<p><img alt="dispatch1" loading="lazy" src="/posts/images/20200707150344.webp"></p>
+<p>At the start, <code>dispatch</code> primarily focuses on obtaining tokens corresponding to the token-limit parameter. Requests that can&rsquo;t get a token won&rsquo;t execute, which explains why you can create many connections but only 1000 SQL executions are allowed simultaneously by default.</p>
+<p>Next, we enter the most crucial switch case:</p>
+<p><img alt="dispatch2" loading="lazy" src="/posts/images/20200707150736.webp"></p>
+<p>These commands are MySQL protocol commands, so it&rsquo;s apparent from here exactly what TiDB implements. For comparison, you can refer to <a href="https://dev.mysql.com/doc/internals/en/text-protocol.html">this link</a> (this link is only for the text protocol). For full details, see the figure below:</p>
+<p><img alt="dispatch3" loading="lazy" src="/posts/images/20200707151452.webp"></p>
+<p>Within <code>dispatch</code>, the most important are <code>mysql.ComQuery</code>, as well as the trio <code>mysql.ComStmtPrepare</code>, <code>mysql.ComStmtExecute</code>, and <code>mysql.ComStmtClose</code>. The latter trio is more frequently used in actual production, hence even more important. In contrast, <code>mysql.ComQuery</code> is generally used only for some simple tests and validations.</p>
+<p>Since <code>dispatch</code> is the entry point for interfacing with clients, it can conveniently tally how many requests the database has handled. The so-called QPS derived from monitoring statistics is essentially the number of times this function executes per second. Here arises an issue: in cases like multi-query requests, such as <code>select 1; select 1; select 1;</code>, multiple statements sent together are regarded as a single request by <code>dispatch</code>, but as multiple by clients. While using the binary protocol, some clients prepare a statement, then execute, and finally close it. Seemingly equivalent to executing a single SQL from the client&rsquo;s perspective, the database actually completes three requests.</p>
+<p>In summary, users’ perceived QPS may not necessarily align with the number of <code>dispatch</code> function calls. In later versions, the QPS panel in TiDB&rsquo;s monitoring was changed to CPS, which stands for Commands Per Second, representing the number of commands executed per second.</p>
+<p>Looking at the callers of <code>dispatch</code> can also reveal information that helps explain some frequently asked questions:</p>
+<p><img alt="dispatch4" loading="lazy" src="/posts/images/20200707154120.webp"></p>
+<ol>
+<li>
+<p>An EOF error in <code>dispatch</code> typically means the client has actively disconnected, so there&rsquo;s no need to maintain the database connection, and it is severed.</p>
+</li>
+<li>
+<p>In case of an undetermined error (indicating a transaction&rsquo;s commit is uncertain—whether it has succeeded or failed needs manual intervention for verification), manual intervention is required immediately, and the connection will be closed.</p>
+</li>
+<li>
+<p>If writing binlog fails and <code>ignore-error = false</code>, previously the tidb-server process wouldn&rsquo;t exit but couldn&rsquo;t provide services. Now, the tidb-server will exit directly.</p>
+</li>
+<li>
+<p>For all other <code>dispatch</code> errors, the connection will not be closed, allowing service to continue, but the failure information will be logged as &ldquo;command dispatched failed&rdquo;, which is arguably one of the most critical logs for TiDB.</p>
+</li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>This concludes the introduction from setting up the environment to finding a reasonable entry point to start reading code. Subsequent posts in the series will cover aspects such as configuration (adjustments, default values), variables (default values, scope, actual range, activation), supported syntax, etc. Stay tuned.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

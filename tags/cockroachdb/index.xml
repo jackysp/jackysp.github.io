@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Cockroachdb on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/cockroachdb/</link>
+    <description>Recent content in Cockroachdb on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Fri, 06 Jul 2018 21:21:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/cockroachdb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Test CockroachDB Performance Using Benchmarksql</title>
+      <link>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-benchmarksql/</link>
+      <pubDate>Fri, 06 Jul 2018 21:21:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-benchmarksql/</guid>
+      <description>&lt;h2 id=&#34;why-test-tpc-c&#34;&gt;Why Test TPC-C&lt;/h2&gt;
+&lt;p&gt;First of all, TPC-C is the de facto OLTP benchmark standard. It is a set of specifications, and any database can publish its test results under this standard, so there&amp;rsquo;s no issue of quarreling over the testing tools used.&lt;/p&gt;
+&lt;p&gt;Secondly, TPC-C is closer to real-world scenarios as it includes a transaction model within it. In the flow of this transaction model, there are both high-frequency simple transaction statements and low-frequency inventory query statements. Therefore, it tests the database more comprehensively and practically.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="why-test-tpc-c">Why Test TPC-C</h2>
+<p>First of all, TPC-C is the de facto OLTP benchmark standard. It is a set of specifications, and any database can publish its test results under this standard, so there&rsquo;s no issue of quarreling over the testing tools used.</p>
+<p>Secondly, TPC-C is closer to real-world scenarios as it includes a transaction model within it. In the flow of this transaction model, there are both high-frequency simple transaction statements and low-frequency inventory query statements. Therefore, it tests the database more comprehensively and practically.</p>
+<h2 id="testing-tpc-c-on-cockroachdb">Testing TPC-C on CockroachDB</h2>
+<p>This year, CockroachDB released its TPC-C performance results. However, unfortunately, they did not use a tool recognized by the database industry that implements the TPC-C standard for testing. Instead, they used their own implementation of a TPC-C tool. The compliance level of this tool was not recognized. In the white paper officially released by them, it is also mentioned that this TPC-C cannot be compared with the TPC-C standard.</p>
+<p>Therefore, I thought of using a highly recognized tool in the industry for testing. Here, I chose Benchmarksql version 5.0.</p>
+<p>Benchmarksql 5.0 supports the PostgreSQL protocol, Oracle protocol, and MySQL protocol (the MySQL protocol is supported in the code, but the author hasn&rsquo;t fully tested it, so the official documentation doesn&rsquo;t mention MySQL). Among these, the PostgreSQL protocol is supported by CockroachDB.</p>
+<h3 id="test-preparation">Test Preparation</h3>
+<p>After preparing the Benchmarksql code, don&rsquo;t rush into testing. There are three main pitfalls here that need to be addressed first.</p>
+<ol>
+<li>
+<p><strong>CockroachDB does not support adding a primary key after table creation.</strong> Therefore, you need to include the primary key when creating the table. Specifically, in the <code>run</code> folder under the root directory of the Benchmarksql code, create a <code>sql.cdb</code> folder. Copy <code>tableCreates.sql</code> and <code>indexCreates.sql</code> from the <code>sql.common</code> folder at the same level into <code>sql.cdb</code>. Then move the primary keys in <code>indexCreates.sql</code> into the table creation statements in <code>tableCreates.sql</code>. For how to define indexes while creating tables, please refer to the database documentation syntax via Google.</p>
+</li>
+<li>
+<p><strong>CockroachDB is a &ldquo;strongly typed&rdquo; database.</strong> This is my own way of describing it. It has a rather peculiar behavior: when you add different data types (e.g., int + float), it will report an error saying, &ldquo;InternalError: unsupported binary operator: &lt;int&gt; + &lt;float&gt;&rdquo;. Generally, databases don&rsquo;t behave like this; most would perform some implicit conversions, or in other words, they are very tolerant of SQL writers. But CockroachDB is unique in that if you don&rsquo;t specify the type, it reports an error. This greatly reduces the burden of type inference in its internal implementation.</p>
+<p>This behavior causes Benchmarksql to fail to run the tests properly. The solution is to add the required type at the position where the error occurs. For example, change <code>update t set i = i + ?;</code> (the <code>?</code> is generally filled in using <code>prepare/execute</code>) to <code>update t set i = i + ?::DECIMAL;</code>. Yes, CockroachDB specifies types explicitly by adding <code>::&lt;type_name&gt;</code> at the end. But strangely, not all additions require type specification.</p>
+</li>
+<li>
+<p><strong>CockroachDB does not support <code>SELECT FOR UPDATE</code>.</strong> This is the easiest to solve: comment out all <code>FOR UPDATE</code> clauses in Benchmarksql. CockroachDB itself supports the serializable isolation level; lacking <code>FOR UPDATE</code> doesn&rsquo;t affect consistency.</p>
+</li>
+</ol>
+<h3 id="starting-the-test">Starting the Test</h3>
+<p>After overcoming the pitfalls mentioned above, you can proceed with the normal testing process: creating the database, creating tables and indexes, importing data, and testing. You can refer to Benchmarksql&rsquo;s <code>HOW-TO-RUN.txt</code>.</p>
+<h3 id="test-results">Test Results</h3>
+<p>On my test machine with 40 cores, 128 GB of memory, and SSD, under 100 warehouses, the tpmC is approximately 5,000. This is about one-tenth of PostgreSQL 10 on the same machine. PostgreSQL can reach around 500,000 tpmC.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Test CockroachDB Performance Using Sysbench</title>
+      <link>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-sysbench/</link>
+      <pubDate>Mon, 11 Jun 2018 13:50:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-sysbench/</guid>
+      <description>&lt;h2 id=&#34;compiling-sysbench-with-pgsql-support&#34;&gt;Compiling Sysbench with pgsql Support&lt;/h2&gt;
+&lt;p&gt;CockroachDB uses the PostgreSQL protocol. If you want to use Sysbench for testing, you need to enable pg protocol support in Sysbench. Sysbench already supports the pg protocol, but it is not enabled by default during compilation. You can configure it with the following command:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./configure --with-pgsql
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Of course, preliminary work involves downloading the Sysbench source code and installing the necessary PostgreSQL header files required for compilation (you can use &lt;code&gt;yum&lt;/code&gt; or &lt;code&gt;sudo&lt;/code&gt; to install them).&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="compiling-sysbench-with-pgsql-support">Compiling Sysbench with pgsql Support</h2>
+<p>CockroachDB uses the PostgreSQL protocol. If you want to use Sysbench for testing, you need to enable pg protocol support in Sysbench. Sysbench already supports the pg protocol, but it is not enabled by default during compilation. You can configure it with the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>./configure --with-pgsql
+</span></span></code></pre></div><p>Of course, preliminary work involves downloading the Sysbench source code and installing the necessary PostgreSQL header files required for compilation (you can use <code>yum</code> or <code>sudo</code> to install them).</p>
+<h2 id="testing">Testing</h2>
+<p>The testing method is no different from testing MySQL or PostgreSQL; you can test any of the create, read, update, delete (CRUD) operations you like. The only thing to note is to set <code>auto_inc</code> to <code>off</code>.</p>
+<p>This is because CockroachDB&rsquo;s auto-increment behavior is different from PostgreSQL&rsquo;s. It generates a unique <code>id</code>, but it does not guarantee that the <code>id</code>s are sequential or incremental. This is fine when inserting data. However, during delete, update, or query operations, since all SQL statements use <code>id</code> as the condition for these operations, you may encounter situations where data cannot be found.</p>
+<p>That is:</p>
+<p>When <code>auto_inc = on</code> (which is the default value in Sysbench)</p>
+<h3 id="table-structure">Table Structure</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> sbtest1 (
+</span></span><span style="display:flex;"><span>   id INT <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> unique_rowid(),
+</span></span><span style="display:flex;"><span>   k INTEGER <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#ae81ff">0</span>:::INT,
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">c</span> STRING(<span style="color:#ae81ff">120</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#e6db74">&#39;&#39;</span>:::STRING,
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">pad</span> STRING(<span style="color:#ae81ff">60</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#e6db74">&#39;&#39;</span>:::STRING,
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">CONSTRAINT</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#66d9ef">primary</span><span style="color:#e6db74">&#34;&#34;</span> <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (id <span style="color:#66d9ef">ASC</span>),
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">INDEX</span> k_1 (k <span style="color:#66d9ef">ASC</span>),
+</span></span><span style="display:flex;"><span>   FAMILY <span style="color:#e6db74">&#34;&#34;</span><span style="color:#66d9ef">primary</span><span style="color:#e6db74">&#34;&#34;</span> (id, k, <span style="color:#66d9ef">c</span>, <span style="color:#66d9ef">pad</span>)
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><h3 id="data">Data</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>root<span style="color:#f92672">@</span>:<span style="color:#ae81ff">26257</span><span style="color:#f92672">/</span>sbtest<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> id <span style="color:#66d9ef">FROM</span> sbtest1 <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> id <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>         id         <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#ae81ff">354033003848892419</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
+</span></span></span></code></pre></div><p>As you can see, the data does not start from <code>1</code>, nor is it sequential. Normally, the <code>id</code> in a Sysbench table should be within the range <code>[1, table_size]</code>.</p>
+<h3 id="sql">SQL</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">UPDATE</span> sbtest<span style="color:#f92672">%</span>u <span style="color:#66d9ef">SET</span> k <span style="color:#f92672">=</span> k <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">WHERE</span> id <span style="color:#f92672">=</span> <span style="color:#f92672">?</span>
+</span></span></code></pre></div><p>Taking the <code>UPDATE</code> statement as an example, <code>id</code> is used as the query condition. Sysbench assumes that this <code>id</code> should be between <code>[1, table_size]</code>, but in reality, it&rsquo;s not.</p>
+<h3 id="example-of-correct-testing-command-line">Example of Correct Testing Command Line</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sysbench --db-driver<span style="color:#f92672">=</span>pgsql --pgsql-host<span style="color:#f92672">=</span>127.0.0.1 --pgsql-port<span style="color:#f92672">=</span><span style="color:#ae81ff">26257</span> --pgsql-user<span style="color:#f92672">=</span>root --pgsql-db<span style="color:#f92672">=</span>sbtest <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>        --time<span style="color:#f92672">=</span><span style="color:#ae81ff">180</span> --threads<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span> --report-interval<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span> --tables<span style="color:#f92672">=</span><span style="color:#ae81ff">32</span> --table-size<span style="color:#f92672">=</span><span style="color:#ae81ff">10000000</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>        oltp_update_index <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>        --sum_ranges<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span> --distinct_ranges<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span> --range_size<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> --simple_ranges<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> --order_ranges<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>        --index_updates<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> --non_index_updates<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span> --auto_inc<span style="color:#f92672">=</span>off prepare/run/cleanup
+</span></span></code></pre></div><h3 id="insert-testing">INSERT Testing</h3>
+<p>Let&rsquo;s discuss the INSERT test separately. The INSERT test refers to Sysbench&rsquo;s <code>oltp_insert</code>. The characteristic of this test is that when <code>auto_inc</code> is <code>on</code>, data is inserted during the prepare phase of the test; otherwise, only the table is created without inserting data. Because when <code>auto_inc</code> is <code>on</code>, after the prepare phase, during the run phase, the inserted data will not cause conflicts due to the guarantee of the auto-increment column. When <code>auto_inc</code> is <code>off</code>, the <code>id</code> of the data inserted during the run phase is randomly assigned, which aligns with some actual testing scenarios.</p>
+<p>For CockroachDB, when testing INSERT operations with <code>auto_inc</code> set to <code>off</code>, after the prepare phase, during the run phase of data insertion, you can observe the monitoring metrics (by connecting to CockroachDB&rsquo;s HTTP port) under the &ldquo;Distribution&rdquo; section in &ldquo;KV Transactions&rdquo;. You&rsquo;ll notice a large number of &ldquo;Fast-path Committed&rdquo; transactions. This indicates that transactions are committed using one-phase commit (1PC). That is, the data involved in the transaction does not span across CockroachDB nodes, so there&rsquo;s no need to ensure consistency through two-phase commit transactions. This is an optimization in CockroachDB, which is very effective in INSERT tests and can deliver excellent performance.</p>
+<p>If <code>auto_inc</code> is <code>on</code>, although for other tests that require read-before-write operations, the results in CockroachDB might be inflated, it is still fair for the INSERT test. If time permits, you can supplement the tests to see the differences.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

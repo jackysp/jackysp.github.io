@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Centos on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/centos/</link>
+    <description>Recent content in Centos on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Thu, 05 Jun 2014 22:21:06 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/centos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Configure CentOS 6 NFS Service</title>
+      <link>https://blog.minifish.org/posts/how-to-configure-centos-6-nfs-service/</link>
+      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-configure-centos-6-nfs-service/</guid>
+      <description>&lt;h2 id=&#34;server-side&#34;&gt;Server Side&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Disable SeLinux&lt;/strong&gt;&lt;br&gt;
+Edit the configuration file:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vi /etc/selinux/config
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Modify as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#SELINUX=enforcing    # Comment out
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#SELINUXTYPE=targeted # Comment out
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;SELINUX=disabled      # Add this line
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then reboot the system:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;reboot  &lt;span style=&#34;color:#75715e&#34;&gt;# Restart the system&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Create a Directory&lt;/strong&gt;&lt;br&gt;
+Using the root user, create a directory named &lt;code&gt;/nfs&lt;/code&gt;. Note: It&amp;rsquo;s best to check which partition has the most space by running &lt;code&gt;df&lt;/code&gt;, as the root (&lt;code&gt;/&lt;/code&gt;) partition may not have the most space. In some automatic partitioning setups, the &lt;code&gt;/home&lt;/code&gt; partition may have the most space.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="server-side">Server Side</h2>
+<ol>
+<li>
+<p><strong>Disable SeLinux</strong><br>
+Edit the configuration file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/selinux/config
+</span></span></code></pre></div><p>Modify as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#SELINUX=enforcing    # Comment out
+</span></span><span style="display:flex;"><span>#SELINUXTYPE=targeted # Comment out
+</span></span><span style="display:flex;"><span>SELINUX=disabled      # Add this line
+</span></span></code></pre></div><p>Then reboot the system:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>reboot  <span style="color:#75715e"># Restart the system</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Create a Directory</strong><br>
+Using the root user, create a directory named <code>/nfs</code>. Note: It&rsquo;s best to check which partition has the most space by running <code>df</code>, as the root (<code>/</code>) partition may not have the most space. In some automatic partitioning setups, the <code>/home</code> partition may have the most space.</p>
+</li>
+<li>
+<p><strong>Install NFS Utilities and RPC Bind</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yum -y install nfs-utils rpcbind
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Enable Services at Boot</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chkconfig nfs on
+</span></span><span style="display:flex;"><span>chkconfig rpcbind on
+</span></span><span style="display:flex;"><span>chkconfig nfslock on
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Configure Exports</strong><br>
+Edit the NFS exports file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/exports
+</span></span></code></pre></div><p>Add the following line:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>/home/nfs 192.168.1.0/24(rw,sync,no_all_squash)
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Start NFS Services</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service rpcbind start
+</span></span><span style="display:flex;"><span>service nfs start
+</span></span><span style="display:flex;"><span>service nfslock start
+</span></span><span style="display:flex;"><span>exportfs -a
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Configure NFS Ports</strong><br>
+Edit the NFS configuration file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/sysconfig/nfs
+</span></span></code></pre></div><p>Uncomment the following lines:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>LOCKD_TCPPORT=32803
+</span></span><span style="display:flex;"><span>LOCKD_UDPPORT=32769
+</span></span><span style="display:flex;"><span>MOUNTD_PORT=892
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Restart NFS Services</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service rpcbind restart
+</span></span><span style="display:flex;"><span>service nfs restart
+</span></span><span style="display:flex;"><span>service nfslock restart
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Verify RPC Services</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpcinfo -p localhost
+</span></span></code></pre></div><p>Note down the ports and their types.</p>
+</li>
+<li>
+<p><strong>Configure Firewall Rules</strong><br>
+Adjust the IP range according to your network:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>iptables -I INPUT -m state --state NEW -p tcp -m multiport --dport 111,892,2049,32803 -s 192.168.0.0/24 -j ACCEPT
+</span></span><span style="display:flex;"><span>iptables -I INPUT -m state --state NEW -p udp -m multiport --dport 111,892,2049,32769 -s 192.168.0.0/24 -j ACCEPT
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Save Firewall Rules</strong><br>
+Test from the client side. If successful, save the iptables configuration:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service iptables save
+</span></span></code></pre></div></li>
+</ol>
+<h2 id="client-side">Client Side</h2>
+<ol>
+<li>
+<p><strong>Create Mount Point</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir /nfs
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Check RPC Services on Server</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpcinfo -p <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Show NFS Exports</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>showmount -e <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Mount NFS Share</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mount -t nfs -o soft,intr,bg,rw <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>:/home/nfs /nfs
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Unmount NFS Share</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>umount /nfs
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Configure Automatic Mounting</strong><br>
+Edit the fstab file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/fstab
+</span></span></code></pre></div><p>Add the following line:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[server_ip]:/home/nfs /nfs nfs soft,intr,bg,rw 0 0
+</span></span></code></pre></div></li>
+</ol>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Configure CentOS KVM Network Bridging Mode</title>
+      <link>https://blog.minifish.org/posts/how-to-configure-centos-kvm-network-bridging-mode/</link>
+      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-configure-centos-kvm-network-bridging-mode/</guid>
+      <description>&lt;h2 id=&#34;what-is-bridging&#34;&gt;What Is Bridging&lt;/h2&gt;
+&lt;p&gt;Bridging highly simulates a network card, making the router believe that the virtual machine&amp;rsquo;s network card truly exists. Personally, I feel it&amp;rsquo;s similar to resistors connected in parallel, whereas NAT (another common virtual machine network connection method) is more like parasitizing on the host&amp;rsquo;s network card.&lt;/p&gt;
+&lt;h2 id=&#34;why-use-bridging&#34;&gt;Why Use Bridging&lt;/h2&gt;
+&lt;p&gt;It allows you to treat the virtual machine as a completely independent machine, enabling mutual access with the external network (which is not possible with NAT).&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="what-is-bridging">What Is Bridging</h2>
+<p>Bridging highly simulates a network card, making the router believe that the virtual machine&rsquo;s network card truly exists. Personally, I feel it&rsquo;s similar to resistors connected in parallel, whereas NAT (another common virtual machine network connection method) is more like parasitizing on the host&rsquo;s network card.</p>
+<h2 id="why-use-bridging">Why Use Bridging</h2>
+<p>It allows you to treat the virtual machine as a completely independent machine, enabling mutual access with the external network (which is not possible with NAT).</p>
+<h2 id="how-to-configure-bridging">How to Configure Bridging</h2>
+<p>In CentOS 6, refer to the command-line method in <a href="http://www.techotopia.com/index.php/Creating_a_CentOS_6_KVM_Networked_Bridge_Interface">this article</a>.</p>
+<p>We don&rsquo;t use the GUI method because:</p>
+<ul>
+<li>We&rsquo;re unsure which options to fill in on the last screen.</li>
+<li>We don&rsquo;t know how to reset if we make a wrong selection.</li>
+</ul>
+<p>Command-line steps:</p>
+<ol>
+<li>
+<p><strong>Check if <code>bridge-utils</code> is installed:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpm -q bridge-utils
+</span></span></code></pre></div><p>Usually, it&rsquo;s already installed. If not, install it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su -
+</span></span><span style="display:flex;"><span>yum install bridge-utils
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Verify your network interfaces:</strong></p>
+<p>Run <code>ifconfig</code> to ensure you have at least three network interfaces:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>eth0      Link encap:Ethernet  HWaddr 00:18:E7:16:DA:65
+</span></span><span style="display:flex;"><span>          inet addr:192.168.0.117  Bcast:192.168.0.255  Mask:255.255.255.0
+</span></span><span style="display:flex;"><span>          inet6 addr: fe80::218:e7ff:fe16:da65/64 Scope:Link
+</span></span><span style="display:flex;"><span>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span></span><span style="display:flex;"><span>          RX packets:556 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>          TX packets:414 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>          collisions:0 txqueuelen:1000
+</span></span><span style="display:flex;"><span>          RX bytes:222834 (217.6 KiB)  TX bytes:48430 (47.2 KiB)
+</span></span><span style="display:flex;"><span>          Interrupt:16 Base address:0x4f00
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lo        Link encap:Local Loopback
+</span></span><span style="display:flex;"><span>          inet addr:127.0.0.1  Mask:255.0.0.0
+</span></span><span style="display:flex;"><span>          inet6 addr: ::1/128 Scope:Host
+</span></span><span style="display:flex;"><span>          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+</span></span><span style="display:flex;"><span>          RX packets:8 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>          collisions:0 txqueuelen:0
+</span></span><span style="display:flex;"><span>          RX bytes:480 (480.0 b)  TX bytes:480 (480.0 b)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>virbr0    Link encap:Ethernet  HWaddr 52:54:00:2A:C1:7E
+</span></span><span style="display:flex;"><span>          inet addr:192.168.122.1  Bcast:192.168.122.255  Mask:255.255.255.0
+</span></span><span style="display:flex;"><span>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span></span><span style="display:flex;"><span>          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>          TX packets:13 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>          collisions:0 txqueuelen:0
+</span></span><span style="display:flex;"><span>          RX bytes:0 (0.0 b)  TX bytes:2793 (2.7 KiB)
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Navigate to the network scripts directory:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su –
+</span></span><span style="display:flex;"><span>cd /etc/sysconfig/network-scripts
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Bring down the <code>eth0</code> interface:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifdown eth0
+</span></span></code></pre></div><p><em>This step is crucial and must be performed locally.</em> When I first configured this, I didn&rsquo;t shut down the network (since I was working remotely). I didn&rsquo;t realize that updating the <code>ifcfg-eth0</code> configuration without restarting the network would immediately apply changes, resulting in loss of network connectivity.</p>
+</li>
+<li>
+<p><strong>Edit <code>ifcfg-eth0</code>:</strong></p>
+<p>In the <code>ifcfg-eth0</code> file, include:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=eth0
+</span></span><span style="display:flex;"><span>ONBOOT=yes
+</span></span><span style="display:flex;"><span>BRIDGE=br0
+</span></span></code></pre></div><p>Keep only these three lines in the file. There&rsquo;s no need to configure an IP address here. Bridging seems to replace the original network card with the bridge, so you can delegate the configuration to the bridge.</p>
+</li>
+<li>
+<p><strong>Create a new file <code>ifcfg-br0</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=br0
+</span></span><span style="display:flex;"><span>ONBOOT=yes
+</span></span><span style="display:flex;"><span>TYPE=Bridge
+</span></span><span style="display:flex;"><span>BOOTPROTO=static
+</span></span><span style="display:flex;"><span>IPADDR=xxx.xxx.xxx.xxx   # Use the IP you originally had in ifcfg-eth0
+</span></span><span style="display:flex;"><span>GATEWAY=xxx.xxx.xxx.xxx  # Your gateway address
+</span></span><span style="display:flex;"><span>NETMASK=255.255.255.0    # Your netmask
+</span></span><span style="display:flex;"><span>DNS1=xxx.xxx.xxx.xxx     # Your primary DNS server
+</span></span><span style="display:flex;"><span>DNS2=xxx.xxx.xxx.xxx     # Your secondary DNS server (if any)
+</span></span><span style="display:flex;"><span>STP=on
+</span></span><span style="display:flex;"><span>DELAY=0
+</span></span></code></pre></div><p><em>Note:</em> Replace <code>xxx.xxx.xxx.xxx</code> with your actual network settings.</p>
+</li>
+<li>
+<p><strong>Bring up the interfaces:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifup br0
+</span></span><span style="display:flex;"><span>ifup eth0
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Verify the bridge interface:</strong></p>
+<p>Check <code>ifconfig</code> to ensure that <code>br0</code> is now present.</p>
+</li>
+<li>
+<p><strong>Update firewall rules:</strong></p>
+<p>Edit <code>/etc/sysconfig/iptables</code> and add:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>-A INPUT -i br0 -j ACCEPT
+</span></span></code></pre></div><p><em>(This is a general example; you may need to adjust it based on your specific firewall configuration.)</em></p>
+</li>
+<li>
+<p><strong>Restart the firewall:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service iptables restart
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Configure bridging in <code>virt-manager</code>:</strong></p>
+<p>When creating a new virtual machine using <code>virt-manager</code>, you can now select <code>br0</code> for the network interface. Without this bridge, the bridging option would not be available.</p>
+</li>
+</ol>
+<p><strong>Note:</strong> When configuring the IP inside the virtual machine, be sure to specify the <code>GATEWAY</code>. Otherwise, the virtual machine will only be able to access the internal network and not the external network. At this point, the virtual machine won&rsquo;t automatically discover the gateway.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Install CentOS as a Virtualization Host</title>
+      <link>https://blog.minifish.org/posts/how-to-install-centos-as-a-virtualization-host/</link>
+      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-install-centos-as-a-virtualization-host/</guid>
+      <description>&lt;h2 id=&#34;installation-process&#34;&gt;Installation Process&lt;/h2&gt;
+&lt;p&gt;Installed Version: CentOS 6.3&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Using Win32DiskImager to create a USB flash drive image was unsuccessful; installing from an external USB optical drive was successful.&lt;/li&gt;
+&lt;li&gt;During the installation process, make sure to select the &amp;ldquo;Virtual Host&amp;rdquo; installation mode.&lt;/li&gt;
+&lt;li&gt;The rest can be set to default or slightly modified, such as choosing the time zone.&lt;/li&gt;
+&lt;li&gt;After installation, it will include the KVM suite and SSH.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;installation-notes&#34;&gt;Installation Notes&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;No internet connection is needed throughout the process, which is much better than Debian and Ubuntu.&lt;/li&gt;
+&lt;li&gt;You&amp;rsquo;re not forced to set up a non-root user.&lt;/li&gt;
+&lt;li&gt;Before installation, be sure to check whether your CPU supports virtualization and enable the motherboard&amp;rsquo;s virtualization setting. If the motherboard supports virtualization but doesn&amp;rsquo;t have a virtualization option, you can still use virtualization as it&amp;rsquo;s definitely enabled by default. There&amp;rsquo;s a saying that Intel CPUs with a &amp;lsquo;K&amp;rsquo; cannot perform virtualization. &amp;lsquo;K&amp;rsquo; means Intel CPUs that can be overclocked. It seems that faster and newer CPUs are not necessarily better.&lt;/li&gt;
+&lt;/ul&gt;</description>
+      <content:encoded><![CDATA[<h2 id="installation-process">Installation Process</h2>
+<p>Installed Version: CentOS 6.3</p>
+<ol>
+<li>Using Win32DiskImager to create a USB flash drive image was unsuccessful; installing from an external USB optical drive was successful.</li>
+<li>During the installation process, make sure to select the &ldquo;Virtual Host&rdquo; installation mode.</li>
+<li>The rest can be set to default or slightly modified, such as choosing the time zone.</li>
+<li>After installation, it will include the KVM suite and SSH.</li>
+</ol>
+<h2 id="installation-notes">Installation Notes</h2>
+<ul>
+<li>No internet connection is needed throughout the process, which is much better than Debian and Ubuntu.</li>
+<li>You&rsquo;re not forced to set up a non-root user.</li>
+<li>Before installation, be sure to check whether your CPU supports virtualization and enable the motherboard&rsquo;s virtualization setting. If the motherboard supports virtualization but doesn&rsquo;t have a virtualization option, you can still use virtualization as it&rsquo;s definitely enabled by default. There&rsquo;s a saying that Intel CPUs with a &lsquo;K&rsquo; cannot perform virtualization. &lsquo;K&rsquo; means Intel CPUs that can be overclocked. It seems that faster and newer CPUs are not necessarily better.</li>
+</ul>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

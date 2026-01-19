@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Tpcc on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/tpcc/</link>
+    <description>Recent content in Tpcc on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Fri, 06 Jul 2018 21:21:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/tpcc/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Test CockroachDB Performance Using Benchmarksql</title>
+      <link>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-benchmarksql/</link>
+      <pubDate>Fri, 06 Jul 2018 21:21:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-benchmarksql/</guid>
+      <description>&lt;h2 id=&#34;why-test-tpc-c&#34;&gt;Why Test TPC-C&lt;/h2&gt;
+&lt;p&gt;First of all, TPC-C is the de facto OLTP benchmark standard. It is a set of specifications, and any database can publish its test results under this standard, so there&amp;rsquo;s no issue of quarreling over the testing tools used.&lt;/p&gt;
+&lt;p&gt;Secondly, TPC-C is closer to real-world scenarios as it includes a transaction model within it. In the flow of this transaction model, there are both high-frequency simple transaction statements and low-frequency inventory query statements. Therefore, it tests the database more comprehensively and practically.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="why-test-tpc-c">Why Test TPC-C</h2>
+<p>First of all, TPC-C is the de facto OLTP benchmark standard. It is a set of specifications, and any database can publish its test results under this standard, so there&rsquo;s no issue of quarreling over the testing tools used.</p>
+<p>Secondly, TPC-C is closer to real-world scenarios as it includes a transaction model within it. In the flow of this transaction model, there are both high-frequency simple transaction statements and low-frequency inventory query statements. Therefore, it tests the database more comprehensively and practically.</p>
+<h2 id="testing-tpc-c-on-cockroachdb">Testing TPC-C on CockroachDB</h2>
+<p>This year, CockroachDB released its TPC-C performance results. However, unfortunately, they did not use a tool recognized by the database industry that implements the TPC-C standard for testing. Instead, they used their own implementation of a TPC-C tool. The compliance level of this tool was not recognized. In the white paper officially released by them, it is also mentioned that this TPC-C cannot be compared with the TPC-C standard.</p>
+<p>Therefore, I thought of using a highly recognized tool in the industry for testing. Here, I chose Benchmarksql version 5.0.</p>
+<p>Benchmarksql 5.0 supports the PostgreSQL protocol, Oracle protocol, and MySQL protocol (the MySQL protocol is supported in the code, but the author hasn&rsquo;t fully tested it, so the official documentation doesn&rsquo;t mention MySQL). Among these, the PostgreSQL protocol is supported by CockroachDB.</p>
+<h3 id="test-preparation">Test Preparation</h3>
+<p>After preparing the Benchmarksql code, don&rsquo;t rush into testing. There are three main pitfalls here that need to be addressed first.</p>
+<ol>
+<li>
+<p><strong>CockroachDB does not support adding a primary key after table creation.</strong> Therefore, you need to include the primary key when creating the table. Specifically, in the <code>run</code> folder under the root directory of the Benchmarksql code, create a <code>sql.cdb</code> folder. Copy <code>tableCreates.sql</code> and <code>indexCreates.sql</code> from the <code>sql.common</code> folder at the same level into <code>sql.cdb</code>. Then move the primary keys in <code>indexCreates.sql</code> into the table creation statements in <code>tableCreates.sql</code>. For how to define indexes while creating tables, please refer to the database documentation syntax via Google.</p>
+</li>
+<li>
+<p><strong>CockroachDB is a &ldquo;strongly typed&rdquo; database.</strong> This is my own way of describing it. It has a rather peculiar behavior: when you add different data types (e.g., int + float), it will report an error saying, &ldquo;InternalError: unsupported binary operator: &lt;int&gt; + &lt;float&gt;&rdquo;. Generally, databases don&rsquo;t behave like this; most would perform some implicit conversions, or in other words, they are very tolerant of SQL writers. But CockroachDB is unique in that if you don&rsquo;t specify the type, it reports an error. This greatly reduces the burden of type inference in its internal implementation.</p>
+<p>This behavior causes Benchmarksql to fail to run the tests properly. The solution is to add the required type at the position where the error occurs. For example, change <code>update t set i = i + ?;</code> (the <code>?</code> is generally filled in using <code>prepare/execute</code>) to <code>update t set i = i + ?::DECIMAL;</code>. Yes, CockroachDB specifies types explicitly by adding <code>::&lt;type_name&gt;</code> at the end. But strangely, not all additions require type specification.</p>
+</li>
+<li>
+<p><strong>CockroachDB does not support <code>SELECT FOR UPDATE</code>.</strong> This is the easiest to solve: comment out all <code>FOR UPDATE</code> clauses in Benchmarksql. CockroachDB itself supports the serializable isolation level; lacking <code>FOR UPDATE</code> doesn&rsquo;t affect consistency.</p>
+</li>
+</ol>
+<h3 id="starting-the-test">Starting the Test</h3>
+<p>After overcoming the pitfalls mentioned above, you can proceed with the normal testing process: creating the database, creating tables and indexes, importing data, and testing. You can refer to Benchmarksql&rsquo;s <code>HOW-TO-RUN.txt</code>.</p>
+<h3 id="test-results">Test Results</h3>
+<p>On my test machine with 40 cores, 128 GB of memory, and SSD, under 100 warehouses, the tpmC is approximately 5,000. This is about one-tenth of PostgreSQL 10 on the same machine. PostgreSQL can reach around 500,000 tpmC.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

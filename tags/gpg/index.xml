@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Gpg on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/gpg/</link>
+    <description>Recent content in Gpg on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Sat, 12 Feb 2022 11:54:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/gpg/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Create GitHub Verified Commits on a MacBook M1</title>
+      <link>https://blog.minifish.org/posts/how-to-create-github-verified-commits-on-a-macbook-m1/</link>
+      <pubDate>Sat, 12 Feb 2022 11:54:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-create-github-verified-commits-on-a-macbook-m1/</guid>
+      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
+&lt;p&gt;One day, I impulsively turned on GitHub&amp;rsquo;s Vigilant mode.&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;test&#34; loading=&#34;lazy&#34; src=&#34;https://blog.minifish.org/posts/images/2022-02-12-12.02.07.webp&#34;&gt;&lt;/p&gt;
+&lt;p&gt;As a result, all my commits started looking like this.&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;test&#34; loading=&#34;lazy&#34; src=&#34;https://blog.minifish.org/posts/images/2022-02-12-12.11.01.webp&#34;&gt;&lt;/p&gt;
+&lt;p&gt;To figure out how to make them Verified, I found the following method.&lt;/p&gt;
+&lt;h2 id=&#34;method&#34;&gt;Method&lt;/h2&gt;
+&lt;p&gt;I actually referred to this &lt;a href=&#34;https://zhuanlan.zhihu.com/p/76861431&#34;&gt;link&lt;/a&gt;. However, it wasn&amp;rsquo;t quite enough, as there might be authentication-related issues on MacBooks that lead to commit errors. So, I found this &lt;a href=&#34;https://stackoverflow.com/a/40066889&#34;&gt;solution&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In summary, to verify, you need to enter a password. The issue on a Mac is the prompt for entering the password, which needs to be replaced with pinentry-mac, which most people install via homebrew.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="background">Background</h2>
+<p>One day, I impulsively turned on GitHub&rsquo;s Vigilant mode.</p>
+<p><img alt="test" loading="lazy" src="/posts/images/2022-02-12-12.02.07.webp"></p>
+<p>As a result, all my commits started looking like this.</p>
+<p><img alt="test" loading="lazy" src="/posts/images/2022-02-12-12.11.01.webp"></p>
+<p>To figure out how to make them Verified, I found the following method.</p>
+<h2 id="method">Method</h2>
+<p>I actually referred to this <a href="https://zhuanlan.zhihu.com/p/76861431">link</a>. However, it wasn&rsquo;t quite enough, as there might be authentication-related issues on MacBooks that lead to commit errors. So, I found this <a href="https://stackoverflow.com/a/40066889">solution</a>.</p>
+<p>In summary, to verify, you need to enter a password. The issue on a Mac is the prompt for entering the password, which needs to be replaced with pinentry-mac, which most people install via homebrew.</p>
+<p>Moreover, this solution thoughtfully provides a way to verify:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;test&#34;</span> | gpg --clearsign
+</span></span></code></pre></div><h2 id="gpg-experience">GPG Experience</h2>
+<ol>
+<li>It doesn&rsquo;t replace the ssh key. After successfully setting it up, I deleted my GitHub ssh key and discovered that I couldn&rsquo;t log in. Actually, it only verifies the legitimacy of commits.</li>
+<li>On the local machine, in any repo, you only need to enter the password once, and that makes it a verified commit. It doesn&rsquo;t affect daily use; it just adds a green check mark for verification.</li>
+<li>Using the https protocol + token seems more reliable than this method, but I&rsquo;m not sure if it provides a verified mark.</li>
+</ol>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

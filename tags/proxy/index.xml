@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Proxy on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/proxy/</link>
+    <description>Recent content in Proxy on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Sun, 12 Jan 2020 19:43:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/proxy/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Deploy an HTTPS Proxy Service</title>
+      <link>https://blog.minifish.org/posts/how-to-deploy-an-https-proxy-service/</link>
+      <pubDate>Sun, 12 Jan 2020 19:43:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-deploy-an-https-proxy-service/</guid>
+      <description>&lt;h2 id=&#34;preface&#34;&gt;Preface&lt;/h2&gt;
+&lt;p&gt;One day, I came across an article by Chen Hao on Twitter. Having benefited from several of his blog posts, I instinctively felt it was reliable, so I read it and decided to write this practical guide.&lt;/p&gt;
+&lt;h2 id=&#34;why-use-an-https-proxy&#34;&gt;Why Use an HTTPS Proxy&lt;/h2&gt;
+&lt;p&gt;In the &lt;a href=&#34;https://haoel.github.io/&#34;&gt;guide&lt;/a&gt;, it’s clearly explained why, plus my own experiences of several shadowsocks being banned, I felt it was necessary to switch to a more secure proxy method.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="preface">Preface</h2>
+<p>One day, I came across an article by Chen Hao on Twitter. Having benefited from several of his blog posts, I instinctively felt it was reliable, so I read it and decided to write this practical guide.</p>
+<h2 id="why-use-an-https-proxy">Why Use an HTTPS Proxy</h2>
+<p>In the <a href="https://haoel.github.io/">guide</a>, it’s clearly explained why, plus my own experiences of several shadowsocks being banned, I felt it was necessary to switch to a more secure proxy method.</p>
+<h2 id="how-to-deploy-an-https-proxy">How to Deploy an HTTPS Proxy</h2>
+<h3 id="gost">gost</h3>
+<p><a href="https://github.com/ginuerzh/gost">gost</a> is the tool most recommended in the <a href="https://haoel.github.io/">guide</a>. At first, I misunderstood it as a method similar to kcptun, still relying on shadowsocks. In fact, gost implements multiple proxy types, meaning you don’t need other proxies if you have it. I never liked the method of continuously wrapping to accelerate/obfuscate shadowsocks, always feeling that longer pathways bring more problems.</p>
+<h3 id="steps">Steps</h3>
+<ul>
+<li>
+<p>Directly download the latest release from the gost repo. Although I have a Golang environment both locally and on the VPS, downloading directly is the easiest. I downloaded version 2.9.0 here.</p>
+</li>
+<li>
+<p>Following certbot on a bare VPS doesn&rsquo;t work&hellip; it requires:</p>
+<ol>
+<li>Starting an nginx server, as referenced in <a href="https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-debian-9">this guide</a>. Of course, this requires having a domain name pointing an A record to the VPS.</li>
+<li>Verifying access through the domain.</li>
+<li>Stopping nginx.</li>
+<li>Using certbot&rsquo;s &ndash;standalone mode, which will generate the certificates upon success.</li>
+</ol>
+</li>
+<li>
+<p>Here, I didn&rsquo;t use Docker for deployment but used systemd instead, directly creating a systemd unit similar to kcptun. The difference is, because the certificate needs updating, the unit requires a reload method. <a href="http://www.ruanyifeng.com/blog/2016/03/systemd-tutorial-commands.html">This tutorial</a> teaches a lot about using systemd, and the author&rsquo;s article quality is also high, highly recommended for subscription.</p>
+<ol>
+<li>Create a <code>/lib/systemd/system/gost.service</code> file with the following content, replacing the domain with your own:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[Unit]
+</span></span><span style="display:flex;"><span>Description=gost service
+</span></span><span style="display:flex;"><span>After=network.target
+</span></span><span style="display:flex;"><span>StartLimitIntervalSec=0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[Service]
+</span></span><span style="display:flex;"><span>Type=simple
+</span></span><span style="display:flex;"><span>Restart=always
+</span></span><span style="display:flex;"><span>RestartSec=1
+</span></span><span style="display:flex;"><span>User=root
+</span></span><span style="display:flex;"><span>PIDFile=/home/admin/gost.pid
+</span></span><span style="display:flex;"><span>ExecStart=/home/admin/bin/gost -L &#34;http2://xxx:yyy@0.0.0.0:443?cert=/etc/letsencrypt/live/example.com/fullchain.pem&amp;key=/etc/letsencrypt/live/example.com/privkey.pem&amp;probe_resist=code:404&#34;
+</span></span><span style="display:flex;"><span>ExecReload=/bin/kill -HUP $MAINPID
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[Install]
+</span></span><span style="display:flex;"><span>WantedBy=multi-user.target
+</span></span></code></pre></div><p><code>ExecStart</code> is a simplified version of the Docker method in the <a href="https://haoel.github.io/">guide</a>. <code>ExecReload</code> just kills the process.</p>
+<ol>
+<li>
+<p>Test whether it’s successful using <code>systemctl start|status|restart|enable gost</code>.</p>
+</li>
+<li>
+<p>Configure crontab to update the certificate. I didn&rsquo;t use systemd because I&rsquo;m not familiar with it.</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>0 0 1 * * /usr/bin/certbot renew --force-renewal
+</span></span><span style="display:flex;"><span>5 0 1 * * systemctl restart gost
+</span></span></code></pre></div></li>
+<li>
+<p>After completing the above, nginx can be directly stopped and disabled.</p>
+</li>
+<li>
+<p>Configure the client. This is simple; just refer to the <a href="https://haoel.github.io/">guide</a>. The principle is straightforward because gost implements the shadowsocks protocol using the shadowsocks Golang version. Therefore, the following command starts a local shadowsocks server, and you configure your client to add a local server configuration that matches the password.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>.\bin\gost-windows-amd64.exe -L=ss://aes-128-cfb:passcode@:1984 -F=https://xxx:yyy@example.com:443
+</span></span></code></pre></div></li>
+</ul>
+<p>PS: I still don&rsquo;t know how to configure a global HTTPS proxy on Android without root, or how to set it up on iOS without a U.S. account. Also, I&rsquo;m unsure how to elegantly configure startup scripts on Windows 10. These are issues to explore further&hellip;</p>
+<h2 id="continuation">Continuation</h2>
+<p>Regarding the mobile problem mentioned above, I found that HTTPS proxy client support is generally poor. Gost itself seems to have problems, possibly due to my usage. In short, if not using a local gost to connect remotely, authentication errors occur.</p>
+<p>During the holiday break, I tinkered a bit more. First, I deployed a gost HTTP proxy on my home NAS using the simplest nohup + ctrl-D method to maintain it. It&rsquo;s compiled with GOARCH=arm64. After a trial run for a day, Android&rsquo;s weak built-in HTTP proxy worked well, but globally routing through it wasn&rsquo;t great. Hence, I switched from HTTP to using SS to connect to HTTPS remotely. I essentially moved the local service on Windows to my NAS. Additionally, through simple double-port forwarding from NAS -&gt; internal router -&gt; optical modem router, I could also use the NAS as an SS server via the public IP.</p>
+<p>The remaining issue is the DDNS. After researching, it seems Cloudflare&rsquo;s API is a more reliable option. Seeing an official flarectl, I compiled it to the NAS and wrote a small script, revisiting the various (pitfalls) wonders of bash, especially remembering special writing for string comparisons such as <code>[ $a != $b ]</code> to <code>[ $a != $b* ]</code> to handle trailing &ldquo;\r&rdquo; &ldquo;\n&rdquo; characters. However, detaching the name server still takes some time. The final effect is to be tested.</p>
+<p>Additionally, on the NAS, I currently use curl to fetch my public IP from a third-party. I have a hunch that this method might not work someday or might cause issues.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Deploy a Shadowsocks Server</title>
+      <link>https://blog.minifish.org/posts/how-to-deploy-a-shadowsocks-server/</link>
+      <pubDate>Thu, 27 Sep 2018 15:48:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-deploy-a-shadowsocks-server/</guid>
+      <description>&lt;p&gt;There are multiple versions of the Shadowsocks server side implementation. The original version was written in Python, and later, enthusiasts implemented it in various programming languages of their liking.&lt;/p&gt;
+&lt;p&gt;Among all these implementations, I personally think the most reliable and stable one is the original Python version. The reason is simple - it has the most users. The Golang version is said to have the most features and also performs very well, making it quite powerful. This might be due to Golang’s inherent high performance and ease of implementation. There&amp;rsquo;s also an implementation using libev, a pure C implementation, which also offers good performance and is very lightweight.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>There are multiple versions of the Shadowsocks server side implementation. The original version was written in Python, and later, enthusiasts implemented it in various programming languages of their liking.</p>
+<p>Among all these implementations, I personally think the most reliable and stable one is the original Python version. The reason is simple - it has the most users. The Golang version is said to have the most features and also performs very well, making it quite powerful. This might be due to Golang’s inherent high performance and ease of implementation. There&rsquo;s also an implementation using libev, a pure C implementation, which also offers good performance and is very lightweight.</p>
+<p>Additionally, updating the server is a necessary task for Shadowsocks users due to well-known reasons. The server should be updated frequently. If you’re using the Python implementation, you might be able to install updates via pip, although I haven’t confirmed this. The Golang version may require a Golang build environment, and then you can use <code>go get -u</code>. For updating libev, you can use apt on Debian-based systems, as apt includes shadowsocks-libev. I haven’t checked if it is available in the Red Hat-based yum repositories.</p>
+<p>After this introduction, let&rsquo;s go over the deployment steps, which are quite straightforward:</p>
+<ol>
+<li>Deploy a Debian 9 or Ubuntu 17 VPS. Mainstream providers like Vultr should have these options available. Assume we are using Debian 9 here.</li>
+<li>Run <code>apt install shadowsocks-libev</code> to install.</li>
+<li>Edit the configuration file using <code>vim /etc/shadowsocks-libev/config.json</code>. It&rsquo;s best to set the Server IP to 0.0.0.0 to avoid IP issues similar to those on AWS Lightsail.
+*. For AWS Lightsail, you need to bind a static IP and open firewall ports. Specific steps can be found on Google.</li>
+<li>Restart the service using <code>systemctl restart shadowsocks-libev</code> to apply the changes.</li>
+<li>Enable TCP BBR. Specific instructions can be found on Google.</li>
+</ol>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

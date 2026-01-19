@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Nfs on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/nfs/</link>
+    <description>Recent content in Nfs on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Thu, 05 Jun 2014 22:21:06 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/nfs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Configure CentOS 6 NFS Service</title>
+      <link>https://blog.minifish.org/posts/how-to-configure-centos-6-nfs-service/</link>
+      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-configure-centos-6-nfs-service/</guid>
+      <description>&lt;h2 id=&#34;server-side&#34;&gt;Server Side&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Disable SeLinux&lt;/strong&gt;&lt;br&gt;
+Edit the configuration file:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vi /etc/selinux/config
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Modify as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#SELINUX=enforcing    # Comment out
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#SELINUXTYPE=targeted # Comment out
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;SELINUX=disabled      # Add this line
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then reboot the system:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;reboot  &lt;span style=&#34;color:#75715e&#34;&gt;# Restart the system&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Create a Directory&lt;/strong&gt;&lt;br&gt;
+Using the root user, create a directory named &lt;code&gt;/nfs&lt;/code&gt;. Note: It&amp;rsquo;s best to check which partition has the most space by running &lt;code&gt;df&lt;/code&gt;, as the root (&lt;code&gt;/&lt;/code&gt;) partition may not have the most space. In some automatic partitioning setups, the &lt;code&gt;/home&lt;/code&gt; partition may have the most space.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="server-side">Server Side</h2>
+<ol>
+<li>
+<p><strong>Disable SeLinux</strong><br>
+Edit the configuration file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/selinux/config
+</span></span></code></pre></div><p>Modify as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#SELINUX=enforcing    # Comment out
+</span></span><span style="display:flex;"><span>#SELINUXTYPE=targeted # Comment out
+</span></span><span style="display:flex;"><span>SELINUX=disabled      # Add this line
+</span></span></code></pre></div><p>Then reboot the system:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>reboot  <span style="color:#75715e"># Restart the system</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Create a Directory</strong><br>
+Using the root user, create a directory named <code>/nfs</code>. Note: It&rsquo;s best to check which partition has the most space by running <code>df</code>, as the root (<code>/</code>) partition may not have the most space. In some automatic partitioning setups, the <code>/home</code> partition may have the most space.</p>
+</li>
+<li>
+<p><strong>Install NFS Utilities and RPC Bind</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yum -y install nfs-utils rpcbind
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Enable Services at Boot</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chkconfig nfs on
+</span></span><span style="display:flex;"><span>chkconfig rpcbind on
+</span></span><span style="display:flex;"><span>chkconfig nfslock on
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Configure Exports</strong><br>
+Edit the NFS exports file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/exports
+</span></span></code></pre></div><p>Add the following line:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>/home/nfs 192.168.1.0/24(rw,sync,no_all_squash)
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Start NFS Services</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service rpcbind start
+</span></span><span style="display:flex;"><span>service nfs start
+</span></span><span style="display:flex;"><span>service nfslock start
+</span></span><span style="display:flex;"><span>exportfs -a
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Configure NFS Ports</strong><br>
+Edit the NFS configuration file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/sysconfig/nfs
+</span></span></code></pre></div><p>Uncomment the following lines:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>LOCKD_TCPPORT=32803
+</span></span><span style="display:flex;"><span>LOCKD_UDPPORT=32769
+</span></span><span style="display:flex;"><span>MOUNTD_PORT=892
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Restart NFS Services</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service rpcbind restart
+</span></span><span style="display:flex;"><span>service nfs restart
+</span></span><span style="display:flex;"><span>service nfslock restart
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Verify RPC Services</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpcinfo -p localhost
+</span></span></code></pre></div><p>Note down the ports and their types.</p>
+</li>
+<li>
+<p><strong>Configure Firewall Rules</strong><br>
+Adjust the IP range according to your network:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>iptables -I INPUT -m state --state NEW -p tcp -m multiport --dport 111,892,2049,32803 -s 192.168.0.0/24 -j ACCEPT
+</span></span><span style="display:flex;"><span>iptables -I INPUT -m state --state NEW -p udp -m multiport --dport 111,892,2049,32769 -s 192.168.0.0/24 -j ACCEPT
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Save Firewall Rules</strong><br>
+Test from the client side. If successful, save the iptables configuration:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service iptables save
+</span></span></code></pre></div></li>
+</ol>
+<h2 id="client-side">Client Side</h2>
+<ol>
+<li>
+<p><strong>Create Mount Point</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir /nfs
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Check RPC Services on Server</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpcinfo -p <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Show NFS Exports</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>showmount -e <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Mount NFS Share</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mount -t nfs -o soft,intr,bg,rw <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>:/home/nfs /nfs
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Unmount NFS Share</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>umount /nfs
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Configure Automatic Mounting</strong><br>
+Edit the fstab file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/fstab
+</span></span></code></pre></div><p>Add the following line:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[server_ip]:/home/nfs /nfs nfs soft,intr,bg,rw 0 0
+</span></span></code></pre></div></li>
+</ol>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

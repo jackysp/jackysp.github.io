@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Tailscale on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/tailscale/</link>
+    <description>Recent content in Tailscale on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Wed, 27 Nov 2024 18:18:38 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/tailscale/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Exploring Tailscale: Building Your Own Network Easily</title>
+      <link>https://blog.minifish.org/posts/exploring-tailscale-building-your-own-network-easily/</link>
+      <pubDate>Wed, 27 Nov 2024 18:18:38 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/exploring-tailscale-building-your-own-network-easily/</guid>
+      <description>&lt;p&gt;I recently started experimenting with &lt;strong&gt;Tailscale&lt;/strong&gt;, a tool that has significantly simplified the way I manage my personal network across devices. In this blog post, I&amp;rsquo;ll share how I discovered Tailscale, its core features, and my personal setup that leverages this powerful tool.&lt;/p&gt;
+&lt;h2 id=&#34;discovering-tailscale-through-webvm&#34;&gt;Discovering Tailscale Through WebVM&lt;/h2&gt;
+&lt;p&gt;My journey with Tailscale began when I came across &lt;a href=&#34;https://github.com/leaningtech/webvm&#34;&gt;WebVM&lt;/a&gt;, an impressive project that allows you to run a virtual machine directly in your browser. Intrigued by the possibilities, I delved deeper and discovered that Tailscale could help me create a seamless, private network across all my devices.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>I recently started experimenting with <strong>Tailscale</strong>, a tool that has significantly simplified the way I manage my personal network across devices. In this blog post, I&rsquo;ll share how I discovered Tailscale, its core features, and my personal setup that leverages this powerful tool.</p>
+<h2 id="discovering-tailscale-through-webvm">Discovering Tailscale Through WebVM</h2>
+<p>My journey with Tailscale began when I came across <a href="https://github.com/leaningtech/webvm">WebVM</a>, an impressive project that allows you to run a virtual machine directly in your browser. Intrigued by the possibilities, I delved deeper and discovered that Tailscale could help me create a seamless, private network across all my devices.</p>
+<h2 id="what-is-tailscale">What is Tailscale?</h2>
+<p>Tailscale is a mesh VPN network built on top of <strong>WireGuard</strong>, specifically using the <a href="https://github.com/WireGuard/wireguard-go">WireGuard-go</a> implementation. It allows you to create a secure, encrypted network between your devices, no matter where they are located.</p>
+<h3 id="key-features">Key Features</h3>
+<ul>
+<li><strong>Free Plan Available</strong>: Tailscale offers a free plan that is sufficient for personal use, allowing up to 20 devices.</li>
+<li><strong>Ease of Use</strong>: Setting up Tailscale is straightforward. With minimal configuration, you can have your own network up and running quickly.</li>
+<li><strong>Cross-Platform Support</strong>: Tailscale works exceptionally well across the Apple ecosystem, including <strong>iOS</strong>, <strong>tvOS</strong>, and <strong>macOS</strong>.</li>
+<li><strong>Magic DNS Service</strong>: It provides a built-in DNS service that makes it easy to address your devices by name.</li>
+</ul>
+<h2 id="performance-on-different-platforms">Performance on Different Platforms</h2>
+<p>While Tailscale shines on Apple devices, in my experience, it hasn&rsquo;t performed as well on Windows. I encountered some connectivity and stability issues on Windows machines, which may vary based on individual setups.</p>
+<h2 id="my-tailscale-setup">My Tailscale Setup</h2>
+<p>Here&rsquo;s how I leveraged Tailscale to connect my devices and access my home network seamlessly.</p>
+<h3 id="running-tailscale-on-apple-tv">Running Tailscale on Apple TV</h3>
+<p>I installed Tailscale on my <strong>Apple TV</strong>, which stays online <strong>24/7</strong>. This makes it an excellent candidate for a consistently available node in my network.</p>
+<ul>
+<li><strong>Enabling Subnet Routing</strong>: By enabling subnet routing on the Apple TV, I can access other devices on the same local network, such as my <strong>NAS</strong> and <strong>router</strong>, as if I were connected locally.</li>
+<li><strong>Setting Up an Exit Node</strong>: I configured the Apple TV as an <strong>exit node</strong>, allowing me to route internet traffic through my home network. This is useful when I need to access geo-restricted content or ensure a secure connection.</li>
+</ul>
+<h3 id="connecting-other-devices">Connecting Other Devices</h3>
+<p>I also installed Tailscale on my <strong>MacBook</strong> and <strong>iPhone</strong>, which allows all my personal devices to communicate over the secure network, no matter where I am.</p>
+<h2 id="benefits-ive-enjoyed">Benefits I&rsquo;ve Enjoyed</h2>
+<ul>
+<li><strong>Secure Remote Access</strong>: I can securely access my home network devices from anywhere.</li>
+<li><strong>Consistent Environment</strong>: All my devices appear on the same network, simplifying file sharing and remote management.</li>
+<li><strong>No Need for Complex VPN Setups</strong>: Tailscale eliminates the need for traditional VPN configurations, port forwarding, or dynamic DNS services.</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>Tailscale has transformed the way I interact with my devices across different locations. Its ease of use and robust feature set make it an excellent choice for anyone looking to create a personal, secure network.</p>
+<p>If you&rsquo;re interested in simplifying your network setup and want a hassle-free way to connect your devices, I highly recommend giving Tailscale a try.</p>
+<p><strong>Links:</strong></p>
+<ul>
+<li><a href="https://tailscale.com/">Tailscale Official Website</a></li>
+<li><a href="https://github.com/leaningtech/webvm">WebVM Project on GitHub</a></li>
+<li><a href="https://github.com/WireGuard/wireguard-go">WireGuard-go on GitHub</a></li>
+</ul>
+<p><em>Note: This post reflects my personal experiences with Tailscale. Performance may vary based on individual configurations and devices.</em></p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

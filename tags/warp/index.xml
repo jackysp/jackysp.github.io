@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Warp on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/warp/</link>
+    <description>Recent content in Warp on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Wed, 15 May 2024 20:31:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/warp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Encounter with a Major Issue with Cloudflare Warp: A Life and Death Rescue for VPS</title>
+      <link>https://blog.minifish.org/posts/encounter-with-a-major-issue-with-cloudflare-warp-a-life-and-death-rescue-for-vps/</link>
+      <pubDate>Wed, 15 May 2024 20:31:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/encounter-with-a-major-issue-with-cloudflare-warp-a-life-and-death-rescue-for-vps/</guid>
+      <description>&lt;p&gt;Today, I planned to use Warp to select an IP exit for my VPS, following the &lt;a href=&#34;https://developers.cloudflare.com/warp-client/get-started/linux/&#34;&gt;Cloudflare official documentation&lt;/a&gt;. When executing the &lt;code&gt;warp-cli connect&lt;/code&gt; step, the server immediately lost connection, and the problem persisted even after rebooting.&lt;/p&gt;
+&lt;p&gt;After researching, I found that this problem is not unique. For instance, in a &lt;a href=&#34;https://www.v2ex.com/t/933725&#34;&gt;discussion on V2EX&lt;/a&gt;, many users encountered similar issues. The solution is to run &lt;code&gt;warp-cli set-mode proxy&lt;/code&gt; before executing &lt;code&gt;warp-cli connect&lt;/code&gt; to bypass the local address. Surprisingly, Cloudflare&amp;rsquo;s official documentation does not mention this crucial step, undoubtedly increasing the complexity and risk of configuration.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>Today, I planned to use Warp to select an IP exit for my VPS, following the <a href="https://developers.cloudflare.com/warp-client/get-started/linux/">Cloudflare official documentation</a>. When executing the <code>warp-cli connect</code> step, the server immediately lost connection, and the problem persisted even after rebooting.</p>
+<p>After researching, I found that this problem is not unique. For instance, in a <a href="https://www.v2ex.com/t/933725">discussion on V2EX</a>, many users encountered similar issues. The solution is to run <code>warp-cli set-mode proxy</code> before executing <code>warp-cli connect</code> to bypass the local address. Surprisingly, Cloudflare&rsquo;s official documentation does not mention this crucial step, undoubtedly increasing the complexity and risk of configuration.</p>
+<p>In the process of exploring solutions, I found that some users suggested repairing by rebuilding the instance or using VNC connection. However, since I am using AWS Lightsail, VNC is not applicable. Ultimately, I decided to try the method mentioned in <a href="https://www.4os.org/2022/02/14/aws-lightsail-ssh-%E6%8C%82%E6%8E%89%E5%A6%82%E4%BD%95%E7%99%BB%E5%BD%95/">this article</a>: creating a snapshot backup of the current VPS, then creating a new instance from the snapshot, and loading a script to execute <code>warp-cli set-mode proxy</code> when the new instance starts.</p>
+<p>After checking the existing instance, I found that no snapshot had been created. This discovery reminded me of the importance of regular backups. Without other options, I could only attempt a snapshot backup as guided by the aforementioned article. However, no matter what startup script command I tried, it failed to execute successfully. The execution result of AWS Lightsail&rsquo;s startup script is not visible, making problem-solving more difficult.</p>
+<p>In near desperation, I found an old snapshot dated 2022 on the snapshot page. Although this snapshot was created using old technology, and many important updates might be lost after recovery, it was my last hope. After starting the snapshot recovery process, I unexpectedly discovered through the <code>history</code> command that this snapshot contained all the important updates. This discovery allowed the entire recovery process to be completed smoothly.</p>
+<p>This experience re-emphasized the importance of backups. Careful backups from the past ultimately avoided severe data loss. Furthermore, AWS&rsquo;s static IP retention feature also played a crucial role. The new instance could immediately bind to the IP once the old instance released the static IP, achieving a seamless switch.</p>
+<h2 id="conclusion">Conclusion</h2>
+<ol>
+<li><strong>Backups are essential</strong>: Regular backups are key to ensuring stable system operations.</li>
+<li><strong>Operate with caution</strong>: Before executing critical commands, thoroughly review and understand relevant documentation and user feedback to avoid potential risks.</li>
+<li><strong>Trust your past self</strong>: Meticulous work done in the past can often prove invaluable at critical moments.</li>
+</ol>
+<p>I hope this experience can serve as a reference and help for others, preventing similar issues from occurring.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

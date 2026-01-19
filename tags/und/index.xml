@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Und on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/und/</link>
+    <description>Recent content in Und on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Sat, 01 Feb 2020 12:27:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/und/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Dynamically Update DNS Records for Namesilo</title>
+      <link>https://blog.minifish.org/posts/how-to-dynamically-update-dns-records-for-namesilo/</link>
+      <pubDate>Sat, 01 Feb 2020 12:27:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-dynamically-update-dns-records-for-namesilo/</guid>
+      <description>&lt;h2 id=&#34;dynamically-updating-dns-records&#34;&gt;Dynamically Updating DNS Records&lt;/h2&gt;
+&lt;p&gt;The purpose of dynamic updates is pretty simple. As a long-term user of China Unicom&amp;rsquo;s broadband, although Unicom provides a public address, it is essentially a dynamic address, not a fixed one. If you want to access your home devices using an IP address from outside, you need to use dynamic DNS (DDNS).&lt;/p&gt;
+&lt;p&gt;Many routers come with built-in DDNS functionality, but they mostly wrap the interfaces of the commonly used service providers. These providers generally have a few characteristics: 1. Blocked by the Great Firewall; 2. Not cheap; 3. Domestic providers may have security issues; 4. The company might have gone out of business. Rather than relying on these unreliable services, it&amp;rsquo;s better to write your own script for updating.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="dynamically-updating-dns-records">Dynamically Updating DNS Records</h2>
+<p>The purpose of dynamic updates is pretty simple. As a long-term user of China Unicom&rsquo;s broadband, although Unicom provides a public address, it is essentially a dynamic address, not a fixed one. If you want to access your home devices using an IP address from outside, you need to use dynamic DNS (DDNS).</p>
+<p>Many routers come with built-in DDNS functionality, but they mostly wrap the interfaces of the commonly used service providers. These providers generally have a few characteristics: 1. Blocked by the Great Firewall; 2. Not cheap; 3. Domestic providers may have security issues; 4. The company might have gone out of business. Rather than relying on these unreliable services, it&rsquo;s better to write your own script for updating.</p>
+<p>Thus, the scripting approach comes into play. Initially, I planned to use Cloudflare, as it is the recommended way. Later, I discovered that my domain provider Namesilo offers an API to update DNS. However, it returns data in XML format, and I wasn&rsquo;t sure how to parse this with shell scripts.</p>
+<p>Then, I thought of using Go. Since this DDNS client would likely be deployed on a router-like device, languages like Python or Java require a runtime environment, and C might need some dynamic libraries to run, which I wasn&rsquo;t sure how to handle. The fact that Go doesn&rsquo;t require dynamic libraries was a significant advantage. So, I handwrote a tool called <a href="https://github.com/jackysp/und">und</a>.</p>
+<ol>
+<li>First, create a DNS record in Namesilo.</li>
+<li>Obtain the binary of <code>und</code> suitable for your platform. I only provide binaries for arm64|linux and amd64|three mainstream OS in this case. For other platforms, you&rsquo;ll need to compile it yourself. You can refer to the Makefile.</li>
+<li>Generate an API key from Namesilo, then start <code>und</code> according to its usage documentation. You might need to run it in the background, so use <code>nohup</code>.</li>
+</ol>
+<h2 id="github-features-experience">GitHub Features Experience</h2>
+<h3 id="github-actions">GitHub Actions</h3>
+<p>It feels like a replacement for chaotic third-party CI services. I directly chose the Go option for <code>und</code>. By default, it simply runs <code>go build -v .</code> in Ubuntu.</p>
+<h3 id="release">Release</h3>
+<p>I used this feature when releasing TiDB before, but didn&rsquo;t remember to upload/automatically generate binaries. Since TiDB is not something that can run completely with just one component, releasing a single binary doesn&rsquo;t make much sense.</p>
+<p>This time, the experience led me to believe:</p>
+<ol>
+<li>When releasing, tagging is best done directly using the release feature.</li>
+<li>After the release, since you can edit it, it&rsquo;s a good time to <code>make</code> each binary and upload them. Based on the Makefile setup, you can generate a version. This is quite an important feature.</li>
+</ol>
+<p>These two steps are quite convenient.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

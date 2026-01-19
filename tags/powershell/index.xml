@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Powershell on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/powershell/</link>
+    <description>Recent content in Powershell on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Tue, 14 Jan 2020 08:56:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/powershell/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Start a PowerShell Script in the Background at Windows Startup</title>
+      <link>https://blog.minifish.org/posts/how-to-start-a-powershell-script-in-the-background-at-windows-startup/</link>
+      <pubDate>Tue, 14 Jan 2020 08:56:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-start-a-powershell-script-in-the-background-at-windows-startup/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Create a script and place it in&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-powershell&#34; data-lang=&#34;powershell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;C:\Users\name\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\`  
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Fill the script with:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Start-Process -FilePath &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.exe&amp;#34;&lt;/span&gt; -ArgumentList &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-L=&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-F=&amp;#34;&lt;/span&gt; -RedirectStandardOutput &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.log&amp;#34;&lt;/span&gt; -RedirectStandardError &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.err&amp;#34;&lt;/span&gt; -WindowStyle Hidden
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Note: &lt;code&gt;Start-Process&lt;/code&gt; seems to perform a fork-like action, and by default, it opens a new PowerShell window to execute. That&amp;rsquo;s why &lt;code&gt;-WindowStyle Hidden&lt;/code&gt; is added at the end. You can&amp;rsquo;t use &lt;code&gt;-NoNewWindow&lt;/code&gt; here because it only prevents the creation of a new window for executing &lt;code&gt;Start-Process&lt;/code&gt;, but the old window will not exit.&lt;br&gt;
+Note 2: After the old window exits, the forked process seems to become an orphan and is managed elsewhere, so permissions, such as network connection permissions, might need to be requested again.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<ul>
+<li>
+<p>Create a script and place it in</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>C:\Users\name\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\`  
+</span></span></code></pre></div></li>
+<li>
+<p>Fill the script with:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>Start-Process -FilePath <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.exe&#34;</span> -ArgumentList <span style="color:#e6db74">&#34;-L=&#34;</span>, <span style="color:#e6db74">&#34;-F=&#34;</span> -RedirectStandardOutput <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.log&#34;</span> -RedirectStandardError <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.err&#34;</span> -WindowStyle Hidden
+</span></span></code></pre></div></li>
+</ul>
+<p>Note: <code>Start-Process</code> seems to perform a fork-like action, and by default, it opens a new PowerShell window to execute. That&rsquo;s why <code>-WindowStyle Hidden</code> is added at the end. You can&rsquo;t use <code>-NoNewWindow</code> here because it only prevents the creation of a new window for executing <code>Start-Process</code>, but the old window will not exit.<br>
+Note 2: After the old window exits, the forked process seems to become an orphan and is managed elsewhere, so permissions, such as network connection permissions, might need to be requested again.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

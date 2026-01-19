@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Mysql on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/mysql/</link>
+    <description>Recent content in Mysql on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present</copyright>
+    <lastBuildDate>Sun, 09 May 2021 18:13:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to Compare Data Consistency between MySQL and PostgreSQL</title>
+      <link>https://blog.minifish.org/posts/how-to-compare-data-consistency-between-mysql-and-postgresql/</link>
+      <pubDate>Sun, 09 May 2021 18:13:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-compare-data-consistency-between-mysql-and-postgresql/</guid>
+      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
+&lt;p&gt;Recently, I encountered a problem where a user wanted to synchronize data from PostgreSQL to TiDB (which uses the same protocol as MySQL) and wanted to know whether the data after synchronization is consistent. I hadn&amp;rsquo;t dealt with this kind of issue before, so I did a bit of research.&lt;/p&gt;
+&lt;p&gt;Typically, to verify data consistency, you compute a checksum on both sides and compare them.&lt;/p&gt;
+&lt;h2 id=&#34;tidb-mysql-side&#34;&gt;TiDB (MySQL) Side&lt;/h2&gt;
+&lt;p&gt;For the verification of a specific table, the following SQL is used:&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="background">Background</h2>
+<p>Recently, I encountered a problem where a user wanted to synchronize data from PostgreSQL to TiDB (which uses the same protocol as MySQL) and wanted to know whether the data after synchronization is consistent. I hadn&rsquo;t dealt with this kind of issue before, so I did a bit of research.</p>
+<p>Typically, to verify data consistency, you compute a checksum on both sides and compare them.</p>
+<h2 id="tidb-mysql-side">TiDB (MySQL) Side</h2>
+<p>For the verification of a specific table, the following SQL is used:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> bit_xor(
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">CAST</span>(crc32(
+</span></span><span style="display:flex;"><span>        concat_ws(<span style="color:#e6db74">&#39;,&#39;</span>,
+</span></span><span style="display:flex;"><span>            col1, col2, col3, <span style="color:#960050;background-color:#1e0010">…</span>, colN,
+</span></span><span style="display:flex;"><span>            concat(<span style="color:#66d9ef">isnull</span>(col1), <span style="color:#66d9ef">isnull</span>(col2), <span style="color:#960050;background-color:#1e0010">…</span>, <span style="color:#66d9ef">isnull</span>(colN))
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    ) <span style="color:#66d9ef">AS</span> UNSIGNED)
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> t;
+</span></span></code></pre></div><p>Let&rsquo;s look at a specific example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> t;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT, j INT);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>), (<span style="color:#66d9ef">NULL</span>, <span style="color:#66d9ef">NULL</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> bit_xor(
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">CAST</span>(crc32(
+</span></span><span style="display:flex;"><span>        concat_ws(<span style="color:#e6db74">&#39;,&#39;</span>,
+</span></span><span style="display:flex;"><span>            i, j,
+</span></span><span style="display:flex;"><span>            concat(<span style="color:#66d9ef">isnull</span>(i), <span style="color:#66d9ef">isnull</span>(j))
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    ) <span style="color:#66d9ef">AS</span> UNSIGNED)
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> t;
+</span></span></code></pre></div><p>The result is:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>+-------------------------------------------------------------------------------------------------------------------------------------------+
+</span></span><span style="display:flex;"><span>| bit_xor(
+</span></span><span style="display:flex;"><span>    CAST(crc32(
+</span></span><span style="display:flex;"><span>        concat_ws(&#39;,&#39;,
+</span></span><span style="display:flex;"><span>            i, j,
+</span></span><span style="display:flex;"><span>            concat(isnull(i), isnull(j))
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    ) AS UNSIGNED)
+</span></span><span style="display:flex;"><span>) |
+</span></span><span style="display:flex;"><span>+-------------------------------------------------------------------------------------------------------------------------------------------+
+</span></span><span style="display:flex;"><span>|                                                           5062371 |
+</span></span><span style="display:flex;"><span>+-------------------------------------------------------------------------------------------------------------------------------------------+
+</span></span><span style="display:flex;"><span>1 row in set (0.00 sec)
+</span></span></code></pre></div><h2 id="postgresql-side">PostgreSQL Side</h2>
+<p>The goal is simply to write the same SQL as above, but PostgreSQL does not support <code>bit_xor</code>, <code>crc32</code>, <code>isnull</code>, nor does it have unsigned types. Therefore, the solution is relatively straightforward—relying on UDFs (User-Defined Functions).</p>
+<p>After some research, the main missing functions can be addressed with a few custom implementations.</p>
+<p><code>bit_xor</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">AGGREGATE</span> bit_xor(<span style="color:#66d9ef">IN</span> v bigint) (SFUNC <span style="color:#f92672">=</span> int8xor, <span style="color:#66d9ef">STYPE</span> <span style="color:#f92672">=</span> bigint);
+</span></span></code></pre></div><p><code>crc32</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">FUNCTION</span> crc32(text_string text) <span style="color:#66d9ef">RETURNS</span> bigint <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">$$</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">DECLARE</span>
+</span></span><span style="display:flex;"><span>    tmp bigint;
+</span></span><span style="display:flex;"><span>    i int;
+</span></span><span style="display:flex;"><span>    j int;
+</span></span><span style="display:flex;"><span>    byte_length int;
+</span></span><span style="display:flex;"><span>    binary_string bytea;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">BEGIN</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">IF</span> text_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span> <span style="color:#66d9ef">THEN</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">RETURN</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">END</span> <span style="color:#66d9ef">IF</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    tmp <span style="color:#f92672">=</span> <span style="color:#ae81ff">4294967295</span>;
+</span></span><span style="display:flex;"><span>    byte_length <span style="color:#f92672">=</span> <span style="color:#66d9ef">bit_length</span>(text_string) <span style="color:#f92672">/</span> <span style="color:#ae81ff">8</span>;
+</span></span><span style="display:flex;"><span>    binary_string <span style="color:#f92672">=</span> decode(<span style="color:#66d9ef">replace</span>(text_string, E<span style="color:#e6db74">&#39;\\&#39;</span>, E<span style="color:#e6db74">&#39;\\\\&#39;</span>), <span style="color:#e6db74">&#39;escape&#39;</span>);
+</span></span><span style="display:flex;"><span>    LOOP
+</span></span><span style="display:flex;"><span>        tmp <span style="color:#f92672">=</span> (tmp <span style="color:#f92672">#</span> get_byte(binary_string, i))::bigint;
+</span></span><span style="display:flex;"><span>        i <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>        j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>        LOOP
+</span></span><span style="display:flex;"><span>            tmp <span style="color:#f92672">=</span> ((tmp <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">#</span> (<span style="color:#ae81ff">3988292384</span> <span style="color:#f92672">*</span> (tmp <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span>)))::bigint;
+</span></span><span style="display:flex;"><span>            j <span style="color:#f92672">=</span> j <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">IF</span> j <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">8</span> <span style="color:#66d9ef">THEN</span>
+</span></span><span style="display:flex;"><span>                EXIT;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">END</span> <span style="color:#66d9ef">IF</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">END</span> LOOP;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">IF</span> i <span style="color:#f92672">&gt;=</span> byte_length <span style="color:#66d9ef">THEN</span>
+</span></span><span style="display:flex;"><span>            EXIT;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">END</span> <span style="color:#66d9ef">IF</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">END</span> LOOP;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">RETURN</span> (tmp <span style="color:#f92672">#</span> <span style="color:#ae81ff">4294967295</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">END</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$$</span> <span style="color:#66d9ef">IMMUTABLE</span> <span style="color:#66d9ef">LANGUAGE</span> plpgsql;
+</span></span></code></pre></div><p><code>isnull</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">FUNCTION</span> <span style="color:#66d9ef">isnull</span>(anyelement) <span style="color:#66d9ef">RETURNS</span> int <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">$$</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">BEGIN</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">RETURN</span> <span style="color:#66d9ef">CAST</span>((<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span>) <span style="color:#66d9ef">AS</span> INT);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">END</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$$</span> <span style="color:#66d9ef">LANGUAGE</span> plpgsql;
+</span></span></code></pre></div><p>After creating the three UDFs above, let&rsquo;s test the previous example. Note that <code>UNSIGNED</code> should be changed to <code>BIGINT</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> t;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT, j INT);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>), (<span style="color:#66d9ef">NULL</span>, <span style="color:#66d9ef">NULL</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> bit_xor(
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">CAST</span>(crc32(
+</span></span><span style="display:flex;"><span>        concat_ws(<span style="color:#e6db74">&#39;,&#39;</span>,
+</span></span><span style="display:flex;"><span>            i, j,
+</span></span><span style="display:flex;"><span>            concat(<span style="color:#66d9ef">isnull</span>(i), <span style="color:#66d9ef">isnull</span>(j))
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>    ) <span style="color:#66d9ef">AS</span> BIGINT)
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> t;
+</span></span></code></pre></div><p>The result:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span> bit_xor
+</span></span><span style="display:flex;"><span>---------
+</span></span><span style="display:flex;"><span> 5062371
+</span></span><span style="display:flex;"><span>(1 row)
+</span></span></code></pre></div><p>It&rsquo;s exactly the same as on the TiDB (MySQL) side.</p>
+<h2 id="postscript">Postscript</h2>
+<ol>
+<li>I haven&rsquo;t tested more extensively; this is just a simple test.</li>
+<li>UDFs are indeed a great feature that greatly enhance flexibility.</li>
+</ol>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Implement MySQL X Protocol on TiDB</title>
+      <link>https://blog.minifish.org/posts/how-to-implement-mysql-x-protocol-on-tidb/</link>
+      <pubDate>Wed, 16 Aug 2017 00:00:00 +0000</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-implement-mysql-x-protocol-on-tidb/</guid>
+      <description>&lt;h2 id=&#34;some-documents-on-mysql&#34;&gt;Some Documents on MySQL&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Client Usage Guide &lt;a href=&#34;https://dev.mysql.com/doc/refman/5.7/en/mysql-shell.html&#34;&gt;MySQL Shell User Guide&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Server Configuration Guide &lt;a href=&#34;https://dev.mysql.com/doc/refman/5.7/en/document-store.html&#34;&gt;Using MySQL as a Document Store&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Application Development API Guide &lt;a href=&#34;https://dev.mysql.com/doc/x-devapi-userguide/en/&#34;&gt;X DevAPI User Guide&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Introduction to Server Internal Implementation &lt;a href=&#34;https://dev.mysql.com/doc/internals/en/x-protocol.html&#34;&gt;X Protocol&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;implementation-principle&#34;&gt;Implementation Principle&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Communication between client and server is over TCP and the protocol uses protobuf.&lt;/li&gt;
+&lt;li&gt;After the server receives a message, it decodes and analyzes it. The protocol includes a concept called namespace, which specifically refers to whether the namespace is empty or &amp;ldquo;sql&amp;rdquo;, in which case the message content is executed as a SQL statement; if it is &amp;ldquo;xplugin&amp;rdquo; or &amp;ldquo;mysqlx,&amp;rdquo; the message is handled in another way. The other ways can be divided into:
+&lt;ul&gt;
+&lt;li&gt;Administrative commands&lt;/li&gt;
+&lt;li&gt;CRUD operations&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;xplugin&amp;rdquo; and &amp;ldquo;mysqlx&amp;rdquo; have the same function, with the latter being the new name for the former, retained temporarily for compatibility.&lt;/li&gt;
+&lt;li&gt;The content of &amp;ldquo;mysqlx&amp;rdquo; messages, apart from explicit command content like kill_client, are mostly transformed into SQL statements which the server processes, essentially turning most into a form where the namespace is &amp;ldquo;sql&amp;rdquo;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;implementation-steps&#34;&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Start a new server for TiDB. The relevant configuration parameters such as IP, port, and socket need to be set.&lt;/li&gt;
+&lt;li&gt;Implement the reading and writing functionality for message communication.&lt;/li&gt;
+&lt;li&gt;Write a process for this new server to establish connections, including authentication, that follows the protocol. Use tcpdump to capture messages between MySQL and the client to derive protocol content, implementing the process by understanding MySQL source code.&lt;/li&gt;
+&lt;li&gt;The server should include contents like the Query Context from the original TiDB server, as it primarily translates into SQL for execution.&lt;/li&gt;
+&lt;li&gt;Implement the decoding and handling of messages. Although only a sentence, the workload included is substantial.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In &lt;code&gt;mysqlx_all_msgs.h&lt;/code&gt;, all messages are initialized&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h2 id="some-documents-on-mysql">Some Documents on MySQL</h2>
+<ul>
+<li>Client Usage Guide <a href="https://dev.mysql.com/doc/refman/5.7/en/mysql-shell.html">MySQL Shell User Guide</a></li>
+<li>Server Configuration Guide <a href="https://dev.mysql.com/doc/refman/5.7/en/document-store.html">Using MySQL as a Document Store</a></li>
+<li>Application Development API Guide <a href="https://dev.mysql.com/doc/x-devapi-userguide/en/">X DevAPI User Guide</a></li>
+<li>Introduction to Server Internal Implementation <a href="https://dev.mysql.com/doc/internals/en/x-protocol.html">X Protocol</a>.</li>
+</ul>
+<h2 id="implementation-principle">Implementation Principle</h2>
+<ul>
+<li>Communication between client and server is over TCP and the protocol uses protobuf.</li>
+<li>After the server receives a message, it decodes and analyzes it. The protocol includes a concept called namespace, which specifically refers to whether the namespace is empty or &ldquo;sql&rdquo;, in which case the message content is executed as a SQL statement; if it is &ldquo;xplugin&rdquo; or &ldquo;mysqlx,&rdquo; the message is handled in another way. The other ways can be divided into:
+<ul>
+<li>Administrative commands</li>
+<li>CRUD operations</li>
+</ul>
+</li>
+<li>&ldquo;xplugin&rdquo; and &ldquo;mysqlx&rdquo; have the same function, with the latter being the new name for the former, retained temporarily for compatibility.</li>
+<li>The content of &ldquo;mysqlx&rdquo; messages, apart from explicit command content like kill_client, are mostly transformed into SQL statements which the server processes, essentially turning most into a form where the namespace is &ldquo;sql&rdquo;.</li>
+</ul>
+<h2 id="implementation-steps">Implementation Steps</h2>
+<ol>
+<li>Start a new server for TiDB. The relevant configuration parameters such as IP, port, and socket need to be set.</li>
+<li>Implement the reading and writing functionality for message communication.</li>
+<li>Write a process for this new server to establish connections, including authentication, that follows the protocol. Use tcpdump to capture messages between MySQL and the client to derive protocol content, implementing the process by understanding MySQL source code.</li>
+<li>The server should include contents like the Query Context from the original TiDB server, as it primarily translates into SQL for execution.</li>
+<li>Implement the decoding and handling of messages. Although only a sentence, the workload included is substantial.</li>
+</ol>
+<p>In <code>mysqlx_all_msgs.h</code>, all messages are initialized</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>  init_message_factory()
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Connection<span style="color:#f92672">::</span>Capabilities<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>CONN_CAPABILITIES, <span style="color:#e6db74">&#34;CONN_CAPABILITIES&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Connection.Capabilities&#34;</span>);
+</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Error<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>ERROR, <span style="color:#e6db74">&#34;ERROR&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Error&#34;</span>);
+</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Notice<span style="color:#f92672">::</span>Frame<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>NOTICE, <span style="color:#e6db74">&#34;NOTICE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Notice.Frame&#34;</span>);
+</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Ok<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>OK, <span style="color:#e6db74">&#34;OK&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Ok&#34;</span>);
+</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Resultset<span style="color:#f92672">::</span>ColumnMetaData<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>RESULTSET_COLUMN_META_DATA, <span style="color:#e6db74">&#34;RESULTSET_COLUMN_META_DATA&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Resultset.ColumnMetaData&#34;</span>);
+</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Resultset<span style="color:#f92672">::</span>FetchDone<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>RESULTSET_FETCH_DONE, <span style="color:#e6db74">&#34;RESULTSET_FETCH_DONE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Resultset.FetchDone&#34;</span>);
+</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Resultset<span style="color:#f92672">::</span>FetchDoneMoreResultsets<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>RESULTSET_FETCH_DONE_MORE_RESULTSETS, <span style="color:#e6db74">&#34;RESULTSET_FETCH_DONE_MORE_RESULTSETS&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Resultset.FetchDoneMoreResultsets&#34;</span>);
+</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Resultset<span style="color:#f92672">::</span>Row<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>RESULTSET_ROW, <span style="color:#e6db74">&#34;RESULTSET_ROW&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Resultset.Row&#34;</span>);
+</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Session<span style="color:#f92672">::</span>AuthenticateOk<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>SESS_AUTHENTICATE_OK, <span style="color:#e6db74">&#34;SESS_AUTHENTICATE_OK&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Session.AuthenticateOk&#34;</span>);
+</span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Sql<span style="color:#f92672">::</span>StmtExecuteOk<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>SQL_STMT_EXECUTE_OK, <span style="color:#e6db74">&#34;SQL_STMT_EXECUTE_OK&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Sql.StmtExecuteOk&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Connection<span style="color:#f92672">::</span>CapabilitiesGet<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CON_CAPABILITIES_GET, <span style="color:#e6db74">&#34;CON_CAPABILITIES_GET&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Connection.CapabilitiesGet&#34;</span>);
+</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Connection<span style="color:#f92672">::</span>CapabilitiesSet<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CON_CAPABILITIES_SET, <span style="color:#e6db74">&#34;CON_CAPABILITIES_SET&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Connection.CapabilitiesSet&#34;</span>);
+</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Connection<span style="color:#f92672">::</span>Close<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CON_CLOSE, <span style="color:#e6db74">&#34;CON_CLOSE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Connection.Close&#34;</span>);
+</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>Delete<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_DELETE, <span style="color:#e6db74">&#34;CRUD_DELETE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Crud.Delete&#34;</span>);
+</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>Find<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_FIND, <span style="color:#e6db74">&#34;CRUD_FIND&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Crud.Find&#34;</span>);
+</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>Insert<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_INSERT, <span style="color:#e6db74">&#34;CRUD_INSERT&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Crud.Insert&#34;</span>);
+</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>Update<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_UPDATE, <span style="color:#e6db74">&#34;CRUD_UPDATE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Crud.Update&#34;</span>);
+</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>CreateView<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_CREATE_VIEW, <span style="color:#e6db74">&#34;CRUD_CREATE_VIEW&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Crud.CreateView&#34;</span>);
+</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>ModifyView<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_MODIFY_VIEW, <span style="color:#e6db74">&#34;CRUD_MODIFY_VIEW&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Crud.ModifyView&#34;</span>);
+</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>DropView<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_DROP_VIEW, <span style="color:#e6db74">&#34;CRUD_DROP_VIEW&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Crud.DropView&#34;</span>);
+</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Expect<span style="color:#f92672">::</span>Close<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>EXPECT_CLOSE, <span style="color:#e6db74">&#34;EXPECT_CLOSE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Expect.Close&#34;</span>);
+</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Expect<span style="color:#f92672">::</span>Open<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>EXPECT_OPEN, <span style="color:#e6db74">&#34;EXPECT_OPEN&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Expect.Open&#34;</span>);
+</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Session<span style="color:#f92672">::</span>AuthenticateContinue<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>SESS_AUTHENTICATE_CONTINUE, <span style="color:#e6db74">&#34;SESS_AUTHENTICATE_CONTINUE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Session.AuthenticateContinue&#34;</span>);
+</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Session<span style="color:#f92672">::</span>AuthenticateStart<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>SESS_AUTHENTICATE_START, <span style="color:#e6db74">&#34;SESS_AUTHENTICATE_START&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Session.AuthenticateStart&#34;</span>);
+</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Session<span style="color:#f92672">::</span>Close<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>SESS_CLOSE, <span style="color:#e6db74">&#34;SESS_CLOSE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Session.Close&#34;</span>);
+</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Session<span style="color:#f92672">::</span>Reset<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>SESS_RESET, <span style="color:#e6db74">&#34;SESS_RESET&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Session.Reset&#34;</span>);
+</span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Sql<span style="color:#f92672">::</span>StmtExecute<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>SQL_STMT_EXECUTE, <span style="color:#e6db74">&#34;SQL_STMT_EXECUTE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Sql.StmtExecute&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><p>Server and client messages are that many. Client messages are dispatched in <code>xpl_dispatcher.cc</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>ngs<span style="color:#f92672">::</span>Error_code do_dispatch_command(xpl<span style="color:#f92672">::</span>Session <span style="color:#f92672">&amp;</span>session, xpl<span style="color:#f92672">::</span>Crud_command_handler <span style="color:#f92672">&amp;</span>crudh,
+</span></span><span style="display:flex;"><span>                                    xpl<span style="color:#f92672">::</span>Expectation_stack <span style="color:#f92672">&amp;</span>expect, ngs<span style="color:#f92672">::</span>Request <span style="color:#f92672">&amp;</span>command)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">switch</span> (command.get_type())
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>SQL_STMT_EXECUTE:
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> on_stmt_execute(session, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Sql<span style="color:#f92672">::</span>StmtExecute<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_FIND:
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> crudh.execute_crud_find(session, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>Find<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_INSERT:
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> crudh.execute_crud_insert(session, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>Insert<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_UPDATE:
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> crudh.execute_crud_update(session, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>Update<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_DELETE:
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> crudh.execute_crud_delete(session, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>Delete<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_CREATE_VIEW:
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> crudh.execute_create_view(session, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>CreateView<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_MODIFY_VIEW:
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> crudh.execute_modify_view(session, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>ModifyView<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>CRUD_DROP_VIEW:
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> crudh.execute_drop_view(session, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Crud<span style="color:#f92672">::</span>DropView<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>EXPECT_OPEN:
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> on_expect_open(session, expect, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Expect<span style="color:#f92672">::</span>Open<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>EXPECT_CLOSE:
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> on_expect_close(session, expect, <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">const</span> Mysqlx<span style="color:#f92672">::</span>Expect<span style="color:#f92672">::</span>Close<span style="color:#f92672">&amp;&gt;</span>(<span style="color:#f92672">*</span>command.message()));
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  session.proto().get_protocol_monitor().on_error_unknown_msg_type();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> ngs<span style="color:#f92672">::</span>Error(ER_UNKNOWN_COM_ERROR, <span style="color:#e6db74">&#34;Unexpected message received&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The rest is filling in the gaps.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Client::run =&gt; Client::handle_message =&gt; Session::handle_message =&gt; Session::handle_auth_message =&gt; some auth handlers
+</span></span><span style="display:flex;"><span>                                                                 =&gt; Session::handle_ready_message =&gt; xpl::dispatcher::dispatch_command =&gt; ngs::Error_code do_dispatch_command =&gt; some crud handlers
+</span></span></code></pre></div><p>Mapping between MySQL type and X protocol type</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>//     ================= ============ ======= ========== ====== ========
+</span></span><span style="display:flex;"><span>//     SQL Type          .type        .length .frac_dig  .flags .charset
+</span></span><span style="display:flex;"><span>//     ================= ============ ======= ========== ====== ========
+</span></span><span style="display:flex;"><span>//     TINY              SINT         x
+</span></span><span style="display:flex;"><span>//     TINY UNSIGNED     UINT         x                  x
+</span></span><span style="display:flex;"><span>//     SHORT             SINT         x
+</span></span><span style="display:flex;"><span>//     SHORT UNSIGNED    UINT         x                  x
+</span></span><span style="display:flex;"><span>//     INT24             SINT         x
+</span></span><span style="display:flex;"><span>//     INT24 UNSIGNED    UINT         x                  x
+</span></span><span style="display:flex;"><span>//     INT               SINT         x
+</span></span><span style="display:flex;"><span>//     INT UNSIGNED      UINT         x                  x
+</span></span><span style="display:flex;"><span>//     LONGLONG          SINT         x
+</span></span><span style="display:flex;"><span>//     LONGLONG UNSIGNED UINT         x                  x
+</span></span><span style="display:flex;"><span>//     DOUBLE            DOUBLE       x       x          x
+</span></span><span style="display:flex;"><span>//     FLOAT             FLOAT        x       x          x
+</span></span><span style="display:flex;"><span>//     DECIMAL           DECIMAL      x       x          x
+</span></span><span style="display:flex;"><span>//     VARCHAR,CHAR,...  BYTES        x                  x      x
+</span></span><span style="display:flex;"><span>//     GEOMETRY          BYTES
+</span></span><span style="display:flex;"><span>//     TIME              TIME         x
+</span></span><span style="display:flex;"><span>//     DATE              DATETIME     x
+</span></span><span style="display:flex;"><span>//     DATETIME          DATETIME     x
+</span></span><span style="display:flex;"><span>//     YEAR              UINT         x                  x
+</span></span><span style="display:flex;"><span>//     TIMESTAMP         DATETIME     x
+</span></span><span style="display:flex;"><span>//     SET               SET                                    x
+</span></span><span style="display:flex;"><span>//     ENUM              ENUM                                   x
+</span></span><span style="display:flex;"><span>//     NULL              BYTES
+</span></span><span style="display:flex;"><span>//     BIT               BIT          x
+</span></span><span style="display:flex;"><span>//     ================= ============ ======= ========== ====== ========
+</span></span></code></pre></div><p>The first SQL field information of MySQL:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Field   1:  `@@lower_case_table_names`
+</span></span><span style="display:flex;"><span>Catalog:    `def`
+</span></span><span style="display:flex;"><span>Database:   ``
+</span></span><span style="display:flex;"><span>Table:      ``
+</span></span><span style="display:flex;"><span>Org_table:  ``
+</span></span><span style="display:flex;"><span>Type:       LONGLONG
+</span></span><span style="display:flex;"><span>Collation:  binary (63)
+</span></span><span style="display:flex;"><span>Length:     21
+</span></span><span style="display:flex;"><span>Max_length: 1
+</span></span><span style="display:flex;"><span>Decimals:   0
+</span></span><span style="display:flex;"><span>Flags:      UNSIGNED BINARY NUM 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Field   2:  `connection_id()`
+</span></span><span style="display:flex;"><span>Catalog:    `def`
+</span></span><span style="display:flex;"><span>Database:   ``
+</span></span><span style="display:flex;"><span>Table:      ``
+</span></span><span style="display:flex;"><span>Org_table:  ``
+</span></span><span style="display:flex;"><span>Type:       LONGLONG
+</span></span><span style="display:flex;"><span>Collation:  binary (63)
+</span></span><span style="display:flex;"><span>Length:     21
+</span></span><span style="display:flex;"><span>Max_length: 1
+</span></span><span style="display:flex;"><span>Decimals:   0
+</span></span><span style="display:flex;"><span>Flags:      NOT_NULL UNSIGNED BINARY NUM 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Field   3:  `variable_value`
+</span></span><span style="display:flex;"><span>Catalog:    `def`
+</span></span><span style="display:flex;"><span>Database:   `performance_schema`
+</span></span><span style="display:flex;"><span>Table:      `session_status`
+</span></span><span style="display:flex;"><span>Org_table:  `session_status`
+</span></span><span style="display:flex;"><span>Type:       VAR_STRING
+</span></span><span style="display:flex;"><span>Collation:  utf8_general_ci (33)
+</span></span><span style="display:flex;"><span>Length:     3072
+</span></span><span style="display:flex;"><span>Max_length: 0
+</span></span><span style="display:flex;"><span>Decimals:   0
+</span></span><span style="display:flex;"><span>Flags:      
+</span></span></code></pre></div><p>For TiDB:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Field   1:  `@@lower_case_table_names`
+</span></span><span style="display:flex;"><span>Catalog:    `def`
+</span></span><span style="display:flex;"><span>Database:   ``
+</span></span><span style="display:flex;"><span>Table:      ``
+</span></span><span style="display:flex;"><span>Org_table:  ``
+</span></span><span style="display:flex;"><span>Type:       STRING
+</span></span><span style="display:flex;"><span>Collation:  ? (0)
+</span></span><span style="display:flex;"><span>Length:     0
+</span></span><span style="display:flex;"><span>Max_length: 1
+</span></span><span style="display:flex;"><span>Decimals:   31
+</span></span><span style="display:flex;"><span>Flags:      
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Field   2:  `connection_id()`
+</span></span><span style="display:flex;"><span>Catalog:    `def`
+</span></span><span style="display:flex;"><span>Database:   ``
+</span></span><span style="display:flex;"><span>Table:      ``
+</span></span><span style="display:flex;"><span>Org_table:  ``
+</span></span><span style="display:flex;"><span>Type:       LONGLONG
+</span></span><span style="display:flex;"><span>Collation:  binary (63)
+</span></span><span style="display:flex;"><span>Length:     20
+</span></span><span style="display:flex;"><span>Max_length: 1
+</span></span><span style="display:flex;"><span>Decimals:   0
+</span></span><span style="display:flex;"><span>Flags:      UNSIGNED BINARY NUM 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Field   3:  `variable_value`
+</span></span><span style="display:flex;"><span>Catalog:    `def`
+</span></span><span style="display:flex;"><span>Database:   ``
+</span></span><span style="display:flex;"><span>Table:      ``
+</span></span><span style="display:flex;"><span>Org_table:  ``
+</span></span><span style="display:flex;"><span>Type:       STRING
+</span></span><span style="display:flex;"><span>Collation:  utf8_general_ci (33)
+</span></span><span style="display:flex;"><span>Length:     1024
+</span></span><span style="display:flex;"><span>Max_length: 0
+</span></span><span style="display:flex;"><span>Decimals:   0
+</span></span><span style="display:flex;"><span>Flags:      
+</span></span></code></pre></div>]]></content:encoded>
+    </item>
+  </channel>
+</rss>
