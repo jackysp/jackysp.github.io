@@ -104,7 +104,7 @@
 </ol>
 <p>All without manual intervention.</p>
 <h3 id="3-governance-through-contracts">3. Governance Through Contracts</h3>
-<p>To ensure quality and prevent accidents, I&rsquo;ve implemented an <strong>AI Publishing Contract</strong> (<code>docs/ai-publishing.md</code>) that defines:</p>
+<p>To ensure quality and prevent accidents, I&rsquo;ve implemented an <strong>AI Publishing Contract</strong> (<code>PUBLISHING.md</code>) that defines:</p>
 <ul>
 <li><strong>Allowed paths</strong>: Only <code>content/**</code> and <code>static/**</code> can be modified</li>
 <li><strong>Post format</strong>: Required front matter fields (title, date, tags, slug, summary)</li>
