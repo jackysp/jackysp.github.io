@@ -84,11 +84,18 @@ You are operating a <strong>multi-stage thermal + pressure system with delayed f
 <p>Brikka amplifies front-loaded flavors.</p>
 <h3 id="grind">Grind</h3>
 <ul>
-<li>Timemore C5 ESP: baseline <strong>1.1.5</strong></li>
+<li>Timemore C5 ESP: baseline <strong>1.2.0</strong></li>
 <li>Adjust only ±0.0.5</li>
 </ul>
 <p>Brikka has a narrow operating window.</p>
 <h3 id="heat-strategy">Heat Strategy</h3>
+<p><strong>Preheating Phase (Before Grinding):</strong></p>
+<ul>
+<li>Start heating the adapter plate at <strong>Level 9</strong> while measuring beans and grinding</li>
+<li>The official stainless steel adapter plate is thick and conducts heat slowly</li>
+<li>Preheating ensures the plate reaches operating temperature before brewing begins</li>
+</ul>
+<p><strong>Brewing Phase:</strong></p>
 <ul>
 <li>Phase 1: <strong>Level 9</strong> until trigger</li>
 <li>Phase 2: <strong>Cut power immediately at first continuous output</strong></li>
