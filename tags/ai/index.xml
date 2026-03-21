@@ -19,9 +19,139 @@
       <link>https://blog.minifish.org/posts/symphony-solo-dev-blog/</link>
       <pubDate>Fri, 20 Mar 2026 21:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/symphony-solo-dev-blog/</guid>
-      <description>A practical write-up on using Symphony, Linear, and Codex to automate work on two personal repositories, including workflow design, early mistakes, and what felt surprisingly useful.</description>
-      <content:encoded><![CDATA[<p>I recently spent a session getting OpenAI Symphony working on two personal repositories in a solo-developer setup. The goal was simple: use Linear as the task queue, let Symphony pick up issues automatically, and have Codex make code changes with as little manual coordination as possible.</p>
+      <description>Hands-on Symphony setup plus an unapologetic thesis: orchestration collapses the PM–engineer relay; B2B should route first-hand demand straight into automated build, test, and ship. Checklists and links included.</description>
+      <content:encoded><![CDATA[<p>I recently spent a session getting <a href="https://github.com/openai/symphony">OpenAI Symphony</a> working on two personal repositories in a solo-developer setup. The goal was simple: use <a href="https://linear.app/">Linear</a> as the task queue, let Symphony pick up issues automatically, and have Codex make code changes with as little manual coordination as possible.</p>
 <p>This post is intentionally sanitized. I am not including tokens, local machine details, private paths, secrets, or any internal repository configuration that should not be published.</p>
+<h2 id="official-symphony-resources">Official Symphony resources</h2>
+<p>If you are trying to reproduce or extend this setup, start from the upstream project rather than this blog post alone:</p>
+<ul>
+<li><strong>Repository:</strong> <a href="https://github.com/openai/symphony">github.com/openai/symphony</a> — source, issues, and release notes.</li>
+<li><strong>Specification:</strong> <a href="https://github.com/openai/symphony/blob/main/SPEC.md"><code>SPEC.md</code></a> — describes the intended behavior and interfaces.</li>
+<li><strong>Reference implementation:</strong> <a href="https://github.com/openai/symphony/tree/main/elixir"><code>elixir/</code></a> — Elixir-based reference; follow the README there for build and run details.</li>
+</ul>
+<p>Symphony is positioned as experimental or preview-quality software; run it only in environments and repositories you trust, and read the repo README for current limitations and safety expectations.</p>
+<h2 id="hands-on-from-clone-to-first-run">Hands-on: from clone to first run</h2>
+<p>Everything below follows the <a href="https://github.com/openai/symphony/blob/main/elixir/README.md">Elixir reference README</a>. If a step fails, fix that step before tweaking your narrative expectations—the runtime is strict about valid <code>WORKFLOW.md</code> YAML at startup.</p>
+<h3 id="0-prerequisites">0. Prerequisites</h3>
+<ul>
+<li>
+<p><strong>Linear:</strong> a workspace where you can create a <strong>project</strong> and issues inside that project.</p>
+</li>
+<li>
+<p><strong>Linear API key:</strong> Settings → Security &amp; access → Personal API keys. Export it in your shell (do not commit it):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export LINEAR_API_KEY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;your_linear_personal_api_key&#34;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Codex CLI</strong> with <code>codex app-server</code> available (Symphony launches Codex in <a href="https://developers.openai.com/codex/app-server/">App Server mode</a>). Ensure <code>codex</code> is on <code>PATH</code> when the <code>codex.command</code> in <code>WORKFLOW.md</code> runs.</p>
+</li>
+<li>
+<p><strong>Runtime for the reference implementation:</strong> the upstream docs recommend <a href="https://mise.jdx.dev/">mise</a> for Erlang/Elixir versions; use <code>mise install</code> in <code>symphony/elixir</code> as documented.</p>
+</li>
+</ul>
+<h3 id="1-linear-setup-workspace-team-project-workflow-and-api-key">1. Linear setup: workspace, team, project, workflow, and API key</h3>
+<p>Symphony only sees what Linear exposes through the API. If the board is wrong, every later step looks like a Symphony bug. Configure Linear <strong>before</strong> you wire <code>project_slug</code> into <code>WORKFLOW.md</code>.</p>
+<h4 id="11-workspace-and-team">1.1 Workspace and team</h4>
+<ul>
+<li>Use a Linear <strong>workspace</strong> you control (personal or org). You need permission to create <strong>projects</strong> and <strong>issues</strong> on a <strong>team</strong>.</li>
+<li>Pick the <strong>team</strong> that will own the automated work. Issues are always tied to a team; your project will live under that team’s context. For a solo setup, one dedicated team per “product line” or per repo is enough.</li>
+</ul>
+<h4 id="12-create-a-project-this-is-the-symphony-queue-boundary">1.2 Create a project (this is the Symphony queue boundary)</h4>
+<ol>
+<li>In Linear, open <strong>Projects</strong> (or the team’s project list) and <strong>create a new project</strong> for the repository you are automating (for example one GitHub repo ↔ one Linear project).</li>
+<li>Give it a clear name so you do not file issues into the wrong queue later.</li>
+<li>Open the <strong>project</strong> itself—not only the team backlog. Symphony’s <code>tracker.project_slug</code> refers to <strong>this</strong> project.</li>
+</ol>
+<h4 id="13-read-the-project_slug-correctly">1.3 Read the <code>project_slug</code> correctly</h4>
+<ol>
+<li>With the project open, copy the <strong>page URL</strong> from the browser address bar (or use “Copy link” if Linear offers it for the project).</li>
+<li>The <strong>slug</strong> is the identifier in that URL that points at this project. Paste it into <code>WORKFLOW.md</code> as <code>project_slug</code> <strong>exactly</strong>—same spelling, same segment the URL uses.</li>
+<li>If you rename the project or move it, re-check the URL and update <code>WORKFLOW.md</code>; a stale slug is an instant “nothing happens” failure.</li>
+</ol>
+<h4 id="14-align-workflow-states-with-workflowmd">1.4 Align workflow <strong>states</strong> with <code>WORKFLOW.md</code></h4>
+<p>Your simplified <code>WORKFLOW.md</code> lists <code>active_states</code> and <code>terminal_states</code> (for example <code>Todo</code>, <code>In Progress</code>, <code>Rework</code>, <code>Merging</code>, and terminals like <code>Done</code>, <code>Canceled</code>, <code>Cancelled</code>, <code>Duplicate</code>).</p>
+<ol>
+<li>In Linear, open <strong>Team settings</strong> → <strong>Workflow</strong> (wording may vary slightly by plan and UI version).</li>
+<li>Ensure the <strong>team</strong> that owns this project actually has <strong>status</strong> names that match what you put in YAML—<strong>including spelling</strong> (<code>Canceled</code> vs <code>Cancelled</code> are different strings).</li>
+<li>If a state is missing, <strong>add</strong> it to the team workflow. If Linear ships a default you do not use (for example an extra backlog column), you can leave it unused; what matters is that every state your agent and YAML mention <strong>exists</strong> on the board.</li>
+<li>Decide how issues <strong>enter</strong> the pipeline: many setups use <code>Todo</code> or <code>In Progress</code> as the first “Symphony should care” state. Put that state in <code>active_states</code> so polling can pick the issue up.</li>
+</ol>
+<h4 id="15-personal-api-key-symphony-uses-linear_api_key">1.5 Personal API key (Symphony uses <code>LINEAR_API_KEY</code>)</h4>
+<ol>
+<li>Open your <strong>user Settings</strong> → <strong>Security &amp; access</strong> (or <strong>API</strong> / <strong>Personal API keys</strong>, depending on Linear’s UI).</li>
+<li>Create a <strong>new personal API key</strong>, give it a label you will recognize (for example <code>symphony-local</code>).</li>
+<li>Copy the key once, set <code>export LINEAR_API_KEY=&quot;...&quot;</code> on the machine that runs Symphony, and <strong>never</strong> commit it to git or paste it into <code>WORKFLOW.md</code> unless you intentionally use env indirection like <code>tracker.api_key: $LINEAR_API_KEY</code> (still keep secrets out of the repo).</li>
+</ol>
+<h4 id="16-creating-issues-the-way-symphony-expects">1.6 Creating issues the way Symphony expects</h4>
+<ol>
+<li><strong>Create the issue inside the project:</strong> from the <strong>project</strong> view, use <strong>New issue</strong> (or equivalent) so the issue is <strong>associated with that project</strong>. Creating an issue only on the team backlog without attaching the project is the classic “Symphony is idle” mistake.</li>
+<li>Set <strong>title</strong> and <strong>description</strong> to something actionable; the Markdown body of <code>WORKFLOW.md</code> passes <code>issue.title</code> and <code>issue.description</code> into Codex.</li>
+<li>Move the issue to a state listed under <code>active_states</code> (for example <code>Todo</code> or <code>In Progress</code>) so it is not sitting in a column Symphony does not poll.</li>
+</ol>
+<h4 id="17-optional-but-useful">1.7 Optional but useful</h4>
+<ul>
+<li><strong>Templates:</strong> a small issue template (context, acceptance criteria, “how to validate”) makes agent runs less ambiguous.</li>
+<li><strong>Labels:</strong> optional; Symphony does not require them unless you add logic elsewhere.</li>
+<li><strong>Permissions:</strong> if the API key belongs to a restricted user, confirm that user can read and update issues in the target project.</li>
+</ul>
+<p>After this, you can copy <code>project_slug</code> into <code>WORKFLOW.md</code> with confidence. If anything in this section is skipped, revisit <strong>1.3</strong> (slug) and <strong>1.6</strong> (issue in project) first when debugging.</p>
+<h3 id="2-build-the-symphony-binary-reference-implementation">2. Build the Symphony binary (reference implementation)</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/openai/symphony
+</span></span><span style="display:flex;"><span>cd symphony/elixir
+</span></span><span style="display:flex;"><span>mise trust
+</span></span><span style="display:flex;"><span>mise install
+</span></span><span style="display:flex;"><span>mise exec -- mix setup
+</span></span><span style="display:flex;"><span>mise exec -- mix build
+</span></span></code></pre></div><p>After this, the launcher is <code>./bin/symphony</code> inside <code>symphony/elixir</code> (see the same README). You can start it with an <strong>absolute path</strong> to any <code>WORKFLOW.md</code> you maintain:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mise exec -- ./bin/symphony /absolute/path/to/your/repo/WORKFLOW.md
+</span></span></code></pre></div><p>If you omit the path, it defaults to <code>./WORKFLOW.md</code> in the current directory—useful when you are iterating inside a single checkout.</p>
+<p>Optional flags from upstream:</p>
+<ul>
+<li><code>--logs-root</code> — log directory (default: <code>./log</code> relative to how you invoke the binary).</li>
+<li><code>--port</code> — also starts the optional Phoenix observability UI (dashboard/API as described in the Elixir README).</li>
+</ul>
+<h3 id="3-add-workflowmd-to-the-repository-you-want-automated">3. Add <code>WORKFLOW.md</code> to the repository you want automated</h3>
+<ol>
+<li>
+<p>Copy the template from the Symphony repo: <a href="https://github.com/openai/symphony/blob/main/elixir/WORKFLOW.md"><code>elixir/WORKFLOW.md</code></a> → your target repo (often repo root).</p>
+</li>
+<li>
+<p><strong>Edit the YAML front matter</strong> for your world:</p>
+<ul>
+<li><strong><code>tracker.project_slug</code>:</strong> in Linear, open your project, copy its URL from the browser, and take the <strong>slug</strong> segment (the README describes this explicitly).</li>
+<li><strong><code>workspace.root</code>:</strong> a directory on disk where Symphony may create <strong>one workspace per issue</strong> (large disk is fine; this is not your git clone root—it is a parent for per-issue workspaces).</li>
+<li><strong><code>hooks.after_create</code>:</strong> typically <code>git clone ... .</code> into that workspace so Codex works on a fresh copy of your code. Use the clone URL and branch you actually use (HTTPS or SSH is your choice; private repos need credentials on the machine running Symphony).</li>
+<li><strong><code>codex.command</code>:</strong> must match how you invoke App Server locally (model flags, config, etc.). If this command is wrong, the agent never comes up cleanly.</li>
+</ul>
+</li>
+<li>
+<p>Align <strong>Linear workflow states</strong> with what <code>WORKFLOW.md</code> expects. The stock template references states such as <code>Todo</code>, <code>In Progress</code>, <code>Rework</code>, <code>Human Review</code>, and <code>Merging</code>. If your team uses different names, either rename states in Linear (Team Settings → Workflow) or edit <code>active_states</code> / <code>terminal_states</code> and the Markdown “status map” in <code>WORKFLOW.md</code> so they match reality.</p>
+</li>
+<li>
+<p>Optionally copy the <strong>skills</strong> from the Symphony repo (<code>commit</code>, <code>push</code>, <code>pull</code>, <code>land</code>, <code>linear</code>, etc.) into your repo if your workflow prompt expects them—the Elixir README calls this out.</p>
+</li>
+</ol>
+<p>Symphony <strong>does not boot</strong> if <code>WORKFLOW.md</code> is missing or the YAML front matter is invalid; fix the file and restart.</p>
+<h3 id="4-run-and-sanity-check-before-opening-a-ticket">4. Run and sanity-check before opening a ticket</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export LINEAR_API_KEY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;...&#34;</span>   <span style="color:#75715e"># if not already in your shell profile</span>
+</span></span><span style="display:flex;"><span>cd /path/to/openai/symphony/elixir
+</span></span><span style="display:flex;"><span>mise exec -- ./bin/symphony /path/to/your/automated/repo/WORKFLOW.md
+</span></span></code></pre></div><p>Then verify:</p>
+<ul>
+<li>The process stays running and polls on the interval you set (<code>polling.interval_ms</code> in the template).</li>
+<li>If you passed <code>--port</code>, you can hit the dashboard/API URLs documented in the Elixir README for live state.</li>
+</ul>
+<h3 id="5-first-linear-issue-the-mistake-that-looks-like-symphony-is-broken">5. First Linear issue (the mistake that looks like “Symphony is broken”)</h3>
+<p>Do this in order or you will get silent no-ops:</p>
+<ol>
+<li>Create or pick a <strong>Linear project</strong> whose slug matches <strong><code>tracker.project_slug</code></strong> exactly.</li>
+<li>Create the issue <strong>inside that project</strong>, not as a free-floating team issue.</li>
+<li>Put the issue in an <strong>active</strong> state listed under <code>active_states</code> in <code>WORKFLOW.md</code> (for the default template, something like <code>Todo</code> or <code>In Progress</code>—not <code>Backlog</code> if your prompt tells the agent to ignore <code>Backlog</code>).</li>
+</ol>
+<p>If Symphony polls successfully but your issue never enters the watched project, you will see healthy logs and zero useful work—this is the <code>project_slug</code> lesson from later in this post.</p>
+<h3 id="6-two-repos-repeat-the-pattern">6. Two repos (repeat the pattern)</h3>
+<p>For each codebase, maintain <strong>its own</strong> <code>WORKFLOW.md</code>, <strong>its own</strong> Linear project (and slug), <strong>its own</strong> <code>workspace.root</code>, and run <strong>its own</strong> <code>./bin/symphony .../WORKFLOW.md</code> process. Trying to multiplex multiple repositories through one workflow file is how you get accidental coupling and confusing failures.</p>
+<hr>
+<p>If you want the upstream one-liner to bootstrap with Codex inside your repo, the FAQ in the Elixir README suggests pointing Codex at <a href="https://github.com/openai/symphony/blob/main/elixir/README.md"><code>elixir/README.md</code></a> and asking it to wire files for your codebase—still verify <code>project_slug</code>, workspace paths, and git remotes yourself.</p>
 <h2 id="why-i-tried-this">Why I tried this</h2>
 <p>What interested me most about Symphony was not “AI that writes code” in isolation. I already have coding tools for that. The interesting part was orchestration:</p>
 <ul>
@@ -47,25 +177,98 @@
 <p>I had a Linear workspace and a correctly configured project, but the first issue I created was not actually attached to the project that Symphony was watching. From the outside it looked like “nothing is happening,” but the real problem was much simpler: Symphony was correctly polling the configured project and my issue was outside that scope.</p>
 <p>That was a good reminder that in this setup, <code>project_slug</code> is not a decorative field. It is the queue boundary.</p>
 <h2 id="making-workflowmd-actually-usable">Making <code>WORKFLOW.md</code> actually usable</h2>
-<p>The official workflow file is much more than a small YAML config. It is really a mix of:</p>
-<ul>
-<li>tracker configuration</li>
-<li>workspace lifecycle</li>
-<li>agent execution settings</li>
-<li>sandbox policy</li>
-<li>operational instructions</li>
-</ul>
-<p>My early version was too minimal. It could run, but it was not shaped enough for reliable solo use.</p>
-<p>I ended up moving toward a more practical version with these elements:</p>
+<p>The <a href="https://github.com/openai/symphony/blob/main/elixir/WORKFLOW.md">stock <code>elixir/WORKFLOW.md</code></a> in the Symphony repository is intentionally large: long status maps, PR sweeps, workpad templates, and guardrails meant for serious team-style orchestration. For solo maintenance on a small repo, that is often more surface area than you want to own on day one.</p>
+<p>What I actually wanted was a <strong>small YAML front matter</strong> plus a <strong>short agent brief</strong> that still respects Linear state and runs a tight validate loop.</p>
+<p>The elements I kept in practice:</p>
 <ul>
 <li>one Linear project per repository</li>
 <li>one Symphony process per repository</li>
 <li>one workspace root per repository</li>
-<li>explicit active and terminal states</li>
+<li>explicit active and terminal states (only the ones I really use)</li>
 <li>explicit install/setup commands in <code>after_create</code></li>
-<li>explicit validation before completion</li>
+<li>explicit validation before completion (<code>npm</code> in my case)</li>
+<li><code>codex app-server</code> with sandbox left at workspace write, approval policy set explicitly so the run does not stall on prompts</li>
 </ul>
-<p>For my use case, this was a much better balance than trying to copy the entire official workflow verbatim.</p>
+<h3 id="a-simplified-workflowmd-sanitized">A simplified <code>WORKFLOW.md</code> (sanitized)</h3>
+<p>Below is the <strong>shape</strong> of the workflow file I run. Values such as the Linear project slug, workspace directory, and git remote are <strong>placeholders</strong>—replace them with your own. Do not copy real identifiers from this post into production without checking them in Linear and Git.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>tracker:
+</span></span><span style="display:flex;"><span>  kind: linear
+</span></span><span style="display:flex;"><span>  project_slug: &#34;your-linear-project-slug&#34;
+</span></span><span style="display:flex;"><span>  active_states:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Todo
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> In Progress
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Rework
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Merging
+</span></span><span style="display:flex;"><span>  terminal_states:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Done
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Canceled
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Cancelled
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Duplicate
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>polling:
+</span></span><span style="display:flex;"><span>  interval_ms: 5000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>workspace:
+</span></span><span style="display:flex;"><span>  root: ~/symphony-workspaces/your-repo-short-name
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>hooks:
+</span></span><span style="display:flex;"><span>  after_create: |
+</span></span><span style="display:flex;"><span>    git clone --depth 1 https://github.com/your-org/your-repo.git .
+</span></span><span style="display:flex;"><span>    npm install
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>agent:
+</span></span><span style="display:flex;"><span>  max_concurrent_agents: 1
+</span></span><span style="display:flex;"><span>  max_turns: 20
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>codex:
+</span></span><span style="display:flex;"><span>  command: codex app-server
+</span></span><span style="display:flex;"><span>  approval_policy: never
+</span></span><span style="display:flex;"><span>  thread_sandbox: workspace-write
+</span></span><span style="display:flex;"><span>  turn_sandbox_policy:
+</span></span><span style="display:flex;"><span>    type: workspaceWrite
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>You are working on a Linear issue {{ issue.identifier }}.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Title: {{ issue.title }}
+</span></span><span style="display:flex;"><span>Body: {{ issue.description }}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Rules:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Always start by understanding the current state of the issue.
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> If state is Todo, move it to In Progress.
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> If state is Rework, review existing changes and fix issues.
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> If state is Merging, finalize merge (do not keep coding).
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Execution:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">1.</span> Understand the task
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">2.</span> Reproduce or reason about current behavior
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">3.</span> Make minimal safe changes
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">4.</span> Run:
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> npm run build OR npm test
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">5.</span> If success:
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> commit changes
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> push branch or merge directly according to repository flow
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Do not:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Ask humans for help
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Modify files outside workspace
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Skip validation
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Goal:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Deliver working code change with valid validation and keep the Linear issue state accurate.
+</span></span></code></pre></div><h3 id="how-to-fill-this-in-safely">How to fill this in safely</h3>
+<ul>
+<li><strong><code>project_slug</code>:</strong> in Linear, open the project and copy its URL; the slug is the path segment that identifies the project (see the Elixir README). It must match the project where you create issues.</li>
+<li><strong><code>workspace.root</code>:</strong> any empty-friendly parent directory on the machine that runs Symphony; Symphony creates a subdirectory per issue under this root.</li>
+<li><strong><code>after_create</code>:</strong> use your real <code>git clone</code> URL and package install command (<code>npm install</code>, <code>pnpm install</code>, <code>make</code>, and so on).</li>
+<li><strong>Linear states:</strong> your team must actually define or use states compatible with <code>active_states</code> / <code>terminal_states</code>. If Linear uses different names, edit the lists to match.</li>
+</ul>
+<p>This was a much better balance for me than copying the entire official workflow verbatim, while still staying inside Symphony’s YAML + Markdown contract.</p>
 <h2 id="the-first-real-run">The first real run</h2>
 <p>Once the workflow was wired correctly, the first successful run was a great moment. The basic flow worked:</p>
 <ol>
@@ -145,8 +348,17 @@
 </ul>
 <p>For a solo developer, that can actually be a very comfortable way to work, as long as the workflow is shaped carefully enough.</p>
 <p>It is still early, still a little rough, and definitely not something I would blindly trust everywhere. But for small personal projects, it already feels surprisingly real.</p>
+<h2 id="future-potential-kill-the-relay">Future potential: kill the relay</h2>
+<p>Symphony is not competing with tab completion. It is a probe for a nastier question: <strong>if work is just queue + policy + execution, why would you keep a permanent class of people whose main job is to sit between a customer sentence and a git merge?</strong></p>
+<p>Here is the version I actually believe.</p>
+<p><strong>B2B should look like a pipe, not a committee.</strong> Whoever hears the customer—sales engineer, CS, onboarding, whoever—<strong>opens the issue</strong>. That issue is the contract. Behind it, <strong>Symphony-grade orchestration</strong> does the rest: clone, implement, test, merge, release. Not “faster Jira.” Not “AI assists your sprint.” <strong>The default path is machine throughput; humans are for edge cases, politics, and blame.</strong></p>
+<p>Does that erase humans? No—it erases <strong>the middle</strong>. The classic career ladder where “product” rewrites reality for “engineering” so engineering can rewrite it again for Git is not destiny. It is <strong>coordination rent</strong>. Orchestration is a wrecking ball aimed at that rent. If your value is mostly translating between tools and meetings, the stack is not coming to help you—it is coming to <strong>delete the slot</strong>.</p>
+<p>You can list risks forever—compliance, security, hallucinations, bad merges—and you should. But risk is not a moral argument for headcount. It is an argument for <strong>thinner, sharper ownership</strong>: a tiny number of people who set policy and own catastrophes, plus a machine that does the boring middle at machine speed.</p>
+<p>Yes, today’s tools are still a preview: flaky, embarrassing, unsafe if you are lazy about validation. <strong>Irrelevant to the direction.</strong> The direction is <strong>first-hand demand in, shipped software out</strong>, with as few interpreters as the market will tolerate. In ten years, “we need more PMs and more engineers because that is how software is made” will read like “we need more telephone switchboard operators because calls exist.”</p>
+<p>My two-repo setup is a toy. The logic is not.</p>
 <h2 id="appendix-sanitized-lessons-learned">Appendix: sanitized lessons learned</h2>
 <ul>
+<li>Configure Linear (project, slug, workflow states, API key, issues inside the project) before blaming Symphony</li>
 <li>Start with one repo, not many</li>
 <li>Keep one workflow per repo</li>
 <li>Use one Linear project per repo</li>
