@@ -12,8 +12,151 @@
     <generator>Hugo -- 0.158.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Mon, 19 Jan 2026 10:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 20 Mar 2026 21:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Running OpenAI Symphony as a Solo Developer Across Two Repos</title>
+      <link>https://blog.minifish.org/posts/symphony-solo-dev-blog/</link>
+      <pubDate>Fri, 20 Mar 2026 21:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/symphony-solo-dev-blog/</guid>
+      <description>A practical write-up on using Symphony, Linear, and Codex to automate work on two personal repositories, including workflow design, early mistakes, and what felt surprisingly useful.</description>
+      <content:encoded><![CDATA[<p>I recently spent a session getting OpenAI Symphony working on two personal repositories in a solo-developer setup. The goal was simple: use Linear as the task queue, let Symphony pick up issues automatically, and have Codex make code changes with as little manual coordination as possible.</p>
+<p>This post is intentionally sanitized. I am not including tokens, local machine details, private paths, secrets, or any internal repository configuration that should not be published.</p>
+<h2 id="why-i-tried-this">Why I tried this</h2>
+<p>What interested me most about Symphony was not “AI that writes code” in isolation. I already have coding tools for that. The interesting part was orchestration:</p>
+<ul>
+<li>a task source</li>
+<li>a state machine</li>
+<li>an isolated workspace per task</li>
+<li>an agent runtime</li>
+<li>a repeatable loop from issue to code change</li>
+</ul>
+<p>That is a different shape of workflow from normal editor-assisted coding.</p>
+<h2 id="why-i-used-linear-instead-of-github-issues">Why I used Linear instead of GitHub Issues</h2>
+<p>One thing became clear very quickly: Symphony is designed around Linear as the source of truth for work. It does not naturally start from GitHub Issues. Instead, the workflow looks more like this:</p>
+<ol>
+<li>Create a Linear issue</li>
+<li>Symphony polls the configured Linear project</li>
+<li>Symphony creates a dedicated workspace for that issue</li>
+<li>Codex works inside that workspace</li>
+<li>The workflow advances by issue state</li>
+</ol>
+<p>At first this felt a little strange, because I am used to GitHub Issues being the center of project work. But after testing it, I could see the logic. Linear is the task system. GitHub is the code system.</p>
+<h2 id="the-first-practical-lesson-project-scoping-matters">The first practical lesson: project scoping matters</h2>
+<p>A surprisingly easy mistake was creating an issue in the wrong place.</p>
+<p>I had a Linear workspace and a correctly configured project, but the first issue I created was not actually attached to the project that Symphony was watching. From the outside it looked like “nothing is happening,” but the real problem was much simpler: Symphony was correctly polling the configured project and my issue was outside that scope.</p>
+<p>That was a good reminder that in this setup, <code>project_slug</code> is not a decorative field. It is the queue boundary.</p>
+<h2 id="making-workflowmd-actually-usable">Making <code>WORKFLOW.md</code> actually usable</h2>
+<p>The official workflow file is much more than a small YAML config. It is really a mix of:</p>
+<ul>
+<li>tracker configuration</li>
+<li>workspace lifecycle</li>
+<li>agent execution settings</li>
+<li>sandbox policy</li>
+<li>operational instructions</li>
+</ul>
+<p>My early version was too minimal. It could run, but it was not shaped enough for reliable solo use.</p>
+<p>I ended up moving toward a more practical version with these elements:</p>
+<ul>
+<li>one Linear project per repository</li>
+<li>one Symphony process per repository</li>
+<li>one workspace root per repository</li>
+<li>explicit active and terminal states</li>
+<li>explicit install/setup commands in <code>after_create</code></li>
+<li>explicit validation before completion</li>
+</ul>
+<p>For my use case, this was a much better balance than trying to copy the entire official workflow verbatim.</p>
+<h2 id="the-first-real-run">The first real run</h2>
+<p>Once the workflow was wired correctly, the first successful run was a great moment. The basic flow worked:</p>
+<ol>
+<li>Create a Linear issue</li>
+<li>Symphony picks it up</li>
+<li>A workspace is created</li>
+<li>The repository is cloned</li>
+<li>Dependencies are installed</li>
+<li>Codex makes a change</li>
+<li>Validation runs</li>
+<li>The issue moves forward in the workflow</li>
+</ol>
+<p>That first time matters because it changes the whole thing from “interesting repo I am reading” into “real tool I can use.”</p>
+<h2 id="a-workflow-surprise-no-pr-direct-merge">A workflow surprise: no PR, direct merge</h2>
+<p>One unexpected result was that the run did not produce a pull request. Instead, it created a branch and then merged directly into <code>main</code>.</p>
+<p>For a team workflow, that would be a problem. For my personal setup, I actually found it acceptable.</p>
+<p>Because I am the only person using this flow right now, direct merge is not automatically bad. It is fast, and it fits a solo maintenance loop. The tradeoff is obvious: less review structure, more need for good validation and discipline.</p>
+<p>If I later want a stricter process, the right fix is probably branch protection plus a stronger PR gate in the workflow.</p>
+<h2 id="why-i-accepted-a-solo-mode">Why I accepted a “solo mode”</h2>
+<p>After thinking about it, I realized there are really two different modes here:</p>
+<h3 id="team-mode">Team mode</h3>
+<ul>
+<li>branch protection</li>
+<li>pull requests</li>
+<li>human review gates</li>
+<li>merge discipline</li>
+</ul>
+<h3 id="solo-mode">Solo mode</h3>
+<ul>
+<li>fast issue pickup</li>
+<li>direct code change</li>
+<li>direct landing when validation passes</li>
+</ul>
+<p>For now I am explicitly leaning toward solo mode. That is not because it is universally better. It is just a better fit for a single developer trying to reduce friction on personal repos.</p>
+<h2 id="scaling-from-one-repo-to-two">Scaling from one repo to two</h2>
+<p>After getting the first repository working, I wanted to know whether I could use Symphony across more than one repo.</p>
+<p>The answer was yes, but not by forcing one workflow to manage everything. The cleaner model was:</p>
+<ul>
+<li>one Linear project per repository</li>
+<li>one <code>WORKFLOW</code> file per repository</li>
+<li>one Symphony process per repository</li>
+<li>one workspace root per repository</li>
+</ul>
+<p>That means each repo gets its own queue, workspace, and execution loop. The result is much easier to reason about than trying to multiplex multiple repos through a single workflow.</p>
+<p>Conceptually, the setup became:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Repo A -&gt; Linear Project A -&gt; Symphony Process A
+</span></span><span style="display:flex;"><span>Repo B -&gt; Linear Project B -&gt; Symphony Process B
+</span></span></code></pre></div><p>That separation made the system feel much more stable.</p>
+<h2 id="things-that-felt-weird">Things that felt weird</h2>
+<p>A few things still feel unusual in this setup:</p>
+<h3 id="1-linear-is-the-real-driver">1. Linear is the real driver</h3>
+<p>If you are used to GitHub-centric project flow, it takes a minute to reset your intuition.</p>
+<h3 id="2-the-workflow-file-is-closer-to-an-operating-manual-than-a-config-file">2. The workflow file is closer to an operating manual than a config file</h3>
+<p>It is not just about parameters. It strongly shapes agent behavior.</p>
+<h3 id="3-small-scope-mistakes-create-silent-failures">3. Small scope mistakes create “silent failures”</h3>
+<p>If the wrong project is watched, or the issue is created in the wrong place, everything can look healthy while nothing useful happens.</p>
+<h3 id="4-defaults-are-often-too-implicit">4. Defaults are often too implicit</h3>
+<p>Model choice, reasoning depth, safety behavior, and merge style all become much clearer once they are explicitly set instead of left to defaults.</p>
+<h2 id="what-i-would-improve-next">What I would improve next</h2>
+<p>There are a few upgrades that would make this setup stronger without making it too heavyweight:</p>
+<ul>
+<li>make validation stricter before landing changes</li>
+<li>make commit messages more informative</li>
+<li>optionally require PRs for selected repos</li>
+<li>capture a better audit trail of what the agent actually did</li>
+<li>design a lightweight rollback path for bad automated changes</li>
+</ul>
+<p>That would preserve the speed of solo mode while reducing the risk of bad direct merges.</p>
+<h2 id="final-take">Final take</h2>
+<p>My main takeaway is that Symphony becomes much more interesting once it is treated as a workflow runtime, not just a coding demo.</p>
+<p>The useful mental model is not “an AI that edits files.” It is closer to this:</p>
+<ul>
+<li>work arrives through a queue</li>
+<li>each task gets an isolated environment</li>
+<li>the agent runs inside a bounded workflow</li>
+<li>the repo is just one part of the system</li>
+</ul>
+<p>For a solo developer, that can actually be a very comfortable way to work, as long as the workflow is shaped carefully enough.</p>
+<p>It is still early, still a little rough, and definitely not something I would blindly trust everywhere. But for small personal projects, it already feels surprisingly real.</p>
+<h2 id="appendix-sanitized-lessons-learned">Appendix: sanitized lessons learned</h2>
+<ul>
+<li>Start with one repo, not many</li>
+<li>Keep one workflow per repo</li>
+<li>Use one Linear project per repo</li>
+<li>Make state transitions explicit</li>
+<li>Do not rely too much on defaults</li>
+<li>Validate aggressively before allowing automated landing</li>
+<li>Expect the first “nothing happened” failure to be a scoping mistake</li>
+</ul>
+]]></content:encoded>
+    </item>
     <item>
       <title>From AI Conversations to Published Blog: The MCP-Powered Publishing Revolution</title>
       <link>https://blog.minifish.org/posts/ai-mcp-blog-publishing-workflow/</link>

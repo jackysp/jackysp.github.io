@@ -2,11 +2,41 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://blog.minifish.org/tags/agents/</loc>
+    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/tags/ai/</loc>
-    <lastmod>2026-01-19T10:00:00+08:00</lastmod>
+    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/automation/</loc>
-    <lastmod>2026-01-19T10:00:00+08:00</lastmod>
+    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/</loc>
+    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/engineering/</loc>
+    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/github/</loc>
+    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/hugo/</loc>
+    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/linear/</loc>
+    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/</loc>
+    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/</loc>
+    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/symphony-solo-dev-blog/</loc>
+    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/</loc>
+    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/blog-publishing/</loc>
     <lastmod>2026-01-19T10:00:00+08:00</lastmod>
@@ -21,15 +51,6 @@
     <lastmod>2026-01-19T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/mcp/</loc>
-    <lastmod>2026-01-19T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/</loc>
-    <lastmod>2026-01-19T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/posts/</loc>
-    <lastmod>2026-01-19T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/</loc>
     <lastmod>2026-01-19T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/brikka/</loc>
@@ -384,8 +405,6 @@
     <lastmod>2014-06-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/archives/</loc>
-  </url><url>
-    <loc>https://blog.minifish.org/categories/</loc>
   </url><url>
     <loc>https://blog.minifish.org/search/</loc>
   </url>
