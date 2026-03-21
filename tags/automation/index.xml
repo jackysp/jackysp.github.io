@@ -9,7 +9,7 @@
       <url>https://blog.minifish.org/android-chrome-512x512.png</url>
       <link>https://blog.minifish.org/android-chrome-512x512.png</link>
     </image>
-    <generator>Hugo -- 0.154.5</generator>
+    <generator>Hugo -- 0.158.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
     <lastBuildDate>Mon, 19 Jan 2026 10:00:00 +0800</lastBuildDate>
@@ -93,7 +93,7 @@
 </ul>
 <h3 id="2-automated-build--deploy">2. Automated Build &amp; Deploy</h3>
 <p>The moment a post is pushed to the <code>master</code> branch, the same GitHub Actions workflow from the previous post kicks in:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">on</span>:
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">master ]</span>
 </span></span></code></pre></div><p>The workflow (as detailed in <a href="/posts/github-action">the previous post</a>):</p>
@@ -225,7 +225,7 @@
 </ol>
 <p>You will need two actions in total: one is GitHub&rsquo;s own <a href="https://github.com/actions/checkout">checkout</a>, and the other is a third-party action called <a href="https://github.com/marketplace/actions/push-directory-to-another-repository">“Push directory to another repository”</a>. There might be better options available, and I’ll explore them when I have more time.</p>
 <p>Finally, here is my simple GitHub Action CI file:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">CI</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">CI</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">on</span>:
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:

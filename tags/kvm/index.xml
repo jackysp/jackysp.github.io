@@ -9,7 +9,7 @@
       <url>https://blog.minifish.org/android-chrome-512x512.png</url>
       <link>https://blog.minifish.org/android-chrome-512x512.png</link>
     </image>
-    <generator>Hugo -- 0.154.5</generator>
+    <generator>Hugo -- 0.158.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
     <lastBuildDate>Thu, 05 Jun 2014 22:21:06 +0800</lastBuildDate>
@@ -38,15 +38,15 @@
 <ol>
 <li>
 <p><strong>Check if <code>bridge-utils</code> is installed:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpm -q bridge-utils
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpm -q bridge-utils
 </span></span></code></pre></div><p>Usually, it&rsquo;s already installed. If not, install it:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su -
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su -
 </span></span><span style="display:flex;"><span>yum install bridge-utils
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Verify your network interfaces:</strong></p>
 <p>Run <code>ifconfig</code> to ensure you have at least three network interfaces:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>eth0      Link encap:Ethernet  HWaddr 00:18:E7:16:DA:65
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>eth0      Link encap:Ethernet  HWaddr 00:18:E7:16:DA:65
 </span></span><span style="display:flex;"><span>          inet addr:192.168.0.117  Bcast:192.168.0.255  Mask:255.255.255.0
 </span></span><span style="display:flex;"><span>          inet6 addr: fe80::218:e7ff:fe16:da65/64 Scope:Link
 </span></span><span style="display:flex;"><span>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
@@ -75,25 +75,25 @@
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Navigate to the network scripts directory:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su –
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su –
 </span></span><span style="display:flex;"><span>cd /etc/sysconfig/network-scripts
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Bring down the <code>eth0</code> interface:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifdown eth0
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifdown eth0
 </span></span></code></pre></div><p><em>This step is crucial and must be performed locally.</em> When I first configured this, I didn&rsquo;t shut down the network (since I was working remotely). I didn&rsquo;t realize that updating the <code>ifcfg-eth0</code> configuration without restarting the network would immediately apply changes, resulting in loss of network connectivity.</p>
 </li>
 <li>
 <p><strong>Edit <code>ifcfg-eth0</code>:</strong></p>
 <p>In the <code>ifcfg-eth0</code> file, include:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=eth0
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=eth0
 </span></span><span style="display:flex;"><span>ONBOOT=yes
 </span></span><span style="display:flex;"><span>BRIDGE=br0
 </span></span></code></pre></div><p>Keep only these three lines in the file. There&rsquo;s no need to configure an IP address here. Bridging seems to replace the original network card with the bridge, so you can delegate the configuration to the bridge.</p>
 </li>
 <li>
 <p><strong>Create a new file <code>ifcfg-br0</code>:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=br0
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=br0
 </span></span><span style="display:flex;"><span>ONBOOT=yes
 </span></span><span style="display:flex;"><span>TYPE=Bridge
 </span></span><span style="display:flex;"><span>BOOTPROTO=static
@@ -108,7 +108,7 @@
 </li>
 <li>
 <p><strong>Bring up the interfaces:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifup br0
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifup br0
 </span></span><span style="display:flex;"><span>ifup eth0
 </span></span></code></pre></div></li>
 <li>
@@ -118,12 +118,12 @@
 <li>
 <p><strong>Update firewall rules:</strong></p>
 <p>Edit <code>/etc/sysconfig/iptables</code> and add:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>-A INPUT -i br0 -j ACCEPT
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>-A INPUT -i br0 -j ACCEPT
 </span></span></code></pre></div><p><em>(This is a general example; you may need to adjust it based on your specific firewall configuration.)</em></p>
 </li>
 <li>
 <p><strong>Restart the firewall:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service iptables restart
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service iptables restart
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Configure bridging in <code>virt-manager</code>:</strong></p>

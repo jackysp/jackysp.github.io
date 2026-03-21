@@ -9,7 +9,7 @@
       <url>https://blog.minifish.org/android-chrome-512x512.png</url>
       <link>https://blog.minifish.org/android-chrome-512x512.png</link>
     </image>
-    <generator>Hugo -- 0.154.5</generator>
+    <generator>Hugo -- 0.158.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
     <lastBuildDate>Mon, 25 Dec 2017 22:21:06 +0800</lastBuildDate>
@@ -32,7 +32,7 @@
 <p>For MySQL&rsquo;s supported online DDL, see <a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-create-index-overview.html">this webpage</a>. Primarily, it&rsquo;s categorized into operations on indexes and columns. This explains my curiosity about why TiDB&rsquo;s examples for implementation often involve adding indexes.</p>
 <h3 id="f1s-method">F1&rsquo;s Method</h3>
 <p>Having worked on something similar to Aurora before, there were many issues with this area. If you&rsquo;re only performing offline DDL, it doesn&rsquo;t have to be this complicated. According to F1&rsquo;s paper, it uses the following series of state changes to accomplish a DDL:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>                                    (reorganization)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>                                    (reorganization)
 </span></span><span style="display:flex;"><span>absent -&gt; delete only -&gt; write only ---------------&gt; public
 </span></span></code></pre></div><p>In this sequence, each node passes through these four states, transitioning to the next state upon receiving a command. The agreed-upon rule is that each state doesn&rsquo;t persist for more than twice the lease time across all nodes. How is this ensured? Through the following rule: if a node takes too long to move to the next state after receiving the transition command (meaning a state exceeds twice the lease time), it means the node received the command too late and will stop providing services and shut down.</p>
 <p>Within these four states, &lsquo;absent&rsquo; indicates a state where the node hasn&rsquo;t received instructions yet, and &lsquo;public&rsquo; signifies the completion of the DDL. What about the two middle states? The background link described them as follows:</p>

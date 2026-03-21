@@ -9,7 +9,7 @@
       <url>https://blog.minifish.org/android-chrome-512x512.png</url>
       <link>https://blog.minifish.org/android-chrome-512x512.png</link>
     </image>
-    <generator>Hugo -- 0.154.5</generator>
+    <generator>Hugo -- 0.158.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
     <lastBuildDate>Mon, 02 May 2022 19:05:00 +0800</lastBuildDate>
@@ -42,7 +42,7 @@
 <p>Lastly, I used <a href="https://apps.apple.com/us/app/amphetamine/id937984704?mt=12">Amphetamine</a> from the App Store to ensure that the laptop continues working when closed by disabling the default sleep setting after the screen is closed. You’ll see some warnings when doing this, but just be aware of them.</p>
 <p><strong>Update:</strong></p>
 <p>For systemd startup, you can refer to <a href="https://gist.github.com/gatopeich/36ed7fab3850367bbcd8e6f40becd4e5">this gist</a>. The server&rsquo;s console has some commands, like &ldquo;stop&rdquo;, that perform graceful shutdowns, so it&rsquo;s necessary to rely on a screen session to create it. Additionally, the server startup has some environmental dependencies, so it’s best to write a small script for starting it, like:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>cd /home/user/bedrock-server
 </span></span><span style="display:flex;"><span>LD_LIBRARY_PATH<span style="color:#f92672">=</span>. ./bedrock_server

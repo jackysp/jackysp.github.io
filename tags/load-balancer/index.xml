@@ -9,7 +9,7 @@
       <url>https://blog.minifish.org/android-chrome-512x512.png</url>
       <link>https://blog.minifish.org/android-chrome-512x512.png</link>
     </image>
-    <generator>Hugo -- 0.154.5</generator>
+    <generator>Hugo -- 0.158.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
     <lastBuildDate>Tue, 10 Jul 2018 15:07:00 +0800</lastBuildDate>
@@ -23,7 +23,7 @@
 &lt;p&gt;&lt;code&gt;yum install haproxy&lt;/code&gt; is effective for CentOS 7. After installation, you can start the service using &lt;code&gt;systemctl start haproxy&lt;/code&gt;. But don&amp;rsquo;t rush yet.&lt;/p&gt;
 &lt;h2 id=&#34;configuring-haproxy&#34;&gt;Configuring HAProxy&lt;/h2&gt;
 &lt;p&gt;Add the following content to /etc/haproxy/haproxy.cfg.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;global &lt;span style=&#34;color:#75715e&#34;&gt;# The content of global is generally fixed and quite understandable.&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;global &lt;span style=&#34;color:#75715e&#34;&gt;# The content of global is generally fixed and quite understandable.&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        log 127.0.0.1   local2
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        maxconn &lt;span style=&#34;color:#ae81ff&#34;&gt;4096&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        user haproxy
@@ -60,7 +60,7 @@
 <p><code>yum install haproxy</code> is effective for CentOS 7. After installation, you can start the service using <code>systemctl start haproxy</code>. But don&rsquo;t rush yet.</p>
 <h2 id="configuring-haproxy">Configuring HAProxy</h2>
 <p>Add the following content to /etc/haproxy/haproxy.cfg.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>global <span style="color:#75715e"># The content of global is generally fixed and quite understandable.</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>global <span style="color:#75715e"># The content of global is generally fixed and quite understandable.</span>
 </span></span><span style="display:flex;"><span>        log 127.0.0.1   local2
 </span></span><span style="display:flex;"><span>        maxconn <span style="color:#ae81ff">4096</span>
 </span></span><span style="display:flex;"><span>        user haproxy
@@ -96,7 +96,7 @@
 <p><code>psql -Uroot -h127.0.0.1 -p3030 test</code> to connect to the database.</p>
 <h2 id="cockroachdb-official-recommendation">CockroachDB Official Recommendation</h2>
 <p>CockroachDB officially provided their recommended <a href="https://www.cockroachlabs.com/docs/stable/deploy-cockroachdb-on-premises.html">configuration</a>. In this configuration, they use:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>default
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>default
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># TCP keep-alive on client side. Server already enables them.</span>
 </span></span><span style="display:flex;"><span>    option              clitcpka
 </span></span><span style="display:flex;"><span>

@@ -9,7 +9,7 @@
       <url>https://blog.minifish.org/android-chrome-512x512.png</url>
       <link>https://blog.minifish.org/android-chrome-512x512.png</link>
     </image>
-    <generator>Hugo -- 0.154.5</generator>
+    <generator>Hugo -- 0.158.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
     <lastBuildDate>Sun, 12 Jan 2020 19:43:00 +0800</lastBuildDate>
@@ -49,7 +49,7 @@
 <ol>
 <li>Create a <code>/lib/systemd/system/gost.service</code> file with the following content, replacing the domain with your own:</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[Unit]
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[Unit]
 </span></span><span style="display:flex;"><span>Description=gost service
 </span></span><span style="display:flex;"><span>After=network.target
 </span></span><span style="display:flex;"><span>StartLimitIntervalSec=0
@@ -74,7 +74,7 @@
 <p>Configure crontab to update the certificate. I didn&rsquo;t use systemd because I&rsquo;m not familiar with it.</p>
 </li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>0 0 1 * * /usr/bin/certbot renew --force-renewal
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>0 0 1 * * /usr/bin/certbot renew --force-renewal
 </span></span><span style="display:flex;"><span>5 0 1 * * systemctl restart gost
 </span></span></code></pre></div></li>
 <li>
@@ -82,7 +82,7 @@
 </li>
 <li>
 <p>Configure the client. This is simple; just refer to the <a href="https://haoel.github.io/">guide</a>. The principle is straightforward because gost implements the shadowsocks protocol using the shadowsocks Golang version. Therefore, the following command starts a local shadowsocks server, and you configure your client to add a local server configuration that matches the password.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>.\bin\gost-windows-amd64.exe -L=ss://aes-128-cfb:passcode@:1984 -F=https://xxx:yyy@example.com:443
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>.\bin\gost-windows-amd64.exe -L=ss://aes-128-cfb:passcode@:1984 -F=https://xxx:yyy@example.com:443
 </span></span></code></pre></div></li>
 </ul>
 <p>PS: I still don&rsquo;t know how to configure a global HTTPS proxy on Android without root, or how to set it up on iOS without a U.S. account. Also, I&rsquo;m unsure how to elegantly configure startup scripts on Windows 10. These are issues to explore further&hellip;</p>

@@ -9,7 +9,7 @@
       <url>https://blog.minifish.org/android-chrome-512x512.png</url>
       <link>https://blog.minifish.org/android-chrome-512x512.png</link>
     </image>
-    <generator>Hugo -- 0.154.5</generator>
+    <generator>Hugo -- 0.158.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
     <lastBuildDate>Sat, 12 Feb 2022 11:54:00 +0800</lastBuildDate>
@@ -38,7 +38,7 @@
 <p>I actually referred to this <a href="https://zhuanlan.zhihu.com/p/76861431">link</a>. However, it wasn&rsquo;t quite enough, as there might be authentication-related issues on MacBooks that lead to commit errors. So, I found this <a href="https://stackoverflow.com/a/40066889">solution</a>.</p>
 <p>In summary, to verify, you need to enter a password. The issue on a Mac is the prompt for entering the password, which needs to be replaced with pinentry-mac, which most people install via homebrew.</p>
 <p>Moreover, this solution thoughtfully provides a way to verify:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;test&#34;</span> | gpg --clearsign
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;test&#34;</span> | gpg --clearsign
 </span></span></code></pre></div><h2 id="gpg-experience">GPG Experience</h2>
 <ol>
 <li>It doesn&rsquo;t replace the ssh key. After successfully setting it up, I deleted my GitHub ssh key and discovered that I couldn&rsquo;t log in. Actually, it only verifies the legitimacy of commits.</li>

@@ -9,7 +9,7 @@
       <url>https://blog.minifish.org/android-chrome-512x512.png</url>
       <link>https://blog.minifish.org/android-chrome-512x512.png</link>
     </image>
-    <generator>Hugo -- 0.154.5</generator>
+    <generator>Hugo -- 0.158.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
     <lastBuildDate>Mon, 16 Oct 2017 22:21:06 +0800</lastBuildDate>
@@ -24,7 +24,7 @@
 &lt;h2 id=&#34;process&#34;&gt;Process&lt;/h2&gt;
 &lt;p&gt;The basic process references &lt;a href=&#34;https://gist.github.com/Maumagnaguagno/84a9807ed71d233e5d3f&#34;&gt;this gist&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Below is the &lt;code&gt;.travis.yml&lt;/code&gt; from the gist.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-yml&#34; data-lang=&#34;yml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;language&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;ruby&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-yml&#34; data-lang=&#34;yml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;language&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;ruby&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;rvm&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  - &lt;span style=&#34;color:#ae81ff&#34;&gt;2.0.0&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;env&lt;/span&gt;:
@@ -54,7 +54,7 @@
 <h2 id="process">Process</h2>
 <p>The basic process references <a href="https://gist.github.com/Maumagnaguagno/84a9807ed71d233e5d3f">this gist</a>.</p>
 <p>Below is the <code>.travis.yml</code> from the gist.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">language</span>: <span style="color:#ae81ff">ruby</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">language</span>: <span style="color:#ae81ff">ruby</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">rvm</span>:
 </span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">2.0.0</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">env</span>:
@@ -80,7 +80,7 @@
 </span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git push &#34;https://${GH_TOKEN}@${GH_REPO}&#34; master &gt; /dev/null 2&gt;&amp;1</span>
 </span></span></code></pre></div><p>Note here that MESSAGE should be quoted when committing, which the original gist did not include.</p>
 <p>Original README:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># Travis-CI tested push
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># Travis-CI tested push
 </span></span><span style="display:flex;"><span>Sometimes we have a private repository to hold both problems and solutions as a reference for the class projects.
 </span></span><span style="display:flex;"><span>The students can see only the problems in a public repository where they are able to clone/fork and develop their own solutions.
 </span></span><span style="display:flex;"><span>We do not want the solution files in the public repository and each bug found/feature added in the project requires a push for each repository.
@@ -111,7 +111,7 @@
 <li>Commit the modified configuration file.</li>
 </ol>
 <p>This translation is not strictly literal. <strong>The above content is more suited to the following personal configuration:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">language</span>: <span style="color:#ae81ff">ruby</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">language</span>: <span style="color:#ae81ff">ruby</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">branches</span>:
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">only</span>:
 </span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">master</span>

@@ -9,7 +9,7 @@
       <url>https://blog.minifish.org/android-chrome-512x512.png</url>
       <link>https://blog.minifish.org/android-chrome-512x512.png</link>
     </image>
-    <generator>Hugo -- 0.154.5</generator>
+    <generator>Hugo -- 0.158.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
     <lastBuildDate>Wed, 16 Aug 2017 00:00:00 +0000</lastBuildDate>
@@ -75,7 +75,7 @@
 <li>Implement the decoding and handling of messages. Although only a sentence, the workload included is substantial.</li>
 </ol>
 <p>In <code>mysqlx_all_msgs.h</code>, all messages are initialized</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>  init_message_factory()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>  init_message_factory()
 </span></span><span style="display:flex;"><span>  {
 </span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Connection<span style="color:#f92672">::</span>Capabilities<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>CONN_CAPABILITIES, <span style="color:#e6db74">&#34;CONN_CAPABILITIES&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Connection.Capabilities&#34;</span>);
 </span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Error<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>ERROR, <span style="color:#e6db74">&#34;ERROR&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Error&#34;</span>);
@@ -107,7 +107,7 @@
 </span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Sql<span style="color:#f92672">::</span>StmtExecute<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>SQL_STMT_EXECUTE, <span style="color:#e6db74">&#34;SQL_STMT_EXECUTE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Sql.StmtExecute&#34;</span>);
 </span></span><span style="display:flex;"><span>  }
 </span></span></code></pre></div><p>Server and client messages are that many. Client messages are dispatched in <code>xpl_dispatcher.cc</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>ngs<span style="color:#f92672">::</span>Error_code do_dispatch_command(xpl<span style="color:#f92672">::</span>Session <span style="color:#f92672">&amp;</span>session, xpl<span style="color:#f92672">::</span>Crud_command_handler <span style="color:#f92672">&amp;</span>crudh,
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>ngs<span style="color:#f92672">::</span>Error_code do_dispatch_command(xpl<span style="color:#f92672">::</span>Session <span style="color:#f92672">&amp;</span>session, xpl<span style="color:#f92672">::</span>Crud_command_handler <span style="color:#f92672">&amp;</span>crudh,
 </span></span><span style="display:flex;"><span>                                    xpl<span style="color:#f92672">::</span>Expectation_stack <span style="color:#f92672">&amp;</span>expect, ngs<span style="color:#f92672">::</span>Request <span style="color:#f92672">&amp;</span>command)
 </span></span><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">switch</span> (command.get_type())
@@ -147,10 +147,10 @@
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> ngs<span style="color:#f92672">::</span>Error(ER_UNKNOWN_COM_ERROR, <span style="color:#e6db74">&#34;Unexpected message received&#34;</span>);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>The rest is filling in the gaps.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Client::run =&gt; Client::handle_message =&gt; Session::handle_message =&gt; Session::handle_auth_message =&gt; some auth handlers
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Client::run =&gt; Client::handle_message =&gt; Session::handle_message =&gt; Session::handle_auth_message =&gt; some auth handlers
 </span></span><span style="display:flex;"><span>                                                                 =&gt; Session::handle_ready_message =&gt; xpl::dispatcher::dispatch_command =&gt; ngs::Error_code do_dispatch_command =&gt; some crud handlers
 </span></span></code></pre></div><p>Mapping between MySQL type and X protocol type</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>//     ================= ============ ======= ========== ====== ========
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>//     ================= ============ ======= ========== ====== ========
 </span></span><span style="display:flex;"><span>//     SQL Type          .type        .length .frac_dig  .flags .charset
 </span></span><span style="display:flex;"><span>//     ================= ============ ======= ========== ====== ========
 </span></span><span style="display:flex;"><span>//     TINY              SINT         x
@@ -179,7 +179,7 @@
 </span></span><span style="display:flex;"><span>//     BIT               BIT          x
 </span></span><span style="display:flex;"><span>//     ================= ============ ======= ========== ====== ========
 </span></span></code></pre></div><p>The first SQL field information of MySQL:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Field   1:  `@@lower_case_table_names`
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Field   1:  `@@lower_case_table_names`
 </span></span><span style="display:flex;"><span>Catalog:    `def`
 </span></span><span style="display:flex;"><span>Database:   ``
 </span></span><span style="display:flex;"><span>Table:      ``
@@ -215,7 +215,7 @@
 </span></span><span style="display:flex;"><span>Decimals:   0
 </span></span><span style="display:flex;"><span>Flags:      
 </span></span></code></pre></div><p>For TiDB:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Field   1:  `@@lower_case_table_names`
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Field   1:  `@@lower_case_table_names`
 </span></span><span style="display:flex;"><span>Catalog:    `def`
 </span></span><span style="display:flex;"><span>Database:   ``
 </span></span><span style="display:flex;"><span>Table:      ``

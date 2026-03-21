@@ -9,7 +9,7 @@
       <url>https://blog.minifish.org/android-chrome-512x512.png</url>
       <link>https://blog.minifish.org/android-chrome-512x512.png</link>
     </image>
-    <generator>Hugo -- 0.154.5</generator>
+    <generator>Hugo -- 0.158.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
     <lastBuildDate>Wed, 31 Mar 2021 00:00:00 +0000</lastBuildDate>
@@ -37,7 +37,7 @@
 <li>Configure the LaTeX extension. I found a powerful configuration on Zhihu, but it’s quite complex, so I simplified it a bit.</li>
 </ol>
 <p>A brief explanation: the core components here are the recipes and tools. Tools are the compilation toolchain, specifying which tools to use for compilation and the options to use, without regard to order. Recipes define how to combine the above tools to generate the final document, where the order does matter. I&rsquo;ve put XeLaTex first here because it&rsquo;s the most compatible for compiling Chinese. If you use pdflatex to compile Chinese documents, you&rsquo;re likely to encounter issues.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;latex-workshop.latex.recipes&#34;</span>: [
 </span></span><span style="display:flex;"><span>         {
 </span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;XeLaTeX&#34;</span>,
@@ -201,7 +201,7 @@
 <li>Create a folder.</li>
 <li>Use VSCode to open this folder and create a .tex file with the following content:</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-tex" data-lang="tex"><span style="display:flex;"><span><span style="color:#66d9ef">\documentclass</span><span style="color:#a6e22e">[UTF8]</span>{ctexart}
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-tex" data-lang="tex"><span style="display:flex;"><span><span style="color:#66d9ef">\documentclass</span><span style="color:#a6e22e">[UTF8]</span>{ctexart}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">\begin</span>{document}
 </span></span><span style="display:flex;"><span>OK, it’s all set...
@@ -253,11 +253,11 @@
       <description>&lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Create a script and place it in&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-powershell&#34; data-lang=&#34;powershell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;C:\Users\name\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\`  
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-powershell&#34; data-lang=&#34;powershell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;C:\Users\name\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\`  
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Fill the script with:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Start-Process -FilePath &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.exe&amp;#34;&lt;/span&gt; -ArgumentList &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-L=&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-F=&amp;#34;&lt;/span&gt; -RedirectStandardOutput &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.log&amp;#34;&lt;/span&gt; -RedirectStandardError &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.err&amp;#34;&lt;/span&gt; -WindowStyle Hidden
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Start-Process -FilePath &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.exe&amp;#34;&lt;/span&gt; -ArgumentList &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-L=&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-F=&amp;#34;&lt;/span&gt; -RedirectStandardOutput &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.log&amp;#34;&lt;/span&gt; -RedirectStandardError &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.err&amp;#34;&lt;/span&gt; -WindowStyle Hidden
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Note: &lt;code&gt;Start-Process&lt;/code&gt; seems to perform a fork-like action, and by default, it opens a new PowerShell window to execute. That&amp;rsquo;s why &lt;code&gt;-WindowStyle Hidden&lt;/code&gt; is added at the end. You can&amp;rsquo;t use &lt;code&gt;-NoNewWindow&lt;/code&gt; here because it only prevents the creation of a new window for executing &lt;code&gt;Start-Process&lt;/code&gt;, but the old window will not exit.&lt;br&gt;
@@ -265,11 +265,11 @@ Note 2: After the old window exits, the forked process seems to become an orphan
       <content:encoded><![CDATA[<ul>
 <li>
 <p>Create a script and place it in</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>C:\Users\name\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\`  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>C:\Users\name\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\`  
 </span></span></code></pre></div></li>
 <li>
 <p>Fill the script with:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>Start-Process -FilePath <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.exe&#34;</span> -ArgumentList <span style="color:#e6db74">&#34;-L=&#34;</span>, <span style="color:#e6db74">&#34;-F=&#34;</span> -RedirectStandardOutput <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.log&#34;</span> -RedirectStandardError <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.err&#34;</span> -WindowStyle Hidden
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>Start-Process -FilePath <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.exe&#34;</span> -ArgumentList <span style="color:#e6db74">&#34;-L=&#34;</span>, <span style="color:#e6db74">&#34;-F=&#34;</span> -RedirectStandardOutput <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.log&#34;</span> -RedirectStandardError <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.err&#34;</span> -WindowStyle Hidden
 </span></span></code></pre></div></li>
 </ul>
 <p>Note: <code>Start-Process</code> seems to perform a fork-like action, and by default, it opens a new PowerShell window to execute. That&rsquo;s why <code>-WindowStyle Hidden</code> is added at the end. You can&rsquo;t use <code>-NoNewWindow</code> here because it only prevents the creation of a new window for executing <code>Start-Process</code>, but the old window will not exit.<br>

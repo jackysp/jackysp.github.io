@@ -9,7 +9,7 @@
       <url>https://blog.minifish.org/android-chrome-512x512.png</url>
       <link>https://blog.minifish.org/android-chrome-512x512.png</link>
     </image>
-    <generator>Hugo -- 0.154.5</generator>
+    <generator>Hugo -- 0.158.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
     <lastBuildDate>Mon, 19 Jan 2026 10:00:00 +0800</lastBuildDate>
@@ -93,7 +93,7 @@
 </ul>
 <h3 id="2-automated-build--deploy">2. Automated Build &amp; Deploy</h3>
 <p>The moment a post is pushed to the <code>master</code> branch, the same GitHub Actions workflow from the previous post kicks in:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">on</span>:
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">master ]</span>
 </span></span></code></pre></div><p>The workflow (as detailed in <a href="/posts/github-action">the previous post</a>):</p>
@@ -682,7 +682,7 @@ It is a pressure-triggered extraction event.</strong></p>
 <li>
 <p><strong>Internet Connectivity via Tailscale:</strong></p>
 <p>WebVM can connect to the internet via <a href="https://tailscale.com/">Tailscale</a>. It utilizes the first available node as an exit node. If you execute:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl https://ifconfig.me
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl https://ifconfig.me
 </span></span></code></pre></div><p>You will obtain your current node&rsquo;s IP address.</p>
 </li>
 <li>
@@ -1119,38 +1119,38 @@ It is a pressure-triggered extraction event.</strong></p>
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Compile all Go files in the current directory:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;go build
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;go build
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Compile all Go files explicitly:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;go build *.go
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;go build *.go
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;common-pitfalls&#34;&gt;Common Pitfalls&lt;/h2&gt;
 &lt;h3 id=&#34;compiling-a-single-file&#34;&gt;Compiling a Single File&lt;/h3&gt;
 &lt;p&gt;Running:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;go build main.go
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;go build main.go
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;will only build &lt;code&gt;main.go&lt;/code&gt;. This can lead to errors if &lt;code&gt;main.go&lt;/code&gt; depends on other Go files in the same package, as those files won&amp;rsquo;t be included in the build process.&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>When working with Go, it&rsquo;s important to know the proper way to compile your programs to avoid common errors. Here are some tips on using the <code>go build</code> command effectively.</p>
 <h2 id="recommended-usage">Recommended Usage</h2>
 <ul>
 <li>
 <p><strong>Compile all Go files in the current directory:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go build
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go build
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Compile all Go files explicitly:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go build *.go
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go build *.go
 </span></span></code></pre></div></li>
 </ul>
 <h2 id="common-pitfalls">Common Pitfalls</h2>
 <h3 id="compiling-a-single-file">Compiling a Single File</h3>
 <p>Running:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go build main.go
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go build main.go
 </span></span></code></pre></div><p>will only build <code>main.go</code>. This can lead to errors if <code>main.go</code> depends on other Go files in the same package, as those files won&rsquo;t be included in the build process.</p>
 <h3 id="including-non-go-files">Including Non-Go Files</h3>
 <p>Using:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go build *
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go build *
 </span></span></code></pre></div><p>will cause an error if the <code>*</code> wildcard includes non-Go files. The compiler will output an error message stating that only Go files can be compiled. This serves as a precise reminder to exclude non-Go files from the build command.</p>
 <hr>
 <p>By using <code>go build</code> correctly, you can ensure that all necessary files in your package are compiled together, avoiding missing dependencies and other common compilation issues.</p>
@@ -1977,19 +1977,19 @@ It is a pressure-triggered extraction event.</strong></p>
 &lt;p&gt;Many customers have TLS enabled, which is different from the lab environment.&lt;/p&gt;
 &lt;h2 id=&#34;curl&#34;&gt;Curl&lt;/h2&gt;
 &lt;p&gt;Curl requires a specified CA certificate, otherwise it will report an error.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;curl --cacert ca.crt https://127.0.0.1:10080/status
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;curl --cacert ca.crt https://127.0.0.1:10080/status
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;wget&#34;&gt;Wget&lt;/h2&gt;
 &lt;p&gt;Many containers do not have curl, so wget is used instead. Wget is better as it does not require a CA certificate.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;wget --no-check-certificate http://127.0.0.1:10080/status
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;wget --no-check-certificate http://127.0.0.1:10080/status
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
       <content:encoded><![CDATA[<h2 id="background">Background</h2>
 <p>Many customers have TLS enabled, which is different from the lab environment.</p>
 <h2 id="curl">Curl</h2>
 <p>Curl requires a specified CA certificate, otherwise it will report an error.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl --cacert ca.crt https://127.0.0.1:10080/status
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl --cacert ca.crt https://127.0.0.1:10080/status
 </span></span></code></pre></div><h2 id="wget">Wget</h2>
 <p>Many containers do not have curl, so wget is used instead. Wget is better as it does not require a CA certificate.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>wget --no-check-certificate http://127.0.0.1:10080/status
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>wget --no-check-certificate http://127.0.0.1:10080/status
 </span></span></code></pre></div>]]></content:encoded>
     </item>
     <item>
@@ -2008,7 +2008,7 @@ It is a pressure-triggered extraction event.</strong></p>
 <h3 id="network-topology">Network Topology</h3>
 <p>I have a 10-year-old Thinkpad x230 at home, which is perfect for this purpose. Here is a simple topology diagram.</p>
 <p>Router1 is a fiber-optic modem with routing capabilities, Router2 is a regular router, with the gateway and DNS pointing to the Thinkpad, where Linux is running to act as a transparent gateway with Clash on top.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>                                 +------------+
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>                                 +------------+
 </span></span><span style="display:flex;"><span>                                 |            |
 </span></span><span style="display:flex;"><span>                                 |  Internet  |
 </span></span><span style="display:flex;"><span>                                 |            |
@@ -2035,7 +2035,7 @@ It is a pressure-triggered extraction event.</strong></p>
 </span></span><span style="display:flex;"><span>|          |     |          |    |           |
 </span></span><span style="display:flex;"><span>+----------+     +----------+    +-----------+
 </span></span></code></pre></div><h3 id="add-dns-section-in-clash-configuration">Add DNS Section in Clash Configuration</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">dns</span>:
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">dns</span>:
 </span></span><span style="display:flex;"><span><span style="color:#f92672">enable</span>: <span style="color:#66d9ef">true</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">listen</span>: <span style="color:#ae81ff">0.0.0.0</span>:<span style="color:#ae81ff">53</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">enhanced-mode</span>: <span style="color:#ae81ff">fake-ip</span>
@@ -2044,7 +2044,7 @@ It is a pressure-triggered extraction event.</strong></p>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">fallback</span>:
 </span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">8.8.8.8</span>
 </span></span></code></pre></div><h3 id="clash-tun-feature-section">Clash tun Feature Section</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">tun</span>:
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">tun</span>:
 </span></span><span style="display:flex;"><span><span style="color:#f92672">enable</span>: <span style="color:#66d9ef">true</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">stack</span>: <span style="color:#ae81ff">system</span> <span style="color:#75715e"># or gvisor</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">dns-hijack</span>:
@@ -2088,7 +2088,7 @@ It is a pressure-triggered extraction event.</strong></p>
 <p>Lastly, I used <a href="https://apps.apple.com/us/app/amphetamine/id937984704?mt=12">Amphetamine</a> from the App Store to ensure that the laptop continues working when closed by disabling the default sleep setting after the screen is closed. You’ll see some warnings when doing this, but just be aware of them.</p>
 <p><strong>Update:</strong></p>
 <p>For systemd startup, you can refer to <a href="https://gist.github.com/gatopeich/36ed7fab3850367bbcd8e6f40becd4e5">this gist</a>. The server&rsquo;s console has some commands, like &ldquo;stop&rdquo;, that perform graceful shutdowns, so it&rsquo;s necessary to rely on a screen session to create it. Additionally, the server startup has some environmental dependencies, so it’s best to write a small script for starting it, like:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
 </span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>cd /home/user/bedrock-server
 </span></span><span style="display:flex;"><span>LD_LIBRARY_PATH<span style="color:#f92672">=</span>. ./bedrock_server
@@ -2125,7 +2125,7 @@ It is a pressure-triggered extraction event.</strong></p>
 <p>I actually referred to this <a href="https://zhuanlan.zhihu.com/p/76861431">link</a>. However, it wasn&rsquo;t quite enough, as there might be authentication-related issues on MacBooks that lead to commit errors. So, I found this <a href="https://stackoverflow.com/a/40066889">solution</a>.</p>
 <p>In summary, to verify, you need to enter a password. The issue on a Mac is the prompt for entering the password, which needs to be replaced with pinentry-mac, which most people install via homebrew.</p>
 <p>Moreover, this solution thoughtfully provides a way to verify:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;test&#34;</span> | gpg --clearsign
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;test&#34;</span> | gpg --clearsign
 </span></span></code></pre></div><h2 id="gpg-experience">GPG Experience</h2>
 <ol>
 <li>It doesn&rsquo;t replace the ssh key. After successfully setting it up, I deleted my GitHub ssh key and discovered that I couldn&rsquo;t log in. Actually, it only verifies the legitimacy of commits.</li>
@@ -2172,7 +2172,7 @@ It is a pressure-triggered extraction event.</strong></p>
 <p>Typically, to verify data consistency, you compute a checksum on both sides and compare them.</p>
 <h2 id="tidb-mysql-side">TiDB (MySQL) Side</h2>
 <p>For the verification of a specific table, the following SQL is used:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> bit_xor(
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> bit_xor(
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">CAST</span>(crc32(
 </span></span><span style="display:flex;"><span>        concat_ws(<span style="color:#e6db74">&#39;,&#39;</span>,
 </span></span><span style="display:flex;"><span>            col1, col2, col3, <span style="color:#960050;background-color:#1e0010">…</span>, colN,
@@ -2182,7 +2182,7 @@ It is a pressure-triggered extraction event.</strong></p>
 </span></span><span style="display:flex;"><span>)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> t;
 </span></span></code></pre></div><p>Let&rsquo;s look at a specific example:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> t;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> t;
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT, j INT);
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>), (<span style="color:#66d9ef">NULL</span>, <span style="color:#66d9ef">NULL</span>);
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> bit_xor(
@@ -2195,7 +2195,7 @@ It is a pressure-triggered extraction event.</strong></p>
 </span></span><span style="display:flex;"><span>)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> t;
 </span></span></code></pre></div><p>The result is:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>+-------------------------------------------------------------------------------------------------------------------------------------------+
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>+-------------------------------------------------------------------------------------------------------------------------------------------+
 </span></span><span style="display:flex;"><span>| bit_xor(
 </span></span><span style="display:flex;"><span>    CAST(crc32(
 </span></span><span style="display:flex;"><span>        concat_ws(&#39;,&#39;,
@@ -2212,9 +2212,9 @@ It is a pressure-triggered extraction event.</strong></p>
 <p>The goal is simply to write the same SQL as above, but PostgreSQL does not support <code>bit_xor</code>, <code>crc32</code>, <code>isnull</code>, nor does it have unsigned types. Therefore, the solution is relatively straightforward—relying on UDFs (User-Defined Functions).</p>
 <p>After some research, the main missing functions can be addressed with a few custom implementations.</p>
 <p><code>bit_xor</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">AGGREGATE</span> bit_xor(<span style="color:#66d9ef">IN</span> v bigint) (SFUNC <span style="color:#f92672">=</span> int8xor, <span style="color:#66d9ef">STYPE</span> <span style="color:#f92672">=</span> bigint);
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">AGGREGATE</span> bit_xor(<span style="color:#66d9ef">IN</span> v bigint) (SFUNC <span style="color:#f92672">=</span> int8xor, <span style="color:#66d9ef">STYPE</span> <span style="color:#f92672">=</span> bigint);
 </span></span></code></pre></div><p><code>crc32</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">FUNCTION</span> crc32(text_string text) <span style="color:#66d9ef">RETURNS</span> bigint <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">$$</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">FUNCTION</span> crc32(text_string text) <span style="color:#66d9ef">RETURNS</span> bigint <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">$$</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">DECLARE</span>
 </span></span><span style="display:flex;"><span>    tmp bigint;
 </span></span><span style="display:flex;"><span>    i int;
@@ -2249,13 +2249,13 @@ It is a pressure-triggered extraction event.</strong></p>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">END</span>
 </span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$$</span> <span style="color:#66d9ef">IMMUTABLE</span> <span style="color:#66d9ef">LANGUAGE</span> plpgsql;
 </span></span></code></pre></div><p><code>isnull</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">FUNCTION</span> <span style="color:#66d9ef">isnull</span>(anyelement) <span style="color:#66d9ef">RETURNS</span> int <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">$$</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">FUNCTION</span> <span style="color:#66d9ef">isnull</span>(anyelement) <span style="color:#66d9ef">RETURNS</span> int <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">$$</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">BEGIN</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">RETURN</span> <span style="color:#66d9ef">CAST</span>((<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span>) <span style="color:#66d9ef">AS</span> INT);
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">END</span>
 </span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$$</span> <span style="color:#66d9ef">LANGUAGE</span> plpgsql;
 </span></span></code></pre></div><p>After creating the three UDFs above, let&rsquo;s test the previous example. Note that <code>UNSIGNED</code> should be changed to <code>BIGINT</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> t;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-SQL" data-lang="SQL"><span style="display:flex;"><span><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> t;
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT, j INT);
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>), (<span style="color:#66d9ef">NULL</span>, <span style="color:#66d9ef">NULL</span>);
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> bit_xor(
@@ -2268,7 +2268,7 @@ It is a pressure-triggered extraction event.</strong></p>
 </span></span><span style="display:flex;"><span>)
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> t;
 </span></span></code></pre></div><p>The result:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span> bit_xor
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span> bit_xor
 </span></span><span style="display:flex;"><span>---------
 </span></span><span style="display:flex;"><span> 5062371
 </span></span><span style="display:flex;"><span>(1 row)
@@ -2303,7 +2303,7 @@ It is a pressure-triggered extraction event.</strong></p>
 <li>Configure the LaTeX extension. I found a powerful configuration on Zhihu, but it’s quite complex, so I simplified it a bit.</li>
 </ol>
 <p>A brief explanation: the core components here are the recipes and tools. Tools are the compilation toolchain, specifying which tools to use for compilation and the options to use, without regard to order. Recipes define how to combine the above tools to generate the final document, where the order does matter. I&rsquo;ve put XeLaTex first here because it&rsquo;s the most compatible for compiling Chinese. If you use pdflatex to compile Chinese documents, you&rsquo;re likely to encounter issues.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>   <span style="color:#f92672">&#34;latex-workshop.latex.recipes&#34;</span>: [
 </span></span><span style="display:flex;"><span>         {
 </span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;XeLaTeX&#34;</span>,
@@ -2467,7 +2467,7 @@ It is a pressure-triggered extraction event.</strong></p>
 <li>Create a folder.</li>
 <li>Use VSCode to open this folder and create a .tex file with the following content:</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-tex" data-lang="tex"><span style="display:flex;"><span><span style="color:#66d9ef">\documentclass</span><span style="color:#a6e22e">[UTF8]</span>{ctexart}
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-tex" data-lang="tex"><span style="display:flex;"><span><span style="color:#66d9ef">\documentclass</span><span style="color:#a6e22e">[UTF8]</span>{ctexart}
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">\begin</span>{document}
 </span></span><span style="display:flex;"><span>OK, it’s all set...
@@ -2502,7 +2502,7 @@ It is a pressure-triggered extraction event.</strong></p>
 </ol>
 <p>You will need two actions in total: one is GitHub&rsquo;s own <a href="https://github.com/actions/checkout">checkout</a>, and the other is a third-party action called <a href="https://github.com/marketplace/actions/push-directory-to-another-repository">“Push directory to another repository”</a>. There might be better options available, and I’ll explore them when I have more time.</p>
 <p>Finally, here is my simple GitHub Action CI file:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">CI</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">CI</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">on</span>:
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
@@ -2561,7 +2561,7 @@ It is a pressure-triggered extraction event.</strong></p>
       <description>&lt;p&gt;&lt;a href=&#34;https://github.com/akopytov/sysbench&#34;&gt;Sysbench&lt;/a&gt; is a tool commonly used in database testing. Since version 1.0, it has supported more powerful custom functions, allowing users to conveniently write some Lua scripts to simulate load. The purpose of writing this article is, firstly, because I wanted to explore Sysbench&amp;rsquo;s custom load usage. Secondly, because I tried the mysqlslap tool provided by MySQL&amp;rsquo;s official source, and found that it freezes easily during database performance testing, which could mislead users into thinking there is an issue with the database, causing trouble for many. Therefore, I want to help people avoid these pitfalls.&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p><a href="https://github.com/akopytov/sysbench">Sysbench</a> is a tool commonly used in database testing. Since version 1.0, it has supported more powerful custom functions, allowing users to conveniently write some Lua scripts to simulate load. The purpose of writing this article is, firstly, because I wanted to explore Sysbench&rsquo;s custom load usage. Secondly, because I tried the mysqlslap tool provided by MySQL&rsquo;s official source, and found that it freezes easily during database performance testing, which could mislead users into thinking there is an issue with the database, causing trouble for many. Therefore, I want to help people avoid these pitfalls.</p>
 <h2 id="a-simple-example">A Simple Example</h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env sysbench</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env sysbench</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>require(<span style="color:#e6db74">&#34;oltp_common&#34;</span>)
 </span></span><span style="display:flex;"><span>
@@ -2573,9 +2573,9 @@ It is a pressure-triggered extraction event.</strong></p>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
 </span></span></code></pre></div><p>The first line <code>require</code> includes Sysbench&rsquo;s built-in basic library; the empty <code>prepare_statement</code> is a callback function from <code>oltp_common</code> that must be present; the specific execution of a single load is implemented in the <code>event</code> function.</p>
 <p>Save this script as a Lua file, for example, named set.lua, and then execute it using sysbench.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sysbench --config-file<span style="color:#f92672">=</span>config --threads<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> set.lua --tables<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> --table_size<span style="color:#f92672">=</span><span style="color:#ae81ff">1000000</span> run
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sysbench --config-file<span style="color:#f92672">=</span>config --threads<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> set.lua --tables<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> --table_size<span style="color:#f92672">=</span><span style="color:#ae81ff">1000000</span> run
 </span></span></code></pre></div><p>You can use the above command. Of course, here <code>--tables=1</code> and <code>--table_size=1000000</code> are not useful for this load, so they are optional. <code>--threads</code> controls concurrency.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ cat config
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ cat config
 </span></span><span style="display:flex;"><span>time<span style="color:#f92672">=</span><span style="color:#ae81ff">120</span>
 </span></span><span style="display:flex;"><span>db-driver<span style="color:#f92672">=</span>mysql
 </span></span><span style="display:flex;"><span>mysql-host<span style="color:#f92672">=</span>172.16.5.33
@@ -2585,7 +2585,7 @@ It is a pressure-triggered extraction event.</strong></p>
 </span></span><span style="display:flex;"><span>report-interval<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>
 </span></span></code></pre></div><p>In the config file, parameters you don&rsquo;t frequently adjust are written once to avoid having a long string of parameters in the command line. These are required fields: <code>time</code> represents the test duration, <code>report-interval</code> is used to observe real-time performance results, and the others pertain to how to connect to the database.</p>
 <p>The running output generally looks like:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[ 10s ] thds: 100 tps: 94574.34 qps: 94574.34 (r/w/o: 0.00/0.00/94574.34) lat (ms,95%): 3.68 err/s: 0.00 reconn/s: 0.00
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[ 10s ] thds: 100 tps: 94574.34 qps: 94574.34 (r/w/o: 0.00/0.00/94574.34) lat (ms,95%): 3.68 err/s: 0.00 reconn/s: 0.00
 </span></span><span style="display:flex;"><span>[ 20s ] thds: 100 tps: 77720.30 qps: 77720.30 (r/w/o: 0.00/0.00/77720.30) lat (ms,95%): 5.28 err/s: 0.00 reconn/s: 0.00
 </span></span><span style="display:flex;"><span>[ 30s ] thds: 100 tps: 56080.10 qps: 56080.10 (r/w/o: 0.00/0.00/56080.10) lat (ms,95%): 9.22 err/s: 0.00 reconn/s: 0.00
 </span></span><span style="display:flex;"><span>[ 40s ] thds: 100 tps: 93315.90 qps: 93315.90 (r/w/o: 0.00/0.00/93315.90) lat (ms,95%): 4.82 err/s: 0.00 reconn/s: 0.00
@@ -2595,7 +2595,7 @@ It is a pressure-triggered extraction event.</strong></p>
 </span></span><span style="display:flex;"><span>[ 80s ] thds: 100 tps: 89485.10 qps: 89485.10 (r/w/o: 0.00/0.00/89485.10) lat (ms,95%): 5.18 err/s: 0.00 reconn/s: 0.00
 </span></span><span style="display:flex;"><span>[ 90s ] thds: 100 tps: 109296.44 qps: 109296.44 (r/w/o: 0.00/0.00/109296.44) lat (ms,95%): 2.91 err/s: 0.00 reconn/s: 0.00
 </span></span></code></pre></div><p>Finally, there will be a summary report.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>SQL statistics:
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>SQL statistics:
 </span></span><span style="display:flex;"><span>    queries performed:
 </span></span><span style="display:flex;"><span>        read:                            0
 </span></span><span style="display:flex;"><span>        write:                           0
@@ -2746,14 +2746,14 @@ It is a pressure-triggered extraction event.</strong></p>
 </ol>
 <h2 id="logs">Logs</h2>
 <p>Let&rsquo;s first look at a section of logs from TiDB at initial startup, divided into several parts:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[2020/08/12 16:12:07.282 +08:00] [INFO] [printer.go:42] [&#34;Welcome to TiDB.&#34;] [&#34;Release Version&#34;=None] [Edition=None] [&#34;Git Commit Hash&#34;=None] [&#34;Git Branch&#34;=None] [&#34;UTC Build Time&#34;=None] [GoVersion=go1.15] [&#34;Race Enabled&#34;=false] [&#34;Check Table Before Drop&#34;=false] [&#34;TiKV Min Version&#34;=v3.0.0-60965b006877ca7234adaced7890d7b029ed1306]
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[2020/08/12 16:12:07.282 +08:00] [INFO] [printer.go:42] [&#34;Welcome to TiDB.&#34;] [&#34;Release Version&#34;=None] [Edition=None] [&#34;Git Commit Hash&#34;=None] [&#34;Git Branch&#34;=None] [&#34;UTC Build Time&#34;=None] [GoVersion=go1.15] [&#34;Race Enabled&#34;=false] [&#34;Check Table Before Drop&#34;=false] [&#34;TiKV Min Version&#34;=v3.0.0-60965b006877ca7234adaced7890d7b029ed1306]
 </span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.300 +08:00] [INFO] [printer.go:56] [&#34;loaded config&#34;] [config=&#34;{\&#34;host\&#34;:\&#34;0.0.0.0\&#34;,\&#34;advertise-address\&#34;:\&#34;0.0.0.0\&#34;,\&#34;port\&#34;:4000,\&#34;cors\&#34;:\&#34;\&#34;,\&#34;store\&#34;:\&#34;mocktikv\&#34;,\&#34;path\&#34;:\&#34;/tmp/tidb\&#34;,\&#34;socket\&#34;:\&#34;\&#34;,\&#34;lease\&#34;:\&#34;45s\&#34;,\&#34;run-ddl\&#34;:true,\&#34;split-table\&#34;:true,\&#34;token-limit\&#34;:1000,\&#34;oom-use-tmp-storage\&#34;:true,\&#34;tmp-storage-path\&#34;:\&#34;C:\\\\Users\\\\username\\\\AppData\\\\Local\\\\Temp\\\\tidb\\\\tmp-storage\&#34;,\&#34;oom-action\&#34;:\&#34;log\&#34;,\&#34;mem-quota-query\&#34;:1073741824,\&#34;tmp-storage-quota\&#34;:-1,\&#34;enable-streaming\&#34;:false,\&#34;enable-batch-dml\&#34;:false,\&#34;lower-case-table-names\&#34;:2,\&#34;server-version\&#34;:\&#34;\&#34;,\&#34;log\&#34;:{\&#34;level\&#34;:\&#34;info\&#34;,\&#34;format\&#34;:\&#34;text\&#34;,\&#34;disable-timestamp\&#34;:null,\&#34;enable-timestamp\&#34;:null,\&#34;disable-error-stack\&#34;:null,\&#34;enable-error-stack\&#34;:null,\&#34;file\&#34;:{\&#34;filename\&#34;:\&#34;\&#34;,\&#34;max-size\&#34;:300,\&#34;max-days\&#34;:0,\&#34;max-backups\&#34;:0},\&#34;enable-slow-log\&#34;:true,\&#34;slow-query-file\&#34;:\&#34;tidb-slow.log\&#34;,\&#34;slow-threshold\&#34;:300,\&#34;expensive-threshold\&#34;:10000,\&#34;query-log-max-len\&#34;:4096,\&#34;record-plan-in-slow-log\&#34;:1},\&#34;security\&#34;:{\&#34;skip-grant-table\&#34;:false,\&#34;ssl-ca\&#34;:\&#34;\&#34;,\&#34;ssl-cert\&#34;:\&#34;\&#34;,\&#34;ssl-key\&#34;:\&#34;\&#34;,\&#34;require-secure-transport\&#34;:false,\&#34;cluster-ssl-ca\&#34;:\&#34;\&#34;,\&#34;cluster-ssl-cert\&#34;:\&#34;\&#34;,\&#34;cluster-ssl-key\&#34;:\&#34;\&#34;,\&#34;cluster-verify-cn\&#34;:null},\&#34;status\&#34;:{\&#34;status-host\&#34;:\&#34;0.0.0.0\&#34;,\&#34;metrics-addr\&#34;:\&#34;\&#34;,\&#34;status-port\&#34;:10080,\&#34;metrics-interval\&#34;:15,\&#34;report-status\&#34;:true,\&#34;record-db-qps\&#34;:false},\&#34;performance\&#34;:{\&#34;max-procs\&#34;:0,\&#34;max-memory\&#34;:0,\&#34;stats-lease\&#34;:\&#34;3s\&#34;,\&#34;stmt-count-limit\&#34;:5000,\&#34;feedback-probability\&#34;:0.05,\&#34;query-feedback-limit\&#34;:1024,\&#34;pseudo-estimate-ratio\&#34;:0.8,\&#34;force-priority\&#34;:\&#34;NO_PRIORITY\&#34;,\&#34;bind-info-lease\&#34;:\&#34;3s\&#34;,\&#34;txn-total-size-limit\&#34;:104857600,\&#34;tcp-keep-alive\&#34;:true,\&#34;cross-join\&#34;:true,\&#34;run-auto-analyze\&#34;:true,\&#34;agg-push-down-join\&#34;:false,\&#34;committer-concurrency\&#34;:16,\&#34;max-txn-ttl\&#34;:600000},\&#34;prepared-plan-cache\&#34;:{\&#34;enabled\&#34;:false,\&#34;capacity\&#34;:100,\&#34;memory-guard-ratio\&#34;:0.1},\&#34;opentracing\&#34;:{\&#34;enable\&#34;:false,\&#34;rpc-metrics\&#34;:false,\&#34;sampler\&#34;:{\&#34;type\&#34;:\&#34;const\&#34;,\&#34;param\&#34;:1,\&#34;sampling-server-url\&#34;:\&#34;\&#34;,\&#34;max-operations\&#34;:0,\&#34;sampling-refresh-interval\&#34;:0},\&#34;reporter\&#34;:{\&#34;queue-size\&#34;:0,\&#34;buffer-flush-interval\&#34;:0,\&#34;log-spans\&#34;:false,\&#34;local-agent-host-port\&#34;:\&#34;\&#34;}},\&#34;proxy-protocol\&#34;:{\&#34;networks\&#34;:\&#34;\&#34;,\&#34;header-timeout\&#34;:5},\&#34;tikv-client\&#34;:{\&#34;grpc-connection-count\&#34;:4,\&#34;grpc-keepalive-time\&#34;:10,\&#34;grpc-keepalive-timeout\&#34;:3,\&#34;commit-timeout\&#34;:\&#34;41s\&#34;,\&#34;max-batch-size\&#34;:128,\&#34;overload-threshold\&#34;:200,\&#34;max-batch-wait-time\&#34;:0,\&#34;batch-wait-size\&#34;:8,\&#34;enable-chunk-rpc\&#34;:true,\&#34;region-cache-ttl\&#34;:600,\&#34;store-limit\&#34;:0,\&#34;store-liveness-timeout\&#34;:\&#34;120s\&#34;,\&#34;copr-cache\&#34;:{\&#34;enable\&#34;:false,\&#34;capacity-mb\&#34;:1000,\&#34;admission-max-result-mb\&#34;:10,\&#34;admission-min-process-ms\&#34;:5}},\&#34;binlog\&#34;:{\&#34;enable\&#34;:false,\&#34;ignore-error\&#34;:false,\&#34;write-timeout\&#34;:\&#34;15s\&#34;,\&#34;binlog-socket\&#34;:\&#34;\&#34;,\&#34;strategy\&#34;:\&#34;range\&#34;},\&#34;compatible-kill-query\&#34;:false,\&#34;plugin\&#34;:{\&#34;dir\&#34;:\&#34;\&#34;,\&#34;load\&#34;:\&#34;\&#34;},\&#34;pessimistic-txn\&#34;:{\&#34;enable\&#34;:true,\&#34;max-retry-count\&#34;:256},\&#34;check-mb4-value-in-utf8\&#34;:true,\&#34;max-index-length\&#34;:3072,\&#34;alter-primary-key\&#34;:false,\&#34;treat-old-version-utf8-as-utf8mb4\&#34;:true,\&#34;enable-table-lock\&#34;:false,\&#34;delay-clean-table-lock\&#34;:0,\&#34;split-region-max-num\&#34;:1000,\&#34;stmt-summary\&#34;:{\&#34;enable\&#34;:true,\&#34;enable-internal-query\&#34;:false,\&#34;max-stmt-count\&#34;:200,\&#34;max-sql-length\&#34;:4096,\&#34;refresh-interval\&#34;:1800,\&#34;history-size\&#34;:24},\&#34;repair-mode\&#34;:false,\&#34;repair-table-list\&#34;:[],\&#34;isolation-read\&#34;:{\&#34;engines\&#34;:[\&#34;tikv\&#34;,\&#34;tiflash\&#34;,\&#34;tidb\&#34;]},\&#34;max-server-connections\&#34;:0,\&#34;new_collations_enabled_on_first_bootstrap\&#34;:false,\&#34;experimental\&#34;:{\&#34;allow-auto-random\&#34;:false,\&#34;allow-expression-index\&#34;:false}}&#34;]
 </span></span></code></pre></div><ol>
 <li>Mandatory startup outputs: &ldquo;Welcome to TiDB,&rdquo; git hash, Golang version, etc.</li>
 <li>Actually loaded configuration (this section is somewhat difficult to read)</li>
 </ol>
 <p>The remainder are some routine startup logs. The process can be referenced from the main function section introduced in the first article, mainly outputting the initial system table creation process.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[2020/08/12 16:12:07.300 +08:00] [INFO] [main.go:341] [&#34;disable Prometheus push client&#34;]
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[2020/08/12 16:12:07.300 +08:00] [INFO] [main.go:341] [&#34;disable Prometheus push client&#34;]
 </span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.300 +08:00] [INFO] [store.go:68] [&#34;new store&#34;] [path=mocktikv:///tmp/tidb]
 </span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.300 +08:00] [INFO] [systime_mon.go:25] [&#34;start system time monitor&#34;]
 </span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.310 +08:00] [INFO] [store.go:74] [&#34;new store with retry success&#34;]
@@ -2767,7 +2767,7 @@ It is a pressure-triggered extraction event.</strong></p>
 </span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.317 +08:00] [INFO] [domain.go:368] [&#34;full load and reset schema validator&#34;]
 </span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.317 +08:00] [INFO] [tidb.go:199] [&#34;rollbackTxn for ddl/autocommit failed&#34;]
 </span></span></code></pre></div><p>Because DDL logs are very numerous, the TiDB logs basically record each step of the DDL execution, so I&rsquo;ve truncated this part of the log here. However, the basic outline can be sorted out. Firstly, the DDL execution is initiated from ddl_api, at this time recording <code>[&quot;CRUCIAL OPERATION&quot;]</code> style logs. DDL is a crucial operation, so it belongs to CRUCIAL type logs. Then, we can see a series of logs with the ddl keyword linked together, such as <code>[ddl] add DDL jobs</code>, <code>[ddl] start DDL job</code>, <code>[ddl] run DDL job</code>, <code>[ddl] finish DDL job</code>, and <code>[ddl] DDL job is finished</code>. These represent the process from when the DDL owner acquires a job to its final execution completion. Moreover, they have a unique job ID, which can be used to link a DDL in the log with something like <code>jobs=&quot;ID:2</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[2020/08/12 16:12:07.518 +08:00] [INFO] [server.go:235] [&#34;server is running MySQL protocol&#34;] [addr=0.0.0.0:4000]
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[2020/08/12 16:12:07.518 +08:00] [INFO] [server.go:235] [&#34;server is running MySQL protocol&#34;] [addr=0.0.0.0:4000]
 </span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.518 +08:00] [INFO] [http_status.go:80] [&#34;for status and metrics report&#34;] [&#34;listening on addr&#34;=0.0.0.0:10080]
 </span></span><span style="display:flex;"><span>[2020/08/12 16:12:07.520 +08:00] [INFO] [domain.go:1015] [&#34;init stats info time&#34;] [&#34;take time&#34;=3.0126ms]
 </span></span><span style="display:flex;"><span>[2020/08/12 16:15:41.482 +08:00] [INFO] [server.go:388] [&#34;new connection&#34;] [conn=1] [remoteAddr=127.0.0.1:64888]
@@ -2819,7 +2819,7 @@ It is a pressure-triggered extraction event.</strong></p>
 <p>Let&rsquo;s use the method mentioned in the first article to start a single-node TiDB for demonstration:</p>
 <h4 id="scopenone">ScopeNone</h4>
 <p>Take <code>performance_schema_max_mutex_classes</code> as an example,</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>performance_schema_max_mutex_classes;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>performance_schema_max_mutex_classes;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">----------------------------------------+
 </span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>performance_schema_max_mutex_classes <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">----------------------------------------+
@@ -2836,7 +2836,7 @@ It is a pressure-triggered extraction event.</strong></p>
 </span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">session</span>.performance_schema_max_mutex_classes;
 </span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1238</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;performance_schema_max_mutex_classes&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">GLOBAL</span> <span style="color:#66d9ef">variable</span>
 </span></span></code></pre></div><p>As you can see, the scope of ScopeNone can be read as a global variable,</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">global</span> performance_schema_max_mutex_classes <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">global</span> performance_schema_max_mutex_classes <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
 </span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1105</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;performance_schema_max_mutex_classes&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">read</span><span style="color:#f92672">-</span><span style="color:#66d9ef">only</span> <span style="color:#66d9ef">variable</span>
 </span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> performance_schema_max_mutex_classes <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
 </span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1105</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;performance_schema_max_mutex_classes&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">read</span><span style="color:#f92672">-</span><span style="color:#66d9ef">only</span> <span style="color:#66d9ef">variable</span>
@@ -2851,7 +2851,7 @@ It is a pressure-triggered extraction event.</strong></p>
 From a theoretical standpoint, these ScopeNone variables are essentially a single copy in the code. Once TiDB is started, they exist in memory as read-only and are not actually stored in TiKV.</p>
 <h4 id="scopeglobal">ScopeGlobal</h4>
 <p>Using <code>gtid_mode</code> as an example,</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>gtid_mode;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>gtid_mode;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
 </span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>gtid_mode <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
@@ -2868,7 +2868,7 @@ From a theoretical standpoint, these ScopeNone variables are essentially a singl
 </span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">session</span>.gtid_mode;
 </span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1238</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;gtid_mode&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">GLOBAL</span> <span style="color:#66d9ef">variable</span>
 </span></span></code></pre></div><p>It works the same way as MySQL global variable reading,</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> gtid_mode<span style="color:#f92672">=</span><span style="color:#66d9ef">on</span>;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> gtid_mode<span style="color:#f92672">=</span><span style="color:#66d9ef">on</span>;
 </span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1105</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;gtid_mode&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">GLOBAL</span> <span style="color:#66d9ef">variable</span> <span style="color:#66d9ef">and</span> should be <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">with</span> <span style="color:#66d9ef">SET</span> <span style="color:#66d9ef">GLOBAL</span>
 </span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">session</span> gtid_mode<span style="color:#f92672">=</span><span style="color:#66d9ef">on</span>;
 </span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1105</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;gtid_mode&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">GLOBAL</span> <span style="color:#66d9ef">variable</span> <span style="color:#66d9ef">and</span> should be <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">with</span> <span style="color:#66d9ef">SET</span> <span style="color:#66d9ef">GLOBAL</span>
@@ -2889,7 +2889,7 @@ From a theoretical standpoint, these ScopeNone variables are essentially a singl
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0006</span> sec)
 </span></span></code></pre></div><p>The setting method is also compatible with MySQL. At this point, we can shut down the single-instance TiDB and restart it,</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>gtid_mode;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>gtid_mode;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
 </span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>gtid_mode <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">-------------+
@@ -2902,7 +2902,7 @@ Looking closely at the code, you can see:</p>
 <p>The actual implementation involves executing an internal replace statement to update the original value. This constitutes a complete transaction involving acquiring two TSOs and committing the entire process, making it slower compared to setting session variables.</p>
 <h4 id="scopesession">ScopeSession</h4>
 <p>Using <code>rand_seed2</code> as an example,</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>rand_seed2;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span>rand_seed2;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------+
 </span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span> <span style="color:#f92672">@@</span>rand_seed2 <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------+
@@ -2919,7 +2919,7 @@ Looking closely at the code, you can see:</p>
 </span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#f92672">@@</span><span style="color:#66d9ef">global</span>.rand_seed2;
 </span></span><span style="display:flex;"><span>ERROR: <span style="color:#ae81ff">1238</span> (HY000): <span style="color:#66d9ef">Variable</span> <span style="color:#e6db74">&#39;rand_seed2&#39;</span> <span style="color:#66d9ef">is</span> a <span style="color:#66d9ef">SESSION</span> <span style="color:#66d9ef">variable</span>
 </span></span></code></pre></div><p>Reading is compatible with MySQL.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> rand_seed2<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;abc&#39;</span>;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> rand_seed2<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;abc&#39;</span>;
 </span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">rows</span> affected (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0006</span> sec)
 </span></span><span style="display:flex;"><span>MySQL  <span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">4000</span>  <span style="color:#66d9ef">SQL</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">set</span> <span style="color:#66d9ef">session</span> rand_seed2<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;bcd&#39;</span>;
 </span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">rows</span> affected (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0004</span> sec)
@@ -3283,14 +3283,14 @@ In the <code>Run()</code> function here, the server continuously listens to netw
       <content:encoded><![CDATA[<p>Initially, I thought it would be a simple setting adjustment, so I casually Googled it. Sure enough, there was a unanimous solution: modify <code>/etc/systemd/logind.conf</code>, change <code>HandleLidSwitch</code> to <code>ignore</code> or <code>lock</code>, and then restart <code>logind</code> or reboot.</p>
 <p>I tried this, but it didn&rsquo;t work at all on my Thinkpad X230. I then tried changing some other options in the aforementioned file, but none worked, and surprisingly, <code>Ubuntu</code> even reported errors.</p>
 <p>So, I reinstalled the more preferred <code>Debian</code>. Tried again, and it still didn&rsquo;t work. Finally, I found a more brutal method.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
 </span></span></code></pre></div><p>This directly points these units to /dev/null&hellip;</p>
 <p>To revert, simply use:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target
 </span></span></code></pre></div><p>It&rsquo;s simple and effective.</p>
 <p><strong>Update:</strong></p>
 <p>If you only mask them, the CPU usage of systemd-logind will be very high because it continuously attempts to sleep. Therefore, you also need to change <code>HandleLidSwitch</code> and others to <code>ignore</code>. As follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>HandleSuspendKey=ignore
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>HandleSuspendKey=ignore
 </span></span><span style="display:flex;"><span>HandleHibernateKey=ignore
 </span></span><span style="display:flex;"><span>HandleLidSwitch=ignore
 </span></span><span style="display:flex;"><span>HandleLidSwitchExternalPower=ignore
@@ -3337,11 +3337,11 @@ In the <code>Run()</code> function here, the server continuously listens to netw
       <description>&lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Create a script and place it in&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-powershell&#34; data-lang=&#34;powershell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;C:\Users\name\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\`  
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-powershell&#34; data-lang=&#34;powershell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;C:\Users\name\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\`  
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Fill the script with:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Start-Process -FilePath &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.exe&amp;#34;&lt;/span&gt; -ArgumentList &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-L=&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-F=&amp;#34;&lt;/span&gt; -RedirectStandardOutput &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.log&amp;#34;&lt;/span&gt; -RedirectStandardError &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.err&amp;#34;&lt;/span&gt; -WindowStyle Hidden
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Start-Process -FilePath &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.exe&amp;#34;&lt;/span&gt; -ArgumentList &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-L=&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-F=&amp;#34;&lt;/span&gt; -RedirectStandardOutput &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.log&amp;#34;&lt;/span&gt; -RedirectStandardError &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.err&amp;#34;&lt;/span&gt; -WindowStyle Hidden
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Note: &lt;code&gt;Start-Process&lt;/code&gt; seems to perform a fork-like action, and by default, it opens a new PowerShell window to execute. That&amp;rsquo;s why &lt;code&gt;-WindowStyle Hidden&lt;/code&gt; is added at the end. You can&amp;rsquo;t use &lt;code&gt;-NoNewWindow&lt;/code&gt; here because it only prevents the creation of a new window for executing &lt;code&gt;Start-Process&lt;/code&gt;, but the old window will not exit.&lt;br&gt;
@@ -3349,11 +3349,11 @@ Note 2: After the old window exits, the forked process seems to become an orphan
       <content:encoded><![CDATA[<ul>
 <li>
 <p>Create a script and place it in</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>C:\Users\name\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\`  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>C:\Users\name\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\`  
 </span></span></code></pre></div></li>
 <li>
 <p>Fill the script with:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>Start-Process -FilePath <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.exe&#34;</span> -ArgumentList <span style="color:#e6db74">&#34;-L=&#34;</span>, <span style="color:#e6db74">&#34;-F=&#34;</span> -RedirectStandardOutput <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.log&#34;</span> -RedirectStandardError <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.err&#34;</span> -WindowStyle Hidden
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>Start-Process -FilePath <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.exe&#34;</span> -ArgumentList <span style="color:#e6db74">&#34;-L=&#34;</span>, <span style="color:#e6db74">&#34;-F=&#34;</span> -RedirectStandardOutput <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.log&#34;</span> -RedirectStandardError <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.err&#34;</span> -WindowStyle Hidden
 </span></span></code></pre></div></li>
 </ul>
 <p>Note: <code>Start-Process</code> seems to perform a fork-like action, and by default, it opens a new PowerShell window to execute. That&rsquo;s why <code>-WindowStyle Hidden</code> is added at the end. You can&rsquo;t use <code>-NoNewWindow</code> here because it only prevents the creation of a new window for executing <code>Start-Process</code>, but the old window will not exit.<br>
@@ -3395,7 +3395,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 <ol>
 <li>Create a <code>/lib/systemd/system/gost.service</code> file with the following content, replacing the domain with your own:</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[Unit]
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[Unit]
 </span></span><span style="display:flex;"><span>Description=gost service
 </span></span><span style="display:flex;"><span>After=network.target
 </span></span><span style="display:flex;"><span>StartLimitIntervalSec=0
@@ -3420,7 +3420,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 <p>Configure crontab to update the certificate. I didn&rsquo;t use systemd because I&rsquo;m not familiar with it.</p>
 </li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>0 0 1 * * /usr/bin/certbot renew --force-renewal
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>0 0 1 * * /usr/bin/certbot renew --force-renewal
 </span></span><span style="display:flex;"><span>5 0 1 * * systemctl restart gost
 </span></span></code></pre></div></li>
 <li>
@@ -3428,7 +3428,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 </li>
 <li>
 <p>Configure the client. This is simple; just refer to the <a href="https://haoel.github.io/">guide</a>. The principle is straightforward because gost implements the shadowsocks protocol using the shadowsocks Golang version. Therefore, the following command starts a local shadowsocks server, and you configure your client to add a local server configuration that matches the password.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>.\bin\gost-windows-amd64.exe -L=ss://aes-128-cfb:passcode@:1984 -F=https://xxx:yyy@example.com:443
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>.\bin\gost-windows-amd64.exe -L=ss://aes-128-cfb:passcode@:1984 -F=https://xxx:yyy@example.com:443
 </span></span></code></pre></div></li>
 </ul>
 <p>PS: I still don&rsquo;t know how to configure a global HTTPS proxy on Android without root, or how to set it up on iOS without a U.S. account. Also, I&rsquo;m unsure how to elegantly configure startup scripts on Windows 10. These are issues to explore further&hellip;</p>
@@ -3452,7 +3452,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 <p>Over the past couple of days, I was debugging <code>go test</code> and found that tests would always hang when run per package. I couldn&rsquo;t think of a suitable method at first, so I thought of <code>delve</code> again. After giving it a try, I found it has become much more mature than before.</p>
 <h2 id="usage">Usage</h2>
 <p><code>dlv attach ${pid}</code> is the method I use most often. After attaching, you can use debugging commands similar to <code>gdb</code>. You can use <code>help</code> to view specific commands.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>(dlv) help
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>(dlv) help
 </span></span><span style="display:flex;"><span>The following commands are available:
 </span></span><span style="display:flex;"><span>    args ------------------------ Print function arguments.
 </span></span><span style="display:flex;"><span>    break (alias: b) ------------ Sets a breakpoint.
@@ -3498,7 +3498,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 </span></span><span style="display:flex;"><span>Type help followed by a command for full documentation.
 </span></span></code></pre></div><p>Many of these commands are the same as those in <code>gdb</code>. Another command I use frequently is <code>grs</code>, which outputs all goroutines. You can also use <code>grs -t</code>, which is equivalent to <code>gdb</code>&rsquo;s <code>t a a bt</code>. The only slight drawback is that it only outputs 10 stack frames, and any additional ones are truncated.</p>
 <p>Additionally, it seems that processes forked by <code>go test</code> can&rsquo;t be attached to. If you want to test, you must first compile it into a test file and then execute it. You can refer to <a href="https://github.com/pingcap/tidb/issues/12184">this issue</a> for more details.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>$ dlv attach 19654
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>$ dlv attach 19654
 </span></span><span style="display:flex;"><span>could not attach to pid 19654: decoding dwarf section info at offset 0x0: too short
 </span></span></code></pre></div><p>Furthermore, by default, Go&rsquo;s <code>test</code> caches results, which can be controlled via environment variables. However, with Go modules (<code>go mod</code>), it&rsquo;s recommended to use <code>./ddl.test -test.count=1</code> to disable caching. It doesn&rsquo;t feel very elegant.</p>
 ]]></content:encoded>
@@ -3530,7 +3530,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
       <pubDate>Thu, 26 Jul 2018 14:24:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-immediate-is-golangs-panic/</guid>
       <description>&lt;p&gt;Let&amp;rsquo;s first look at the following code snippet:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; (
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
@@ -3558,7 +3558,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	}
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After compiling and running it (assuming your machine has 2 or more cores), you will get the following error:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;fatal error: concurrent map read and map write
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;fatal error: concurrent map read and map write
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;goroutine 1 [running]:
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;runtime.throw(0x10c3e05, 0x21)
@@ -3581,7 +3581,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        /Users/yusp/test/panic3/main.go:13 +0x59
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It seems straightforward; Golang&amp;rsquo;s map is not thread-safe, and concurrent read and write cause a panic. However, look at the error information on line &lt;code&gt;/Users/yusp/test/panic3/main.go:18 +0x61&lt;/code&gt;, which points to line 18 of main.go where &lt;code&gt;Sleep&lt;/code&gt; is called, not the actual point of concurrency issue. In a vast stack trace, it becomes even harder to locate the problem.&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>Let&rsquo;s first look at the following code snippet:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
 </span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;fmt&#34;</span>
@@ -3609,7 +3609,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 </span></span><span style="display:flex;"><span>	}
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>After compiling and running it (assuming your machine has 2 or more cores), you will get the following error:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>fatal error: concurrent map read and map write
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>fatal error: concurrent map read and map write
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>goroutine 1 [running]:
 </span></span><span style="display:flex;"><span>runtime.throw(0x10c3e05, 0x21)
@@ -3672,14 +3672,14 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 <p>Among them, the most important and complex is the Next method. Depending on whether a SELECT statement is used to retrieve data (<code>INSERT SELECT FROM</code>), the Next process is divided into two branches: <a href="https://github.com/pingcap/tidb/blob/ab332eba2a04bc0a996aa72e36190c779768d0f1/executor/insert_common.go#L180:24">insertRows</a> and <a href="https://github.com/pingcap/tidb/blob/ab332eba2a04bc0a996aa72e36190c779768d0f1/executor/insert_common.go#L277:24">insertRowsFromSelect</a>. Both processes eventually lead to the <code>exec</code> function to execute the INSERT.</p>
 <p>In the <code>exec</code> function, the first four types of INSERT statements are processed together. The standard INSERT covered in this section directly enters <a href="https://github.com/pingcap/tidb/blob/5bdf34b9bba3fc4d3e50a773fa8e14d5fca166d5/executor/insert.go#L42:22">insertOneRow</a>.</p>
 <p>Before discussing <a href="https://github.com/pingcap/tidb/blob/5bdf34b9bba3fc4d3e50a773fa8e14d5fca166d5/executor/insert.go#L42:22">insertOneRow</a>, let&rsquo;s look at a segment of SQL.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT <span style="color:#66d9ef">UNIQUE</span>);
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT <span style="color:#66d9ef">UNIQUE</span>);
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">1</span>);
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">BEGIN</span>;
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">1</span>);
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">COMMIT</span>;
 </span></span></code></pre></div><p>Paste these lines of SQL sequentially into MySQL and TiDB to see the results.</p>
 <p>MySQL:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT <span style="color:#66d9ef">UNIQUE</span>);
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT <span style="color:#66d9ef">UNIQUE</span>);
 </span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">rows</span> affected (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">15</span> sec)
 </span></span><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">1</span>);
 </span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> affected (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">01</span> sec)
@@ -3690,7 +3690,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 </span></span><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">COMMIT</span>;
 </span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">rows</span> affected (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">11</span> sec)
 </span></span></code></pre></div><p>TiDB:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT <span style="color:#66d9ef">UNIQUE</span>);
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT <span style="color:#66d9ef">UNIQUE</span>);
 </span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">rows</span> affected (<span style="color:#ae81ff">1</span>.<span style="color:#ae81ff">04</span> sec)
 </span></span><span style="display:flex;"><span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">1</span>);
 </span></span><span style="display:flex;"><span>Query OK, <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> affected (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">12</span> sec)
@@ -3719,7 +3719,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 <p>Initially, similar to <code>INSERT IGNORE</code>, the keys constructed from the data to be inserted are read out at once using <a href="https://github.com/pingcap/tidb/blob/c84a71d666b8732593e7a1f0ec3d9b730e50d7bf/kv/txn.go#L97:6">BatchGetValues</a>, resulting in a key-value map. Then, all records corresponding to the read keys are again read using a batch <a href="https://github.com/pingcap/tidb/blob/c84a71d666b8732593e7a1f0ec3d9b730e50d7bf/kv/txn.go#L97:6">BatchGetValues</a>, prepared for possible future UPDATE operations. The specific implementation is in <a href="https://github.com/pingcap/tidb/blob/3c0bfc19b252c129f918ab645c5e7d34d0c3d154/executor/batch_checker.go#L225:24">initDupOldRowValue</a>.</p>
 <p>Then, during conflict checking, if a conflict occurs, an UPDATE is performed first. As discussed in the Basic INSERT section earlier, TiDB executes INSERT in TiKV during commit. Similarly, UPDATE is also executed in TiKV during commit. In this UPDATE process, unique constraint conflicts might still occur. If so, then an error is returned. If the statement is <code>INSERT IGNORE ON DUPLICATE KEY UPDATE</code>, this error is ignored, and the next row proceeds.</p>
 <p>In the UPDATE from the previous step, another scenario can occur, as in the SQL below:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT <span style="color:#66d9ef">UNIQUE</span>);
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (i INT <span style="color:#66d9ef">UNIQUE</span>);
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> t <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">1</span>), (<span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">ON</span> DUPLICATE <span style="color:#66d9ef">KEY</span> <span style="color:#66d9ef">UPDATE</span> i <span style="color:#f92672">=</span> i;
 </span></span></code></pre></div><p>Here, it is clear that there are no original data in the table; the INSERT in the second line cannot read out possibly conflicting data, but there is a conflict between the two rows of data intended to be inserted themselves. Correct execution here should involve the first 1 being inserted normally, with the second 1 encountering conflict and updating the first 1. Thus, it is necessary to handle it as follows: remove the key-value of the data updated in the previous step from the initial step&rsquo;s key-value map, reconstruct unique constraint keys and values for the data from the UPDATE based on table information, and add this key-value pair back into the initial key-value map for subsequent data conflict checking. The detail implementation is in <a href="https://github.com/pingcap/tidb/blob/2fba9931c7ffbb6dd939d5b890508eaa21281b4f/executor/batch_checker.go#L232">fillBackKeys</a>. This scenario also arises in other INSERT statements like <code>INSERT IGNORE</code>, <code>REPLACE</code>, and <code>LOAD DATA</code>. It is introduced here because <code>INSERT ON DUPLICATE KEY UPDATE</code> showcases the full functionality of the <code>batchChecker</code>.</p>
 <p>Finally, after all data completes insertion/update, return information is set, and results are returned to the client.</p>
@@ -3732,7 +3732,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 <li>Return an error: <code>INSERT ON DUPLICATE KEY UPDATE</code></li>
 <li>No error: <code>INSERT IGNORE ON DUPLICATE KEY UPDATE</code>They all handle conflicts when a row of data conflicts with a row in the table differently. However, the REPLACE statement is distinct; it will delete all conflicting rows it encounters until there are no more conflicts, and then insert the data. If there are 5 unique indexes in the table, there could be 5 rows conflicting with the row waiting to be inserted. The REPLACE statement will delete these 5 rows all at once and then insert its own data. See the SQL below:</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> t (
 </span></span><span style="display:flex;"><span>i int <span style="color:#66d9ef">unique</span>,
 </span></span><span style="display:flex;"><span>j int <span style="color:#66d9ef">unique</span>,
 </span></span><span style="display:flex;"><span>k int <span style="color:#66d9ef">unique</span>,
@@ -3763,7 +3763,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 &lt;p&gt;&lt;code&gt;yum install haproxy&lt;/code&gt; is effective for CentOS 7. After installation, you can start the service using &lt;code&gt;systemctl start haproxy&lt;/code&gt;. But don&amp;rsquo;t rush yet.&lt;/p&gt;
 &lt;h2 id=&#34;configuring-haproxy&#34;&gt;Configuring HAProxy&lt;/h2&gt;
 &lt;p&gt;Add the following content to /etc/haproxy/haproxy.cfg.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;global &lt;span style=&#34;color:#75715e&#34;&gt;# The content of global is generally fixed and quite understandable.&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;global &lt;span style=&#34;color:#75715e&#34;&gt;# The content of global is generally fixed and quite understandable.&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        log 127.0.0.1   local2
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        maxconn &lt;span style=&#34;color:#ae81ff&#34;&gt;4096&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        user haproxy
@@ -3800,7 +3800,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 <p><code>yum install haproxy</code> is effective for CentOS 7. After installation, you can start the service using <code>systemctl start haproxy</code>. But don&rsquo;t rush yet.</p>
 <h2 id="configuring-haproxy">Configuring HAProxy</h2>
 <p>Add the following content to /etc/haproxy/haproxy.cfg.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>global <span style="color:#75715e"># The content of global is generally fixed and quite understandable.</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>global <span style="color:#75715e"># The content of global is generally fixed and quite understandable.</span>
 </span></span><span style="display:flex;"><span>        log 127.0.0.1   local2
 </span></span><span style="display:flex;"><span>        maxconn <span style="color:#ae81ff">4096</span>
 </span></span><span style="display:flex;"><span>        user haproxy
@@ -3836,7 +3836,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 <p><code>psql -Uroot -h127.0.0.1 -p3030 test</code> to connect to the database.</p>
 <h2 id="cockroachdb-official-recommendation">CockroachDB Official Recommendation</h2>
 <p>CockroachDB officially provided their recommended <a href="https://www.cockroachlabs.com/docs/stable/deploy-cockroachdb-on-premises.html">configuration</a>. In this configuration, they use:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>default
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>default
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># TCP keep-alive on client side. Server already enables them.</span>
 </span></span><span style="display:flex;"><span>    option              clitcpka
 </span></span><span style="display:flex;"><span>
@@ -3887,11 +3887,11 @@ Note 2: After the old window exits, the forked process seems to become an orphan
       <guid>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-sysbench/</guid>
       <description>&lt;h2 id=&#34;compiling-sysbench-with-pgsql-support&#34;&gt;Compiling Sysbench with pgsql Support&lt;/h2&gt;
 &lt;p&gt;CockroachDB uses the PostgreSQL protocol. If you want to use Sysbench for testing, you need to enable pg protocol support in Sysbench. Sysbench already supports the pg protocol, but it is not enabled by default during compilation. You can configure it with the following command:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./configure --with-pgsql
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./configure --with-pgsql
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Of course, preliminary work involves downloading the Sysbench source code and installing the necessary PostgreSQL header files required for compilation (you can use &lt;code&gt;yum&lt;/code&gt; or &lt;code&gt;sudo&lt;/code&gt; to install them).&lt;/p&gt;</description>
       <content:encoded><![CDATA[<h2 id="compiling-sysbench-with-pgsql-support">Compiling Sysbench with pgsql Support</h2>
 <p>CockroachDB uses the PostgreSQL protocol. If you want to use Sysbench for testing, you need to enable pg protocol support in Sysbench. Sysbench already supports the pg protocol, but it is not enabled by default during compilation. You can configure it with the following command:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>./configure --with-pgsql
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>./configure --with-pgsql
 </span></span></code></pre></div><p>Of course, preliminary work involves downloading the Sysbench source code and installing the necessary PostgreSQL header files required for compilation (you can use <code>yum</code> or <code>sudo</code> to install them).</p>
 <h2 id="testing">Testing</h2>
 <p>The testing method is no different from testing MySQL or PostgreSQL; you can test any of the create, read, update, delete (CRUD) operations you like. The only thing to note is to set <code>auto_inc</code> to <code>off</code>.</p>
@@ -3899,7 +3899,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 <p>That is:</p>
 <p>When <code>auto_inc = on</code> (which is the default value in Sysbench)</p>
 <h3 id="table-structure">Table Structure</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> sbtest1 (
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> sbtest1 (
 </span></span><span style="display:flex;"><span>   id INT <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> unique_rowid(),
 </span></span><span style="display:flex;"><span>   k INTEGER <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#ae81ff">0</span>:::INT,
 </span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">c</span> STRING(<span style="color:#ae81ff">120</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#e6db74">&#39;&#39;</span>:::STRING,
@@ -3909,7 +3909,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 </span></span><span style="display:flex;"><span>   FAMILY <span style="color:#e6db74">&#34;&#34;</span><span style="color:#66d9ef">primary</span><span style="color:#e6db74">&#34;&#34;</span> (id, k, <span style="color:#66d9ef">c</span>, <span style="color:#66d9ef">pad</span>)
 </span></span><span style="display:flex;"><span>)
 </span></span></code></pre></div><h3 id="data">Data</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>root<span style="color:#f92672">@</span>:<span style="color:#ae81ff">26257</span><span style="color:#f92672">/</span>sbtest<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> id <span style="color:#66d9ef">FROM</span> sbtest1 <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> id <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">1</span>;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>root<span style="color:#f92672">@</span>:<span style="color:#ae81ff">26257</span><span style="color:#f92672">/</span>sbtest<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> id <span style="color:#66d9ef">FROM</span> sbtest1 <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> id <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">1</span>;
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
 </span></span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>         id         <span style="color:#f92672">|</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
@@ -3917,10 +3917,10 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 </span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------+
 </span></span></span></code></pre></div><p>As you can see, the data does not start from <code>1</code>, nor is it sequential. Normally, the <code>id</code> in a Sysbench table should be within the range <code>[1, table_size]</code>.</p>
 <h3 id="sql">SQL</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">UPDATE</span> sbtest<span style="color:#f92672">%</span>u <span style="color:#66d9ef">SET</span> k <span style="color:#f92672">=</span> k <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">WHERE</span> id <span style="color:#f92672">=</span> <span style="color:#f92672">?</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">UPDATE</span> sbtest<span style="color:#f92672">%</span>u <span style="color:#66d9ef">SET</span> k <span style="color:#f92672">=</span> k <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">WHERE</span> id <span style="color:#f92672">=</span> <span style="color:#f92672">?</span>
 </span></span></code></pre></div><p>Taking the <code>UPDATE</code> statement as an example, <code>id</code> is used as the query condition. Sysbench assumes that this <code>id</code> should be between <code>[1, table_size]</code>, but in reality, it&rsquo;s not.</p>
 <h3 id="example-of-correct-testing-command-line">Example of Correct Testing Command Line</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sysbench --db-driver<span style="color:#f92672">=</span>pgsql --pgsql-host<span style="color:#f92672">=</span>127.0.0.1 --pgsql-port<span style="color:#f92672">=</span><span style="color:#ae81ff">26257</span> --pgsql-user<span style="color:#f92672">=</span>root --pgsql-db<span style="color:#f92672">=</span>sbtest <span style="color:#ae81ff">\
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sysbench --db-driver<span style="color:#f92672">=</span>pgsql --pgsql-host<span style="color:#f92672">=</span>127.0.0.1 --pgsql-port<span style="color:#f92672">=</span><span style="color:#ae81ff">26257</span> --pgsql-user<span style="color:#f92672">=</span>root --pgsql-db<span style="color:#f92672">=</span>sbtest <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span>        --time<span style="color:#f92672">=</span><span style="color:#ae81ff">180</span> --threads<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span> --report-interval<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span> --tables<span style="color:#f92672">=</span><span style="color:#ae81ff">32</span> --table-size<span style="color:#f92672">=</span><span style="color:#ae81ff">10000000</span> <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span>        oltp_update_index <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span>        --sum_ranges<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span> --distinct_ranges<span style="color:#f92672">=</span><span style="color:#ae81ff">50</span> --range_size<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> --simple_ranges<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> --order_ranges<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span> <span style="color:#ae81ff">\
@@ -4079,7 +4079,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 <p>For MySQL&rsquo;s supported online DDL, see <a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-create-index-overview.html">this webpage</a>. Primarily, it&rsquo;s categorized into operations on indexes and columns. This explains my curiosity about why TiDB&rsquo;s examples for implementation often involve adding indexes.</p>
 <h3 id="f1s-method">F1&rsquo;s Method</h3>
 <p>Having worked on something similar to Aurora before, there were many issues with this area. If you&rsquo;re only performing offline DDL, it doesn&rsquo;t have to be this complicated. According to F1&rsquo;s paper, it uses the following series of state changes to accomplish a DDL:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>                                    (reorganization)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>                                    (reorganization)
 </span></span><span style="display:flex;"><span>absent -&gt; delete only -&gt; write only ---------------&gt; public
 </span></span></code></pre></div><p>In this sequence, each node passes through these four states, transitioning to the next state upon receiving a command. The agreed-upon rule is that each state doesn&rsquo;t persist for more than twice the lease time across all nodes. How is this ensured? Through the following rule: if a node takes too long to move to the next state after receiving the transition command (meaning a state exceeds twice the lease time), it means the node received the command too late and will stop providing services and shut down.</p>
 <p>Within these four states, &lsquo;absent&rsquo; indicates a state where the node hasn&rsquo;t received instructions yet, and &lsquo;public&rsquo; signifies the completion of the DDL. What about the two middle states? The background link described them as follows:</p>
@@ -4219,7 +4219,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 &lt;h2 id=&#34;process&#34;&gt;Process&lt;/h2&gt;
 &lt;p&gt;The basic process references &lt;a href=&#34;https://gist.github.com/Maumagnaguagno/84a9807ed71d233e5d3f&#34;&gt;this gist&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Below is the &lt;code&gt;.travis.yml&lt;/code&gt; from the gist.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-yml&#34; data-lang=&#34;yml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;language&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;ruby&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-yml&#34; data-lang=&#34;yml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;language&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;ruby&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;rvm&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  - &lt;span style=&#34;color:#ae81ff&#34;&gt;2.0.0&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;env&lt;/span&gt;:
@@ -4249,7 +4249,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 <h2 id="process">Process</h2>
 <p>The basic process references <a href="https://gist.github.com/Maumagnaguagno/84a9807ed71d233e5d3f">this gist</a>.</p>
 <p>Below is the <code>.travis.yml</code> from the gist.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">language</span>: <span style="color:#ae81ff">ruby</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">language</span>: <span style="color:#ae81ff">ruby</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">rvm</span>:
 </span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">2.0.0</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">env</span>:
@@ -4275,7 +4275,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 </span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git push &#34;https://${GH_TOKEN}@${GH_REPO}&#34; master &gt; /dev/null 2&gt;&amp;1</span>
 </span></span></code></pre></div><p>Note here that MESSAGE should be quoted when committing, which the original gist did not include.</p>
 <p>Original README:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># Travis-CI tested push
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># Travis-CI tested push
 </span></span><span style="display:flex;"><span>Sometimes we have a private repository to hold both problems and solutions as a reference for the class projects.
 </span></span><span style="display:flex;"><span>The students can see only the problems in a public repository where they are able to clone/fork and develop their own solutions.
 </span></span><span style="display:flex;"><span>We do not want the solution files in the public repository and each bug found/feature added in the project requires a push for each repository.
@@ -4306,7 +4306,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 <li>Commit the modified configuration file.</li>
 </ol>
 <p>This translation is not strictly literal. <strong>The above content is more suited to the following personal configuration:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">language</span>: <span style="color:#ae81ff">ruby</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">language</span>: <span style="color:#ae81ff">ruby</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">branches</span>:
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">only</span>:
 </span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">master</span>
@@ -4398,7 +4398,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 <li>Implement the decoding and handling of messages. Although only a sentence, the workload included is substantial.</li>
 </ol>
 <p>In <code>mysqlx_all_msgs.h</code>, all messages are initialized</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>  init_message_factory()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>  init_message_factory()
 </span></span><span style="display:flex;"><span>  {
 </span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Connection<span style="color:#f92672">::</span>Capabilities<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>CONN_CAPABILITIES, <span style="color:#e6db74">&#34;CONN_CAPABILITIES&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Connection.Capabilities&#34;</span>);
 </span></span><span style="display:flex;"><span>    server_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Error<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ServerMessages<span style="color:#f92672">::</span>ERROR, <span style="color:#e6db74">&#34;ERROR&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Error&#34;</span>);
@@ -4430,7 +4430,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 </span></span><span style="display:flex;"><span>    client_message<span style="color:#f92672">&lt;</span>Mysqlx<span style="color:#f92672">::</span>Sql<span style="color:#f92672">::</span>StmtExecute<span style="color:#f92672">&gt;</span>(Mysqlx<span style="color:#f92672">::</span>ClientMessages<span style="color:#f92672">::</span>SQL_STMT_EXECUTE, <span style="color:#e6db74">&#34;SQL_STMT_EXECUTE&#34;</span>, <span style="color:#e6db74">&#34;Mysqlx.Sql.StmtExecute&#34;</span>);
 </span></span><span style="display:flex;"><span>  }
 </span></span></code></pre></div><p>Server and client messages are that many. Client messages are dispatched in <code>xpl_dispatcher.cc</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>ngs<span style="color:#f92672">::</span>Error_code do_dispatch_command(xpl<span style="color:#f92672">::</span>Session <span style="color:#f92672">&amp;</span>session, xpl<span style="color:#f92672">::</span>Crud_command_handler <span style="color:#f92672">&amp;</span>crudh,
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>ngs<span style="color:#f92672">::</span>Error_code do_dispatch_command(xpl<span style="color:#f92672">::</span>Session <span style="color:#f92672">&amp;</span>session, xpl<span style="color:#f92672">::</span>Crud_command_handler <span style="color:#f92672">&amp;</span>crudh,
 </span></span><span style="display:flex;"><span>                                    xpl<span style="color:#f92672">::</span>Expectation_stack <span style="color:#f92672">&amp;</span>expect, ngs<span style="color:#f92672">::</span>Request <span style="color:#f92672">&amp;</span>command)
 </span></span><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">switch</span> (command.get_type())
@@ -4470,10 +4470,10 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> ngs<span style="color:#f92672">::</span>Error(ER_UNKNOWN_COM_ERROR, <span style="color:#e6db74">&#34;Unexpected message received&#34;</span>);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>The rest is filling in the gaps.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Client::run =&gt; Client::handle_message =&gt; Session::handle_message =&gt; Session::handle_auth_message =&gt; some auth handlers
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Client::run =&gt; Client::handle_message =&gt; Session::handle_message =&gt; Session::handle_auth_message =&gt; some auth handlers
 </span></span><span style="display:flex;"><span>                                                                 =&gt; Session::handle_ready_message =&gt; xpl::dispatcher::dispatch_command =&gt; ngs::Error_code do_dispatch_command =&gt; some crud handlers
 </span></span></code></pre></div><p>Mapping between MySQL type and X protocol type</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>//     ================= ============ ======= ========== ====== ========
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>//     ================= ============ ======= ========== ====== ========
 </span></span><span style="display:flex;"><span>//     SQL Type          .type        .length .frac_dig  .flags .charset
 </span></span><span style="display:flex;"><span>//     ================= ============ ======= ========== ====== ========
 </span></span><span style="display:flex;"><span>//     TINY              SINT         x
@@ -4502,7 +4502,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 </span></span><span style="display:flex;"><span>//     BIT               BIT          x
 </span></span><span style="display:flex;"><span>//     ================= ============ ======= ========== ====== ========
 </span></span></code></pre></div><p>The first SQL field information of MySQL:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Field   1:  `@@lower_case_table_names`
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Field   1:  `@@lower_case_table_names`
 </span></span><span style="display:flex;"><span>Catalog:    `def`
 </span></span><span style="display:flex;"><span>Database:   ``
 </span></span><span style="display:flex;"><span>Table:      ``
@@ -4538,7 +4538,7 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 </span></span><span style="display:flex;"><span>Decimals:   0
 </span></span><span style="display:flex;"><span>Flags:      
 </span></span></code></pre></div><p>For TiDB:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Field   1:  `@@lower_case_table_names`
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Field   1:  `@@lower_case_table_names`
 </span></span><span style="display:flex;"><span>Catalog:    `def`
 </span></span><span style="display:flex;"><span>Database:   ``
 </span></span><span style="display:flex;"><span>Table:      ``
@@ -4585,13 +4585,13 @@ Note 2: After the old window exits, the forked process seems to become an orphan
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Disable SeLinux&lt;/strong&gt;&lt;br&gt;
 Edit the configuration file:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vi /etc/selinux/config
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vi /etc/selinux/config
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Modify as follows:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#SELINUX=enforcing    # Comment out
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#SELINUX=enforcing    # Comment out
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#SELINUXTYPE=targeted # Comment out
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;SELINUX=disabled      # Add this line
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then reboot the system:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;reboot  &lt;span style=&#34;color:#75715e&#34;&gt;# Restart the system&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;reboot  &lt;span style=&#34;color:#75715e&#34;&gt;# Restart the system&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Create a Directory&lt;/strong&gt;&lt;br&gt;
@@ -4601,13 +4601,13 @@ Using the root user, create a directory named &lt;code&gt;/nfs&lt;/code&gt;. Not
 <li>
 <p><strong>Disable SeLinux</strong><br>
 Edit the configuration file:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/selinux/config
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/selinux/config
 </span></span></code></pre></div><p>Modify as follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#SELINUX=enforcing    # Comment out
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#SELINUX=enforcing    # Comment out
 </span></span><span style="display:flex;"><span>#SELINUXTYPE=targeted # Comment out
 </span></span><span style="display:flex;"><span>SELINUX=disabled      # Add this line
 </span></span></code></pre></div><p>Then reboot the system:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>reboot  <span style="color:#75715e"># Restart the system</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>reboot  <span style="color:#75715e"># Restart the system</span>
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Create a Directory</strong><br>
@@ -4615,24 +4615,24 @@ Using the root user, create a directory named <code>/nfs</code>. Note: It&rsquo;
 </li>
 <li>
 <p><strong>Install NFS Utilities and RPC Bind</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yum -y install nfs-utils rpcbind
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yum -y install nfs-utils rpcbind
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Enable Services at Boot</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chkconfig nfs on
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chkconfig nfs on
 </span></span><span style="display:flex;"><span>chkconfig rpcbind on
 </span></span><span style="display:flex;"><span>chkconfig nfslock on
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Configure Exports</strong><br>
 Edit the NFS exports file:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/exports
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/exports
 </span></span></code></pre></div><p>Add the following line:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>/home/nfs 192.168.1.0/24(rw,sync,no_all_squash)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>/home/nfs 192.168.1.0/24(rw,sync,no_all_squash)
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Start NFS Services</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service rpcbind start
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service rpcbind start
 </span></span><span style="display:flex;"><span>service nfs start
 </span></span><span style="display:flex;"><span>service nfslock start
 </span></span><span style="display:flex;"><span>exportfs -a
@@ -4640,63 +4640,63 @@ Edit the NFS exports file:</p>
 <li>
 <p><strong>Configure NFS Ports</strong><br>
 Edit the NFS configuration file:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/sysconfig/nfs
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/sysconfig/nfs
 </span></span></code></pre></div><p>Uncomment the following lines:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>LOCKD_TCPPORT=32803
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>LOCKD_TCPPORT=32803
 </span></span><span style="display:flex;"><span>LOCKD_UDPPORT=32769
 </span></span><span style="display:flex;"><span>MOUNTD_PORT=892
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Restart NFS Services</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service rpcbind restart
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service rpcbind restart
 </span></span><span style="display:flex;"><span>service nfs restart
 </span></span><span style="display:flex;"><span>service nfslock restart
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Verify RPC Services</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpcinfo -p localhost
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpcinfo -p localhost
 </span></span></code></pre></div><p>Note down the ports and their types.</p>
 </li>
 <li>
 <p><strong>Configure Firewall Rules</strong><br>
 Adjust the IP range according to your network:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>iptables -I INPUT -m state --state NEW -p tcp -m multiport --dport 111,892,2049,32803 -s 192.168.0.0/24 -j ACCEPT
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>iptables -I INPUT -m state --state NEW -p tcp -m multiport --dport 111,892,2049,32803 -s 192.168.0.0/24 -j ACCEPT
 </span></span><span style="display:flex;"><span>iptables -I INPUT -m state --state NEW -p udp -m multiport --dport 111,892,2049,32769 -s 192.168.0.0/24 -j ACCEPT
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Save Firewall Rules</strong><br>
 Test from the client side. If successful, save the iptables configuration:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service iptables save
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service iptables save
 </span></span></code></pre></div></li>
 </ol>
 <h2 id="client-side">Client Side</h2>
 <ol>
 <li>
 <p><strong>Create Mount Point</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir /nfs
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir /nfs
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Check RPC Services on Server</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpcinfo -p <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpcinfo -p <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Show NFS Exports</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>showmount -e <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>showmount -e <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Mount NFS Share</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mount -t nfs -o soft,intr,bg,rw <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>:/home/nfs /nfs
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mount -t nfs -o soft,intr,bg,rw <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>:/home/nfs /nfs
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Unmount NFS Share</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>umount /nfs
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>umount /nfs
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Configure Automatic Mounting</strong><br>
 Edit the fstab file:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/fstab
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/fstab
 </span></span></code></pre></div><p>Add the following line:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[server_ip]:/home/nfs /nfs nfs soft,intr,bg,rw 0 0
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[server_ip]:/home/nfs /nfs nfs soft,intr,bg,rw 0 0
 </span></span></code></pre></div></li>
 </ol>
 ]]></content:encoded>
@@ -4725,15 +4725,15 @@ Edit the fstab file:</p>
 <ol>
 <li>
 <p><strong>Check if <code>bridge-utils</code> is installed:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpm -q bridge-utils
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpm -q bridge-utils
 </span></span></code></pre></div><p>Usually, it&rsquo;s already installed. If not, install it:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su -
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su -
 </span></span><span style="display:flex;"><span>yum install bridge-utils
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Verify your network interfaces:</strong></p>
 <p>Run <code>ifconfig</code> to ensure you have at least three network interfaces:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>eth0      Link encap:Ethernet  HWaddr 00:18:E7:16:DA:65
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>eth0      Link encap:Ethernet  HWaddr 00:18:E7:16:DA:65
 </span></span><span style="display:flex;"><span>          inet addr:192.168.0.117  Bcast:192.168.0.255  Mask:255.255.255.0
 </span></span><span style="display:flex;"><span>          inet6 addr: fe80::218:e7ff:fe16:da65/64 Scope:Link
 </span></span><span style="display:flex;"><span>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
@@ -4762,25 +4762,25 @@ Edit the fstab file:</p>
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Navigate to the network scripts directory:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su –
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su –
 </span></span><span style="display:flex;"><span>cd /etc/sysconfig/network-scripts
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Bring down the <code>eth0</code> interface:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifdown eth0
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifdown eth0
 </span></span></code></pre></div><p><em>This step is crucial and must be performed locally.</em> When I first configured this, I didn&rsquo;t shut down the network (since I was working remotely). I didn&rsquo;t realize that updating the <code>ifcfg-eth0</code> configuration without restarting the network would immediately apply changes, resulting in loss of network connectivity.</p>
 </li>
 <li>
 <p><strong>Edit <code>ifcfg-eth0</code>:</strong></p>
 <p>In the <code>ifcfg-eth0</code> file, include:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=eth0
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=eth0
 </span></span><span style="display:flex;"><span>ONBOOT=yes
 </span></span><span style="display:flex;"><span>BRIDGE=br0
 </span></span></code></pre></div><p>Keep only these three lines in the file. There&rsquo;s no need to configure an IP address here. Bridging seems to replace the original network card with the bridge, so you can delegate the configuration to the bridge.</p>
 </li>
 <li>
 <p><strong>Create a new file <code>ifcfg-br0</code>:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=br0
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=br0
 </span></span><span style="display:flex;"><span>ONBOOT=yes
 </span></span><span style="display:flex;"><span>TYPE=Bridge
 </span></span><span style="display:flex;"><span>BOOTPROTO=static
@@ -4795,7 +4795,7 @@ Edit the fstab file:</p>
 </li>
 <li>
 <p><strong>Bring up the interfaces:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifup br0
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifup br0
 </span></span><span style="display:flex;"><span>ifup eth0
 </span></span></code></pre></div></li>
 <li>
@@ -4805,12 +4805,12 @@ Edit the fstab file:</p>
 <li>
 <p><strong>Update firewall rules:</strong></p>
 <p>Edit <code>/etc/sysconfig/iptables</code> and add:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>-A INPUT -i br0 -j ACCEPT
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>-A INPUT -i br0 -j ACCEPT
 </span></span></code></pre></div><p><em>(This is a general example; you may need to adjust it based on your specific firewall configuration.)</em></p>
 </li>
 <li>
 <p><strong>Restart the firewall:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service iptables restart
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service iptables restart
 </span></span></code></pre></div></li>
 <li>
 <p><strong>Configure bridging in <code>virt-manager</code>:</strong></p>
