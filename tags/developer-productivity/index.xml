@@ -161,9 +161,9 @@
 <h3 id="hugo-site-configuration">Hugo Site Configuration</h3>
 <p>Posts follow Hugo&rsquo;s standard structure:</p>
 <ul>
-<li><strong>Location</strong>: <code>content/posts/</code></li>
+<li><strong>Location</strong>: <code>content/posts/&lt;slug&gt;/index.md</code></li>
 <li><strong>Format</strong>: YAML front matter + Markdown content</li>
-<li><strong>Images</strong>: Stored in <code>content/posts/images/</code></li>
+<li><strong>Images</strong>: Stored in each post bundle and referenced with relative filenames</li>
 <li><strong>Draft control</strong>: <code>draft: true/false</code> for preview/publish</li>
 </ul>
 <h2 id="the-future-ai-augmented-documentation">The Future: AI-Augmented Documentation</h2>

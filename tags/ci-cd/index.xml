@@ -25,7 +25,7 @@
       <content:encoded><![CDATA[<p>In <a href="/posts/travis-git-push">this post</a>, I used Travis to enable automatic blog publishing. However, I recently discovered that Travis does not run automatically anymore (though it works manually). I haven’t looked into it closely because GitHub Actions have been introduced, so I decided to move all dependencies to GitHub.</p>
 <h2 id="go-action">Go Action</h2>
 <p>Click on Actions on the repository page, and then New Workflow to see recommended actions. Since this blog uses Go code, it shows the Go Action.</p>
-<p><img alt="goaction" loading="lazy" src="/posts/images/20201216163209.webp"></p>
+<p><img alt="goaction" loading="lazy" src="/posts/how-to-automatically-publish-a-blog-using-github-actions/20201216163209.webp"></p>
 <p>The rest involves following Travis&rsquo;s approach to set up the workflow.</p>
 <ol>
 <li>Check out the blog&rsquo;s repo</li>
