@@ -19,7 +19,7 @@
       <link>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-5/</link>
       <pubDate>Tue, 08 Sep 2020 11:36:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-5/</guid>
-      <description>&lt;p&gt;When using TiDB, you may occasionally encounter some exceptions, such as the &amp;ldquo;Lost connection to MySQL server during query&amp;rdquo; error. This indicates that the connection between the client and the database has been disconnected (not due to user action). The reasons for disconnection can vary. This article attempts to analyze some common TiDB errors from the perspective of exception handling and code analysis. Additionally, some exceptions are not errors but performance issues due to slow execution. In the second half of this article, we will also introduce common tools for tracking performance.&lt;/p&gt;</description>
+      <description>When using TiDB, you may occasionally encounter some exceptions, such as the &amp;#34;Lost connection to MySQL server during query&amp;#34; error. This indicates that the connection between the...</description>
       <content:encoded><![CDATA[<p>When using TiDB, you may occasionally encounter some exceptions, such as the &ldquo;Lost connection to MySQL server during query&rdquo; error. This indicates that the connection between the client and the database has been disconnected (not due to user action). The reasons for disconnection can vary. This article attempts to analyze some common TiDB errors from the perspective of exception handling and code analysis. Additionally, some exceptions are not errors but performance issues due to slow execution. In the second half of this article, we will also introduce common tools for tracking performance.</p>
 <h2 id="lost-connection">Lost Connection</h2>
 <p>There are generally three reasons for a Lost Connection:</p>
@@ -80,15 +80,7 @@
       <link>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-4/</link>
       <pubDate>Fri, 31 Jul 2020 10:58:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-4/</guid>
-      <description>&lt;p&gt;This article will introduce some key functions and the interpretation of logs in TiDB.&lt;/p&gt;
-&lt;h2 id=&#34;key-functions&#34;&gt;Key Functions&lt;/h2&gt;
-&lt;p&gt;The definition of key functions varies from person to person, so the content of this section is subjective.&lt;/p&gt;
-&lt;h3 id=&#34;execute&#34;&gt;execute&lt;/h3&gt;
-&lt;p&gt;&lt;img alt=&#34;func&#34; loading=&#34;lazy&#34; src=&#34;https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-4/20200812152326.webp&#34;&gt;&lt;/p&gt;
-&lt;p&gt;The &lt;code&gt;execute&lt;/code&gt; function is the necessary pathway for text protocol execution. It also nicely demonstrates the various processes of SQL handling.&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;ParseSQL analyzes the SQL. The final implementation is in the parser, where SQL is parsed according to the rules introduced in the second article. Note that the parsed SQL may be a single statement or multiple statements. TiDB itself supports the multi-SQL feature, allowing multiple SQL statements to be executed at once.&lt;/p&gt;</description>
+      <description>This article will introduce some key functions and the interpretation of logs in TiDB.</description>
       <content:encoded><![CDATA[<p>This article will introduce some key functions and the interpretation of logs in TiDB.</p>
 <h2 id="key-functions">Key Functions</h2>
 <p>The definition of key functions varies from person to person, so the content of this section is subjective.</p>
@@ -187,11 +179,7 @@
       <link>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-3/</link>
       <pubDate>Tue, 28 Jul 2020 11:47:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-3/</guid>
-      <description>&lt;p&gt;In the previous article, we introduced methods for viewing syntax and configurations. In this article, we will discuss how to view system variables, including default values, scopes, and how to monitor metrics.&lt;/p&gt;
-&lt;h2 id=&#34;system-variables&#34;&gt;System Variables&lt;/h2&gt;
-&lt;p&gt;The system variable names in TiDB are defined in &lt;a href=&#34;https://github.com/pingcap/tidb/blob/db0310b17901b1a59f7f728294455ed9667f88ac/sessionctx/variable/tidb_vars.go&#34;&gt;tidb_vars.go&lt;/a&gt;. This file also includes some default values for variables, but the place where they are actually assembled is &lt;a href=&#34;https://github.com/pingcap/tidb/blob/12aac547a9068c404ad18093ae4d0ea4d060a465/sessionctx/variable/sysvar.go#L96&#34;&gt;defaultSysVars&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img alt=&#34;defaultSysVars&#34; loading=&#34;lazy&#34; src=&#34;https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-3/20200728151254.webp&#34;&gt;&lt;/p&gt;
-&lt;p&gt;This large struct array defines the scope, variable names, and default values for all variables in TiDB. Besides TiDB&amp;rsquo;s own system variables, it also includes compatibility with MySQL&amp;rsquo;s system variables.&lt;/p&gt;</description>
+      <description>In the previous article, we introduced methods for viewing syntax and configurations. In this article, we will discuss how to view system variables, including default values,...</description>
       <content:encoded><![CDATA[<p>In the previous article, we introduced methods for viewing syntax and configurations. In this article, we will discuss how to view system variables, including default values, scopes, and how to monitor metrics.</p>
 <h2 id="system-variables">System Variables</h2>
 <p>The system variable names in TiDB are defined in <a href="https://github.com/pingcap/tidb/blob/db0310b17901b1a59f7f728294455ed9667f88ac/sessionctx/variable/tidb_vars.go">tidb_vars.go</a>. This file also includes some default values for variables, but the place where they are actually assembled is <a href="https://github.com/pingcap/tidb/blob/12aac547a9068c404ad18093ae4d0ea4d060a465/sessionctx/variable/sysvar.go#L96">defaultSysVars</a>.</p>
@@ -379,14 +367,7 @@ All Metrics in TiDB are uniformly located <a href="https://github.com/pingcap/ti
       <link>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-2/</link>
       <pubDate>Sun, 12 Jul 2020 12:09:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-2/</guid>
-      <description>&lt;p&gt;Continuing from &lt;a href=&#34;https://blog.minifish.org/posts/tidb1&#34;&gt;the previous article&lt;/a&gt;, we learned how to set up the environment for reading code and where to start reading the code. In this part, we&amp;rsquo;ll introduce methods for viewing code based on some common needs.&lt;/p&gt;
-&lt;h2 id=&#34;how-to-check-the-support-level-of-a-syntax&#34;&gt;How to Check the Support Level of a Syntax&lt;/h2&gt;
-&lt;p&gt;There are usually two methods:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Check through the parser repo&lt;/li&gt;
-&lt;li&gt;Directly check within the TiDB repo&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Both of these methods require the &lt;a href=&#34;https://blog.minifish.org/posts/tidb1#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA&#34;&gt;environment setup from the previous article&lt;/a&gt;. If you haven&amp;rsquo;t tried that yet, give it a go.&lt;/p&gt;</description>
+      <description>Continuing from the previous article, we learned how to set up the environment for reading code and where to start reading the code. In this part, we&amp;#39;ll introduce methods for...</description>
       <content:encoded><![CDATA[<p>Continuing from <a href="/posts/tidb1">the previous article</a>, we learned how to set up the environment for reading code and where to start reading the code. In this part, we&rsquo;ll introduce methods for viewing code based on some common needs.</p>
 <h2 id="how-to-check-the-support-level-of-a-syntax">How to Check the Support Level of a Syntax</h2>
 <p>There are usually two methods:</p>
@@ -474,13 +455,7 @@ All Metrics in TiDB are uniformly located <a href="https://github.com/pingcap/ti
       <link>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-1/</link>
       <pubDate>Mon, 06 Jul 2020 16:51:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-1/</guid>
-      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
-&lt;p&gt;There are many articles on reading the source code of TiDB, often referred to as &lt;a href=&#34;https://pingcap.com/blog-cn/#TiDB-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB&#34;&gt;the &amp;ldquo;Twenty-Four Chapters Scriptures&amp;rdquo;&lt;/a&gt;. However, these introductions typically proceed from a macro to a micro perspective. This series attempts to introduce how to read TiDB&amp;rsquo;s source code from an easier angle. The goals we aim to achieve are:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Enable readers to start reading TiDB&amp;rsquo;s code themselves, rather than understanding it passively through pre-written articles.&lt;/li&gt;
-&lt;li&gt;Provide some common examples of looking into the details of the code, such as examining the scope of a variable.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;After all, teaching people to fish is better than giving them fish. While the code changes often, the methods remain mostly unchanged.&lt;/p&gt;</description>
+      <description>There are many articles on reading the source code of TiDB, often referred to as the &amp;#34;Twenty-Four Chapters Scriptures&amp;#34;. However, these introductions typically proceed from a macro...</description>
       <content:encoded><![CDATA[<h2 id="background">Background</h2>
 <p>There are many articles on reading the source code of TiDB, often referred to as <a href="https://pingcap.com/blog-cn/#TiDB-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB">the &ldquo;Twenty-Four Chapters Scriptures&rdquo;</a>. However, these introductions typically proceed from a macro to a micro perspective. This series attempts to introduce how to read TiDB&rsquo;s source code from an easier angle. The goals we aim to achieve are:</p>
 <ol>

@@ -19,9 +19,7 @@
       <link>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-benchmarksql/</link>
       <pubDate>Fri, 06 Jul 2018 21:21:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-benchmarksql/</guid>
-      <description>&lt;h2 id=&#34;why-test-tpc-c&#34;&gt;Why Test TPC-C&lt;/h2&gt;
-&lt;p&gt;First of all, TPC-C is the de facto OLTP benchmark standard. It is a set of specifications, and any database can publish its test results under this standard, so there&amp;rsquo;s no issue of quarreling over the testing tools used.&lt;/p&gt;
-&lt;p&gt;Secondly, TPC-C is closer to real-world scenarios as it includes a transaction model within it. In the flow of this transaction model, there are both high-frequency simple transaction statements and low-frequency inventory query statements. Therefore, it tests the database more comprehensively and practically.&lt;/p&gt;</description>
+      <description>First of all, TPC-C is the de facto OLTP benchmark standard. It is a set of specifications, and any database can publish its test results under this standard, so there&amp;#39;s no issue...</description>
       <content:encoded><![CDATA[<h2 id="why-test-tpc-c">Why Test TPC-C</h2>
 <p>First of all, TPC-C is the de facto OLTP benchmark standard. It is a set of specifications, and any database can publish its test results under this standard, so there&rsquo;s no issue of quarreling over the testing tools used.</p>
 <p>Secondly, TPC-C is closer to real-world scenarios as it includes a transaction model within it. In the flow of this transaction model, there are both high-frequency simple transaction statements and low-frequency inventory query statements. Therefore, it tests the database more comprehensively and practically.</p>

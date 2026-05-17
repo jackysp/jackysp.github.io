@@ -19,7 +19,7 @@
       <link>https://blog.minifish.org/posts/symphony-solo-dev-blog/</link>
       <pubDate>Fri, 20 Mar 2026 21:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/symphony-solo-dev-blog/</guid>
-      <description>Hands-on Symphony setup plus an unapologetic thesis: orchestration collapses the PM–engineer relay; B2B should route first-hand demand straight into automated build, test, and ship. Checklists and links included.</description>
+      <description>A hands-on report on running OpenAI Symphony with Linear, GitHub, and Codex across two personal repositories.</description>
       <content:encoded><![CDATA[<p>I recently spent a session getting <a href="https://github.com/openai/symphony">OpenAI Symphony</a> working on two personal repositories in a solo-developer setup. The goal was simple: use <a href="https://linear.app/">Linear</a> as the task queue, let Symphony pick up issues automatically, and have Codex make code changes with as little manual coordination as possible.</p>
 <p>This post is intentionally sanitized. I am not including tokens, local machine details, private paths, secrets, or any internal repository configuration that should not be published.</p>
 <h2 id="official-symphony-resources">Official Symphony resources</h2>
@@ -374,15 +374,13 @@
       <link>https://blog.minifish.org/posts/ai-mcp-blog-publishing-workflow/</link>
       <pubDate>Mon, 19 Jan 2026 10:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/ai-mcp-blog-publishing-workflow/</guid>
-      <description>&lt;h2 id=&#34;the-problem-lost-context-lost-thoughts&#34;&gt;The Problem: Lost Context, Lost Thoughts&lt;/h2&gt;
-&lt;p&gt;We&amp;rsquo;ve all been there. You&amp;rsquo;re deep in a technical discussion with an AI assistant—analyzing code, exploring architecture, or debugging a complex issue. The conversation is rich with insights, and you think: &amp;ldquo;This would make a great blog post.&amp;rdquo;&lt;/p&gt;
-&lt;p&gt;But then reality hits: you need to switch to your blog repository, format the content, commit it, push it, and wait for the build. By the time you&amp;rsquo;re back, the original context is gone, and the momentum is lost.&lt;/p&gt;</description>
+      <description>A practical publishing workflow that turns AI conversations into Hugo posts through MCP, GitHub Actions, and a structured blog repository.</description>
       <content:encoded><![CDATA[<h2 id="the-problem-lost-context-lost-thoughts">The Problem: Lost Context, Lost Thoughts</h2>
 <p>We&rsquo;ve all been there. You&rsquo;re deep in a technical discussion with an AI assistant—analyzing code, exploring architecture, or debugging a complex issue. The conversation is rich with insights, and you think: &ldquo;This would make a great blog post.&rdquo;</p>
 <p>But then reality hits: you need to switch to your blog repository, format the content, commit it, push it, and wait for the build. By the time you&rsquo;re back, the original context is gone, and the momentum is lost.</p>
 <p><strong>What if you could publish directly from where you are?</strong></p>
 <h2 id="building-on-existing-automation">Building on Existing Automation</h2>
-<p>In <a href="/posts/github-action">my previous post about automatically publishing a blog using GitHub Actions</a>, I set up a workflow where pushing to the blog repository triggers an automatic build and deployment to GitHub Pages. This solved the build and deployment automation, but there was still one manual step remaining: creating the post file itself.</p>
+<p>In <a href="/posts/how-to-automatically-publish-a-blog-using-github-actions/">my previous post about automatically publishing a blog using GitHub Actions</a>, I set up a workflow where pushing to the blog repository triggers an automatic build and deployment to GitHub Pages. This solved the build and deployment automation, but there was still one manual step remaining: creating the post file itself.</p>
 <p>The workflow I described there handles:</p>
 <ol>
 <li>Checking out the blog repository</li>
@@ -411,7 +409,7 @@
                    ▼
 ┌─────────────────────────────────────────────────────────┐
 │  Blog Repository (jackysp/blog)                         │
-│  - content/posts/[new-post].md                          │
+│  - content/posts/&lt;slug&gt;/index.md                        │
 │  - Commit: &#34;Publish: [title]&#34;                           │
 └──────────────────┬──────────────────────────────────────┘
                    │
@@ -451,7 +449,7 @@
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">on</span>:
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">master ]</span>
-</span></span></code></pre></div><p>The workflow (as detailed in <a href="/posts/github-action">the previous post</a>):</p>
+</span></span></code></pre></div><p>The workflow (as detailed in <a href="/posts/how-to-automatically-publish-a-blog-using-github-actions/">the previous post</a>):</p>
 <ol>
 <li>Checks out the blog repository with submodules</li>
 <li>Builds the Hugo site using <code>make</code></li>
@@ -505,7 +503,7 @@
 <li>Branch management</li>
 </ul>
 <h3 id="github-actions-workflow">GitHub Actions Workflow</h3>
-<p>The CI/CD pipeline (as described in <a href="/posts/github-action">the previous post</a>) handles:</p>
+<p>The CI/CD pipeline (as described in <a href="/posts/how-to-automatically-publish-a-blog-using-github-actions/">the previous post</a>) handles:</p>
 <ul>
 <li>Go environment setup (for Hugo builds)</li>
 <li>Repository checkout with submodules</li>
@@ -539,7 +537,7 @@
 <h2 id="getting-started">Getting Started</h2>
 <p>If you want to set up a similar workflow:</p>
 <ol>
-<li><strong>Set up automated publishing</strong> (see <a href="/posts/github-action">my previous post</a>)</li>
+<li><strong>Set up automated publishing</strong> (see <a href="/posts/how-to-automatically-publish-a-blog-using-github-actions/">my previous post</a>)</li>
 <li><strong>Enable MCP in your AI agent</strong> (Cursor, Claude Desktop, etc.)</li>
 <li><strong>Configure GitHub MCP server</strong> with repository access</li>
 <li><strong>Define publishing contracts</strong> for governance</li>
@@ -559,8 +557,7 @@
       <link>https://blog.minifish.org/posts/harnessing-ai-to-create-high-quality-podcasts-quickly-and-for-free/</link>
       <pubDate>Wed, 11 Dec 2024 17:11:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/harnessing-ai-to-create-high-quality-podcasts-quickly-and-for-free/</guid>
-      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;As a long-time podcaster, I&amp;rsquo;ve always enjoyed sharing my thoughts and ideas through audio. While the world of video content—and the role of a YouTuber—has its allure, the complexities of video editing have kept me anchored in the realm of podcasting. My journey has involved leveraging platforms like &lt;a href=&#34;https://creators.spotify.com/&#34;&gt;&lt;strong&gt;Spotify Creator&lt;/strong&gt;&lt;/a&gt; (formerly &lt;strong&gt;Anchor&lt;/strong&gt;) for hosting and distributing my recordings. This platform offers a wide array of features for free, including audio recording, editing capabilities, and automatic promotion to Spotify.&lt;/p&gt;</description>
+      <description>As a long-time podcaster, I&amp;#39;ve always enjoyed sharing my thoughts and ideas through audio. While the world of video content—and the role of a YouTuber—has its allure, the...</description>
       <content:encoded><![CDATA[<h2 id="introduction">Introduction</h2>
 <p>As a long-time podcaster, I&rsquo;ve always enjoyed sharing my thoughts and ideas through audio. While the world of video content—and the role of a YouTuber—has its allure, the complexities of video editing have kept me anchored in the realm of podcasting. My journey has involved leveraging platforms like <a href="https://creators.spotify.com/"><strong>Spotify Creator</strong></a> (formerly <strong>Anchor</strong>) for hosting and distributing my recordings. This platform offers a wide array of features for free, including audio recording, editing capabilities, and automatic promotion to Spotify.</p>
 <p>However, I sought a more comprehensive solution, one that would allow me to listen to my own podcast while driving, using the Podcast app on my CarPlay device. To achieve this, I ventured into publishing on <strong>Apple Podcasts</strong> (<a href="https://podcastsconnect.apple.com/">podcastsconnect.apple.com</a>), which also offers free hosting. With a self-designed cover and episodes uploaded, I was set—or so I thought.</p>
@@ -598,47 +595,7 @@
       <link>https://blog.minifish.org/posts/exploring-local-llms-with-ollama-my-journey-and-practices/</link>
       <pubDate>Wed, 27 Nov 2024 18:26:14 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/exploring-local-llms-with-ollama-my-journey-and-practices/</guid>
-      <description>&lt;p&gt;Local Large Language Models (LLMs) have been gaining traction as developers and enthusiasts seek more control over their AI tools without relying solely on cloud-based solutions. In this blog post, I&amp;rsquo;ll share my experiences with &lt;strong&gt;Ollama&lt;/strong&gt;, a remarkable tool for running local LLMs, along with other tools like &lt;strong&gt;llamaindex&lt;/strong&gt; and &lt;strong&gt;Candle&lt;/strong&gt;. I&amp;rsquo;ll also discuss various user interfaces (UI) that enhance the local LLM experience.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;table-of-contents&#34;&gt;Table of Contents&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#introduction-to-ollama&#34;&gt;Introduction to Ollama&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#a-popular-choice&#34;&gt;A Popular Choice&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#ease-of-use&#34;&gt;Ease of Use&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#built-with-golang&#34;&gt;Built with Golang&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#my-practices-with-ollama&#34;&gt;My Practices with Ollama&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#preferred-models&#34;&gt;Preferred Models&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#llama-31&#34;&gt;Llama 3.1&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#mistral&#34;&gt;Mistral&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#phi-3&#34;&gt;Phi-3&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#qwen-2&#34;&gt;Qwen-2&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#hardware-constraints&#34;&gt;Hardware Constraints&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#exploring-uis-for-ollama&#34;&gt;Exploring UIs for Ollama&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#openwebui&#34;&gt;OpenWebUI&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#page-assist&#34;&gt;Page Assist&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#enchanted&#34;&gt;Enchanted&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#anythingllm&#34;&gt;AnythingLLM&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#dify&#34;&gt;Dify&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#diving-into-llamaindex&#34;&gt;Diving into llamaindex&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#experimenting-with-candle&#34;&gt;Experimenting with Candle&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#conclusion&#34;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;introduction-to-ollama&#34;&gt;Introduction to Ollama&lt;/h2&gt;
-&lt;h3 id=&#34;a-popular-choice&#34;&gt;A Popular Choice&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/jmorganca/ollama&#34;&gt;Ollama&lt;/a&gt; has rapidly become a favorite among developers interested in local LLMs. Within a year, it has garnered significant attention on GitHub, reflecting its growing user base and community support.&lt;/p&gt;</description>
+      <description>Local Large Language Models (LLMs) have been gaining traction as developers and enthusiasts seek more control over their AI tools without relying solely on cloud-based solutions....</description>
       <content:encoded><![CDATA[<p>Local Large Language Models (LLMs) have been gaining traction as developers and enthusiasts seek more control over their AI tools without relying solely on cloud-based solutions. In this blog post, I&rsquo;ll share my experiences with <strong>Ollama</strong>, a remarkable tool for running local LLMs, along with other tools like <strong>llamaindex</strong> and <strong>Candle</strong>. I&rsquo;ll also discuss various user interfaces (UI) that enhance the local LLM experience.</p>
 <hr>
 <h2 id="table-of-contents">Table of Contents</h2>

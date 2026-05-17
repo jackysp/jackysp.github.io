@@ -19,8 +19,7 @@
       <link>https://blog.minifish.org/posts/how-to-set-up-a-minecraft-bedrock-server-using-multipass/</link>
       <pubDate>Mon, 02 May 2022 19:05:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-set-up-a-minecraft-bedrock-server-using-multipass/</guid>
-      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
-&lt;p&gt;Recently, both of my kids have become interested in Minecraft, and some of their peers are also playing it. We previously bought the Switch version, but its online capabilities are quite poor, and the device performance is subpar, resulting in a less-than-ideal experience. Thus, I began considering the idea of setting up our own server. Of course, you can play in multiplayer with friends, but the game ends as soon as the host goes offline, which is not as good as having a server that is always online.&lt;/p&gt;</description>
+      <description>Recently, both of my kids have become interested in Minecraft, and some of their peers are also playing it. We previously bought the Switch version, but its online capabilities...</description>
       <content:encoded><![CDATA[<h2 id="background">Background</h2>
 <p>Recently, both of my kids have become interested in Minecraft, and some of their peers are also playing it. We previously bought the Switch version, but its online capabilities are quite poor, and the device performance is subpar, resulting in a less-than-ideal experience. Thus, I began considering the idea of setting up our own server. Of course, you can play in multiplayer with friends, but the game ends as soon as the host goes offline, which is not as good as having a server that is always online.</p>
 <p>For version selection, there is the NetEase version, the official Java version, and the Bedrock version. Based on my previous understanding, the NetEase version has all sorts of anti-addiction regulations, so that&rsquo;s a no-go. The Java version server setup seems to rely on third-party launchers, resembling piracy to some extent. Therefore, I decided on the Bedrock version. Another reason for choosing the Bedrock version is its origins as the mobile version of Minecraft, and Microsoft later <a href="https://minecraft.fandom.com/zh/wiki/%E5%9F%BA%E5%B2%A9%E7%89%88?variant=zh">expanded support to more platforms</a>, making it the most versatile. Additionally, its core is written in C++, which should offer better performance and resource efficiency.</p>
@@ -60,10 +59,7 @@
       <link>https://blog.minifish.org/posts/how-to-play-minecraft-bedrock-edition-cross-platform/</link>
       <pubDate>Thu, 03 Feb 2022 00:00:00 +0000</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-play-minecraft-bedrock-edition-cross-platform/</guid>
-      <description>&lt;h3 id=&#34;background&#34;&gt;Background&lt;/h3&gt;
-&lt;p&gt;During the Chinese New Year holiday, I spent some time at home playing on the Switch with my child, and I ended up purchasing Minecraft (Bedrock Edition). In order to play together, I also bought the Windows version. Additionally, I wanted to test if the GitHub Actions for this blog are still working properly.&lt;/p&gt;
-&lt;h3 id=&#34;preparation&#34;&gt;Preparation&lt;/h3&gt;
-&lt;p&gt;You need two Microsoft accounts, so I dug out my wife&amp;rsquo;s long-unused Hotmail account.&lt;/p&gt;</description>
+      <description>During the Chinese New Year holiday, I spent some time at home playing on the Switch with my child, and I ended up purchasing Minecraft (Bedrock Edition). In order to play...</description>
       <content:encoded><![CDATA[<h3 id="background">Background</h3>
 <p>During the Chinese New Year holiday, I spent some time at home playing on the Switch with my child, and I ended up purchasing Minecraft (Bedrock Edition). In order to play together, I also bought the Windows version. Additionally, I wanted to test if the GitHub Actions for this blog are still working properly.</p>
 <h3 id="preparation">Preparation</h3>

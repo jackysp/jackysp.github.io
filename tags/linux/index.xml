@@ -19,9 +19,7 @@
       <link>https://blog.minifish.org/posts/how-to-prevent-a-linux-laptop-from-entering-sleep-mode-when-the-lid-is-closed/</link>
       <pubDate>Tue, 31 Mar 2020 20:31:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-prevent-a-linux-laptop-from-entering-sleep-mode-when-the-lid-is-closed/</guid>
-      <description>&lt;p&gt;Initially, I thought it would be a simple setting adjustment, so I casually Googled it. Sure enough, there was a unanimous solution: modify &lt;code&gt;/etc/systemd/logind.conf&lt;/code&gt;, change &lt;code&gt;HandleLidSwitch&lt;/code&gt; to &lt;code&gt;ignore&lt;/code&gt; or &lt;code&gt;lock&lt;/code&gt;, and then restart &lt;code&gt;logind&lt;/code&gt; or reboot.&lt;/p&gt;
-&lt;p&gt;I tried this, but it didn&amp;rsquo;t work at all on my Thinkpad X230. I then tried changing some other options in the aforementioned file, but none worked, and surprisingly, &lt;code&gt;Ubuntu&lt;/code&gt; even reported errors.&lt;/p&gt;
-&lt;p&gt;So, I reinstalled the more preferred &lt;code&gt;Debian&lt;/code&gt;. Tried again, and it still didn&amp;rsquo;t work. Finally, I found a more brutal method.&lt;/p&gt;</description>
+      <description>Initially, I thought it would be a simple setting adjustment, so I casually Googled it. Sure enough, there was a unanimous solution: modify /etc/systemd/logind.conf, change...</description>
       <content:encoded><![CDATA[<p>Initially, I thought it would be a simple setting adjustment, so I casually Googled it. Sure enough, there was a unanimous solution: modify <code>/etc/systemd/logind.conf</code>, change <code>HandleLidSwitch</code> to <code>ignore</code> or <code>lock</code>, and then restart <code>logind</code> or reboot.</p>
 <p>I tried this, but it didn&rsquo;t work at all on my Thinkpad X230. I then tried changing some other options in the aforementioned file, but none worked, and surprisingly, <code>Ubuntu</code> even reported errors.</p>
 <p>So, I reinstalled the more preferred <code>Debian</code>. Tried again, and it still didn&rsquo;t work. Finally, I found a more brutal method.</p>
@@ -45,22 +43,7 @@
       <link>https://blog.minifish.org/posts/how-to-configure-centos-6-nfs-service/</link>
       <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-configure-centos-6-nfs-service/</guid>
-      <description>&lt;h2 id=&#34;server-side&#34;&gt;Server Side&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Disable SeLinux&lt;/strong&gt;&lt;br&gt;
-Edit the configuration file:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vi /etc/selinux/config
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Modify as follows:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#SELINUX=enforcing    # Comment out
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;#SELINUXTYPE=targeted # Comment out
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;SELINUX=disabled      # Add this line
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then reboot the system:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;reboot  &lt;span style=&#34;color:#75715e&#34;&gt;# Restart the system&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Create a Directory&lt;/strong&gt;&lt;br&gt;
-Using the root user, create a directory named &lt;code&gt;/nfs&lt;/code&gt;. Note: It&amp;rsquo;s best to check which partition has the most space by running &lt;code&gt;df&lt;/code&gt;, as the root (&lt;code&gt;/&lt;/code&gt;) partition may not have the most space. In some automatic partitioning setups, the &lt;code&gt;/home&lt;/code&gt; partition may have the most space.&lt;/p&gt;</description>
+      <description>1. Disable SeLinux Edit the configuration file:</description>
       <content:encoded><![CDATA[<h2 id="server-side">Server Side</h2>
 <ol>
 <li>
@@ -171,20 +154,7 @@ Edit the fstab file:</p>
       <link>https://blog.minifish.org/posts/how-to-install-centos-as-a-virtualization-host/</link>
       <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-install-centos-as-a-virtualization-host/</guid>
-      <description>&lt;h2 id=&#34;installation-process&#34;&gt;Installation Process&lt;/h2&gt;
-&lt;p&gt;Installed Version: CentOS 6.3&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Using Win32DiskImager to create a USB flash drive image was unsuccessful; installing from an external USB optical drive was successful.&lt;/li&gt;
-&lt;li&gt;During the installation process, make sure to select the &amp;ldquo;Virtual Host&amp;rdquo; installation mode.&lt;/li&gt;
-&lt;li&gt;The rest can be set to default or slightly modified, such as choosing the time zone.&lt;/li&gt;
-&lt;li&gt;After installation, it will include the KVM suite and SSH.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&#34;installation-notes&#34;&gt;Installation Notes&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;No internet connection is needed throughout the process, which is much better than Debian and Ubuntu.&lt;/li&gt;
-&lt;li&gt;You&amp;rsquo;re not forced to set up a non-root user.&lt;/li&gt;
-&lt;li&gt;Before installation, be sure to check whether your CPU supports virtualization and enable the motherboard&amp;rsquo;s virtualization setting. If the motherboard supports virtualization but doesn&amp;rsquo;t have a virtualization option, you can still use virtualization as it&amp;rsquo;s definitely enabled by default. There&amp;rsquo;s a saying that Intel CPUs with a &amp;lsquo;K&amp;rsquo; cannot perform virtualization. &amp;lsquo;K&amp;rsquo; means Intel CPUs that can be overclocked. It seems that faster and newer CPUs are not necessarily better.&lt;/li&gt;
-&lt;/ul&gt;</description>
+      <description>Installed Version: CentOS 6.3</description>
       <content:encoded><![CDATA[<h2 id="installation-process">Installation Process</h2>
 <p>Installed Version: CentOS 6.3</p>
 <ol>

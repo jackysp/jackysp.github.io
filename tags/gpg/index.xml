@@ -19,15 +19,7 @@
       <link>https://blog.minifish.org/posts/how-to-create-github-verified-commits-on-a-macbook-m1/</link>
       <pubDate>Sat, 12 Feb 2022 11:54:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-create-github-verified-commits-on-a-macbook-m1/</guid>
-      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
-&lt;p&gt;One day, I impulsively turned on GitHub&amp;rsquo;s Vigilant mode.&lt;/p&gt;
-&lt;p&gt;&lt;img alt=&#34;test&#34; loading=&#34;lazy&#34; src=&#34;https://blog.minifish.org/posts/how-to-create-github-verified-commits-on-a-macbook-m1/2022-02-12-12.02.07.webp&#34;&gt;&lt;/p&gt;
-&lt;p&gt;As a result, all my commits started looking like this.&lt;/p&gt;
-&lt;p&gt;&lt;img alt=&#34;test&#34; loading=&#34;lazy&#34; src=&#34;https://blog.minifish.org/posts/how-to-create-github-verified-commits-on-a-macbook-m1/2022-02-12-12.11.01.webp&#34;&gt;&lt;/p&gt;
-&lt;p&gt;To figure out how to make them Verified, I found the following method.&lt;/p&gt;
-&lt;h2 id=&#34;method&#34;&gt;Method&lt;/h2&gt;
-&lt;p&gt;I actually referred to this &lt;a href=&#34;https://zhuanlan.zhihu.com/p/76861431&#34;&gt;link&lt;/a&gt;. However, it wasn&amp;rsquo;t quite enough, as there might be authentication-related issues on MacBooks that lead to commit errors. So, I found this &lt;a href=&#34;https://stackoverflow.com/a/40066889&#34;&gt;solution&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;In summary, to verify, you need to enter a password. The issue on a Mac is the prompt for entering the password, which needs to be replaced with pinentry-mac, which most people install via homebrew.&lt;/p&gt;</description>
+      <description>One day, I impulsively turned on GitHub&amp;#39;s Vigilant mode.</description>
       <content:encoded><![CDATA[<h2 id="background">Background</h2>
 <p>One day, I impulsively turned on GitHub&rsquo;s Vigilant mode.</p>
 <p><img alt="test" loading="lazy" src="/posts/how-to-create-github-verified-commits-on-a-macbook-m1/2022-02-12-12.02.07.webp"></p>

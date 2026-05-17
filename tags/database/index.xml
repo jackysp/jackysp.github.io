@@ -19,15 +19,7 @@
       <link>https://blog.minifish.org/posts/oceanbase-internals-transaction-replay-sql-unit-placement/</link>
       <pubDate>Sat, 17 Jan 2026 10:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/oceanbase-internals-transaction-replay-sql-unit-placement/</guid>
-      <description>&lt;h2 id=&#34;why-these-paths-matter&#34;&gt;Why These Paths Matter&lt;/h2&gt;
-&lt;p&gt;OceanBase targets high availability and scalability in a shared-nothing cluster. The core engineering challenge is to make four critical subsystems work together with predictable latency and correctness:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Write transactions must be durable, replicated, and efficiently committed.&lt;/li&gt;
-&lt;li&gt;Tablet replay must recover state quickly and safely.&lt;/li&gt;
-&lt;li&gt;SQL parse to execute must optimize well while respecting multi-tenant constraints.&lt;/li&gt;
-&lt;li&gt;Unit placement must map tenants to physical resources without fragmentation.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;This article focuses on motivation, design, implementation highlights, and tradeoffs, using concrete code entry points from the OceanBase codebase.&lt;/p&gt;</description>
+      <description>OceanBase targets high availability and scalability in a shared-nothing cluster. The core engineering challenge is to make four critical subsystems work together with predictable...</description>
       <content:encoded><![CDATA[<h2 id="why-these-paths-matter">Why These Paths Matter</h2>
 <p>OceanBase targets high availability and scalability in a shared-nothing cluster. The core engineering challenge is to make four critical subsystems work together with predictable latency and correctness:</p>
 <ul>
@@ -348,11 +340,7 @@
       <link>https://blog.minifish.org/posts/how-to-compare-data-consistency-between-mysql-and-postgresql/</link>
       <pubDate>Sun, 09 May 2021 18:13:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-compare-data-consistency-between-mysql-and-postgresql/</guid>
-      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
-&lt;p&gt;Recently, I encountered a problem where a user wanted to synchronize data from PostgreSQL to TiDB (which uses the same protocol as MySQL) and wanted to know whether the data after synchronization is consistent. I hadn&amp;rsquo;t dealt with this kind of issue before, so I did a bit of research.&lt;/p&gt;
-&lt;p&gt;Typically, to verify data consistency, you compute a checksum on both sides and compare them.&lt;/p&gt;
-&lt;h2 id=&#34;tidb-mysql-side&#34;&gt;TiDB (MySQL) Side&lt;/h2&gt;
-&lt;p&gt;For the verification of a specific table, the following SQL is used:&lt;/p&gt;</description>
+      <description>Recently, I encountered a problem where a user wanted to synchronize data from PostgreSQL to TiDB (which uses the same protocol as MySQL) and wanted to know whether the data after...</description>
       <content:encoded><![CDATA[<h2 id="background">Background</h2>
 <p>Recently, I encountered a problem where a user wanted to synchronize data from PostgreSQL to TiDB (which uses the same protocol as MySQL) and wanted to know whether the data after synchronization is consistent. I hadn&rsquo;t dealt with this kind of issue before, so I did a bit of research.</p>
 <p>Typically, to verify data consistency, you compute a checksum on both sides and compare them.</p>
@@ -471,7 +459,7 @@
       <link>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-5/</link>
       <pubDate>Tue, 08 Sep 2020 11:36:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-5/</guid>
-      <description>&lt;p&gt;When using TiDB, you may occasionally encounter some exceptions, such as the &amp;ldquo;Lost connection to MySQL server during query&amp;rdquo; error. This indicates that the connection between the client and the database has been disconnected (not due to user action). The reasons for disconnection can vary. This article attempts to analyze some common TiDB errors from the perspective of exception handling and code analysis. Additionally, some exceptions are not errors but performance issues due to slow execution. In the second half of this article, we will also introduce common tools for tracking performance.&lt;/p&gt;</description>
+      <description>When using TiDB, you may occasionally encounter some exceptions, such as the &amp;#34;Lost connection to MySQL server during query&amp;#34; error. This indicates that the connection between the...</description>
       <content:encoded><![CDATA[<p>When using TiDB, you may occasionally encounter some exceptions, such as the &ldquo;Lost connection to MySQL server during query&rdquo; error. This indicates that the connection between the client and the database has been disconnected (not due to user action). The reasons for disconnection can vary. This article attempts to analyze some common TiDB errors from the perspective of exception handling and code analysis. Additionally, some exceptions are not errors but performance issues due to slow execution. In the second half of this article, we will also introduce common tools for tracking performance.</p>
 <h2 id="lost-connection">Lost Connection</h2>
 <p>There are generally three reasons for a Lost Connection:</p>
@@ -532,15 +520,7 @@
       <link>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-4/</link>
       <pubDate>Fri, 31 Jul 2020 10:58:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-4/</guid>
-      <description>&lt;p&gt;This article will introduce some key functions and the interpretation of logs in TiDB.&lt;/p&gt;
-&lt;h2 id=&#34;key-functions&#34;&gt;Key Functions&lt;/h2&gt;
-&lt;p&gt;The definition of key functions varies from person to person, so the content of this section is subjective.&lt;/p&gt;
-&lt;h3 id=&#34;execute&#34;&gt;execute&lt;/h3&gt;
-&lt;p&gt;&lt;img alt=&#34;func&#34; loading=&#34;lazy&#34; src=&#34;https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-4/20200812152326.webp&#34;&gt;&lt;/p&gt;
-&lt;p&gt;The &lt;code&gt;execute&lt;/code&gt; function is the necessary pathway for text protocol execution. It also nicely demonstrates the various processes of SQL handling.&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;ParseSQL analyzes the SQL. The final implementation is in the parser, where SQL is parsed according to the rules introduced in the second article. Note that the parsed SQL may be a single statement or multiple statements. TiDB itself supports the multi-SQL feature, allowing multiple SQL statements to be executed at once.&lt;/p&gt;</description>
+      <description>This article will introduce some key functions and the interpretation of logs in TiDB.</description>
       <content:encoded><![CDATA[<p>This article will introduce some key functions and the interpretation of logs in TiDB.</p>
 <h2 id="key-functions">Key Functions</h2>
 <p>The definition of key functions varies from person to person, so the content of this section is subjective.</p>
@@ -639,11 +619,7 @@
       <link>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-3/</link>
       <pubDate>Tue, 28 Jul 2020 11:47:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-3/</guid>
-      <description>&lt;p&gt;In the previous article, we introduced methods for viewing syntax and configurations. In this article, we will discuss how to view system variables, including default values, scopes, and how to monitor metrics.&lt;/p&gt;
-&lt;h2 id=&#34;system-variables&#34;&gt;System Variables&lt;/h2&gt;
-&lt;p&gt;The system variable names in TiDB are defined in &lt;a href=&#34;https://github.com/pingcap/tidb/blob/db0310b17901b1a59f7f728294455ed9667f88ac/sessionctx/variable/tidb_vars.go&#34;&gt;tidb_vars.go&lt;/a&gt;. This file also includes some default values for variables, but the place where they are actually assembled is &lt;a href=&#34;https://github.com/pingcap/tidb/blob/12aac547a9068c404ad18093ae4d0ea4d060a465/sessionctx/variable/sysvar.go#L96&#34;&gt;defaultSysVars&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img alt=&#34;defaultSysVars&#34; loading=&#34;lazy&#34; src=&#34;https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-3/20200728151254.webp&#34;&gt;&lt;/p&gt;
-&lt;p&gt;This large struct array defines the scope, variable names, and default values for all variables in TiDB. Besides TiDB&amp;rsquo;s own system variables, it also includes compatibility with MySQL&amp;rsquo;s system variables.&lt;/p&gt;</description>
+      <description>In the previous article, we introduced methods for viewing syntax and configurations. In this article, we will discuss how to view system variables, including default values,...</description>
       <content:encoded><![CDATA[<p>In the previous article, we introduced methods for viewing syntax and configurations. In this article, we will discuss how to view system variables, including default values, scopes, and how to monitor metrics.</p>
 <h2 id="system-variables">System Variables</h2>
 <p>The system variable names in TiDB are defined in <a href="https://github.com/pingcap/tidb/blob/db0310b17901b1a59f7f728294455ed9667f88ac/sessionctx/variable/tidb_vars.go">tidb_vars.go</a>. This file also includes some default values for variables, but the place where they are actually assembled is <a href="https://github.com/pingcap/tidb/blob/12aac547a9068c404ad18093ae4d0ea4d060a465/sessionctx/variable/sysvar.go#L96">defaultSysVars</a>.</p>
@@ -831,14 +807,7 @@ All Metrics in TiDB are uniformly located <a href="https://github.com/pingcap/ti
       <link>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-2/</link>
       <pubDate>Sun, 12 Jul 2020 12:09:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-2/</guid>
-      <description>&lt;p&gt;Continuing from &lt;a href=&#34;https://blog.minifish.org/posts/tidb1&#34;&gt;the previous article&lt;/a&gt;, we learned how to set up the environment for reading code and where to start reading the code. In this part, we&amp;rsquo;ll introduce methods for viewing code based on some common needs.&lt;/p&gt;
-&lt;h2 id=&#34;how-to-check-the-support-level-of-a-syntax&#34;&gt;How to Check the Support Level of a Syntax&lt;/h2&gt;
-&lt;p&gt;There are usually two methods:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Check through the parser repo&lt;/li&gt;
-&lt;li&gt;Directly check within the TiDB repo&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Both of these methods require the &lt;a href=&#34;https://blog.minifish.org/posts/tidb1#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA&#34;&gt;environment setup from the previous article&lt;/a&gt;. If you haven&amp;rsquo;t tried that yet, give it a go.&lt;/p&gt;</description>
+      <description>Continuing from the previous article, we learned how to set up the environment for reading code and where to start reading the code. In this part, we&amp;#39;ll introduce methods for...</description>
       <content:encoded><![CDATA[<p>Continuing from <a href="/posts/tidb1">the previous article</a>, we learned how to set up the environment for reading code and where to start reading the code. In this part, we&rsquo;ll introduce methods for viewing code based on some common needs.</p>
 <h2 id="how-to-check-the-support-level-of-a-syntax">How to Check the Support Level of a Syntax</h2>
 <p>There are usually two methods:</p>
@@ -926,13 +895,7 @@ All Metrics in TiDB are uniformly located <a href="https://github.com/pingcap/ti
       <link>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-1/</link>
       <pubDate>Mon, 06 Jul 2020 16:51:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-read-tidb-source-code-part-1/</guid>
-      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
-&lt;p&gt;There are many articles on reading the source code of TiDB, often referred to as &lt;a href=&#34;https://pingcap.com/blog-cn/#TiDB-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB&#34;&gt;the &amp;ldquo;Twenty-Four Chapters Scriptures&amp;rdquo;&lt;/a&gt;. However, these introductions typically proceed from a macro to a micro perspective. This series attempts to introduce how to read TiDB&amp;rsquo;s source code from an easier angle. The goals we aim to achieve are:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Enable readers to start reading TiDB&amp;rsquo;s code themselves, rather than understanding it passively through pre-written articles.&lt;/li&gt;
-&lt;li&gt;Provide some common examples of looking into the details of the code, such as examining the scope of a variable.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;After all, teaching people to fish is better than giving them fish. While the code changes often, the methods remain mostly unchanged.&lt;/p&gt;</description>
+      <description>There are many articles on reading the source code of TiDB, often referred to as the &amp;#34;Twenty-Four Chapters Scriptures&amp;#34;. However, these introductions typically proceed from a macro...</description>
       <content:encoded><![CDATA[<h2 id="background">Background</h2>
 <p>There are many articles on reading the source code of TiDB, often referred to as <a href="https://pingcap.com/blog-cn/#TiDB-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB">the &ldquo;Twenty-Four Chapters Scriptures&rdquo;</a>. However, these introductions typically proceed from a macro to a micro perspective. This series attempts to introduce how to read TiDB&rsquo;s source code from an easier angle. The goals we aim to achieve are:</p>
 <ol>
@@ -1085,7 +1048,7 @@ In the <code>Run()</code> function here, the server continuously listens to netw
       <link>https://blog.minifish.org/posts/how-tidb-implements-the-insert-statement/</link>
       <pubDate>Wed, 11 Jul 2018 14:18:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-tidb-implements-the-insert-statement/</guid>
-      <description>&lt;p&gt;In a previous article &lt;a href=&#34;https://cn.pingcap.com/blog/tidb-source-code-reading-4&#34;&gt;“TiDB Source Code Reading Series (4) Overview of INSERT Statement”&lt;/a&gt;, we introduced the general process of the INSERT statement. Why write a separate article for INSERT? Because in TiDB, simply inserting a piece of data is the simplest and most common case. It becomes more complex when defining various behaviors within the INSERT statement, such as how to handle situations with Unique Key conflicts: Should we return an error? Ignore the current data insertion? Or overwrite existing data? Therefore, this article will continue to delve into the INSERT statement.&lt;/p&gt;</description>
+      <description>In a previous article “TiDB Source Code Reading Series (4) Overview of INSERT Statement”, we introduced the general process of the INSERT statement. Why write a separate article...</description>
       <content:encoded><![CDATA[<p>In a previous article <a href="https://cn.pingcap.com/blog/tidb-source-code-reading-4">“TiDB Source Code Reading Series (4) Overview of INSERT Statement”</a>, we introduced the general process of the INSERT statement. Why write a separate article for INSERT? Because in TiDB, simply inserting a piece of data is the simplest and most common case. It becomes more complex when defining various behaviors within the INSERT statement, such as how to handle situations with Unique Key conflicts: Should we return an error? Ignore the current data insertion? Or overwrite existing data? Therefore, this article will continue to delve into the INSERT statement.</p>
 <p>This article will first introduce the classification of INSERT statements in TiDB, along with the syntax and semantics of each statement, and then describe the source code implementation of the five types of INSERT statements.</p>
 <h2 id="types-of-insert-statements">Types of INSERT Statements</h2>
@@ -1205,9 +1168,7 @@ In the <code>Run()</code> function here, the server continuously listens to netw
       <link>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-benchmarksql/</link>
       <pubDate>Fri, 06 Jul 2018 21:21:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-benchmarksql/</guid>
-      <description>&lt;h2 id=&#34;why-test-tpc-c&#34;&gt;Why Test TPC-C&lt;/h2&gt;
-&lt;p&gt;First of all, TPC-C is the de facto OLTP benchmark standard. It is a set of specifications, and any database can publish its test results under this standard, so there&amp;rsquo;s no issue of quarreling over the testing tools used.&lt;/p&gt;
-&lt;p&gt;Secondly, TPC-C is closer to real-world scenarios as it includes a transaction model within it. In the flow of this transaction model, there are both high-frequency simple transaction statements and low-frequency inventory query statements. Therefore, it tests the database more comprehensively and practically.&lt;/p&gt;</description>
+      <description>First of all, TPC-C is the de facto OLTP benchmark standard. It is a set of specifications, and any database can publish its test results under this standard, so there&amp;#39;s no issue...</description>
       <content:encoded><![CDATA[<h2 id="why-test-tpc-c">Why Test TPC-C</h2>
 <p>First of all, TPC-C is the de facto OLTP benchmark standard. It is a set of specifications, and any database can publish its test results under this standard, so there&rsquo;s no issue of quarreling over the testing tools used.</p>
 <p>Secondly, TPC-C is closer to real-world scenarios as it includes a transaction model within it. In the flow of this transaction model, there are both high-frequency simple transaction statements and low-frequency inventory query statements. Therefore, it tests the database more comprehensively and practically.</p>
@@ -1240,10 +1201,7 @@ In the <code>Run()</code> function here, the server continuously listens to netw
       <link>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-sysbench/</link>
       <pubDate>Mon, 11 Jun 2018 13:50:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-sysbench/</guid>
-      <description>&lt;h2 id=&#34;compiling-sysbench-with-pgsql-support&#34;&gt;Compiling Sysbench with pgsql Support&lt;/h2&gt;
-&lt;p&gt;CockroachDB uses the PostgreSQL protocol. If you want to use Sysbench for testing, you need to enable pg protocol support in Sysbench. Sysbench already supports the pg protocol, but it is not enabled by default during compilation. You can configure it with the following command:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./configure --with-pgsql
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Of course, preliminary work involves downloading the Sysbench source code and installing the necessary PostgreSQL header files required for compilation (you can use &lt;code&gt;yum&lt;/code&gt; or &lt;code&gt;sudo&lt;/code&gt; to install them).&lt;/p&gt;</description>
+      <description>CockroachDB uses the PostgreSQL protocol. If you want to use Sysbench for testing, you need to enable pg protocol support in Sysbench. Sysbench already supports the pg protocol,...</description>
       <content:encoded><![CDATA[<h2 id="compiling-sysbench-with-pgsql-support">Compiling Sysbench with pgsql Support</h2>
 <p>CockroachDB uses the PostgreSQL protocol. If you want to use Sysbench for testing, you need to enable pg protocol support in Sysbench. Sysbench already supports the pg protocol, but it is not enabled by default during compilation. You can configure it with the following command:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>./configure --with-pgsql
@@ -1291,27 +1249,7 @@ In the <code>Run()</code> function here, the server continuously listens to netw
       <link>https://blog.minifish.org/posts/how-to-view-cmu-db-groups-oltp-bench/</link>
       <pubDate>Fri, 23 Feb 2018 00:00:00 +0000</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-view-cmu-db-groups-oltp-bench/</guid>
-      <description>&lt;h2 id=&#34;introduction-to-oltp-bench&#34;&gt;Introduction to OLTP-Bench&lt;/h2&gt;
-&lt;p&gt;OLTP-Bench is an open-source benchmarking tool platform for OLTP scenarios from CMU&amp;rsquo;s DB Group. It was designed to provide a simple, easy-to-use, and extensible testing platform.&lt;/p&gt;
-&lt;p&gt;It connects to databases via the JDBC interface, supporting the following test suites:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;TPC-C&lt;/li&gt;
-&lt;li&gt;Wikipedia&lt;/li&gt;
-&lt;li&gt;Synthetic Resource Stresser&lt;/li&gt;
-&lt;li&gt;Twitter&lt;/li&gt;
-&lt;li&gt;Epinions.com&lt;/li&gt;
-&lt;li&gt;TATP&lt;/li&gt;
-&lt;li&gt;AuctionMark&lt;/li&gt;
-&lt;li&gt;SEATS&lt;/li&gt;
-&lt;li&gt;YCSB&lt;/li&gt;
-&lt;li&gt;JPAB (Hibernate)&lt;/li&gt;
-&lt;li&gt;CH-benCHmark&lt;/li&gt;
-&lt;li&gt;Voter (Japanese &amp;ldquo;American Idol&amp;rdquo;)&lt;/li&gt;
-&lt;li&gt;SIBench (Snapshot Isolation)&lt;/li&gt;
-&lt;li&gt;SmallBank&lt;/li&gt;
-&lt;li&gt;LinkBench&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Detailed project information can be found &lt;a href=&#34;http://db.cs.cmu.edu/projects/oltp-bench/&#34;&gt;here&lt;/a&gt;, and the GitHub page is &lt;a href=&#34;https://github.com/oltpbenchmark/oltpbench&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
+      <description>OLTP-Bench is an open-source benchmarking tool platform for OLTP scenarios from CMU&amp;#39;s DB Group. It was designed to provide a simple, easy-to-use, and extensible testing platform.</description>
       <content:encoded><![CDATA[<h2 id="introduction-to-oltp-bench">Introduction to OLTP-Bench</h2>
 <p>OLTP-Bench is an open-source benchmarking tool platform for OLTP scenarios from CMU&rsquo;s DB Group. It was designed to provide a simple, easy-to-use, and extensible testing platform.</p>
 <p>It connects to databases via the JDBC interface, supporting the following test suites:</p>
@@ -1398,34 +1336,7 @@ In the <code>Run()</code> function here, the server continuously listens to netw
       <link>https://blog.minifish.org/posts/how-to-implement-mysql-x-protocol-on-tidb/</link>
       <pubDate>Wed, 16 Aug 2017 00:00:00 +0000</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-implement-mysql-x-protocol-on-tidb/</guid>
-      <description>&lt;h2 id=&#34;some-documents-on-mysql&#34;&gt;Some Documents on MySQL&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Client Usage Guide &lt;a href=&#34;https://dev.mysql.com/doc/refman/5.7/en/mysql-shell.html&#34;&gt;MySQL Shell User Guide&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Server Configuration Guide &lt;a href=&#34;https://dev.mysql.com/doc/refman/5.7/en/document-store.html&#34;&gt;Using MySQL as a Document Store&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Application Development API Guide &lt;a href=&#34;https://dev.mysql.com/doc/x-devapi-userguide/en/&#34;&gt;X DevAPI User Guide&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Introduction to Server Internal Implementation &lt;a href=&#34;https://dev.mysql.com/doc/internals/en/x-protocol.html&#34;&gt;X Protocol&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;implementation-principle&#34;&gt;Implementation Principle&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Communication between client and server is over TCP and the protocol uses protobuf.&lt;/li&gt;
-&lt;li&gt;After the server receives a message, it decodes and analyzes it. The protocol includes a concept called namespace, which specifically refers to whether the namespace is empty or &amp;ldquo;sql&amp;rdquo;, in which case the message content is executed as a SQL statement; if it is &amp;ldquo;xplugin&amp;rdquo; or &amp;ldquo;mysqlx,&amp;rdquo; the message is handled in another way. The other ways can be divided into:
-&lt;ul&gt;
-&lt;li&gt;Administrative commands&lt;/li&gt;
-&lt;li&gt;CRUD operations&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&amp;ldquo;xplugin&amp;rdquo; and &amp;ldquo;mysqlx&amp;rdquo; have the same function, with the latter being the new name for the former, retained temporarily for compatibility.&lt;/li&gt;
-&lt;li&gt;The content of &amp;ldquo;mysqlx&amp;rdquo; messages, apart from explicit command content like kill_client, are mostly transformed into SQL statements which the server processes, essentially turning most into a form where the namespace is &amp;ldquo;sql&amp;rdquo;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;implementation-steps&#34;&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;Start a new server for TiDB. The relevant configuration parameters such as IP, port, and socket need to be set.&lt;/li&gt;
-&lt;li&gt;Implement the reading and writing functionality for message communication.&lt;/li&gt;
-&lt;li&gt;Write a process for this new server to establish connections, including authentication, that follows the protocol. Use tcpdump to capture messages between MySQL and the client to derive protocol content, implementing the process by understanding MySQL source code.&lt;/li&gt;
-&lt;li&gt;The server should include contents like the Query Context from the original TiDB server, as it primarily translates into SQL for execution.&lt;/li&gt;
-&lt;li&gt;Implement the decoding and handling of messages. Although only a sentence, the workload included is substantial.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;In &lt;code&gt;mysqlx_all_msgs.h&lt;/code&gt;, all messages are initialized&lt;/p&gt;</description>
+      <description>1. Start a new server for TiDB. The relevant configuration parameters such as IP, port, and socket need to be set. 2. Implement the reading and writing functionality for message...</description>
       <content:encoded><![CDATA[<h2 id="some-documents-on-mysql">Some Documents on MySQL</h2>
 <ul>
 <li>Client Usage Guide <a href="https://dev.mysql.com/doc/refman/5.7/en/mysql-shell.html">MySQL Shell User Guide</a></li>
@@ -1636,24 +1547,7 @@ In the <code>Run()</code> function here, the server continuously listens to netw
       <link>https://blog.minifish.org/posts/how-to-practice-using-sql/</link>
       <pubDate>Thu, 05 Jun 2014 00:00:00 +0000</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-practice-using-sql/</guid>
-      <description>&lt;p&gt;The text provided is a detailed set of instructions and queries for practicing SQL using PostgreSQL 9.4 BETA 2, focusing on creating and querying tables related to students, courses, scores, and teachers. Here&amp;rsquo;s a summary:&lt;/p&gt;
-&lt;h2 id=&#34;database-structure&#34;&gt;Database Structure&lt;/h2&gt;
-&lt;p&gt;The database consists of four tables:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;STUDENT&lt;/strong&gt;: Contains student number (SNO), name (SNAME), gender (SSEX), birthday (SBIRTHDAY), and class (CLASS).&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;COURSE&lt;/strong&gt;: Includes course number (CNO), name (CNAME), and teacher number (TNO).&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;SCORE&lt;/strong&gt;: Records student number (SNO), course number (CNO), and degree (DEGREE).&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;TEACHER&lt;/strong&gt;: Holds teacher number (TNO), name (TNAME), gender (TSEX), birthday (TBIRTHDAY), professional title (PROF), and department (DEPART).&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&#34;sample-data&#34;&gt;Sample Data&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Students such as Zeng Hua, Kang Ming, and Wang Fang are stored with specific details, including their class and gender.&lt;/li&gt;
-&lt;li&gt;Courses like &amp;ldquo;Introduction to Computers&amp;rdquo; and &amp;ldquo;Operating Systems&amp;rdquo; are associated with teacher numbers.&lt;/li&gt;
-&lt;li&gt;Scores are recorded for students across various courses.&lt;/li&gt;
-&lt;li&gt;Teachers are described with their professional roles and departments.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;query-problems&#34;&gt;Query Problems&lt;/h2&gt;
-&lt;p&gt;Several SQL queries are suggested for practice, such as:&lt;/p&gt;</description>
+      <description>The text provided is a detailed set of instructions and queries for practicing SQL using PostgreSQL 9.4 BETA 2, focusing on creating and querying tables related to students,...</description>
       <content:encoded><![CDATA[<p>The text provided is a detailed set of instructions and queries for practicing SQL using PostgreSQL 9.4 BETA 2, focusing on creating and querying tables related to students, courses, scores, and teachers. Here&rsquo;s a summary:</p>
 <h2 id="database-structure">Database Structure</h2>
 <p>The database consists of four tables:</p>

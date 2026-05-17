@@ -19,10 +19,7 @@
       <link>https://blog.minifish.org/posts/how-to-deploy-a-secure-transparent-gateway/</link>
       <pubDate>Wed, 12 Oct 2022 21:07:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-deploy-a-secure-transparent-gateway/</guid>
-      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
-&lt;p&gt;After moving house, there are many more devices at home that need internet access. However, I don&amp;rsquo;t want to configure a proxy on each device, so I thought of using a transparent gateway.&lt;/p&gt;
-&lt;h2 id=&#34;transparent-gateway&#34;&gt;Transparent Gateway&lt;/h2&gt;
-&lt;p&gt;After some research, I found that the easiest way is to use the premium version of Clash, although I didn&amp;rsquo;t know when Clash released a premium version. I mainly referred to &lt;a href=&#34;https://www.cfmem.com/2022/05/clash.html&#34;&gt;this article&lt;/a&gt;. It&amp;rsquo;s much simpler than setting up iptables.&lt;/p&gt;</description>
+      <description>After moving house, there are many more devices at home that need internet access. However, I don&amp;#39;t want to configure a proxy on each device, so I thought of using a transparent...</description>
       <content:encoded><![CDATA[<h2 id="background">Background</h2>
 <p>After moving house, there are many more devices at home that need internet access. However, I don&rsquo;t want to configure a proxy on each device, so I thought of using a transparent gateway.</p>
 <h2 id="transparent-gateway">Transparent Gateway</h2>

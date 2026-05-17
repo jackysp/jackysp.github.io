@@ -19,10 +19,7 @@
       <link>https://blog.minifish.org/posts/how-to-deploy-an-https-proxy-service/</link>
       <pubDate>Sun, 12 Jan 2020 19:43:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-deploy-an-https-proxy-service/</guid>
-      <description>&lt;h2 id=&#34;preface&#34;&gt;Preface&lt;/h2&gt;
-&lt;p&gt;One day, I came across an article by Chen Hao on Twitter. Having benefited from several of his blog posts, I instinctively felt it was reliable, so I read it and decided to write this practical guide.&lt;/p&gt;
-&lt;h2 id=&#34;why-use-an-https-proxy&#34;&gt;Why Use an HTTPS Proxy&lt;/h2&gt;
-&lt;p&gt;In the &lt;a href=&#34;https://haoel.github.io/&#34;&gt;guide&lt;/a&gt;, it’s clearly explained why, plus my own experiences of several shadowsocks being banned, I felt it was necessary to switch to a more secure proxy method.&lt;/p&gt;</description>
+      <description>One day, I came across an article by Chen Hao on Twitter. Having benefited from several of his blog posts, I instinctively felt it was reliable, so I read it and decided to write...</description>
       <content:encoded><![CDATA[<h2 id="preface">Preface</h2>
 <p>One day, I came across an article by Chen Hao on Twitter. Having benefited from several of his blog posts, I instinctively felt it was reliable, so I read it and decided to write this practical guide.</p>
 <h2 id="why-use-an-https-proxy">Why Use an HTTPS Proxy</h2>

@@ -19,9 +19,7 @@
       <link>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-benchmarksql/</link>
       <pubDate>Fri, 06 Jul 2018 21:21:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-benchmarksql/</guid>
-      <description>&lt;h2 id=&#34;why-test-tpc-c&#34;&gt;Why Test TPC-C&lt;/h2&gt;
-&lt;p&gt;First of all, TPC-C is the de facto OLTP benchmark standard. It is a set of specifications, and any database can publish its test results under this standard, so there&amp;rsquo;s no issue of quarreling over the testing tools used.&lt;/p&gt;
-&lt;p&gt;Secondly, TPC-C is closer to real-world scenarios as it includes a transaction model within it. In the flow of this transaction model, there are both high-frequency simple transaction statements and low-frequency inventory query statements. Therefore, it tests the database more comprehensively and practically.&lt;/p&gt;</description>
+      <description>First of all, TPC-C is the de facto OLTP benchmark standard. It is a set of specifications, and any database can publish its test results under this standard, so there&amp;#39;s no issue...</description>
       <content:encoded><![CDATA[<h2 id="why-test-tpc-c">Why Test TPC-C</h2>
 <p>First of all, TPC-C is the de facto OLTP benchmark standard. It is a set of specifications, and any database can publish its test results under this standard, so there&rsquo;s no issue of quarreling over the testing tools used.</p>
 <p>Secondly, TPC-C is closer to real-world scenarios as it includes a transaction model within it. In the flow of this transaction model, there are both high-frequency simple transaction statements and low-frequency inventory query statements. Therefore, it tests the database more comprehensively and practically.</p>
@@ -54,10 +52,7 @@
       <link>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-sysbench/</link>
       <pubDate>Mon, 11 Jun 2018 13:50:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-test-cockroachdb-performance-using-sysbench/</guid>
-      <description>&lt;h2 id=&#34;compiling-sysbench-with-pgsql-support&#34;&gt;Compiling Sysbench with pgsql Support&lt;/h2&gt;
-&lt;p&gt;CockroachDB uses the PostgreSQL protocol. If you want to use Sysbench for testing, you need to enable pg protocol support in Sysbench. Sysbench already supports the pg protocol, but it is not enabled by default during compilation. You can configure it with the following command:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./configure --with-pgsql
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Of course, preliminary work involves downloading the Sysbench source code and installing the necessary PostgreSQL header files required for compilation (you can use &lt;code&gt;yum&lt;/code&gt; or &lt;code&gt;sudo&lt;/code&gt; to install them).&lt;/p&gt;</description>
+      <description>CockroachDB uses the PostgreSQL protocol. If you want to use Sysbench for testing, you need to enable pg protocol support in Sysbench. Sysbench already supports the pg protocol,...</description>
       <content:encoded><![CDATA[<h2 id="compiling-sysbench-with-pgsql-support">Compiling Sysbench with pgsql Support</h2>
 <p>CockroachDB uses the PostgreSQL protocol. If you want to use Sysbench for testing, you need to enable pg protocol support in Sysbench. Sysbench already supports the pg protocol, but it is not enabled by default during compilation. You can configure it with the following command:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>./configure --with-pgsql

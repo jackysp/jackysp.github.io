@@ -8,6 +8,9 @@
     <loc>https://blog.minifish.org/tags/ai/</loc>
     <lastmod>2026-03-20T21:00:00+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/categories/ai-tools/</loc>
+    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/tags/automation/</loc>
     <lastmod>2026-03-20T21:00:00+08:00</lastmod>
   </url><url>
@@ -15,9 +18,6 @@
     <lastmod>2026-03-20T21:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/codex/</loc>
-    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/categories/engineering/</loc>
     <lastmod>2026-03-20T21:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/github/</loc>
@@ -80,7 +80,13 @@
     <loc>https://blog.minifish.org/tags/moka/</loc>
     <lastmod>2026-01-18T10:00:00+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/categories/reviews/</loc>
+    <lastmod>2026-01-18T10:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/tags/database/</loc>
+    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/databases/</loc>
     <lastmod>2026-01-17T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/distributed-systems/</loc>
@@ -93,6 +99,9 @@
     <lastmod>2026-01-17T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/browser/</loc>
+    <lastmod>2025-01-13T19:54:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/infrastructure/</loc>
     <lastmod>2025-01-13T19:54:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/introduction-to-webvm/</loc>
@@ -110,10 +119,10 @@
     <loc>https://blog.minifish.org/tags/brompton/</loc>
     <lastmod>2025-01-10T18:07:06+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/posts/brompton-clone-bike-modification/</loc>
+    <loc>https://blog.minifish.org/tags/cycling/</loc>
     <lastmod>2025-01-10T18:07:06+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/tags/cycling/</loc>
+    <loc>https://blog.minifish.org/posts/brompton-clone-bike-modification/</loc>
     <lastmod>2025-01-10T18:07:06+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/harnessing-ai-to-create-high-quality-podcasts-quickly-and-for-free/</loc>
@@ -130,6 +139,9 @@
   </url><url>
     <loc>https://blog.minifish.org/posts/my-recent-purchases-a-review-of-three-sanrenmu-folding-knives/</loc>
     <lastmod>2024-11-28T16:10:43+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/engineering/</loc>
+    <lastmod>2024-11-28T15:41:19+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/golang/</loc>
     <lastmod>2024-11-28T15:41:19+08:00</lastmod>
@@ -161,6 +173,9 @@
     <loc>https://blog.minifish.org/tags/vpn/</loc>
     <lastmod>2024-11-27T18:18:38+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/categories/field-notes/</loc>
+    <lastmod>2024-11-27T18:13:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/posts/tips-for-traveling-in-vietnam-my-personal-experiences/</loc>
     <lastmod>2024-11-27T18:13:00+08:00</lastmod>
   </url><url>
@@ -176,10 +191,10 @@
     <loc>https://blog.minifish.org/posts/how-to-choose-the-right-fishing-gear-tips-from-my-fishing-experiences/</loc>
     <lastmod>2024-11-27T17:46:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/tags/cloudflare/</loc>
+    <loc>https://blog.minifish.org/posts/encounter-with-a-major-issue-with-cloudflare-warp-a-life-and-death-rescue-for-vps/</loc>
     <lastmod>2024-05-15T20:31:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/posts/encounter-with-a-major-issue-with-cloudflare-warp-a-life-and-death-rescue-for-vps/</loc>
+    <loc>https://blog.minifish.org/tags/cloudflare/</loc>
     <lastmod>2024-05-15T20:31:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/warp/</loc>

@@ -1,0 +1,743 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>AI Tools on Mini Fish</title>
+    <link>https://blog.minifish.org/categories/ai-tools/</link>
+    <description>Recent content in AI Tools on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.158.0</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
+    <lastBuildDate>Fri, 20 Mar 2026 21:00:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/categories/ai-tools/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Running OpenAI Symphony as a Solo Developer Across Two Repos</title>
+      <link>https://blog.minifish.org/posts/symphony-solo-dev-blog/</link>
+      <pubDate>Fri, 20 Mar 2026 21:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/symphony-solo-dev-blog/</guid>
+      <description>A hands-on report on running OpenAI Symphony with Linear, GitHub, and Codex across two personal repositories.</description>
+      <content:encoded><![CDATA[<p>I recently spent a session getting <a href="https://github.com/openai/symphony">OpenAI Symphony</a> working on two personal repositories in a solo-developer setup. The goal was simple: use <a href="https://linear.app/">Linear</a> as the task queue, let Symphony pick up issues automatically, and have Codex make code changes with as little manual coordination as possible.</p>
+<p>This post is intentionally sanitized. I am not including tokens, local machine details, private paths, secrets, or any internal repository configuration that should not be published.</p>
+<h2 id="official-symphony-resources">Official Symphony resources</h2>
+<p>If you are trying to reproduce or extend this setup, start from the upstream project rather than this blog post alone:</p>
+<ul>
+<li><strong>Repository:</strong> <a href="https://github.com/openai/symphony">github.com/openai/symphony</a> — source, issues, and release notes.</li>
+<li><strong>Specification:</strong> <a href="https://github.com/openai/symphony/blob/main/SPEC.md"><code>SPEC.md</code></a> — describes the intended behavior and interfaces.</li>
+<li><strong>Reference implementation:</strong> <a href="https://github.com/openai/symphony/tree/main/elixir"><code>elixir/</code></a> — Elixir-based reference; follow the README there for build and run details.</li>
+</ul>
+<p>Symphony is positioned as experimental or preview-quality software; run it only in environments and repositories you trust, and read the repo README for current limitations and safety expectations.</p>
+<h2 id="hands-on-from-clone-to-first-run">Hands-on: from clone to first run</h2>
+<p>Everything below follows the <a href="https://github.com/openai/symphony/blob/main/elixir/README.md">Elixir reference README</a>. If a step fails, fix that step before tweaking your narrative expectations—the runtime is strict about valid <code>WORKFLOW.md</code> YAML at startup.</p>
+<h3 id="0-prerequisites">0. Prerequisites</h3>
+<ul>
+<li>
+<p><strong>Linear:</strong> a workspace where you can create a <strong>project</strong> and issues inside that project.</p>
+</li>
+<li>
+<p><strong>Linear API key:</strong> Settings → Security &amp; access → Personal API keys. Export it in your shell (do not commit it):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export LINEAR_API_KEY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;your_linear_personal_api_key&#34;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Codex CLI</strong> with <code>codex app-server</code> available (Symphony launches Codex in <a href="https://developers.openai.com/codex/app-server/">App Server mode</a>). Ensure <code>codex</code> is on <code>PATH</code> when the <code>codex.command</code> in <code>WORKFLOW.md</code> runs.</p>
+</li>
+<li>
+<p><strong>Runtime for the reference implementation:</strong> the upstream docs recommend <a href="https://mise.jdx.dev/">mise</a> for Erlang/Elixir versions; use <code>mise install</code> in <code>symphony/elixir</code> as documented.</p>
+</li>
+</ul>
+<h3 id="1-linear-setup-workspace-team-project-workflow-and-api-key">1. Linear setup: workspace, team, project, workflow, and API key</h3>
+<p>Symphony only sees what Linear exposes through the API. If the board is wrong, every later step looks like a Symphony bug. Configure Linear <strong>before</strong> you wire <code>project_slug</code> into <code>WORKFLOW.md</code>.</p>
+<h4 id="11-workspace-and-team">1.1 Workspace and team</h4>
+<ul>
+<li>Use a Linear <strong>workspace</strong> you control (personal or org). You need permission to create <strong>projects</strong> and <strong>issues</strong> on a <strong>team</strong>.</li>
+<li>Pick the <strong>team</strong> that will own the automated work. Issues are always tied to a team; your project will live under that team’s context. For a solo setup, one dedicated team per “product line” or per repo is enough.</li>
+</ul>
+<h4 id="12-create-a-project-this-is-the-symphony-queue-boundary">1.2 Create a project (this is the Symphony queue boundary)</h4>
+<ol>
+<li>In Linear, open <strong>Projects</strong> (or the team’s project list) and <strong>create a new project</strong> for the repository you are automating (for example one GitHub repo ↔ one Linear project).</li>
+<li>Give it a clear name so you do not file issues into the wrong queue later.</li>
+<li>Open the <strong>project</strong> itself—not only the team backlog. Symphony’s <code>tracker.project_slug</code> refers to <strong>this</strong> project.</li>
+</ol>
+<h4 id="13-read-the-project_slug-correctly">1.3 Read the <code>project_slug</code> correctly</h4>
+<ol>
+<li>With the project open, copy the <strong>page URL</strong> from the browser address bar (or use “Copy link” if Linear offers it for the project).</li>
+<li>The <strong>slug</strong> is the identifier in that URL that points at this project. Paste it into <code>WORKFLOW.md</code> as <code>project_slug</code> <strong>exactly</strong>—same spelling, same segment the URL uses.</li>
+<li>If you rename the project or move it, re-check the URL and update <code>WORKFLOW.md</code>; a stale slug is an instant “nothing happens” failure.</li>
+</ol>
+<h4 id="14-align-workflow-states-with-workflowmd">1.4 Align workflow <strong>states</strong> with <code>WORKFLOW.md</code></h4>
+<p>Your simplified <code>WORKFLOW.md</code> lists <code>active_states</code> and <code>terminal_states</code> (for example <code>Todo</code>, <code>In Progress</code>, <code>Rework</code>, <code>Merging</code>, and terminals like <code>Done</code>, <code>Canceled</code>, <code>Cancelled</code>, <code>Duplicate</code>).</p>
+<ol>
+<li>In Linear, open <strong>Team settings</strong> → <strong>Workflow</strong> (wording may vary slightly by plan and UI version).</li>
+<li>Ensure the <strong>team</strong> that owns this project actually has <strong>status</strong> names that match what you put in YAML—<strong>including spelling</strong> (<code>Canceled</code> vs <code>Cancelled</code> are different strings).</li>
+<li>If a state is missing, <strong>add</strong> it to the team workflow. If Linear ships a default you do not use (for example an extra backlog column), you can leave it unused; what matters is that every state your agent and YAML mention <strong>exists</strong> on the board.</li>
+<li>Decide how issues <strong>enter</strong> the pipeline: many setups use <code>Todo</code> or <code>In Progress</code> as the first “Symphony should care” state. Put that state in <code>active_states</code> so polling can pick the issue up.</li>
+</ol>
+<h4 id="15-personal-api-key-symphony-uses-linear_api_key">1.5 Personal API key (Symphony uses <code>LINEAR_API_KEY</code>)</h4>
+<ol>
+<li>Open your <strong>user Settings</strong> → <strong>Security &amp; access</strong> (or <strong>API</strong> / <strong>Personal API keys</strong>, depending on Linear’s UI).</li>
+<li>Create a <strong>new personal API key</strong>, give it a label you will recognize (for example <code>symphony-local</code>).</li>
+<li>Copy the key once, set <code>export LINEAR_API_KEY=&quot;...&quot;</code> on the machine that runs Symphony, and <strong>never</strong> commit it to git or paste it into <code>WORKFLOW.md</code> unless you intentionally use env indirection like <code>tracker.api_key: $LINEAR_API_KEY</code> (still keep secrets out of the repo).</li>
+</ol>
+<h4 id="16-creating-issues-the-way-symphony-expects">1.6 Creating issues the way Symphony expects</h4>
+<ol>
+<li><strong>Create the issue inside the project:</strong> from the <strong>project</strong> view, use <strong>New issue</strong> (or equivalent) so the issue is <strong>associated with that project</strong>. Creating an issue only on the team backlog without attaching the project is the classic “Symphony is idle” mistake.</li>
+<li>Set <strong>title</strong> and <strong>description</strong> to something actionable; the Markdown body of <code>WORKFLOW.md</code> passes <code>issue.title</code> and <code>issue.description</code> into Codex.</li>
+<li>Move the issue to a state listed under <code>active_states</code> (for example <code>Todo</code> or <code>In Progress</code>) so it is not sitting in a column Symphony does not poll.</li>
+</ol>
+<h4 id="17-optional-but-useful">1.7 Optional but useful</h4>
+<ul>
+<li><strong>Templates:</strong> a small issue template (context, acceptance criteria, “how to validate”) makes agent runs less ambiguous.</li>
+<li><strong>Labels:</strong> optional; Symphony does not require them unless you add logic elsewhere.</li>
+<li><strong>Permissions:</strong> if the API key belongs to a restricted user, confirm that user can read and update issues in the target project.</li>
+</ul>
+<p>After this, you can copy <code>project_slug</code> into <code>WORKFLOW.md</code> with confidence. If anything in this section is skipped, revisit <strong>1.3</strong> (slug) and <strong>1.6</strong> (issue in project) first when debugging.</p>
+<h3 id="2-build-the-symphony-binary-reference-implementation">2. Build the Symphony binary (reference implementation)</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/openai/symphony
+</span></span><span style="display:flex;"><span>cd symphony/elixir
+</span></span><span style="display:flex;"><span>mise trust
+</span></span><span style="display:flex;"><span>mise install
+</span></span><span style="display:flex;"><span>mise exec -- mix setup
+</span></span><span style="display:flex;"><span>mise exec -- mix build
+</span></span></code></pre></div><p>After this, the launcher is <code>./bin/symphony</code> inside <code>symphony/elixir</code> (see the same README). You can start it with an <strong>absolute path</strong> to any <code>WORKFLOW.md</code> you maintain:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mise exec -- ./bin/symphony /absolute/path/to/your/repo/WORKFLOW.md
+</span></span></code></pre></div><p>If you omit the path, it defaults to <code>./WORKFLOW.md</code> in the current directory—useful when you are iterating inside a single checkout.</p>
+<p>Optional flags from upstream:</p>
+<ul>
+<li><code>--logs-root</code> — log directory (default: <code>./log</code> relative to how you invoke the binary).</li>
+<li><code>--port</code> — also starts the optional Phoenix observability UI (dashboard/API as described in the Elixir README).</li>
+</ul>
+<h3 id="3-add-workflowmd-to-the-repository-you-want-automated">3. Add <code>WORKFLOW.md</code> to the repository you want automated</h3>
+<ol>
+<li>
+<p>Copy the template from the Symphony repo: <a href="https://github.com/openai/symphony/blob/main/elixir/WORKFLOW.md"><code>elixir/WORKFLOW.md</code></a> → your target repo (often repo root).</p>
+</li>
+<li>
+<p><strong>Edit the YAML front matter</strong> for your world:</p>
+<ul>
+<li><strong><code>tracker.project_slug</code>:</strong> in Linear, open your project, copy its URL from the browser, and take the <strong>slug</strong> segment (the README describes this explicitly).</li>
+<li><strong><code>workspace.root</code>:</strong> a directory on disk where Symphony may create <strong>one workspace per issue</strong> (large disk is fine; this is not your git clone root—it is a parent for per-issue workspaces).</li>
+<li><strong><code>hooks.after_create</code>:</strong> typically <code>git clone ... .</code> into that workspace so Codex works on a fresh copy of your code. Use the clone URL and branch you actually use (HTTPS or SSH is your choice; private repos need credentials on the machine running Symphony).</li>
+<li><strong><code>codex.command</code>:</strong> must match how you invoke App Server locally (model flags, config, etc.). If this command is wrong, the agent never comes up cleanly.</li>
+</ul>
+</li>
+<li>
+<p>Align <strong>Linear workflow states</strong> with what <code>WORKFLOW.md</code> expects. The stock template references states such as <code>Todo</code>, <code>In Progress</code>, <code>Rework</code>, <code>Human Review</code>, and <code>Merging</code>. If your team uses different names, either rename states in Linear (Team Settings → Workflow) or edit <code>active_states</code> / <code>terminal_states</code> and the Markdown “status map” in <code>WORKFLOW.md</code> so they match reality.</p>
+</li>
+<li>
+<p>Optionally copy the <strong>skills</strong> from the Symphony repo (<code>commit</code>, <code>push</code>, <code>pull</code>, <code>land</code>, <code>linear</code>, etc.) into your repo if your workflow prompt expects them—the Elixir README calls this out.</p>
+</li>
+</ol>
+<p>Symphony <strong>does not boot</strong> if <code>WORKFLOW.md</code> is missing or the YAML front matter is invalid; fix the file and restart.</p>
+<h3 id="4-run-and-sanity-check-before-opening-a-ticket">4. Run and sanity-check before opening a ticket</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export LINEAR_API_KEY<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;...&#34;</span>   <span style="color:#75715e"># if not already in your shell profile</span>
+</span></span><span style="display:flex;"><span>cd /path/to/openai/symphony/elixir
+</span></span><span style="display:flex;"><span>mise exec -- ./bin/symphony /path/to/your/automated/repo/WORKFLOW.md
+</span></span></code></pre></div><p>Then verify:</p>
+<ul>
+<li>The process stays running and polls on the interval you set (<code>polling.interval_ms</code> in the template).</li>
+<li>If you passed <code>--port</code>, you can hit the dashboard/API URLs documented in the Elixir README for live state.</li>
+</ul>
+<h3 id="5-first-linear-issue-the-mistake-that-looks-like-symphony-is-broken">5. First Linear issue (the mistake that looks like “Symphony is broken”)</h3>
+<p>Do this in order or you will get silent no-ops:</p>
+<ol>
+<li>Create or pick a <strong>Linear project</strong> whose slug matches <strong><code>tracker.project_slug</code></strong> exactly.</li>
+<li>Create the issue <strong>inside that project</strong>, not as a free-floating team issue.</li>
+<li>Put the issue in an <strong>active</strong> state listed under <code>active_states</code> in <code>WORKFLOW.md</code> (for the default template, something like <code>Todo</code> or <code>In Progress</code>—not <code>Backlog</code> if your prompt tells the agent to ignore <code>Backlog</code>).</li>
+</ol>
+<p>If Symphony polls successfully but your issue never enters the watched project, you will see healthy logs and zero useful work—this is the <code>project_slug</code> lesson from later in this post.</p>
+<h3 id="6-two-repos-repeat-the-pattern">6. Two repos (repeat the pattern)</h3>
+<p>For each codebase, maintain <strong>its own</strong> <code>WORKFLOW.md</code>, <strong>its own</strong> Linear project (and slug), <strong>its own</strong> <code>workspace.root</code>, and run <strong>its own</strong> <code>./bin/symphony .../WORKFLOW.md</code> process. Trying to multiplex multiple repositories through one workflow file is how you get accidental coupling and confusing failures.</p>
+<hr>
+<p>If you want the upstream one-liner to bootstrap with Codex inside your repo, the FAQ in the Elixir README suggests pointing Codex at <a href="https://github.com/openai/symphony/blob/main/elixir/README.md"><code>elixir/README.md</code></a> and asking it to wire files for your codebase—still verify <code>project_slug</code>, workspace paths, and git remotes yourself.</p>
+<h2 id="why-i-tried-this">Why I tried this</h2>
+<p>What interested me most about Symphony was not “AI that writes code” in isolation. I already have coding tools for that. The interesting part was orchestration:</p>
+<ul>
+<li>a task source</li>
+<li>a state machine</li>
+<li>an isolated workspace per task</li>
+<li>an agent runtime</li>
+<li>a repeatable loop from issue to code change</li>
+</ul>
+<p>That is a different shape of workflow from normal editor-assisted coding.</p>
+<h2 id="why-i-used-linear-instead-of-github-issues">Why I used Linear instead of GitHub Issues</h2>
+<p>One thing became clear very quickly: Symphony is designed around Linear as the source of truth for work. It does not naturally start from GitHub Issues. Instead, the workflow looks more like this:</p>
+<ol>
+<li>Create a Linear issue</li>
+<li>Symphony polls the configured Linear project</li>
+<li>Symphony creates a dedicated workspace for that issue</li>
+<li>Codex works inside that workspace</li>
+<li>The workflow advances by issue state</li>
+</ol>
+<p>At first this felt a little strange, because I am used to GitHub Issues being the center of project work. But after testing it, I could see the logic. Linear is the task system. GitHub is the code system.</p>
+<h2 id="the-first-practical-lesson-project-scoping-matters">The first practical lesson: project scoping matters</h2>
+<p>A surprisingly easy mistake was creating an issue in the wrong place.</p>
+<p>I had a Linear workspace and a correctly configured project, but the first issue I created was not actually attached to the project that Symphony was watching. From the outside it looked like “nothing is happening,” but the real problem was much simpler: Symphony was correctly polling the configured project and my issue was outside that scope.</p>
+<p>That was a good reminder that in this setup, <code>project_slug</code> is not a decorative field. It is the queue boundary.</p>
+<h2 id="making-workflowmd-actually-usable">Making <code>WORKFLOW.md</code> actually usable</h2>
+<p>The <a href="https://github.com/openai/symphony/blob/main/elixir/WORKFLOW.md">stock <code>elixir/WORKFLOW.md</code></a> in the Symphony repository is intentionally large: long status maps, PR sweeps, workpad templates, and guardrails meant for serious team-style orchestration. For solo maintenance on a small repo, that is often more surface area than you want to own on day one.</p>
+<p>What I actually wanted was a <strong>small YAML front matter</strong> plus a <strong>short agent brief</strong> that still respects Linear state and runs a tight validate loop.</p>
+<p>The elements I kept in practice:</p>
+<ul>
+<li>one Linear project per repository</li>
+<li>one Symphony process per repository</li>
+<li>one workspace root per repository</li>
+<li>explicit active and terminal states (only the ones I really use)</li>
+<li>explicit install/setup commands in <code>after_create</code></li>
+<li>explicit validation before completion (<code>npm</code> in my case)</li>
+<li><code>codex app-server</code> with sandbox left at workspace write, approval policy set explicitly so the run does not stall on prompts</li>
+</ul>
+<h3 id="a-simplified-workflowmd-sanitized">A simplified <code>WORKFLOW.md</code> (sanitized)</h3>
+<p>Below is the <strong>shape</strong> of the workflow file I run. Values such as the Linear project slug, workspace directory, and git remote are <strong>placeholders</strong>—replace them with your own. Do not copy real identifiers from this post into production without checking them in Linear and Git.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>tracker:
+</span></span><span style="display:flex;"><span>  kind: linear
+</span></span><span style="display:flex;"><span>  project_slug: &#34;your-linear-project-slug&#34;
+</span></span><span style="display:flex;"><span>  active_states:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Todo
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> In Progress
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Rework
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Merging
+</span></span><span style="display:flex;"><span>  terminal_states:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Done
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Canceled
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Cancelled
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Duplicate
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>polling:
+</span></span><span style="display:flex;"><span>  interval_ms: 5000
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>workspace:
+</span></span><span style="display:flex;"><span>  root: ~/symphony-workspaces/your-repo-short-name
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>hooks:
+</span></span><span style="display:flex;"><span>  after_create: |
+</span></span><span style="display:flex;"><span>    git clone --depth 1 https://github.com/your-org/your-repo.git .
+</span></span><span style="display:flex;"><span>    npm install
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>agent:
+</span></span><span style="display:flex;"><span>  max_concurrent_agents: 1
+</span></span><span style="display:flex;"><span>  max_turns: 20
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>codex:
+</span></span><span style="display:flex;"><span>  command: codex app-server
+</span></span><span style="display:flex;"><span>  approval_policy: never
+</span></span><span style="display:flex;"><span>  thread_sandbox: workspace-write
+</span></span><span style="display:flex;"><span>  turn_sandbox_policy:
+</span></span><span style="display:flex;"><span>    type: workspaceWrite
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>You are working on a Linear issue {{ issue.identifier }}.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Title: {{ issue.title }}
+</span></span><span style="display:flex;"><span>Body: {{ issue.description }}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Rules:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Always start by understanding the current state of the issue.
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> If state is Todo, move it to In Progress.
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> If state is Rework, review existing changes and fix issues.
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> If state is Merging, finalize merge (do not keep coding).
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Execution:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">1.</span> Understand the task
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">2.</span> Reproduce or reason about current behavior
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">3.</span> Make minimal safe changes
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">4.</span> Run:
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> npm run build OR npm test
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">5.</span> If success:
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> commit changes
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">-</span> push branch or merge directly according to repository flow
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Do not:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Ask humans for help
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Modify files outside workspace
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Skip validation
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Goal:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Deliver working code change with valid validation and keep the Linear issue state accurate.
+</span></span></code></pre></div><h3 id="how-to-fill-this-in-safely">How to fill this in safely</h3>
+<ul>
+<li><strong><code>project_slug</code>:</strong> in Linear, open the project and copy its URL; the slug is the path segment that identifies the project (see the Elixir README). It must match the project where you create issues.</li>
+<li><strong><code>workspace.root</code>:</strong> any empty-friendly parent directory on the machine that runs Symphony; Symphony creates a subdirectory per issue under this root.</li>
+<li><strong><code>after_create</code>:</strong> use your real <code>git clone</code> URL and package install command (<code>npm install</code>, <code>pnpm install</code>, <code>make</code>, and so on).</li>
+<li><strong>Linear states:</strong> your team must actually define or use states compatible with <code>active_states</code> / <code>terminal_states</code>. If Linear uses different names, edit the lists to match.</li>
+</ul>
+<p>This was a much better balance for me than copying the entire official workflow verbatim, while still staying inside Symphony’s YAML + Markdown contract.</p>
+<h2 id="the-first-real-run">The first real run</h2>
+<p>Once the workflow was wired correctly, the first successful run was a great moment. The basic flow worked:</p>
+<ol>
+<li>Create a Linear issue</li>
+<li>Symphony picks it up</li>
+<li>A workspace is created</li>
+<li>The repository is cloned</li>
+<li>Dependencies are installed</li>
+<li>Codex makes a change</li>
+<li>Validation runs</li>
+<li>The issue moves forward in the workflow</li>
+</ol>
+<p>That first time matters because it changes the whole thing from “interesting repo I am reading” into “real tool I can use.”</p>
+<h2 id="a-workflow-surprise-no-pr-direct-merge">A workflow surprise: no PR, direct merge</h2>
+<p>One unexpected result was that the run did not produce a pull request. Instead, it created a branch and then merged directly into <code>main</code>.</p>
+<p>For a team workflow, that would be a problem. For my personal setup, I actually found it acceptable.</p>
+<p>Because I am the only person using this flow right now, direct merge is not automatically bad. It is fast, and it fits a solo maintenance loop. The tradeoff is obvious: less review structure, more need for good validation and discipline.</p>
+<p>If I later want a stricter process, the right fix is probably branch protection plus a stronger PR gate in the workflow.</p>
+<h2 id="why-i-accepted-a-solo-mode">Why I accepted a “solo mode”</h2>
+<p>After thinking about it, I realized there are really two different modes here:</p>
+<h3 id="team-mode">Team mode</h3>
+<ul>
+<li>branch protection</li>
+<li>pull requests</li>
+<li>human review gates</li>
+<li>merge discipline</li>
+</ul>
+<h3 id="solo-mode">Solo mode</h3>
+<ul>
+<li>fast issue pickup</li>
+<li>direct code change</li>
+<li>direct landing when validation passes</li>
+</ul>
+<p>For now I am explicitly leaning toward solo mode. That is not because it is universally better. It is just a better fit for a single developer trying to reduce friction on personal repos.</p>
+<h2 id="scaling-from-one-repo-to-two">Scaling from one repo to two</h2>
+<p>After getting the first repository working, I wanted to know whether I could use Symphony across more than one repo.</p>
+<p>The answer was yes, but not by forcing one workflow to manage everything. The cleaner model was:</p>
+<ul>
+<li>one Linear project per repository</li>
+<li>one <code>WORKFLOW</code> file per repository</li>
+<li>one Symphony process per repository</li>
+<li>one workspace root per repository</li>
+</ul>
+<p>That means each repo gets its own queue, workspace, and execution loop. The result is much easier to reason about than trying to multiplex multiple repos through a single workflow.</p>
+<p>Conceptually, the setup became:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Repo A -&gt; Linear Project A -&gt; Symphony Process A
+</span></span><span style="display:flex;"><span>Repo B -&gt; Linear Project B -&gt; Symphony Process B
+</span></span></code></pre></div><p>That separation made the system feel much more stable.</p>
+<h2 id="things-that-felt-weird">Things that felt weird</h2>
+<p>A few things still feel unusual in this setup:</p>
+<h3 id="1-linear-is-the-real-driver">1. Linear is the real driver</h3>
+<p>If you are used to GitHub-centric project flow, it takes a minute to reset your intuition.</p>
+<h3 id="2-the-workflow-file-is-closer-to-an-operating-manual-than-a-config-file">2. The workflow file is closer to an operating manual than a config file</h3>
+<p>It is not just about parameters. It strongly shapes agent behavior.</p>
+<h3 id="3-small-scope-mistakes-create-silent-failures">3. Small scope mistakes create “silent failures”</h3>
+<p>If the wrong project is watched, or the issue is created in the wrong place, everything can look healthy while nothing useful happens.</p>
+<h3 id="4-defaults-are-often-too-implicit">4. Defaults are often too implicit</h3>
+<p>Model choice, reasoning depth, safety behavior, and merge style all become much clearer once they are explicitly set instead of left to defaults.</p>
+<h2 id="what-i-would-improve-next">What I would improve next</h2>
+<p>There are a few upgrades that would make this setup stronger without making it too heavyweight:</p>
+<ul>
+<li>make validation stricter before landing changes</li>
+<li>make commit messages more informative</li>
+<li>optionally require PRs for selected repos</li>
+<li>capture a better audit trail of what the agent actually did</li>
+<li>design a lightweight rollback path for bad automated changes</li>
+</ul>
+<p>That would preserve the speed of solo mode while reducing the risk of bad direct merges.</p>
+<h2 id="final-take">Final take</h2>
+<p>My main takeaway is that Symphony becomes much more interesting once it is treated as a workflow runtime, not just a coding demo.</p>
+<p>The useful mental model is not “an AI that edits files.” It is closer to this:</p>
+<ul>
+<li>work arrives through a queue</li>
+<li>each task gets an isolated environment</li>
+<li>the agent runs inside a bounded workflow</li>
+<li>the repo is just one part of the system</li>
+</ul>
+<p>For a solo developer, that can actually be a very comfortable way to work, as long as the workflow is shaped carefully enough.</p>
+<p>It is still early, still a little rough, and definitely not something I would blindly trust everywhere. But for small personal projects, it already feels surprisingly real.</p>
+<h2 id="future-potential-kill-the-relay">Future potential: kill the relay</h2>
+<p>Symphony is not competing with tab completion. It is a probe for a nastier question: <strong>if work is just queue + policy + execution, why would you keep a permanent class of people whose main job is to sit between a customer sentence and a git merge?</strong></p>
+<p>Here is the version I actually believe.</p>
+<p><strong>B2B should look like a pipe, not a committee.</strong> Whoever hears the customer—sales engineer, CS, onboarding, whoever—<strong>opens the issue</strong>. That issue is the contract. Behind it, <strong>Symphony-grade orchestration</strong> does the rest: clone, implement, test, merge, release. Not “faster Jira.” Not “AI assists your sprint.” <strong>The default path is machine throughput; humans are for edge cases, politics, and blame.</strong></p>
+<p>Does that erase humans? No—it erases <strong>the middle</strong>. The classic career ladder where “product” rewrites reality for “engineering” so engineering can rewrite it again for Git is not destiny. It is <strong>coordination rent</strong>. Orchestration is a wrecking ball aimed at that rent. If your value is mostly translating between tools and meetings, the stack is not coming to help you—it is coming to <strong>delete the slot</strong>.</p>
+<p>You can list risks forever—compliance, security, hallucinations, bad merges—and you should. But risk is not a moral argument for headcount. It is an argument for <strong>thinner, sharper ownership</strong>: a tiny number of people who set policy and own catastrophes, plus a machine that does the boring middle at machine speed.</p>
+<p>Yes, today’s tools are still a preview: flaky, embarrassing, unsafe if you are lazy about validation. <strong>Irrelevant to the direction.</strong> The direction is <strong>first-hand demand in, shipped software out</strong>, with as few interpreters as the market will tolerate. In ten years, “we need more PMs and more engineers because that is how software is made” will read like “we need more telephone switchboard operators because calls exist.”</p>
+<p>My two-repo setup is a toy. The logic is not.</p>
+<h2 id="appendix-sanitized-lessons-learned">Appendix: sanitized lessons learned</h2>
+<ul>
+<li>Configure Linear (project, slug, workflow states, API key, issues inside the project) before blaming Symphony</li>
+<li>Start with one repo, not many</li>
+<li>Keep one workflow per repo</li>
+<li>Use one Linear project per repo</li>
+<li>Make state transitions explicit</li>
+<li>Do not rely too much on defaults</li>
+<li>Validate aggressively before allowing automated landing</li>
+<li>Expect the first “nothing happened” failure to be a scoping mistake</li>
+</ul>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>From AI Conversations to Published Blog: The MCP-Powered Publishing Revolution</title>
+      <link>https://blog.minifish.org/posts/ai-mcp-blog-publishing-workflow/</link>
+      <pubDate>Mon, 19 Jan 2026 10:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/ai-mcp-blog-publishing-workflow/</guid>
+      <description>A practical publishing workflow that turns AI conversations into Hugo posts through MCP, GitHub Actions, and a structured blog repository.</description>
+      <content:encoded><![CDATA[<h2 id="the-problem-lost-context-lost-thoughts">The Problem: Lost Context, Lost Thoughts</h2>
+<p>We&rsquo;ve all been there. You&rsquo;re deep in a technical discussion with an AI assistant—analyzing code, exploring architecture, or debugging a complex issue. The conversation is rich with insights, and you think: &ldquo;This would make a great blog post.&rdquo;</p>
+<p>But then reality hits: you need to switch to your blog repository, format the content, commit it, push it, and wait for the build. By the time you&rsquo;re back, the original context is gone, and the momentum is lost.</p>
+<p><strong>What if you could publish directly from where you are?</strong></p>
+<h2 id="building-on-existing-automation">Building on Existing Automation</h2>
+<p>In <a href="/posts/how-to-automatically-publish-a-blog-using-github-actions/">my previous post about automatically publishing a blog using GitHub Actions</a>, I set up a workflow where pushing to the blog repository triggers an automatic build and deployment to GitHub Pages. This solved the build and deployment automation, but there was still one manual step remaining: creating the post file itself.</p>
+<p>The workflow I described there handles:</p>
+<ol>
+<li>Checking out the blog repository</li>
+<li>Building the Hugo site with <code>make</code></li>
+<li>Deploying to <code>jackysp.github.io</code></li>
+</ol>
+<p>But you still needed to be in the blog repository to create the post. That&rsquo;s where MCP changes everything.</p>
+<h2 id="enter-mcp-the-missing-link">Enter MCP: The Missing Link</h2>
+<p>The <a href="https://modelcontextprotocol.io/">Model Context Protocol (MCP)</a> is revolutionizing how AI agents interact with external systems. Instead of treating AI as a passive tool, MCP enables agents to act as autonomous agents with direct access to your tools and workflows.</p>
+<p>In my setup, I&rsquo;ve connected MCP-enabled agents (like Cursor) directly to my blog repository via GitHub MCP. This means:</p>
+<ul>
+<li><strong>No context switching</strong>: Stay in your current working directory, whether it&rsquo;s a random project folder or a deep codebase exploration</li>
+<li><strong>Preserve conversation flow</strong>: The AI maintains the full context of your discussion</li>
+<li><strong>Direct publishing</strong>: Create and publish posts without leaving your IDE</li>
+</ul>
+<h2 id="the-architecture-seamless-integration">The Architecture: Seamless Integration</h2>
+<p>Here&rsquo;s how the complete workflow operates:</p>
+<pre tabindex="0"><code>┌─────────────────────────────────────────────────────────┐
+│  AI Agent (Cursor/Claude) with MCP enabled              │
+│  - Context: Any code repository or discussion            │
+│  - Tool: GitHub MCP Server                               │
+└──────────────────┬──────────────────────────────────────┘
+                   │
+                   │ Creates post via GitHub MCP
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────┐
+│  Blog Repository (jackysp/blog)                         │
+│  - content/posts/&lt;slug&gt;/index.md                        │
+│  - Commit: &#34;Publish: [title]&#34;                           │
+└──────────────────┬──────────────────────────────────────┘
+                   │
+                   │ Push to master branch
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────┐
+│  GitHub Actions (from previous post)                     │
+│  - Build: Hugo static site generation                   │
+│  - Deploy: Push to jackysp.github.io                    │
+└──────────────────┬──────────────────────────────────────┘
+                   │
+                   │ Published
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────────┐
+│  Live Site (jackysp.github.io)                          │
+│  - Post is live and accessible                           │
+└─────────────────────────────────────────────────────────┘
+</code></pre><p>The GitHub Actions part remains exactly as described in the previous post—no changes needed there. The MCP layer adds the ability to trigger it from anywhere.</p>
+<h2 id="the-workflow-in-action">The Workflow in Action</h2>
+<h3 id="1-ai-powered-content-creation">1. AI-Powered Content Creation</h3>
+<p>When you&rsquo;re discussing a technical topic with an AI agent, you can simply ask:</p>
+<blockquote>
+<p>&ldquo;Turn this discussion into a blog post and publish it.&rdquo;</p>
+</blockquote>
+<p>The AI agent, with access to GitHub via MCP, can:</p>
+<ul>
+<li>Extract key insights from your conversation</li>
+<li>Format content according to Hugo front matter requirements</li>
+<li>Create properly structured markdown files</li>
+<li>Handle images and assets</li>
+<li>Commit and push to the repository</li>
+</ul>
+<h3 id="2-automated-build--deploy">2. Automated Build &amp; Deploy</h3>
+<p>The moment a post is pushed to the <code>master</code> branch, the same GitHub Actions workflow from the previous post kicks in:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">master ]</span>
+</span></span></code></pre></div><p>The workflow (as detailed in <a href="/posts/how-to-automatically-publish-a-blog-using-github-actions/">the previous post</a>):</p>
+<ol>
+<li>Checks out the blog repository with submodules</li>
+<li>Builds the Hugo site using <code>make</code></li>
+<li>Deploys the built artifacts to <code>jackysp.github.io</code></li>
+</ol>
+<p>All without manual intervention.</p>
+<h3 id="3-governance-through-contracts">3. Governance Through Contracts</h3>
+<p>To ensure quality and prevent accidents, I&rsquo;ve implemented an <strong>AI Publishing Contract</strong> (<code>PUBLISHING.md</code>) that defines:</p>
+<ul>
+<li><strong>Allowed paths</strong>: Only <code>content/**</code> and <code>static/**</code> can be modified</li>
+<li><strong>Post format</strong>: Required front matter fields (title, date, tags, slug, summary)</li>
+<li><strong>Image handling</strong>: Standardized location and reference format</li>
+<li><strong>Commit conventions</strong>: Single commit per post with descriptive messages</li>
+</ul>
+<p>This contract ensures that AI agents can publish content while respecting the repository structure and quality standards.</p>
+<h2 id="why-this-matters-the-developer-experience-revolution">Why This Matters: The Developer Experience Revolution</h2>
+<h3 id="zero-context-switching">Zero Context Switching</h3>
+<p>Traditional workflow:</p>
+<ol>
+<li>Copy conversation → Switch to blog repo → Format → Commit → Push → Wait</li>
+<li><strong>Context lost</strong>, momentum broken</li>
+</ol>
+<p>New workflow:</p>
+<ol>
+<li>Ask AI to publish → Done</li>
+<li><strong>Context preserved</strong>, workflow continuous</li>
+</ol>
+<h3 id="capturing-technical-insights">Capturing Technical Insights</h3>
+<p>The best technical insights often emerge during active problem-solving. With this workflow, you can:</p>
+<ul>
+<li>Document discoveries in real-time</li>
+<li>Turn debugging sessions into tutorials</li>
+<li>Transform architecture discussions into deep-dives</li>
+<li>Share codebase explorations as learning resources</li>
+</ul>
+<h3 id="scaling-knowledge-sharing">Scaling Knowledge Sharing</h3>
+<p>Previously, the friction of publishing meant many valuable insights were never written down. Now, the barrier to publishing is minimal, making it easier to:</p>
+<ul>
+<li>Share learnings with your team</li>
+<li>Build a personal knowledge base</li>
+<li>Contribute to the developer community</li>
+<li>Document your problem-solving journey</li>
+</ul>
+<h2 id="technical-implementation-details">Technical Implementation Details</h2>
+<h3 id="mcp-server-configuration">MCP Server Configuration</h3>
+<p>The GitHub MCP server provides the AI agent with:</p>
+<ul>
+<li>Repository read/write access</li>
+<li>File creation and modification</li>
+<li>Commit and push capabilities</li>
+<li>Branch management</li>
+</ul>
+<h3 id="github-actions-workflow">GitHub Actions Workflow</h3>
+<p>The CI/CD pipeline (as described in <a href="/posts/how-to-automatically-publish-a-blog-using-github-actions/">the previous post</a>) handles:</p>
+<ul>
+<li>Go environment setup (for Hugo builds)</li>
+<li>Repository checkout with submodules</li>
+<li>Site generation via <code>make</code></li>
+<li>Deployment to GitHub Pages repository</li>
+</ul>
+<p>No changes needed to the existing workflow—it just gets triggered from a new entry point.</p>
+<h3 id="hugo-site-configuration">Hugo Site Configuration</h3>
+<p>Posts follow Hugo&rsquo;s standard structure:</p>
+<ul>
+<li><strong>Location</strong>: <code>content/posts/&lt;slug&gt;/index.md</code></li>
+<li><strong>Format</strong>: YAML front matter + Markdown content</li>
+<li><strong>Images</strong>: Stored in each post bundle and referenced with relative filenames</li>
+<li><strong>Draft control</strong>: <code>draft: true/false</code> for preview/publish</li>
+</ul>
+<h2 id="the-future-ai-augmented-documentation">The Future: AI-Augmented Documentation</h2>
+<p>This workflow represents a shift toward <strong>AI-augmented documentation</strong>. Instead of treating AI as a writing assistant, we&rsquo;re treating it as a publishing agent that can:</p>
+<ul>
+<li>Understand context from code discussions</li>
+<li>Extract technical insights automatically</li>
+<li>Format and structure content appropriately</li>
+<li>Publish without breaking workflow</li>
+</ul>
+<p>As MCP and similar protocols mature, we&rsquo;ll see more sophisticated capabilities:</p>
+<ul>
+<li>Automatic code analysis and explanation</li>
+<li>Multi-post series generation from extended discussions</li>
+<li>Cross-referencing with existing content</li>
+<li>SEO and metadata optimization</li>
+</ul>
+<h2 id="getting-started">Getting Started</h2>
+<p>If you want to set up a similar workflow:</p>
+<ol>
+<li><strong>Set up automated publishing</strong> (see <a href="/posts/how-to-automatically-publish-a-blog-using-github-actions/">my previous post</a>)</li>
+<li><strong>Enable MCP in your AI agent</strong> (Cursor, Claude Desktop, etc.)</li>
+<li><strong>Configure GitHub MCP server</strong> with repository access</li>
+<li><strong>Define publishing contracts</strong> for governance</li>
+<li><strong>Start publishing</strong> from your conversations</li>
+</ol>
+<p>The technical details are straightforward, but the impact on productivity and knowledge capture is profound.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The intersection of AI agents, MCP protocols, and automated CI/CD creates a new paradigm for technical publishing. By building on the existing GitHub Actions automation and adding MCP as the entry point, we eliminate context switching and reduce friction.</p>
+<p>This isn&rsquo;t just about automating blog posts—it&rsquo;s about <strong>preserving the flow state of technical discovery</strong> and making knowledge sharing as natural as having a conversation.</p>
+<p>The future of technical documentation is here, and it&rsquo;s conversational.</p>
+<hr>
+<p><em>This post was created and published using the exact workflow described above—from a discussion about workflow automation to a live blog post, all without leaving the conversation context.</em></p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>Harnessing AI to Create High-Quality Podcasts Quickly and for Free</title>
+      <link>https://blog.minifish.org/posts/harnessing-ai-to-create-high-quality-podcasts-quickly-and-for-free/</link>
+      <pubDate>Wed, 11 Dec 2024 17:11:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/harnessing-ai-to-create-high-quality-podcasts-quickly-and-for-free/</guid>
+      <description>As a long-time podcaster, I&amp;#39;ve always enjoyed sharing my thoughts and ideas through audio. While the world of video content—and the role of a YouTuber—has its allure, the...</description>
+      <content:encoded><![CDATA[<h2 id="introduction">Introduction</h2>
+<p>As a long-time podcaster, I&rsquo;ve always enjoyed sharing my thoughts and ideas through audio. While the world of video content—and the role of a YouTuber—has its allure, the complexities of video editing have kept me anchored in the realm of podcasting. My journey has involved leveraging platforms like <a href="https://creators.spotify.com/"><strong>Spotify Creator</strong></a> (formerly <strong>Anchor</strong>) for hosting and distributing my recordings. This platform offers a wide array of features for free, including audio recording, editing capabilities, and automatic promotion to Spotify.</p>
+<p>However, I sought a more comprehensive solution, one that would allow me to listen to my own podcast while driving, using the Podcast app on my CarPlay device. To achieve this, I ventured into publishing on <strong>Apple Podcasts</strong> (<a href="https://podcastsconnect.apple.com/">podcastsconnect.apple.com</a>), which also offers free hosting. With a self-designed cover and episodes uploaded, I was set—or so I thought.</p>
+<h2 id="the-challenges-of-traditional-podcasting">The Challenges of Traditional Podcasting</h2>
+<p>Despite having the technical setup, I faced significant challenges:</p>
+<ul>
+<li><strong>Consistency</strong>: Maintaining a regular publishing schedule proved difficult.</li>
+<li><strong>Voice Quality</strong>: My voice quality was inconsistent, affecting listener engagement.</li>
+<li><strong>Content Preparation</strong>: Crafting well-structured episodes without improvisation was challenging.</li>
+<li><strong>Enhancements</strong>: Incorporating background music and other audio elements to enrich the listening experience required additional effort.</li>
+</ul>
+<p>These hurdles led to my podcast being suspended for approximately two years. I found myself in need of a solution that could simplify the process and revitalize my passion for podcasting.</p>
+<h2 id="discovering-notebooklm-an-ai-powered-podcasting-tool">Discovering NotebookLM: An AI-Powered Podcasting Tool</h2>
+<p>Recently, I stumbled upon <strong>NotebookLM</strong> (<a href="https://notebooklm.google.com/">notebooklm.google.com</a>), an innovative application developed by Google. NotebookLM harnesses the power of artificial intelligence to generate podcast content. Users can provide a topic and related documents, and the AI takes over, creating engaging podcast episodes.</p>
+<h3 id="my-experience-with-notebooklm">My Experience with NotebookLM</h3>
+<p>Intrigued, I decided to give NotebookLM a try. The results were nothing short of astounding:</p>
+<ul>
+<li><strong>Effortless Production</strong>: The AI effortlessly generated a half-hour episode featuring two speakers discussing the topics in English.</li>
+<li><strong>Enhanced Content</strong>: It went beyond the provided information, utilizing search engines to gather additional relevant data from the internet.</li>
+<li><strong>Quality Output</strong>: The quality of the generated content was exceptionally high, surpassing what I could produce on my own.</li>
+<li><strong>Incorporated Music</strong>: Appropriate background music was added, enhancing the overall listening experience.</li>
+<li><strong>Cost-Free</strong>: All these features were available entirely for free.</li>
+</ul>
+<h2 id="a-case-study-deep-dive-into-tidb">A Case Study: Deep Dive into TiDB</h2>
+<p>To put NotebookLM to the test, I created an episode about <strong>TiDB</strong>, a product developed by my current employer. The process was seamless, and the final product was impressive. You can listen to the episode here: <a href="https://podcasts.apple.com/us/podcast/deep-dive-into-tidb/id1609444337?i=1000679181770">Deep Dive into TiDB</a>.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The integration of AI into podcast creation through tools like NotebookLM has the potential to revolutionize the way we produce content. It removes many of the barriers that podcasters face, such as time constraints, technical challenges, and the need for consistent quality.</p>
+<p>For anyone looking to start or rejuvenate their podcast without the traditional hassles, I highly recommend giving NotebookLM a try. It&rsquo;s remarkable to see how AI can not only match but enhance human capabilities in creative endeavors.</p>
+<hr>
+<p>I hope this helps! Let me know if there&rsquo;s anything you&rsquo;d like to add or modify in your blog post.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>Exploring Local LLMs with Ollama: My Journey and Practices</title>
+      <link>https://blog.minifish.org/posts/exploring-local-llms-with-ollama-my-journey-and-practices/</link>
+      <pubDate>Wed, 27 Nov 2024 18:26:14 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/exploring-local-llms-with-ollama-my-journey-and-practices/</guid>
+      <description>Local Large Language Models (LLMs) have been gaining traction as developers and enthusiasts seek more control over their AI tools without relying solely on cloud-based solutions....</description>
+      <content:encoded><![CDATA[<p>Local Large Language Models (LLMs) have been gaining traction as developers and enthusiasts seek more control over their AI tools without relying solely on cloud-based solutions. In this blog post, I&rsquo;ll share my experiences with <strong>Ollama</strong>, a remarkable tool for running local LLMs, along with other tools like <strong>llamaindex</strong> and <strong>Candle</strong>. I&rsquo;ll also discuss various user interfaces (UI) that enhance the local LLM experience.</p>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#introduction-to-ollama">Introduction to Ollama</a>
+<ul>
+<li><a href="#a-popular-choice">A Popular Choice</a></li>
+<li><a href="#ease-of-use">Ease of Use</a></li>
+<li><a href="#built-with-golang">Built with Golang</a></li>
+</ul>
+</li>
+<li><a href="#my-practices-with-ollama">My Practices with Ollama</a>
+<ul>
+<li><a href="#preferred-models">Preferred Models</a>
+<ul>
+<li><a href="#llama-31">Llama 3.1</a></li>
+<li><a href="#mistral">Mistral</a></li>
+<li><a href="#phi-3">Phi-3</a></li>
+<li><a href="#qwen-2">Qwen-2</a></li>
+</ul>
+</li>
+<li><a href="#hardware-constraints">Hardware Constraints</a></li>
+</ul>
+</li>
+<li><a href="#exploring-uis-for-ollama">Exploring UIs for Ollama</a>
+<ul>
+<li><a href="#openwebui">OpenWebUI</a></li>
+<li><a href="#page-assist">Page Assist</a></li>
+<li><a href="#enchanted">Enchanted</a></li>
+<li><a href="#anythingllm">AnythingLLM</a></li>
+<li><a href="#dify">Dify</a></li>
+</ul>
+</li>
+<li><a href="#diving-into-llamaindex">Diving into llamaindex</a></li>
+<li><a href="#experimenting-with-candle">Experimenting with Candle</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+<hr>
+<h2 id="introduction-to-ollama">Introduction to Ollama</h2>
+<h3 id="a-popular-choice">A Popular Choice</h3>
+<p><a href="https://github.com/jmorganca/ollama">Ollama</a> has rapidly become a favorite among developers interested in local LLMs. Within a year, it has garnered significant attention on GitHub, reflecting its growing user base and community support.</p>
+<h3 id="ease-of-use">Ease of Use</h3>
+<p>One of Ollama&rsquo;s standout features is its simplicity. It&rsquo;s as easy to use as Docker, making it accessible even to those who may not be deeply familiar with machine learning frameworks. The straightforward command-line interface allows users to download and run models with minimal setup.</p>
+<h3 id="built-with-golang">Built with Golang</h3>
+<p>Ollama is written in <strong>Golang</strong>, ensuring performance and efficiency. Golang&rsquo;s concurrency features contribute to Ollama&rsquo;s ability to handle tasks effectively, which is crucial when working with resource-intensive LLMs.</p>
+<h2 id="my-practices-with-ollama">My Practices with Ollama</h2>
+<h3 id="preferred-models">Preferred Models</h3>
+<h4 id="llama-31">Llama 3.1</h4>
+<p>I&rsquo;ve found that <strong>Llama 3.1</strong> works exceptionally well with Ollama. It&rsquo;s my go-to choice due to its performance and compatibility.</p>
+<h4 id="mistral">Mistral</h4>
+<p>While <strong>Mistral</strong> also performs well, it hasn&rsquo;t gained as much popularity as Llama. Nevertheless, it&rsquo;s a solid option worth exploring.</p>
+<h4 id="phi-3">Phi-3</h4>
+<p>Developed by Microsoft, <strong>Phi-3</strong> is both fast and efficient. The 2B parameter model strikes a balance between size and performance, making it one of the best small-sized LLMs available.</p>
+<h4 id="qwen-2">Qwen-2</h4>
+<p>Despite its impressive benchmarks, <strong>Qwen-2</strong> didn&rsquo;t meet my expectations in practice. It might work well in certain contexts, but it didn&rsquo;t suit my specific needs.</p>
+<h3 id="hardware-constraints">Hardware Constraints</h3>
+<p>Running large models on hardware with limited resources can be challenging. On my 16GB MacBook, models around <strong>7B to 8B parameters</strong> are the upper limit. Attempting to run larger models results in performance issues.</p>
+<h2 id="exploring-uis-for-ollama">Exploring UIs for Ollama</h2>
+<p>Enhancing the user experience with UIs can make interacting with local LLMs more intuitive. Here&rsquo;s a look at some UIs I&rsquo;ve tried:</p>
+<h3 id="openwebui">OpenWebUI</h3>
+<p><a href="https://github.com/OpenWebUI/OpenWebUI">OpenWebUI</a> offers a smooth and user-friendly interface similar to Ollama&rsquo;s default UI. It requires Docker to run efficiently, which might be a barrier for some users.</p>
+<ul>
+<li><strong>Features</strong>:
+<ul>
+<li>Basic Retrieval-Augmented Generation (RAG) capabilities.</li>
+<li>Connection to OpenAI APIs.</li>
+</ul>
+</li>
+</ul>
+<h3 id="page-assist">Page Assist</h3>
+<p><a href="https://chrome.google.com/webstore/detail/page-assist/">Page Assist</a> is a Chrome extension that I&rsquo;ve chosen for its simplicity and convenience.</p>
+<ul>
+<li><strong>Advantages</strong>:
+<ul>
+<li>No requirement for Docker.</li>
+<li>Accesses the current browser page as input, enabling context-aware interactions.</li>
+</ul>
+</li>
+</ul>
+<h3 id="enchanted">Enchanted</h3>
+<p><a href="https://apps.apple.com/app/enchanted-ai-assistant/id">Enchanted</a> is unique as it provides an iOS UI for local LLMs with support for Ollama.</p>
+<ul>
+<li><strong>Usage</strong>:
+<ul>
+<li>By using <strong>Tailscale</strong>, I can connect it to Ollama running on my MacBook.</li>
+<li>Serves as an alternative to Apple’s native intelligence features.</li>
+</ul>
+</li>
+</ul>
+<h3 id="anythingllm">AnythingLLM</h3>
+<p><a href="https://github.com/Mintplex-Labs/anything-llm">AnythingLLM</a> offers enhanced RAG capabilities. However, in my experience, it hasn&rsquo;t performed consistently well enough for regular use.</p>
+<h3 id="dify">Dify</h3>
+<p><a href="https://github.com/langgenius/dify">Dify</a> is a powerful and feature-rich option.</p>
+<ul>
+<li><strong>Pros</strong>:
+<ul>
+<li>Easy to set up with an extensive feature set.</li>
+</ul>
+</li>
+<li><strong>Cons</strong>:
+<ul>
+<li>Resource-intensive, requiring Docker and running multiple containers like Redis and PostgreSQL.</li>
+</ul>
+</li>
+</ul>
+<h2 id="diving-into-llamaindex">Diving into llamaindex</h2>
+<p><a href="https://github.com/jerryjliu/llama_index">llamaindex</a> is geared towards developers who are comfortable writing code. While it offers robust functionalities, it does have a learning curve.</p>
+<ul>
+<li><strong>Observations</strong>:
+<ul>
+<li>Documentation is somewhat limited, often necessitating diving into the source code.</li>
+<li>The <code>llamaindex-cli</code> tool aims to simplify getting started but isn&rsquo;t entirely stable.
+<ul>
+<li>Works seamlessly with OpenAI.</li>
+<li>Requires code modifications to function with Ollama.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="experimenting-with-candle">Experimenting with Candle</h2>
+<p><strong>Candle</strong> is an intriguing project written in <strong>Rust</strong>.</p>
+<ul>
+<li>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Uses <a href="https://huggingface.co/">Hugging Face</a> to download models.</li>
+<li>Simple to run but exhibits slower performance compared to Ollama.</li>
+</ul>
+</li>
+<li>
+<p><strong>Additional Tools</strong>:</p>
+<ul>
+<li><strong>Cake</strong>: A distributed solution based on Candle, <strong>Cake</strong> opens up possibilities for scaling and extending use cases.</li>
+</ul>
+</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>Exploring local LLMs has been an exciting journey filled with learning and experimentation. Tools like Ollama, llamaindex, and Candle offer various pathways to harnessing the power of LLMs on personal hardware. While there are challenges, especially with hardware limitations and setup complexities, the control and privacy afforded by local models make the effort worthwhile.</p>
+<hr>
+<p><em>Feel free to share your experiences or ask questions in the comments below!</em></p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

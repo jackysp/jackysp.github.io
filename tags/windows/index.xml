@@ -19,15 +19,7 @@
       <link>https://blog.minifish.org/posts/how-to-configure-a-chinese-latex-environment-on-windows/</link>
       <pubDate>Wed, 31 Mar 2021 00:00:00 +0000</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-configure-a-chinese-latex-environment-on-windows/</guid>
-      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
-&lt;p&gt;Initially, I didn&amp;rsquo;t think this was something worth writing about, because CTex was previously working smoothly for everyone. However, it turns out that CTex hasn&amp;rsquo;t been updated since 2016. So, I wanted to find a replacement for Chinese LaTeX on Windows in 2021.&lt;/p&gt;
-&lt;h2 id=&#34;configuration-method&#34;&gt;Configuration Method&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;Install MiKTeX (TexLive should work as well). MiKTeX can automatically download dependency packages and you can also proactively install the ctex package.&lt;/li&gt;
-&lt;li&gt;Install the VSCode LaTeX extension.&lt;/li&gt;
-&lt;li&gt;Configure the LaTeX extension. I found a powerful configuration on Zhihu, but it’s quite complex, so I simplified it a bit.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;A brief explanation: the core components here are the recipes and tools. Tools are the compilation toolchain, specifying which tools to use for compilation and the options to use, without regard to order. Recipes define how to combine the above tools to generate the final document, where the order does matter. I&amp;rsquo;ve put XeLaTex first here because it&amp;rsquo;s the most compatible for compiling Chinese. If you use pdflatex to compile Chinese documents, you&amp;rsquo;re likely to encounter issues.&lt;/p&gt;</description>
+      <description>Initially, I didn&amp;#39;t think this was something worth writing about, because CTex was previously working smoothly for everyone. However, it turns out that CTex hasn&amp;#39;t been updated...</description>
       <content:encoded><![CDATA[<h2 id="background">Background</h2>
 <p>Initially, I didn&rsquo;t think this was something worth writing about, because CTex was previously working smoothly for everyone. However, it turns out that CTex hasn&rsquo;t been updated since 2016. So, I wanted to find a replacement for Chinese LaTeX on Windows in 2021.</p>
 <h2 id="configuration-method">Configuration Method</h2>
@@ -215,17 +207,7 @@
       <link>https://blog.minifish.org/posts/how-to-use-docker-on-windows/</link>
       <pubDate>Mon, 13 Apr 2020 10:34:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-use-docker-on-windows/</guid>
-      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
-&lt;p&gt;I had to install Docker on Windows to reproduce a bug.&lt;/p&gt;
-&lt;h2 id=&#34;process&#34;&gt;Process&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;Using Windows 10 as an example, if you have the Home Basic version, you&amp;rsquo;ll need to pay to upgrade to the Pro version because you need to enable Hyper-V and Container features, which costs about 800 RMB.&lt;/li&gt;
-&lt;li&gt;Install everything with the default settings, and do not switch to Windows Containers, since most images are still under Linux. If you do switch, you can restore it after starting up.&lt;/li&gt;
-&lt;li&gt;If you encounter permission issues with shared folders, follow the instructions at &lt;a href=&#34;https://github.com/docker/for-win/issues/3174&#34;&gt;link&lt;/a&gt;. However, this might not solve the problem, and you might encounter a sharing failure. In that case, go to the settings, troubleshoot, and reset to factory defaults. After resetting, ensure the shared folders are selected.&lt;/li&gt;
-&lt;li&gt;When you encounter errors during use, just try a few more times. It might work; if not, reset it.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&#34;impressions&#34;&gt;Impressions&lt;/h2&gt;
-&lt;p&gt;Initially, there were no issues using Docker on Linux; Docker itself was simple back then. Later, using it on Mac brought changes, including a user interface, various colors, and numerous bugs. Right from the start, I encountered bugs. Docker did not support Windows a long time ago, and given the various bugs on Mac, I didn&amp;rsquo;t have high expectations. The results were still quite surprising. In summary, here are a few points:&lt;/p&gt;</description>
+      <description>I had to install Docker on Windows to reproduce a bug.</description>
       <content:encoded><![CDATA[<h2 id="background">Background</h2>
 <p>I had to install Docker on Windows to reproduce a bug.</p>
 <h2 id="process">Process</h2>
@@ -250,18 +232,7 @@
       <link>https://blog.minifish.org/posts/how-to-start-a-powershell-script-in-the-background-at-windows-startup/</link>
       <pubDate>Tue, 14 Jan 2020 08:56:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-start-a-powershell-script-in-the-background-at-windows-startup/</guid>
-      <description>&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Create a script and place it in&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-powershell&#34; data-lang=&#34;powershell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;C:\Users\name\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\`  
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Fill the script with:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Start-Process -FilePath &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.exe&amp;#34;&lt;/span&gt; -ArgumentList &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-L=&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-F=&amp;#34;&lt;/span&gt; -RedirectStandardOutput &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.log&amp;#34;&lt;/span&gt; -RedirectStandardError &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\Users\name\bin\gost-windows-amd64.err&amp;#34;&lt;/span&gt; -WindowStyle Hidden
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Note: &lt;code&gt;Start-Process&lt;/code&gt; seems to perform a fork-like action, and by default, it opens a new PowerShell window to execute. That&amp;rsquo;s why &lt;code&gt;-WindowStyle Hidden&lt;/code&gt; is added at the end. You can&amp;rsquo;t use &lt;code&gt;-NoNewWindow&lt;/code&gt; here because it only prevents the creation of a new window for executing &lt;code&gt;Start-Process&lt;/code&gt;, but the old window will not exit.&lt;br&gt;
-Note 2: After the old window exits, the forked process seems to become an orphan and is managed elsewhere, so permissions, such as network connection permissions, might need to be requested again.&lt;/p&gt;</description>
+      <description>Note: Start-Process seems to perform a fork-like action, and by default, it opens a new PowerShell window to execute. That&amp;#39;s why -WindowStyle Hidden is added at the end. You can&amp;#39;t...</description>
       <content:encoded><![CDATA[<ul>
 <li>
 <p>Create a script and place it in</p>

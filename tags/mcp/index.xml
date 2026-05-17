@@ -19,15 +19,13 @@
       <link>https://blog.minifish.org/posts/ai-mcp-blog-publishing-workflow/</link>
       <pubDate>Mon, 19 Jan 2026 10:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/ai-mcp-blog-publishing-workflow/</guid>
-      <description>&lt;h2 id=&#34;the-problem-lost-context-lost-thoughts&#34;&gt;The Problem: Lost Context, Lost Thoughts&lt;/h2&gt;
-&lt;p&gt;We&amp;rsquo;ve all been there. You&amp;rsquo;re deep in a technical discussion with an AI assistant—analyzing code, exploring architecture, or debugging a complex issue. The conversation is rich with insights, and you think: &amp;ldquo;This would make a great blog post.&amp;rdquo;&lt;/p&gt;
-&lt;p&gt;But then reality hits: you need to switch to your blog repository, format the content, commit it, push it, and wait for the build. By the time you&amp;rsquo;re back, the original context is gone, and the momentum is lost.&lt;/p&gt;</description>
+      <description>A practical publishing workflow that turns AI conversations into Hugo posts through MCP, GitHub Actions, and a structured blog repository.</description>
       <content:encoded><![CDATA[<h2 id="the-problem-lost-context-lost-thoughts">The Problem: Lost Context, Lost Thoughts</h2>
 <p>We&rsquo;ve all been there. You&rsquo;re deep in a technical discussion with an AI assistant—analyzing code, exploring architecture, or debugging a complex issue. The conversation is rich with insights, and you think: &ldquo;This would make a great blog post.&rdquo;</p>
 <p>But then reality hits: you need to switch to your blog repository, format the content, commit it, push it, and wait for the build. By the time you&rsquo;re back, the original context is gone, and the momentum is lost.</p>
 <p><strong>What if you could publish directly from where you are?</strong></p>
 <h2 id="building-on-existing-automation">Building on Existing Automation</h2>
-<p>In <a href="/posts/github-action">my previous post about automatically publishing a blog using GitHub Actions</a>, I set up a workflow where pushing to the blog repository triggers an automatic build and deployment to GitHub Pages. This solved the build and deployment automation, but there was still one manual step remaining: creating the post file itself.</p>
+<p>In <a href="/posts/how-to-automatically-publish-a-blog-using-github-actions/">my previous post about automatically publishing a blog using GitHub Actions</a>, I set up a workflow where pushing to the blog repository triggers an automatic build and deployment to GitHub Pages. This solved the build and deployment automation, but there was still one manual step remaining: creating the post file itself.</p>
 <p>The workflow I described there handles:</p>
 <ol>
 <li>Checking out the blog repository</li>
@@ -56,7 +54,7 @@
                    ▼
 ┌─────────────────────────────────────────────────────────┐
 │  Blog Repository (jackysp/blog)                         │
-│  - content/posts/[new-post].md                          │
+│  - content/posts/&lt;slug&gt;/index.md                        │
 │  - Commit: &#34;Publish: [title]&#34;                           │
 └──────────────────┬──────────────────────────────────────┘
                    │
@@ -96,7 +94,7 @@
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">on</span>:
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">master ]</span>
-</span></span></code></pre></div><p>The workflow (as detailed in <a href="/posts/github-action">the previous post</a>):</p>
+</span></span></code></pre></div><p>The workflow (as detailed in <a href="/posts/how-to-automatically-publish-a-blog-using-github-actions/">the previous post</a>):</p>
 <ol>
 <li>Checks out the blog repository with submodules</li>
 <li>Builds the Hugo site using <code>make</code></li>
@@ -150,7 +148,7 @@
 <li>Branch management</li>
 </ul>
 <h3 id="github-actions-workflow">GitHub Actions Workflow</h3>
-<p>The CI/CD pipeline (as described in <a href="/posts/github-action">the previous post</a>) handles:</p>
+<p>The CI/CD pipeline (as described in <a href="/posts/how-to-automatically-publish-a-blog-using-github-actions/">the previous post</a>) handles:</p>
 <ul>
 <li>Go environment setup (for Hugo builds)</li>
 <li>Repository checkout with submodules</li>
@@ -184,7 +182,7 @@
 <h2 id="getting-started">Getting Started</h2>
 <p>If you want to set up a similar workflow:</p>
 <ol>
-<li><strong>Set up automated publishing</strong> (see <a href="/posts/github-action">my previous post</a>)</li>
+<li><strong>Set up automated publishing</strong> (see <a href="/posts/how-to-automatically-publish-a-blog-using-github-actions/">my previous post</a>)</li>
 <li><strong>Enable MCP in your AI agent</strong> (Cursor, Claude Desktop, etc.)</li>
 <li><strong>Configure GitHub MCP server</strong> with repository access</li>
 <li><strong>Define publishing contracts</strong> for governance</li>

@@ -19,9 +19,7 @@
       <link>https://blog.minifish.org/posts/using-delve-to-debug-golang-programs/</link>
       <pubDate>Mon, 16 Sep 2019 13:24:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/using-delve-to-debug-golang-programs/</guid>
-      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
-&lt;p&gt;When I first started writing Golang, I was always looking for a convenient debugging tool. Back then, I came across documentation about using &lt;code&gt;gdb&lt;/code&gt; to debug and also tried &lt;code&gt;delve&lt;/code&gt;, but neither felt easy to use. Later, on someone&amp;rsquo;s advice, I went back to the good old &lt;code&gt;print&lt;/code&gt; statements&amp;hellip;&lt;/p&gt;
-&lt;p&gt;Over the past couple of days, I was debugging &lt;code&gt;go test&lt;/code&gt; and found that tests would always hang when run per package. I couldn&amp;rsquo;t think of a suitable method at first, so I thought of &lt;code&gt;delve&lt;/code&gt; again. After giving it a try, I found it has become much more mature than before.&lt;/p&gt;</description>
+      <description>When I first started writing Golang, I was always looking for a convenient debugging tool. Back then, I came across documentation about using gdb to debug and also tried delve,...</description>
       <content:encoded><![CDATA[<h2 id="background">Background</h2>
 <p>When I first started writing Golang, I was always looking for a convenient debugging tool. Back then, I came across documentation about using <code>gdb</code> to debug and also tried <code>delve</code>, but neither felt easy to use. Later, on someone&rsquo;s advice, I went back to the good old <code>print</code> statements&hellip;</p>
 <p>Over the past couple of days, I was debugging <code>go test</code> and found that tests would always hang when run per package. I couldn&rsquo;t think of a suitable method at first, so I thought of <code>delve</code> again. After giving it a try, I found it has become much more mature than before.</p>

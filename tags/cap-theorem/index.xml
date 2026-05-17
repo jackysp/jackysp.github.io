@@ -19,12 +19,7 @@
       <link>https://blog.minifish.org/posts/understanding-the-cap-theorem/</link>
       <pubDate>Wed, 20 Dec 2017 22:21:06 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/understanding-the-cap-theorem/</guid>
-      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
-&lt;p&gt;The CAP theorem has become one of the hottest theorems in recent years; when discussing distributed systems, CAP is inevitably mentioned. However, I feel that I haven&amp;rsquo;t thoroughly understood it, so I wanted to write a blog post to record my understanding. I will update the content as I gain new insights.&lt;/p&gt;
-&lt;h2 id=&#34;understanding&#34;&gt;Understanding&lt;/h2&gt;
-&lt;p&gt;I read the first part of this &lt;a href=&#34;https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/45855.pdf&#34;&gt;paper&lt;/a&gt;.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;The CAP theorem [Bre12] says that you can only have two of the three desirable properties of:&lt;/p&gt;</description>
+      <description>The CAP theorem has become one of the hottest theorems in recent years; when discussing distributed systems, CAP is inevitably mentioned. However, I feel that I haven&amp;#39;t thoroughly...</description>
       <content:encoded><![CDATA[<h2 id="background">Background</h2>
 <p>The CAP theorem has become one of the hottest theorems in recent years; when discussing distributed systems, CAP is inevitably mentioned. However, I feel that I haven&rsquo;t thoroughly understood it, so I wanted to write a blog post to record my understanding. I will update the content as I gain new insights.</p>
 <h2 id="understanding">Understanding</h2>

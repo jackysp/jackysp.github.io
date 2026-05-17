@@ -19,47 +19,7 @@
       <link>https://blog.minifish.org/posts/exploring-local-llms-with-ollama-my-journey-and-practices/</link>
       <pubDate>Wed, 27 Nov 2024 18:26:14 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/exploring-local-llms-with-ollama-my-journey-and-practices/</guid>
-      <description>&lt;p&gt;Local Large Language Models (LLMs) have been gaining traction as developers and enthusiasts seek more control over their AI tools without relying solely on cloud-based solutions. In this blog post, I&amp;rsquo;ll share my experiences with &lt;strong&gt;Ollama&lt;/strong&gt;, a remarkable tool for running local LLMs, along with other tools like &lt;strong&gt;llamaindex&lt;/strong&gt; and &lt;strong&gt;Candle&lt;/strong&gt;. I&amp;rsquo;ll also discuss various user interfaces (UI) that enhance the local LLM experience.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;table-of-contents&#34;&gt;Table of Contents&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#introduction-to-ollama&#34;&gt;Introduction to Ollama&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#a-popular-choice&#34;&gt;A Popular Choice&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#ease-of-use&#34;&gt;Ease of Use&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#built-with-golang&#34;&gt;Built with Golang&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#my-practices-with-ollama&#34;&gt;My Practices with Ollama&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#preferred-models&#34;&gt;Preferred Models&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#llama-31&#34;&gt;Llama 3.1&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#mistral&#34;&gt;Mistral&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#phi-3&#34;&gt;Phi-3&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#qwen-2&#34;&gt;Qwen-2&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#hardware-constraints&#34;&gt;Hardware Constraints&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#exploring-uis-for-ollama&#34;&gt;Exploring UIs for Ollama&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#openwebui&#34;&gt;OpenWebUI&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#page-assist&#34;&gt;Page Assist&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#enchanted&#34;&gt;Enchanted&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#anythingllm&#34;&gt;AnythingLLM&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#dify&#34;&gt;Dify&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#diving-into-llamaindex&#34;&gt;Diving into llamaindex&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#experimenting-with-candle&#34;&gt;Experimenting with Candle&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#conclusion&#34;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;introduction-to-ollama&#34;&gt;Introduction to Ollama&lt;/h2&gt;
-&lt;h3 id=&#34;a-popular-choice&#34;&gt;A Popular Choice&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/jmorganca/ollama&#34;&gt;Ollama&lt;/a&gt; has rapidly become a favorite among developers interested in local LLMs. Within a year, it has garnered significant attention on GitHub, reflecting its growing user base and community support.&lt;/p&gt;</description>
+      <description>Local Large Language Models (LLMs) have been gaining traction as developers and enthusiasts seek more control over their AI tools without relying solely on cloud-based solutions....</description>
       <content:encoded><![CDATA[<p>Local Large Language Models (LLMs) have been gaining traction as developers and enthusiasts seek more control over their AI tools without relying solely on cloud-based solutions. In this blog post, I&rsquo;ll share my experiences with <strong>Ollama</strong>, a remarkable tool for running local LLMs, along with other tools like <strong>llamaindex</strong> and <strong>Candle</strong>. I&rsquo;ll also discuss various user interfaces (UI) that enhance the local LLM experience.</p>
 <hr>
 <h2 id="table-of-contents">Table of Contents</h2>

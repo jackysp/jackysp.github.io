@@ -19,11 +19,7 @@
       <link>https://blog.minifish.org/posts/how-to-compare-data-consistency-between-mysql-and-postgresql/</link>
       <pubDate>Sun, 09 May 2021 18:13:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-compare-data-consistency-between-mysql-and-postgresql/</guid>
-      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
-&lt;p&gt;Recently, I encountered a problem where a user wanted to synchronize data from PostgreSQL to TiDB (which uses the same protocol as MySQL) and wanted to know whether the data after synchronization is consistent. I hadn&amp;rsquo;t dealt with this kind of issue before, so I did a bit of research.&lt;/p&gt;
-&lt;p&gt;Typically, to verify data consistency, you compute a checksum on both sides and compare them.&lt;/p&gt;
-&lt;h2 id=&#34;tidb-mysql-side&#34;&gt;TiDB (MySQL) Side&lt;/h2&gt;
-&lt;p&gt;For the verification of a specific table, the following SQL is used:&lt;/p&gt;</description>
+      <description>Recently, I encountered a problem where a user wanted to synchronize data from PostgreSQL to TiDB (which uses the same protocol as MySQL) and wanted to know whether the data after...</description>
       <content:encoded><![CDATA[<h2 id="background">Background</h2>
 <p>Recently, I encountered a problem where a user wanted to synchronize data from PostgreSQL to TiDB (which uses the same protocol as MySQL) and wanted to know whether the data after synchronization is consistent. I hadn&rsquo;t dealt with this kind of issue before, so I did a bit of research.</p>
 <p>Typically, to verify data consistency, you compute a checksum on both sides and compare them.</p>
@@ -142,34 +138,7 @@
       <link>https://blog.minifish.org/posts/how-to-implement-mysql-x-protocol-on-tidb/</link>
       <pubDate>Wed, 16 Aug 2017 00:00:00 +0000</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-implement-mysql-x-protocol-on-tidb/</guid>
-      <description>&lt;h2 id=&#34;some-documents-on-mysql&#34;&gt;Some Documents on MySQL&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Client Usage Guide &lt;a href=&#34;https://dev.mysql.com/doc/refman/5.7/en/mysql-shell.html&#34;&gt;MySQL Shell User Guide&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Server Configuration Guide &lt;a href=&#34;https://dev.mysql.com/doc/refman/5.7/en/document-store.html&#34;&gt;Using MySQL as a Document Store&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Application Development API Guide &lt;a href=&#34;https://dev.mysql.com/doc/x-devapi-userguide/en/&#34;&gt;X DevAPI User Guide&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Introduction to Server Internal Implementation &lt;a href=&#34;https://dev.mysql.com/doc/internals/en/x-protocol.html&#34;&gt;X Protocol&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;implementation-principle&#34;&gt;Implementation Principle&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Communication between client and server is over TCP and the protocol uses protobuf.&lt;/li&gt;
-&lt;li&gt;After the server receives a message, it decodes and analyzes it. The protocol includes a concept called namespace, which specifically refers to whether the namespace is empty or &amp;ldquo;sql&amp;rdquo;, in which case the message content is executed as a SQL statement; if it is &amp;ldquo;xplugin&amp;rdquo; or &amp;ldquo;mysqlx,&amp;rdquo; the message is handled in another way. The other ways can be divided into:
-&lt;ul&gt;
-&lt;li&gt;Administrative commands&lt;/li&gt;
-&lt;li&gt;CRUD operations&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&amp;ldquo;xplugin&amp;rdquo; and &amp;ldquo;mysqlx&amp;rdquo; have the same function, with the latter being the new name for the former, retained temporarily for compatibility.&lt;/li&gt;
-&lt;li&gt;The content of &amp;ldquo;mysqlx&amp;rdquo; messages, apart from explicit command content like kill_client, are mostly transformed into SQL statements which the server processes, essentially turning most into a form where the namespace is &amp;ldquo;sql&amp;rdquo;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;implementation-steps&#34;&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;Start a new server for TiDB. The relevant configuration parameters such as IP, port, and socket need to be set.&lt;/li&gt;
-&lt;li&gt;Implement the reading and writing functionality for message communication.&lt;/li&gt;
-&lt;li&gt;Write a process for this new server to establish connections, including authentication, that follows the protocol. Use tcpdump to capture messages between MySQL and the client to derive protocol content, implementing the process by understanding MySQL source code.&lt;/li&gt;
-&lt;li&gt;The server should include contents like the Query Context from the original TiDB server, as it primarily translates into SQL for execution.&lt;/li&gt;
-&lt;li&gt;Implement the decoding and handling of messages. Although only a sentence, the workload included is substantial.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;In &lt;code&gt;mysqlx_all_msgs.h&lt;/code&gt;, all messages are initialized&lt;/p&gt;</description>
+      <description>1. Start a new server for TiDB. The relevant configuration parameters such as IP, port, and socket need to be set. 2. Implement the reading and writing functionality for message...</description>
       <content:encoded><![CDATA[<h2 id="some-documents-on-mysql">Some Documents on MySQL</h2>
 <ul>
 <li>Client Usage Guide <a href="https://dev.mysql.com/doc/refman/5.7/en/mysql-shell.html">MySQL Shell User Guide</a></li>

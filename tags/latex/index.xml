@@ -19,15 +19,7 @@
       <link>https://blog.minifish.org/posts/how-to-configure-a-chinese-latex-environment-on-windows/</link>
       <pubDate>Wed, 31 Mar 2021 00:00:00 +0000</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-configure-a-chinese-latex-environment-on-windows/</guid>
-      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
-&lt;p&gt;Initially, I didn&amp;rsquo;t think this was something worth writing about, because CTex was previously working smoothly for everyone. However, it turns out that CTex hasn&amp;rsquo;t been updated since 2016. So, I wanted to find a replacement for Chinese LaTeX on Windows in 2021.&lt;/p&gt;
-&lt;h2 id=&#34;configuration-method&#34;&gt;Configuration Method&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;Install MiKTeX (TexLive should work as well). MiKTeX can automatically download dependency packages and you can also proactively install the ctex package.&lt;/li&gt;
-&lt;li&gt;Install the VSCode LaTeX extension.&lt;/li&gt;
-&lt;li&gt;Configure the LaTeX extension. I found a powerful configuration on Zhihu, but it’s quite complex, so I simplified it a bit.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;A brief explanation: the core components here are the recipes and tools. Tools are the compilation toolchain, specifying which tools to use for compilation and the options to use, without regard to order. Recipes define how to combine the above tools to generate the final document, where the order does matter. I&amp;rsquo;ve put XeLaTex first here because it&amp;rsquo;s the most compatible for compiling Chinese. If you use pdflatex to compile Chinese documents, you&amp;rsquo;re likely to encounter issues.&lt;/p&gt;</description>
+      <description>Initially, I didn&amp;#39;t think this was something worth writing about, because CTex was previously working smoothly for everyone. However, it turns out that CTex hasn&amp;#39;t been updated...</description>
       <content:encoded><![CDATA[<h2 id="background">Background</h2>
 <p>Initially, I didn&rsquo;t think this was something worth writing about, because CTex was previously working smoothly for everyone. However, it turns out that CTex hasn&rsquo;t been updated since 2016. So, I wanted to find a replacement for Chinese LaTeX on Windows in 2021.</p>
 <h2 id="configuration-method">Configuration Method</h2>

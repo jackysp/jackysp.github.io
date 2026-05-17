@@ -19,43 +19,7 @@
       <link>https://blog.minifish.org/posts/how-to-use-haproxy-to-test-cockroachdb/</link>
       <pubDate>Tue, 10 Jul 2018 15:07:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-use-haproxy-to-test-cockroachdb/</guid>
-      <description>&lt;h2 id=&#34;installing-haproxy&#34;&gt;Installing HAProxy&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;yum install haproxy&lt;/code&gt; is effective for CentOS 7. After installation, you can start the service using &lt;code&gt;systemctl start haproxy&lt;/code&gt;. But don&amp;rsquo;t rush yet.&lt;/p&gt;
-&lt;h2 id=&#34;configuring-haproxy&#34;&gt;Configuring HAProxy&lt;/h2&gt;
-&lt;p&gt;Add the following content to /etc/haproxy/haproxy.cfg.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;global &lt;span style=&#34;color:#75715e&#34;&gt;# The content of global is generally fixed and quite understandable.&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        log 127.0.0.1   local2
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        maxconn &lt;span style=&#34;color:#ae81ff&#34;&gt;4096&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        user haproxy
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        group haproxy
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        chroot /var/lib/haproxy
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        daemon
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        pidfile /var/run/haproxy.pid
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        stats socket /var/run/haproxy.sock         &lt;span style=&#34;color:#75715e&#34;&gt;# Create a socket file for haproxy&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        nbproc &lt;span style=&#34;color:#ae81ff&#34;&gt;40&lt;/span&gt;                                  &lt;span style=&#34;color:#75715e&#34;&gt;# Start 40 processes to forward concurrently, higher versions can use nbthread, a threaded approach.&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;defaults &lt;span style=&#34;color:#75715e&#34;&gt;# This section is mostly copied, not entirely clear on the options.&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        log     global
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        mode    http
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        option  tcplog
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        option  dontlognull
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        retries &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        option  redispatch
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        maxconn &lt;span style=&#34;color:#ae81ff&#34;&gt;1024&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        timeout connect 5000ms
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        timeout client 50000ms
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        timeout server 50000ms
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;listen cdb_cluster 0.0.0.0:3030  &lt;span style=&#34;color:#75715e&#34;&gt;# The actual proxy name and address for receiving services.&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;## cdb balance leastconn - the cluster listening on port 3030.&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        mode tcp
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        balance leastconn  &lt;span style=&#34;color:#75715e&#34;&gt;# This method is most suitable for databases; do not change.&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        server cdb1 172.16.30.3:26257 check &lt;span style=&#34;color:#75715e&#34;&gt;# Check seems to require a port for feedback status; without it, it might not work, but it doesn&amp;#39;t matter.&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        server cdb2 172.16.30.3:26258 check
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        server cdb3 172.16.30.3:26259 check
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        server cdb4 172.16.30.3:26260 check
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;start-and-connect&#34;&gt;Start and Connect&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;systemctl start haproxy&lt;/code&gt; to start the service.&lt;/p&gt;</description>
+      <description>yum install haproxy is effective for CentOS 7. After installation, you can start the service using systemctl start haproxy. But don&amp;#39;t rush yet.</description>
       <content:encoded><![CDATA[<h2 id="installing-haproxy">Installing HAProxy</h2>
 <p><code>yum install haproxy</code> is effective for CentOS 7. After installation, you can start the service using <code>systemctl start haproxy</code>. But don&rsquo;t rush yet.</p>
 <h2 id="configuring-haproxy">Configuring HAProxy</h2>

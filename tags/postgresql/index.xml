@@ -19,11 +19,7 @@
       <link>https://blog.minifish.org/posts/how-to-compare-data-consistency-between-mysql-and-postgresql/</link>
       <pubDate>Sun, 09 May 2021 18:13:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-compare-data-consistency-between-mysql-and-postgresql/</guid>
-      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
-&lt;p&gt;Recently, I encountered a problem where a user wanted to synchronize data from PostgreSQL to TiDB (which uses the same protocol as MySQL) and wanted to know whether the data after synchronization is consistent. I hadn&amp;rsquo;t dealt with this kind of issue before, so I did a bit of research.&lt;/p&gt;
-&lt;p&gt;Typically, to verify data consistency, you compute a checksum on both sides and compare them.&lt;/p&gt;
-&lt;h2 id=&#34;tidb-mysql-side&#34;&gt;TiDB (MySQL) Side&lt;/h2&gt;
-&lt;p&gt;For the verification of a specific table, the following SQL is used:&lt;/p&gt;</description>
+      <description>Recently, I encountered a problem where a user wanted to synchronize data from PostgreSQL to TiDB (which uses the same protocol as MySQL) and wanted to know whether the data after...</description>
       <content:encoded><![CDATA[<h2 id="background">Background</h2>
 <p>Recently, I encountered a problem where a user wanted to synchronize data from PostgreSQL to TiDB (which uses the same protocol as MySQL) and wanted to know whether the data after synchronization is consistent. I hadn&rsquo;t dealt with this kind of issue before, so I did a bit of research.</p>
 <p>Typically, to verify data consistency, you compute a checksum on both sides and compare them.</p>
@@ -142,24 +138,7 @@
       <link>https://blog.minifish.org/posts/how-to-practice-using-sql/</link>
       <pubDate>Thu, 05 Jun 2014 00:00:00 +0000</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-practice-using-sql/</guid>
-      <description>&lt;p&gt;The text provided is a detailed set of instructions and queries for practicing SQL using PostgreSQL 9.4 BETA 2, focusing on creating and querying tables related to students, courses, scores, and teachers. Here&amp;rsquo;s a summary:&lt;/p&gt;
-&lt;h2 id=&#34;database-structure&#34;&gt;Database Structure&lt;/h2&gt;
-&lt;p&gt;The database consists of four tables:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;STUDENT&lt;/strong&gt;: Contains student number (SNO), name (SNAME), gender (SSEX), birthday (SBIRTHDAY), and class (CLASS).&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;COURSE&lt;/strong&gt;: Includes course number (CNO), name (CNAME), and teacher number (TNO).&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;SCORE&lt;/strong&gt;: Records student number (SNO), course number (CNO), and degree (DEGREE).&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;TEACHER&lt;/strong&gt;: Holds teacher number (TNO), name (TNAME), gender (TSEX), birthday (TBIRTHDAY), professional title (PROF), and department (DEPART).&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&#34;sample-data&#34;&gt;Sample Data&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Students such as Zeng Hua, Kang Ming, and Wang Fang are stored with specific details, including their class and gender.&lt;/li&gt;
-&lt;li&gt;Courses like &amp;ldquo;Introduction to Computers&amp;rdquo; and &amp;ldquo;Operating Systems&amp;rdquo; are associated with teacher numbers.&lt;/li&gt;
-&lt;li&gt;Scores are recorded for students across various courses.&lt;/li&gt;
-&lt;li&gt;Teachers are described with their professional roles and departments.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;query-problems&#34;&gt;Query Problems&lt;/h2&gt;
-&lt;p&gt;Several SQL queries are suggested for practice, such as:&lt;/p&gt;</description>
+      <description>The text provided is a detailed set of instructions and queries for practicing SQL using PostgreSQL 9.4 BETA 2, focusing on creating and querying tables related to students,...</description>
       <content:encoded><![CDATA[<p>The text provided is a detailed set of instructions and queries for practicing SQL using PostgreSQL 9.4 BETA 2, focusing on creating and querying tables related to students, courses, scores, and teachers. Here&rsquo;s a summary:</p>
 <h2 id="database-structure">Database Structure</h2>
 <p>The database consists of four tables:</p>

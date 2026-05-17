@@ -19,15 +19,7 @@
       <link>https://blog.minifish.org/posts/oceanbase-internals-transaction-replay-sql-unit-placement/</link>
       <pubDate>Sat, 17 Jan 2026 10:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/oceanbase-internals-transaction-replay-sql-unit-placement/</guid>
-      <description>&lt;h2 id=&#34;why-these-paths-matter&#34;&gt;Why These Paths Matter&lt;/h2&gt;
-&lt;p&gt;OceanBase targets high availability and scalability in a shared-nothing cluster. The core engineering challenge is to make four critical subsystems work together with predictable latency and correctness:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Write transactions must be durable, replicated, and efficiently committed.&lt;/li&gt;
-&lt;li&gt;Tablet replay must recover state quickly and safely.&lt;/li&gt;
-&lt;li&gt;SQL parse to execute must optimize well while respecting multi-tenant constraints.&lt;/li&gt;
-&lt;li&gt;Unit placement must map tenants to physical resources without fragmentation.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;This article focuses on motivation, design, implementation highlights, and tradeoffs, using concrete code entry points from the OceanBase codebase.&lt;/p&gt;</description>
+      <description>OceanBase targets high availability and scalability in a shared-nothing cluster. The core engineering challenge is to make four critical subsystems work together with predictable...</description>
       <content:encoded><![CDATA[<h2 id="why-these-paths-matter">Why These Paths Matter</h2>
 <p>OceanBase targets high availability and scalability in a shared-nothing cluster. The core engineering challenge is to make four critical subsystems work together with predictable latency and correctness:</p>
 <ul>

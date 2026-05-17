@@ -1,0 +1,899 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Infrastructure on Mini Fish</title>
+    <link>https://blog.minifish.org/categories/infrastructure/</link>
+    <description>Recent content in Infrastructure on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.158.0</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
+    <lastBuildDate>Mon, 13 Jan 2025 19:54:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/categories/infrastructure/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Introduction to WebVM</title>
+      <link>https://blog.minifish.org/posts/introduction-to-webvm/</link>
+      <pubDate>Mon, 13 Jan 2025 19:54:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/introduction-to-webvm/</guid>
+      <description>WebVM is a virtual machine (VM) that executes entirely within a web browser. It&amp;#39;s an innovative project that brings the power of a Linux environment straight to your browser,...</description>
+      <content:encoded><![CDATA[<h2 id="what-is-webvm">What is WebVM?</h2>
+<p><a href="https://github.com/leaningtech/webvm">WebVM</a> is a virtual machine (VM) that executes entirely within a web browser. It&rsquo;s an innovative project that brings the power of a Linux environment straight to your browser, eliminating the need for traditional virtual machine setups. WebVM operates within a sandboxed environment, ensuring secure execution of applications without affecting the host system.</p>
+<h2 id="understanding-webvm">Understanding WebVM</h2>
+<p>The source repository provides a frontend for the WebVM demo. By forking the repository and following the instructions outlined in the GitHub Actions, you can build an image using the Dockerfile located at:</p>
+<ul>
+<li><a href="https://github.com/leaningtech/webvm/blob/main/dockerfiles/debian_large">Debian Large Dockerfile</a></li>
+</ul>
+<p>This image can then be hosted on GitHub Pages, as demonstrated in my <a href="https://blog.minifish.org/webvm/">demo</a>.</p>
+<p><img alt="demo" loading="lazy" src="/posts/introduction-to-webvm/20250113_195726_image.webp"></p>
+<p>WebVM&rsquo;s primary functionality is to stream resources to the browser, minimizing client-side resource consumption. It enables the execution of various applications that are typically restricted to virtual machines, all within a browser. Additionally, WebVM allows for the embedding of these applications through custom front-ends.</p>
+<h2 id="default-image-and-capabilities">Default Image and Capabilities</h2>
+<p>The default WebVM image is <strong>Debian-mini</strong>, which may have limited capabilities. To enhance its functionality, I have opted for the <strong>Debian-large</strong> image, which has been extended to a 2GB disk capacity. This provides a more robust environment with additional tools and packages.</p>
+<h2 id="usage-and-benefits">Usage and Benefits</h2>
+<p>WebVM offers a range of applications and capabilities:</p>
+<ol>
+<li>
+<p><strong>Custom Image Creation:</strong> Create custom images tailored to your specific requirements, allowing for a personalized virtual environment.</p>
+</li>
+<li>
+<p><strong>Web-Based Linux Terminal:</strong> Access a web-based Linux terminal to execute Linux commands directly within the browser. This includes:</p>
+<ul>
+<li><strong>SSH/SCP File Transfers:</strong> Securely transfer files using SSH and SCP protocols.</li>
+<li><strong>HTTP Server Initiation:</strong> Start an HTTP server using <code>python3 -m http.server</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Sandboxed Security:</strong> Operates within a sandbox environment, ensuring secure execution of applications without affecting the host system.</p>
+</li>
+<li>
+<p><strong>Serverless Architecture:</strong> Embraces a serverless architecture by executing entirely on the client side. Running a Linux server within a browser presents a unique and innovative approach to virtualization.</p>
+</li>
+</ol>
+<h2 id="alternative-options">Alternative Options</h2>
+<p>Yes, there are alternative options. <a href="https://bellard.org/jslinux/">JSLinux</a> is a preferred and faster option. However, it does not allow modifications to the image, which can be a limitation if you require a customized environment.</p>
+<h2 id="additional-tips">Additional Tips</h2>
+<ul>
+<li>
+<p><strong>Internet Connectivity via Tailscale:</strong></p>
+<p>WebVM can connect to the internet via <a href="https://tailscale.com/">Tailscale</a>. It utilizes the first available node as an exit node. If you execute:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl https://ifconfig.me
+</span></span></code></pre></div><p>You will obtain your current node&rsquo;s IP address.</p>
+</li>
+<li>
+<p><strong>DNS Functionality:</strong></p>
+<p>The DNS functionality of Tailscale is currently experiencing issues. It&rsquo;s recommended to use IP addresses to connect to other nodes within your Tailscale network instead of domain names.</p>
+</li>
+<li>
+<p><strong>Default Credentials:</strong></p>
+<p>You can obtain the default <code>user:password</code> and <code>root:password</code> credentials by checking the Dockerfile:</p>
+<ul>
+<li><a href="https://github.com/leaningtech/webvm/blob/main/dockerfiles/debian_large#L15-L18">Default Credentials in Dockerfile</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>WebVM is a powerful tool that brings the versatility of a Linux environment to your browser. Whether you&rsquo;re looking to experiment with Linux commands, develop applications, or require a portable and sandboxed environment, WebVM offers a serverless and secure solution. Its ability to create custom images and operate entirely on the client side sets it apart from other web-based virtual machines.</p>
+<p>Feel free to explore WebVM and customize it to suit your needs. Happy coding!</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>Exploring Tailscale: Building Your Own Network Easily</title>
+      <link>https://blog.minifish.org/posts/exploring-tailscale-building-your-own-network-easily/</link>
+      <pubDate>Wed, 27 Nov 2024 18:18:38 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/exploring-tailscale-building-your-own-network-easily/</guid>
+      <description>I recently started experimenting with Tailscale, a tool that has significantly simplified the way I manage my personal network across devices. In this blog post, I&amp;#39;ll share how I...</description>
+      <content:encoded><![CDATA[<p>I recently started experimenting with <strong>Tailscale</strong>, a tool that has significantly simplified the way I manage my personal network across devices. In this blog post, I&rsquo;ll share how I discovered Tailscale, its core features, and my personal setup that leverages this powerful tool.</p>
+<h2 id="discovering-tailscale-through-webvm">Discovering Tailscale Through WebVM</h2>
+<p>My journey with Tailscale began when I came across <a href="https://github.com/leaningtech/webvm">WebVM</a>, an impressive project that allows you to run a virtual machine directly in your browser. Intrigued by the possibilities, I delved deeper and discovered that Tailscale could help me create a seamless, private network across all my devices.</p>
+<h2 id="what-is-tailscale">What is Tailscale?</h2>
+<p>Tailscale is a mesh VPN network built on top of <strong>WireGuard</strong>, specifically using the <a href="https://github.com/WireGuard/wireguard-go">WireGuard-go</a> implementation. It allows you to create a secure, encrypted network between your devices, no matter where they are located.</p>
+<h3 id="key-features">Key Features</h3>
+<ul>
+<li><strong>Free Plan Available</strong>: Tailscale offers a free plan that is sufficient for personal use, allowing up to 20 devices.</li>
+<li><strong>Ease of Use</strong>: Setting up Tailscale is straightforward. With minimal configuration, you can have your own network up and running quickly.</li>
+<li><strong>Cross-Platform Support</strong>: Tailscale works exceptionally well across the Apple ecosystem, including <strong>iOS</strong>, <strong>tvOS</strong>, and <strong>macOS</strong>.</li>
+<li><strong>Magic DNS Service</strong>: It provides a built-in DNS service that makes it easy to address your devices by name.</li>
+</ul>
+<h2 id="performance-on-different-platforms">Performance on Different Platforms</h2>
+<p>While Tailscale shines on Apple devices, in my experience, it hasn&rsquo;t performed as well on Windows. I encountered some connectivity and stability issues on Windows machines, which may vary based on individual setups.</p>
+<h2 id="my-tailscale-setup">My Tailscale Setup</h2>
+<p>Here&rsquo;s how I leveraged Tailscale to connect my devices and access my home network seamlessly.</p>
+<h3 id="running-tailscale-on-apple-tv">Running Tailscale on Apple TV</h3>
+<p>I installed Tailscale on my <strong>Apple TV</strong>, which stays online <strong>24/7</strong>. This makes it an excellent candidate for a consistently available node in my network.</p>
+<ul>
+<li><strong>Enabling Subnet Routing</strong>: By enabling subnet routing on the Apple TV, I can access other devices on the same local network, such as my <strong>NAS</strong> and <strong>router</strong>, as if I were connected locally.</li>
+<li><strong>Setting Up an Exit Node</strong>: I configured the Apple TV as an <strong>exit node</strong>, allowing me to route internet traffic through my home network. This is useful when I need to access geo-restricted content or ensure a secure connection.</li>
+</ul>
+<h3 id="connecting-other-devices">Connecting Other Devices</h3>
+<p>I also installed Tailscale on my <strong>MacBook</strong> and <strong>iPhone</strong>, which allows all my personal devices to communicate over the secure network, no matter where I am.</p>
+<h2 id="benefits-ive-enjoyed">Benefits I&rsquo;ve Enjoyed</h2>
+<ul>
+<li><strong>Secure Remote Access</strong>: I can securely access my home network devices from anywhere.</li>
+<li><strong>Consistent Environment</strong>: All my devices appear on the same network, simplifying file sharing and remote management.</li>
+<li><strong>No Need for Complex VPN Setups</strong>: Tailscale eliminates the need for traditional VPN configurations, port forwarding, or dynamic DNS services.</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>Tailscale has transformed the way I interact with my devices across different locations. Its ease of use and robust feature set make it an excellent choice for anyone looking to create a personal, secure network.</p>
+<p>If you&rsquo;re interested in simplifying your network setup and want a hassle-free way to connect your devices, I highly recommend giving Tailscale a try.</p>
+<p><strong>Links:</strong></p>
+<ul>
+<li><a href="https://tailscale.com/">Tailscale Official Website</a></li>
+<li><a href="https://github.com/leaningtech/webvm">WebVM Project on GitHub</a></li>
+<li><a href="https://github.com/WireGuard/wireguard-go">WireGuard-go on GitHub</a></li>
+</ul>
+<p><em>Note: This post reflects my personal experiences with Tailscale. Performance may vary based on individual configurations and devices.</em></p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>A Cloudflare WARP Failure and VPS Recovery Notes</title>
+      <link>https://blog.minifish.org/posts/encounter-with-a-major-issue-with-cloudflare-warp-a-life-and-death-rescue-for-vps/</link>
+      <pubDate>Wed, 15 May 2024 20:31:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/encounter-with-a-major-issue-with-cloudflare-warp-a-life-and-death-rescue-for-vps/</guid>
+      <description>A recovery note from a Cloudflare WARP failure that broke VPS connectivity, with the failure mode and rescue path documented.</description>
+      <content:encoded><![CDATA[<p>Today, I planned to use Warp to select an IP exit for my VPS, following the <a href="https://developers.cloudflare.com/warp-client/get-started/linux/">Cloudflare official documentation</a>. When executing the <code>warp-cli connect</code> step, the server immediately lost connection, and the problem persisted even after rebooting.</p>
+<p>After researching, I found that this problem is not unique. For instance, in a <a href="https://www.v2ex.com/t/933725">discussion on V2EX</a>, many users encountered similar issues. The solution is to run <code>warp-cli set-mode proxy</code> before executing <code>warp-cli connect</code> to bypass the local address. Surprisingly, Cloudflare&rsquo;s official documentation does not mention this crucial step, undoubtedly increasing the complexity and risk of configuration.</p>
+<p>In the process of exploring solutions, I found that some users suggested repairing by rebuilding the instance or using VNC connection. However, since I am using AWS Lightsail, VNC is not applicable. Ultimately, I decided to try the method mentioned in <a href="https://www.4os.org/2022/02/14/aws-lightsail-ssh-%E6%8C%82%E6%8E%89%E5%A6%82%E4%BD%95%E7%99%BB%E5%BD%95/">this article</a>: creating a snapshot backup of the current VPS, then creating a new instance from the snapshot, and loading a script to execute <code>warp-cli set-mode proxy</code> when the new instance starts.</p>
+<p>After checking the existing instance, I found that no snapshot had been created. This discovery reminded me of the importance of regular backups. Without other options, I could only attempt a snapshot backup as guided by the aforementioned article. However, no matter what startup script command I tried, it failed to execute successfully. The execution result of AWS Lightsail&rsquo;s startup script is not visible, making problem-solving more difficult.</p>
+<p>In near desperation, I found an old snapshot dated 2022 on the snapshot page. Although this snapshot was created using old technology, and many important updates might be lost after recovery, it was my last hope. After starting the snapshot recovery process, I unexpectedly discovered through the <code>history</code> command that this snapshot contained all the important updates. This discovery allowed the entire recovery process to be completed smoothly.</p>
+<p>This experience re-emphasized the importance of backups. Careful backups from the past ultimately avoided severe data loss. Furthermore, AWS&rsquo;s static IP retention feature also played a crucial role. The new instance could immediately bind to the IP once the old instance released the static IP, achieving a seamless switch.</p>
+<h2 id="conclusion">Conclusion</h2>
+<ol>
+<li><strong>Backups are essential</strong>: Regular backups are key to ensuring stable system operations.</li>
+<li><strong>Operate with caution</strong>: Before executing critical commands, thoroughly review and understand relevant documentation and user feedback to avoid potential risks.</li>
+<li><strong>Trust your past self</strong>: Meticulous work done in the past can often prove invaluable at critical moments.</li>
+</ol>
+<p>I hope this experience can serve as a reference and help for others, preventing similar issues from occurring.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Deploy a Secure Transparent Gateway</title>
+      <link>https://blog.minifish.org/posts/how-to-deploy-a-secure-transparent-gateway/</link>
+      <pubDate>Wed, 12 Oct 2022 21:07:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-deploy-a-secure-transparent-gateway/</guid>
+      <description>After moving house, there are many more devices at home that need internet access. However, I don&amp;#39;t want to configure a proxy on each device, so I thought of using a transparent...</description>
+      <content:encoded><![CDATA[<h2 id="background">Background</h2>
+<p>After moving house, there are many more devices at home that need internet access. However, I don&rsquo;t want to configure a proxy on each device, so I thought of using a transparent gateway.</p>
+<h2 id="transparent-gateway">Transparent Gateway</h2>
+<p>After some research, I found that the easiest way is to use the premium version of Clash, although I didn&rsquo;t know when Clash released a premium version. I mainly referred to <a href="https://www.cfmem.com/2022/05/clash.html">this article</a>. It&rsquo;s much simpler than setting up iptables.</p>
+<h3 id="network-topology">Network Topology</h3>
+<p>I have a 10-year-old Thinkpad x230 at home, which is perfect for this purpose. Here is a simple topology diagram.</p>
+<p>Router1 is a fiber-optic modem with routing capabilities, Router2 is a regular router, with the gateway and DNS pointing to the Thinkpad, where Linux is running to act as a transparent gateway with Clash on top.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>                                 +------------+
+</span></span><span style="display:flex;"><span>                                 |            |
+</span></span><span style="display:flex;"><span>                                 |  Internet  |
+</span></span><span style="display:flex;"><span>                                 |            |
+</span></span><span style="display:flex;"><span>                                 +-----+------+
+</span></span><span style="display:flex;"><span>                                       |
+</span></span><span style="display:flex;"><span>                                 +-----+------+
+</span></span><span style="display:flex;"><span>                                 |            |
+</span></span><span style="display:flex;"><span>                      +----------+  Router1   +-----------+
+</span></span><span style="display:flex;"><span>                      |          |            |           |
+</span></span><span style="display:flex;"><span>                      |          +------------+           |
+</span></span><span style="display:flex;"><span>                      |                                   |
+</span></span><span style="display:flex;"><span>                      |                                   |
+</span></span><span style="display:flex;"><span>                +-----+-----+                       +-----+------+
+</span></span><span style="display:flex;"><span>                |           |                       |            |
+</span></span><span style="display:flex;"><span>     +----------+  Router2  +----------+            |  Thinkpad  |
+</span></span><span style="display:flex;"><span>     |          |           |          |            |            |
+</span></span><span style="display:flex;"><span>     |          +-----+-----+          |            +------------+
+</span></span><span style="display:flex;"><span>     |                |                |
+</span></span><span style="display:flex;"><span>     |                |                |
+</span></span><span style="display:flex;"><span>     |                |                |
+</span></span><span style="display:flex;"><span>+----+-----+     +----+-----+    +-----+-----+
+</span></span><span style="display:flex;"><span>|          |     |          |    |           |
+</span></span><span style="display:flex;"><span>|   Mac    |     |  iPad    |    |  iPhone   |
+</span></span><span style="display:flex;"><span>|          |     |          |    |           |
+</span></span><span style="display:flex;"><span>+----------+     +----------+    +-----------+
+</span></span></code></pre></div><h3 id="add-dns-section-in-clash-configuration">Add DNS Section in Clash Configuration</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">dns</span>:
+</span></span><span style="display:flex;"><span><span style="color:#f92672">enable</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">listen</span>: <span style="color:#ae81ff">0.0.0.0</span>:<span style="color:#ae81ff">53</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">enhanced-mode</span>: <span style="color:#ae81ff">fake-ip</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">nameserver</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">114.114.114.114</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">fallback</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">8.8.8.8</span>
+</span></span></code></pre></div><h3 id="clash-tun-feature-section">Clash tun Feature Section</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">tun</span>:
+</span></span><span style="display:flex;"><span><span style="color:#f92672">enable</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">stack</span>: <span style="color:#ae81ff">system</span> <span style="color:#75715e"># or gvisor</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">dns-hijack</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">any:53</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">tcp://any:53</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">auto-route</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">auto-detect-interface</span>: <span style="color:#66d9ef">true</span>
+</span></span></code></pre></div><p>For traffic forwarding, simply edit <code>/etc/sysctl.conf</code> on the Thinkpad and add <code>net.ipv4.ip_forward=1</code>, then execute <code>sysctl -p</code> to apply it. After that, point the gateway and DNS of Router2 to the Thinkpad, and you&rsquo;re done.</p>
+<h2 id="network-protocols">Network Protocols</h2>
+<p>Initially, I used native HTTP2 for unblocking, but it cannot proxy UDP. When only a few devices need unblocking, it doesn&rsquo;t matter whether UDP is used, but with many devices at home, some of them can only use UDP. I considered socks + tls, but it didn&rsquo;t feel secure and required opening odd ports like UDP 443. It felt like giving away my intentions. Eventually, I chose Trojan, which essentially mimics native HTTPS. Trojan has two versions; I used Trojan-go simply because I didn&rsquo;t want to manage dependencies. Also, I&rsquo;m more familiar with Go.</p>
+<p>Trojan-go has a requirement for a genuinely accessible HTTP server, so I used the simplest Python <code>http.server</code>. Back in Python 2, it was called <code>simplehttp</code>. You can simply use <code>python3 -m http.server 80</code> and optionally add <code>--directory</code> to specify a directory.</p>
+<p>Additionally, Trojan-go requires the client to fill in the SNI, which means using the domain used during key application. Therefore, prerequisites like applying for the <a href="https://github.com/haoel/haoel.github.io">domain</a>, applying for Let&rsquo;s Encrypt certificates, and configuring crontab must all be completed. There&rsquo;s a learning curve, but I had done it before, so I just skipped that part.</p>
+<p>For the client part, you can use Clash directly, and refer to <a href="https://github.com/Dreamacro/clash/wiki/configuration">here</a> for guidance.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Set Up a Minecraft Bedrock Server Using Multipass</title>
+      <link>https://blog.minifish.org/posts/how-to-set-up-a-minecraft-bedrock-server-using-multipass/</link>
+      <pubDate>Mon, 02 May 2022 19:05:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-set-up-a-minecraft-bedrock-server-using-multipass/</guid>
+      <description>Recently, both of my kids have become interested in Minecraft, and some of their peers are also playing it. We previously bought the Switch version, but its online capabilities...</description>
+      <content:encoded><![CDATA[<h2 id="background">Background</h2>
+<p>Recently, both of my kids have become interested in Minecraft, and some of their peers are also playing it. We previously bought the Switch version, but its online capabilities are quite poor, and the device performance is subpar, resulting in a less-than-ideal experience. Thus, I began considering the idea of setting up our own server. Of course, you can play in multiplayer with friends, but the game ends as soon as the host goes offline, which is not as good as having a server that is always online.</p>
+<p>For version selection, there is the NetEase version, the official Java version, and the Bedrock version. Based on my previous understanding, the NetEase version has all sorts of anti-addiction regulations, so that&rsquo;s a no-go. The Java version server setup seems to rely on third-party launchers, resembling piracy to some extent. Therefore, I decided on the Bedrock version. Another reason for choosing the Bedrock version is its origins as the mobile version of Minecraft, and Microsoft later <a href="https://minecraft.fandom.com/zh/wiki/%E5%9F%BA%E5%B2%A9%E7%89%88?variant=zh">expanded support to more platforms</a>, making it the most versatile. Additionally, its core is written in C++, which should offer better performance and resource efficiency.</p>
+<h2 id="downloading-the-server-software">Downloading the Server Software</h2>
+<p>I downloaded the <a href="https://www.minecraft.net/en-us/download/server/bedrock">Ubuntu version</a>. While I also downloaded the Windows version and managed to run it, I’m not experienced in managing Windows Server, and the Windows version has some quirks. I won’t delve into those here.</p>
+<h2 id="local-network-server">Local Network Server</h2>
+<p>Initially, I intended to use an old Thinkpad, but couldn&rsquo;t find it, and ended up using an old Macbook. After updating everything, I found that the old Macbook was still quite robust, outperforming the Thinkpad. So, I set up a virtual machine. I discovered that Ubuntu Server no longer supports direct ISO downloads, requiring Multipass to launch instead.</p>
+<p>What is Multipass?</p>
+<p>Developed by the Ubuntu team, it is a lightweight virtualization platform. Multipass consists of <code>multipass</code> and <code>multipassd</code>. The former provides both GUI and CLI, while the latter requires root permissions and runs in the background. It can be downloaded directly or installed via brew cask.</p>
+<p>Multipass seems to only install Ubuntu Server, with some customization, such as automatically creating a user named &ldquo;ubuntu&rdquo; and key pairing. Once installed, you get a 1C 1GB virtual machine called &ldquo;primary&rdquo; that automatically mounts the user’s home directory.</p>
+<p><code>multipassd</code> is more of a pluggable virtual hypervisor supporting hyperkit and qemu by default, with hyperkit intended for Intel macOS and qemu for M1.</p>
+<p><code>multipassd</code> can also use Virtualbox as a backend hypervisor, which is more recommended because it offers bridging capabilities, whereas relying solely on port mapping would be cumbersome. It&rsquo;s not that qemu doesn&rsquo;t support bridging, but there’s an easy-to-follow <a href="https://multipass.run/docs/set-up-the-driver">Virtualbox bridging tutorial</a> on Multipass’s official documentation.</p>
+<p>I set up Virtualbox first. I must say, Oracle is generous here as it&rsquo;s still free to use. Then, I followed the steps from the link above. It&rsquo;s essential to reboot the machine after running the first step <code>sudo multipass set local.driver=virtualbox</code>, as the variable might not take effect immediately. Otherwise, the primary created will still use the old backend. Since there&rsquo;s already a default virtual machine, I didn&rsquo;t want to create another one to avoid extra resource usage. Additionally, note a few things:</p>
+<ol>
+<li>For modifying primary configuration, I didn’t find a way to do it using Multipass, so I used vbox’s command <code>sudo VBoxManage controlvm &quot;primary&quot; --cpus 2 --memory 4096</code> (where memory is in MB).</li>
+<li>The primary mount point in Multipass can automatically unmount in some situations, resulting in errors. Therefore, Minecraft data shouldn’t be stored in the mount point permanently to avoid core dumps.</li>
+</ol>
+<p>After extracting the server files, just start it in tmux/screen.</p>
+<p>Lastly, I used <a href="https://apps.apple.com/us/app/amphetamine/id937984704?mt=12">Amphetamine</a> from the App Store to ensure that the laptop continues working when closed by disabling the default sleep setting after the screen is closed. You’ll see some warnings when doing this, but just be aware of them.</p>
+<p><strong>Update:</strong></p>
+<p>For systemd startup, you can refer to <a href="https://gist.github.com/gatopeich/36ed7fab3850367bbcd8e6f40becd4e5">this gist</a>. The server&rsquo;s console has some commands, like &ldquo;stop&rdquo;, that perform graceful shutdowns, so it&rsquo;s necessary to rely on a screen session to create it. Additionally, the server startup has some environmental dependencies, so it’s best to write a small script for starting it, like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cd /home/user/bedrock-server
+</span></span><span style="display:flex;"><span>LD_LIBRARY_PATH<span style="color:#f92672">=</span>. ./bedrock_server
+</span></span></code></pre></div><p>Using absolute paths can lead to core dumps.</p>
+<h2 id="public-network-server">Public Network Server</h2>
+<p>For public network servers, the choices are to map the internal network to the public network or purchase a cloud server. Due to security concerns, I opted to buy a cloud server. Although the official site mentioned Ubuntu support, I found that Debian servers also run without issues. The only thing to note is that the Bedrock version uses UDP, and China Unicom’s 5G network disables UDP, so without WiFi, you cannot connect.</p>
+<h2 id="server-monitoring">Server Monitoring</h2>
+<p>To monitor the server’s status, monitoring is necessary, especially for cloud servers, as provider information might be insufficient. I used <a href="https://grafana.com/products/cloud/">Grafana Cloud</a>.</p>
+<p>Using the free version is fine, just follow the guide to select a Linux server integration, then run the Grafana Agent installation and verification on the server to be monitored. Note to change the hostname in the Grafana Agent configuration file to differentiate between different servers, which acts as a label.</p>
+<p>I understand that Grafana Agent is a lightweight node exporter with some Prometheus functionalities, but it can also remote write, so there&rsquo;s no need to worry about the disk filling up.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Create GitHub Verified Commits on a MacBook M1</title>
+      <link>https://blog.minifish.org/posts/how-to-create-github-verified-commits-on-a-macbook-m1/</link>
+      <pubDate>Sat, 12 Feb 2022 11:54:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-create-github-verified-commits-on-a-macbook-m1/</guid>
+      <description>One day, I impulsively turned on GitHub&amp;#39;s Vigilant mode.</description>
+      <content:encoded><![CDATA[<h2 id="background">Background</h2>
+<p>One day, I impulsively turned on GitHub&rsquo;s Vigilant mode.</p>
+<p><img alt="test" loading="lazy" src="/posts/how-to-create-github-verified-commits-on-a-macbook-m1/2022-02-12-12.02.07.webp"></p>
+<p>As a result, all my commits started looking like this.</p>
+<p><img alt="test" loading="lazy" src="/posts/how-to-create-github-verified-commits-on-a-macbook-m1/2022-02-12-12.11.01.webp"></p>
+<p>To figure out how to make them Verified, I found the following method.</p>
+<h2 id="method">Method</h2>
+<p>I actually referred to this <a href="https://zhuanlan.zhihu.com/p/76861431">link</a>. However, it wasn&rsquo;t quite enough, as there might be authentication-related issues on MacBooks that lead to commit errors. So, I found this <a href="https://stackoverflow.com/a/40066889">solution</a>.</p>
+<p>In summary, to verify, you need to enter a password. The issue on a Mac is the prompt for entering the password, which needs to be replaced with pinentry-mac, which most people install via homebrew.</p>
+<p>Moreover, this solution thoughtfully provides a way to verify:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;test&#34;</span> | gpg --clearsign
+</span></span></code></pre></div><h2 id="gpg-experience">GPG Experience</h2>
+<ol>
+<li>It doesn&rsquo;t replace the ssh key. After successfully setting it up, I deleted my GitHub ssh key and discovered that I couldn&rsquo;t log in. Actually, it only verifies the legitimacy of commits.</li>
+<li>On the local machine, in any repo, you only need to enter the password once, and that makes it a verified commit. It doesn&rsquo;t affect daily use; it just adds a green check mark for verification.</li>
+<li>Using the https protocol + token seems more reliable than this method, but I&rsquo;m not sure if it provides a verified mark.</li>
+</ol>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Automatically Publish a Blog Using GitHub Actions</title>
+      <link>https://blog.minifish.org/posts/how-to-automatically-publish-a-blog-using-github-actions/</link>
+      <pubDate>Wed, 16 Dec 2020 16:11:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-automatically-publish-a-blog-using-github-actions/</guid>
+      <description>In this post, I used Travis to enable automatic blog publishing. However, I recently discovered that Travis does not run automatically anymore (though it works manually). I...</description>
+      <content:encoded><![CDATA[<p>In <a href="/posts/travis-git-push">this post</a>, I used Travis to enable automatic blog publishing. However, I recently discovered that Travis does not run automatically anymore (though it works manually). I haven’t looked into it closely because GitHub Actions have been introduced, so I decided to move all dependencies to GitHub.</p>
+<h2 id="go-action">Go Action</h2>
+<p>Click on Actions on the repository page, and then New Workflow to see recommended actions. Since this blog uses Go code, it shows the Go Action.</p>
+<p><img alt="goaction" loading="lazy" src="/posts/how-to-automatically-publish-a-blog-using-github-actions/20201216163209.webp"></p>
+<p>The rest involves following Travis&rsquo;s approach to set up the workflow.</p>
+<ol>
+<li>Check out the blog&rsquo;s repo</li>
+<li>Check out the publishing site repo</li>
+<li><code>make</code></li>
+<li>Commit the changes to the publishing site</li>
+</ol>
+<p>Note that write permissions are required for the publishing site, so you need to configure a token, similar to Travis.</p>
+<ol>
+<li>Generate a token with only repo permissions</li>
+<li>Go to a particular repo and set up secrets (enter the token). Ideally, this should be set up on the publishing site, but it works when set in the blog repo. I haven&rsquo;t explored why yet.</li>
+</ol>
+<p>You will need two actions in total: one is GitHub&rsquo;s own <a href="https://github.com/actions/checkout">checkout</a>, and the other is a third-party action called <a href="https://github.com/marketplace/actions/push-directory-to-another-repository">“Push directory to another repository”</a>. There might be better options available, and I’ll explore them when I have more time.</p>
+<p>Finally, here is my simple GitHub Action CI file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">CI</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">master ]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">build</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Set up Go 1.x</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/setup-go@v2</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">go-version</span>: <span style="color:#ae81ff">^1.13</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Check out code into the Go module directory</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Get dependencies</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">run</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        go get -v -t -d ./...
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        if [ -f Gopkg.toml ]; then
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            dep ensure
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Check out my other private repo</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v2</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">repository</span>: <span style="color:#ae81ff">jackysp/jackysp.github.io</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">token</span>: <span style="color:#ae81ff">${{ secrets.UPDATE_BLOG }}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">path</span>: <span style="color:#ae81ff">public</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">run</span>: <span style="color:#ae81ff">make</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Pushes to another repository</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">id</span>: <span style="color:#ae81ff">public</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">cpina/github-action-push-to-another-repository@cp_instead_of_deleting</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">env</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">API_TOKEN_GITHUB</span>: <span style="color:#ae81ff">${{ secrets.UPDATE_BLOG }}</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">source-directory</span>: <span style="color:#e6db74">&#39;public&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">destination-github-username</span>: <span style="color:#e6db74">&#39;jackysp&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">destination-repository-name</span>: <span style="color:#e6db74">&#39;jackysp.github.io&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">user-email</span>: <span style="color:#ae81ff">your@email.com</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">commit-message</span>: <span style="color:#ae81ff">See ORIGIN_COMMIT</span>
+</span></span></code></pre></div>]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Use Docker on Windows</title>
+      <link>https://blog.minifish.org/posts/how-to-use-docker-on-windows/</link>
+      <pubDate>Mon, 13 Apr 2020 10:34:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-use-docker-on-windows/</guid>
+      <description>I had to install Docker on Windows to reproduce a bug.</description>
+      <content:encoded><![CDATA[<h2 id="background">Background</h2>
+<p>I had to install Docker on Windows to reproduce a bug.</p>
+<h2 id="process">Process</h2>
+<ol>
+<li>Using Windows 10 as an example, if you have the Home Basic version, you&rsquo;ll need to pay to upgrade to the Pro version because you need to enable Hyper-V and Container features, which costs about 800 RMB.</li>
+<li>Install everything with the default settings, and do not switch to Windows Containers, since most images are still under Linux. If you do switch, you can restore it after starting up.</li>
+<li>If you encounter permission issues with shared folders, follow the instructions at <a href="https://github.com/docker/for-win/issues/3174">link</a>. However, this might not solve the problem, and you might encounter a sharing failure. In that case, go to the settings, troubleshoot, and reset to factory defaults. After resetting, ensure the shared folders are selected.</li>
+<li>When you encounter errors during use, just try a few more times. It might work; if not, reset it.</li>
+</ol>
+<h2 id="impressions">Impressions</h2>
+<p>Initially, there were no issues using Docker on Linux; Docker itself was simple back then. Later, using it on Mac brought changes, including a user interface, various colors, and numerous bugs. Right from the start, I encountered bugs. Docker did not support Windows a long time ago, and given the various bugs on Mac, I didn&rsquo;t have high expectations. The results were still quite surprising. In summary, here are a few points:</p>
+<ol>
+<li>It&rsquo;s easier to use.</li>
+<li>There are more bugs. Do not expect much, and be prepared to reset at any time. Fortunately, resetting offers a shortcut, making it a pretty usable tool.</li>
+<li>It&rsquo;s incredibly slow.</li>
+</ol>
+<p>At this point, I have no optimism for Docker, Kubernetes, or similar technologies. Done~</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Prevent a Linux Laptop from Entering Sleep Mode When the Lid is Closed</title>
+      <link>https://blog.minifish.org/posts/how-to-prevent-a-linux-laptop-from-entering-sleep-mode-when-the-lid-is-closed/</link>
+      <pubDate>Tue, 31 Mar 2020 20:31:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-prevent-a-linux-laptop-from-entering-sleep-mode-when-the-lid-is-closed/</guid>
+      <description>Initially, I thought it would be a simple setting adjustment, so I casually Googled it. Sure enough, there was a unanimous solution: modify /etc/systemd/logind.conf, change...</description>
+      <content:encoded><![CDATA[<p>Initially, I thought it would be a simple setting adjustment, so I casually Googled it. Sure enough, there was a unanimous solution: modify <code>/etc/systemd/logind.conf</code>, change <code>HandleLidSwitch</code> to <code>ignore</code> or <code>lock</code>, and then restart <code>logind</code> or reboot.</p>
+<p>I tried this, but it didn&rsquo;t work at all on my Thinkpad X230. I then tried changing some other options in the aforementioned file, but none worked, and surprisingly, <code>Ubuntu</code> even reported errors.</p>
+<p>So, I reinstalled the more preferred <code>Debian</code>. Tried again, and it still didn&rsquo;t work. Finally, I found a more brutal method.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+</span></span></code></pre></div><p>This directly points these units to /dev/null&hellip;</p>
+<p>To revert, simply use:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target
+</span></span></code></pre></div><p>It&rsquo;s simple and effective.</p>
+<p><strong>Update:</strong></p>
+<p>If you only mask them, the CPU usage of systemd-logind will be very high because it continuously attempts to sleep. Therefore, you also need to change <code>HandleLidSwitch</code> and others to <code>ignore</code>. As follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>HandleSuspendKey=ignore
+</span></span><span style="display:flex;"><span>HandleHibernateKey=ignore
+</span></span><span style="display:flex;"><span>HandleLidSwitch=ignore
+</span></span><span style="display:flex;"><span>HandleLidSwitchExternalPower=ignore
+</span></span><span style="display:flex;"><span>HandleLidSwitchDocked=ignore
+</span></span></code></pre></div><p>Then, execute <code>systemctl restart systemd-logind</code>. For more details, refer to this: <a href="https://tothecloud.dev/systemd-logind-high-cpu-usage/">SystemD-LoginD High CPU Usage</a>.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Dynamically Update DNS Records for Namesilo</title>
+      <link>https://blog.minifish.org/posts/how-to-dynamically-update-dns-records-for-namesilo/</link>
+      <pubDate>Sat, 01 Feb 2020 12:27:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-dynamically-update-dns-records-for-namesilo/</guid>
+      <description>The purpose of dynamic updates is pretty simple. As a long-term user of China Unicom&amp;#39;s broadband, although Unicom provides a public address, it is essentially a dynamic address,...</description>
+      <content:encoded><![CDATA[<h2 id="dynamically-updating-dns-records">Dynamically Updating DNS Records</h2>
+<p>The purpose of dynamic updates is pretty simple. As a long-term user of China Unicom&rsquo;s broadband, although Unicom provides a public address, it is essentially a dynamic address, not a fixed one. If you want to access your home devices using an IP address from outside, you need to use dynamic DNS (DDNS).</p>
+<p>Many routers come with built-in DDNS functionality, but they mostly wrap the interfaces of the commonly used service providers. These providers generally have a few characteristics: 1. Blocked by the Great Firewall; 2. Not cheap; 3. Domestic providers may have security issues; 4. The company might have gone out of business. Rather than relying on these unreliable services, it&rsquo;s better to write your own script for updating.</p>
+<p>Thus, the scripting approach comes into play. Initially, I planned to use Cloudflare, as it is the recommended way. Later, I discovered that my domain provider Namesilo offers an API to update DNS. However, it returns data in XML format, and I wasn&rsquo;t sure how to parse this with shell scripts.</p>
+<p>Then, I thought of using Go. Since this DDNS client would likely be deployed on a router-like device, languages like Python or Java require a runtime environment, and C might need some dynamic libraries to run, which I wasn&rsquo;t sure how to handle. The fact that Go doesn&rsquo;t require dynamic libraries was a significant advantage. So, I handwrote a tool called <a href="https://github.com/jackysp/und">und</a>.</p>
+<ol>
+<li>First, create a DNS record in Namesilo.</li>
+<li>Obtain the binary of <code>und</code> suitable for your platform. I only provide binaries for arm64|linux and amd64|three mainstream OS in this case. For other platforms, you&rsquo;ll need to compile it yourself. You can refer to the Makefile.</li>
+<li>Generate an API key from Namesilo, then start <code>und</code> according to its usage documentation. You might need to run it in the background, so use <code>nohup</code>.</li>
+</ol>
+<h2 id="github-features-experience">GitHub Features Experience</h2>
+<h3 id="github-actions">GitHub Actions</h3>
+<p>It feels like a replacement for chaotic third-party CI services. I directly chose the Go option for <code>und</code>. By default, it simply runs <code>go build -v .</code> in Ubuntu.</p>
+<h3 id="release">Release</h3>
+<p>I used this feature when releasing TiDB before, but didn&rsquo;t remember to upload/automatically generate binaries. Since TiDB is not something that can run completely with just one component, releasing a single binary doesn&rsquo;t make much sense.</p>
+<p>This time, the experience led me to believe:</p>
+<ol>
+<li>When releasing, tagging is best done directly using the release feature.</li>
+<li>After the release, since you can edit it, it&rsquo;s a good time to <code>make</code> each binary and upload them. Based on the Makefile setup, you can generate a version. This is quite an important feature.</li>
+</ol>
+<p>These two steps are quite convenient.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Start a PowerShell Script in the Background at Windows Startup</title>
+      <link>https://blog.minifish.org/posts/how-to-start-a-powershell-script-in-the-background-at-windows-startup/</link>
+      <pubDate>Tue, 14 Jan 2020 08:56:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-start-a-powershell-script-in-the-background-at-windows-startup/</guid>
+      <description>Note: Start-Process seems to perform a fork-like action, and by default, it opens a new PowerShell window to execute. That&amp;#39;s why -WindowStyle Hidden is added at the end. You can&amp;#39;t...</description>
+      <content:encoded><![CDATA[<ul>
+<li>
+<p>Create a script and place it in</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>C:\Users\name\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\`  
+</span></span></code></pre></div></li>
+<li>
+<p>Fill the script with:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>Start-Process -FilePath <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.exe&#34;</span> -ArgumentList <span style="color:#e6db74">&#34;-L=&#34;</span>, <span style="color:#e6db74">&#34;-F=&#34;</span> -RedirectStandardOutput <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.log&#34;</span> -RedirectStandardError <span style="color:#e6db74">&#34;C:\Users\name\bin\gost-windows-amd64.err&#34;</span> -WindowStyle Hidden
+</span></span></code></pre></div></li>
+</ul>
+<p>Note: <code>Start-Process</code> seems to perform a fork-like action, and by default, it opens a new PowerShell window to execute. That&rsquo;s why <code>-WindowStyle Hidden</code> is added at the end. You can&rsquo;t use <code>-NoNewWindow</code> here because it only prevents the creation of a new window for executing <code>Start-Process</code>, but the old window will not exit.<br>
+Note 2: After the old window exits, the forked process seems to become an orphan and is managed elsewhere, so permissions, such as network connection permissions, might need to be requested again.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Deploy an HTTPS Proxy Service</title>
+      <link>https://blog.minifish.org/posts/how-to-deploy-an-https-proxy-service/</link>
+      <pubDate>Sun, 12 Jan 2020 19:43:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-deploy-an-https-proxy-service/</guid>
+      <description>One day, I came across an article by Chen Hao on Twitter. Having benefited from several of his blog posts, I instinctively felt it was reliable, so I read it and decided to write...</description>
+      <content:encoded><![CDATA[<h2 id="preface">Preface</h2>
+<p>One day, I came across an article by Chen Hao on Twitter. Having benefited from several of his blog posts, I instinctively felt it was reliable, so I read it and decided to write this practical guide.</p>
+<h2 id="why-use-an-https-proxy">Why Use an HTTPS Proxy</h2>
+<p>In the <a href="https://haoel.github.io/">guide</a>, it’s clearly explained why, plus my own experiences of several shadowsocks being banned, I felt it was necessary to switch to a more secure proxy method.</p>
+<h2 id="how-to-deploy-an-https-proxy">How to Deploy an HTTPS Proxy</h2>
+<h3 id="gost">gost</h3>
+<p><a href="https://github.com/ginuerzh/gost">gost</a> is the tool most recommended in the <a href="https://haoel.github.io/">guide</a>. At first, I misunderstood it as a method similar to kcptun, still relying on shadowsocks. In fact, gost implements multiple proxy types, meaning you don’t need other proxies if you have it. I never liked the method of continuously wrapping to accelerate/obfuscate shadowsocks, always feeling that longer pathways bring more problems.</p>
+<h3 id="steps">Steps</h3>
+<ul>
+<li>
+<p>Directly download the latest release from the gost repo. Although I have a Golang environment both locally and on the VPS, downloading directly is the easiest. I downloaded version 2.9.0 here.</p>
+</li>
+<li>
+<p>Following certbot on a bare VPS doesn&rsquo;t work&hellip; it requires:</p>
+<ol>
+<li>Starting an nginx server, as referenced in <a href="https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-debian-9">this guide</a>. Of course, this requires having a domain name pointing an A record to the VPS.</li>
+<li>Verifying access through the domain.</li>
+<li>Stopping nginx.</li>
+<li>Using certbot&rsquo;s &ndash;standalone mode, which will generate the certificates upon success.</li>
+</ol>
+</li>
+<li>
+<p>Here, I didn&rsquo;t use Docker for deployment but used systemd instead, directly creating a systemd unit similar to kcptun. The difference is, because the certificate needs updating, the unit requires a reload method. <a href="http://www.ruanyifeng.com/blog/2016/03/systemd-tutorial-commands.html">This tutorial</a> teaches a lot about using systemd, and the author&rsquo;s article quality is also high, highly recommended for subscription.</p>
+<ol>
+<li>Create a <code>/lib/systemd/system/gost.service</code> file with the following content, replacing the domain with your own:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[Unit]
+</span></span><span style="display:flex;"><span>Description=gost service
+</span></span><span style="display:flex;"><span>After=network.target
+</span></span><span style="display:flex;"><span>StartLimitIntervalSec=0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[Service]
+</span></span><span style="display:flex;"><span>Type=simple
+</span></span><span style="display:flex;"><span>Restart=always
+</span></span><span style="display:flex;"><span>RestartSec=1
+</span></span><span style="display:flex;"><span>User=root
+</span></span><span style="display:flex;"><span>PIDFile=/home/admin/gost.pid
+</span></span><span style="display:flex;"><span>ExecStart=/home/admin/bin/gost -L &#34;http2://xxx:yyy@0.0.0.0:443?cert=/etc/letsencrypt/live/example.com/fullchain.pem&amp;key=/etc/letsencrypt/live/example.com/privkey.pem&amp;probe_resist=code:404&#34;
+</span></span><span style="display:flex;"><span>ExecReload=/bin/kill -HUP $MAINPID
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[Install]
+</span></span><span style="display:flex;"><span>WantedBy=multi-user.target
+</span></span></code></pre></div><p><code>ExecStart</code> is a simplified version of the Docker method in the <a href="https://haoel.github.io/">guide</a>. <code>ExecReload</code> just kills the process.</p>
+<ol>
+<li>
+<p>Test whether it’s successful using <code>systemctl start|status|restart|enable gost</code>.</p>
+</li>
+<li>
+<p>Configure crontab to update the certificate. I didn&rsquo;t use systemd because I&rsquo;m not familiar with it.</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>0 0 1 * * /usr/bin/certbot renew --force-renewal
+</span></span><span style="display:flex;"><span>5 0 1 * * systemctl restart gost
+</span></span></code></pre></div></li>
+<li>
+<p>After completing the above, nginx can be directly stopped and disabled.</p>
+</li>
+<li>
+<p>Configure the client. This is simple; just refer to the <a href="https://haoel.github.io/">guide</a>. The principle is straightforward because gost implements the shadowsocks protocol using the shadowsocks Golang version. Therefore, the following command starts a local shadowsocks server, and you configure your client to add a local server configuration that matches the password.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>.\bin\gost-windows-amd64.exe -L=ss://aes-128-cfb:passcode@:1984 -F=https://xxx:yyy@example.com:443
+</span></span></code></pre></div></li>
+</ul>
+<p>PS: I still don&rsquo;t know how to configure a global HTTPS proxy on Android without root, or how to set it up on iOS without a U.S. account. Also, I&rsquo;m unsure how to elegantly configure startup scripts on Windows 10. These are issues to explore further&hellip;</p>
+<h2 id="continuation">Continuation</h2>
+<p>Regarding the mobile problem mentioned above, I found that HTTPS proxy client support is generally poor. Gost itself seems to have problems, possibly due to my usage. In short, if not using a local gost to connect remotely, authentication errors occur.</p>
+<p>During the holiday break, I tinkered a bit more. First, I deployed a gost HTTP proxy on my home NAS using the simplest nohup + ctrl-D method to maintain it. It&rsquo;s compiled with GOARCH=arm64. After a trial run for a day, Android&rsquo;s weak built-in HTTP proxy worked well, but globally routing through it wasn&rsquo;t great. Hence, I switched from HTTP to using SS to connect to HTTPS remotely. I essentially moved the local service on Windows to my NAS. Additionally, through simple double-port forwarding from NAS -&gt; internal router -&gt; optical modem router, I could also use the NAS as an SS server via the public IP.</p>
+<p>The remaining issue is the DDNS. After researching, it seems Cloudflare&rsquo;s API is a more reliable option. Seeing an official flarectl, I compiled it to the NAS and wrote a small script, revisiting the various (pitfalls) wonders of bash, especially remembering special writing for string comparisons such as <code>[ $a != $b ]</code> to <code>[ $a != $b* ]</code> to handle trailing &ldquo;\r&rdquo; &ldquo;\n&rdquo; characters. However, detaching the name server still takes some time. The final effect is to be tested.</p>
+<p>Additionally, on the NAS, I currently use curl to fetch my public IP from a third-party. I have a hunch that this method might not work someday or might cause issues.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Deploy a Shadowsocks Server</title>
+      <link>https://blog.minifish.org/posts/how-to-deploy-a-shadowsocks-server/</link>
+      <pubDate>Thu, 27 Sep 2018 15:48:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-deploy-a-shadowsocks-server/</guid>
+      <description>There are multiple versions of the Shadowsocks server side implementation. The original version was written in Python, and later, enthusiasts implemented it in various programming...</description>
+      <content:encoded><![CDATA[<p>There are multiple versions of the Shadowsocks server side implementation. The original version was written in Python, and later, enthusiasts implemented it in various programming languages of their liking.</p>
+<p>Among all these implementations, I personally think the most reliable and stable one is the original Python version. The reason is simple - it has the most users. The Golang version is said to have the most features and also performs very well, making it quite powerful. This might be due to Golang’s inherent high performance and ease of implementation. There&rsquo;s also an implementation using libev, a pure C implementation, which also offers good performance and is very lightweight.</p>
+<p>Additionally, updating the server is a necessary task for Shadowsocks users due to well-known reasons. The server should be updated frequently. If you’re using the Python implementation, you might be able to install updates via pip, although I haven’t confirmed this. The Golang version may require a Golang build environment, and then you can use <code>go get -u</code>. For updating libev, you can use apt on Debian-based systems, as apt includes shadowsocks-libev. I haven’t checked if it is available in the Red Hat-based yum repositories.</p>
+<p>After this introduction, let&rsquo;s go over the deployment steps, which are quite straightforward:</p>
+<ol>
+<li>Deploy a Debian 9 or Ubuntu 17 VPS. Mainstream providers like Vultr should have these options available. Assume we are using Debian 9 here.</li>
+<li>Run <code>apt install shadowsocks-libev</code> to install.</li>
+<li>Edit the configuration file using <code>vim /etc/shadowsocks-libev/config.json</code>. It&rsquo;s best to set the Server IP to 0.0.0.0 to avoid IP issues similar to those on AWS Lightsail.
+*. For AWS Lightsail, you need to bind a static IP and open firewall ports. Specific steps can be found on Google.</li>
+<li>Restart the service using <code>systemctl restart shadowsocks-libev</code> to apply the changes.</li>
+<li>Enable TCP BBR. Specific instructions can be found on Google.</li>
+</ol>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Execute Git Push in Travis CI</title>
+      <link>https://blog.minifish.org/posts/how-to-execute-git-push-in-travis-ci/</link>
+      <pubDate>Mon, 16 Oct 2017 22:21:06 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-execute-git-push-in-travis-ci/</guid>
+      <description>Travis CI is generally used for automating tests without needing to update the repository with the test outputs. This article explains how to automatically commit the results from...</description>
+      <content:encoded><![CDATA[<h2 id="background">Background</h2>
+<p>Travis CI is generally used for automating tests without needing to update the repository with the test outputs. This article explains how to automatically commit the results from Travis CI.</p>
+<h2 id="process">Process</h2>
+<p>The basic process references <a href="https://gist.github.com/Maumagnaguagno/84a9807ed71d233e5d3f">this gist</a>.</p>
+<p>Below is the <code>.travis.yml</code> from the gist.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">language</span>: <span style="color:#ae81ff">ruby</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">rvm</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">2.0.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">env</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">global</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">USER=&#34;username&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">EMAIL=&#34;username@mail.com&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">REPO=&#34;name of target repo&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">FILES=&#34;README.md foo.txt bar.txt&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">GH_REPO=&#34;github.com/${USER}/${REPO}.git&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">secure</span>: <span style="color:#e6db74">&#34;put travis gem output here =&gt; http://docs.travis-ci.com/user/encryption-keys/&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">script</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">ruby test.rb</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">after_success</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git clone git://${GH_REPO}</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">mv -f ${FILES} ${REPO}</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">cd ${REPO}</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git remote</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git config user.email ${EMAIL}</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git config user.name ${USER}</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git add ${FILES}</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git commit -m &#34;${MESSAGE}&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git push &#34;https://${GH_TOKEN}@${GH_REPO}&#34; master &gt; /dev/null 2&gt;&amp;1</span>
+</span></span></code></pre></div><p>Note here that MESSAGE should be quoted when committing, which the original gist did not include.</p>
+<p>Original README:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># Travis-CI tested push
+</span></span><span style="display:flex;"><span>Sometimes we have a private repository to hold both problems and solutions as a reference for the class projects.
+</span></span><span style="display:flex;"><span>The students can see only the problems in a public repository where they are able to clone/fork and develop their own solutions.
+</span></span><span style="display:flex;"><span>We do not want the solution files in the public repository and each bug found/feature added in the project requires a push for each repository.
+</span></span><span style="display:flex;"><span>It would be cool to work only with the reference repo and use tests to see if our modification is good enough for the public release.
+</span></span><span style="display:flex;"><span>This is possible with Travis-CI following simple steps:
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Create private and public repos
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Download Ruby
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Install the travis gem `<span style="color:#e6db74">`gem install travis`</span>`
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Generate a token in the Github website to allow others to play with your repos (copy the hash)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Log into your git account
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Generate a secure token with the Travis gem (copy long hash)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Fill the environment variables in the ``<span style="color:#e6db74">`.travis.yml`</span>`` file (USER, EMAIL, REPO, FILES)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Replace the value of <span style="font-weight:bold">**secure**</span> with your long hash
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Replace <span style="font-weight:bold">**GH_TOKEN**</span> with your Travis token name
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Push ``<span style="color:#e6db74">`.travis.yml`</span>`` to private repo
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Go to Travis to unlock your private repo tests
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">-</span> Push your files to the private repo to test
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Travis now has a [<span style="color:#f92672">deployment</span>](<span style="color:#a6e22e">https://docs.travis-ci.com/user/deployment/</span>) feature, which may be better for certain scenarios.
+</span></span></code></pre></div><p>A simple translation:</p>
+<ol>
+<li>Create a GitHub project. The original seems to have created two projects, one for updating another.</li>
+<li>Install Ruby. Usually, gem is installed alongside.</li>
+<li>Install travis via <code>gem install travis</code>.</li>
+<li>Apply for a token for your GitHub account. You can Google the details. When selecting token permissions, only tick all related to repo; others can be omitted.</li>
+<li>Copy the generated token.</li>
+<li>In the root directory of the local machine&rsquo;s repo (not sure if it must be the root) run <code>travis encrypt GH_TOKEN=&quot;copied token&quot;</code>. This creates an encrypted token to use as <code>${GH_TOKEN}</code>, essentially an environment variable. The command output, a string on the screen, needs to be pasted into the travis config file after secure:. Use <code>travis encrypt GH_TOKEN=&quot;copied token&quot; --add</code> to write directly into the config file.</li>
+<li>Commit the modified configuration file.</li>
+</ol>
+<p>This translation is not strictly literal. <strong>The above content is more suited to the following personal configuration:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">language</span>: <span style="color:#ae81ff">ruby</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">branches</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">only</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">master</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">rvm</span>:
+</span></span><span style="display:flex;"><span>- <span style="color:#ae81ff">2.4.1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">exclude</span>:
+</span></span><span style="display:flex;"><span>- <span style="color:#ae81ff">vendor</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">sudo</span>: <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">env</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">global</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">secure</span>: <span style="color:#ae81ff">rxKkyttLE1L4VsVIhhDUYGoLlER33ijKbdAAJPE8vNDSHwyANYnsP1GXK/rcwQqsL/KcJa55wEjVwEBzTMCqZM4UYNVIWqrJepVYo4rL1WhO+jT5sCqVR3qxK9KbgodcSXbmySJnJs0iLGMIQ2bo8yE91OxIC/GKkLCIwr9x4EGwFd5EcE5bOqmVqoSRk1q/1/5yA0aVF+Pohc5ATCZGw9+IyprU2Dx7qbA7F/T/4FQTOQZ4CLZAgyh/Gp1P+uxf1OK4IMCc/P6jVeTmbzQIbUcX0uG09pR7F0GnlV1ZOutMjY7SF8tQ7LNv2Wf8iWdiqehcwKNe/4TFHjs6rm3lEc6F1ELB5s4Z+QXjIM70haENSwM1FI8K5biL7tndAC1TujKESm0XadxORy5yOz7TfQZDTuMXvmmH3j+NFL3vTYPyMwwFca+IQBwD67a4PKD0PWBgEFD9Kn3rAlAzhV5OYdUuxZhx5zuQjKX5szUbL166fgoRnUwDp8dsOjLgOUqQa47IRqR3CTPzbf3zZIxGuX5x6mWySezCNprnXKCpyCegJBLoxQusA+EEYkvl4AOzhnmkhxFbEbHp+DYBjcSEEgpd06l67l3KzjMkpF02vr9CHNj8r7lAtZxwBVxYmczk289D5csOVR1SZKxQLwhx7k+CuEcYds685tLjIMmB0ZU=</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">USER=&#34;username&#34;</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">FULLNAME=&#34;Your Name&#34;</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">EMAIL=&#34;your-email@example.com&#34;</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">REPO=&#34;your-username.github.io&#34;</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">GH_REPO=&#34;github.com/${USER}/${REPO}.git&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">before_script</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git clone https://${GH_TOKEN}@${GH_REPO}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">script</span>: <span style="color:#ae81ff">bundle exec jekyll b -d ${REPO}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">after_success</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">MESSAGE=$(git log --format=%B -n 1 $TRAVIS_COMMIT)</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">cd ${REPO}</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git config user.email ${EMAIL}</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git config user.name ${FULLNAME}</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git add --all</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git commit -m &#34;${MESSAGE}&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#ae81ff">git push --force origin master</span>
+</span></span></code></pre></div><p>This configuration is used for automatically updating a blog created with Jekyll. There are two projects, one for source files and another for compiled HTML files. The purpose of this setup is to allow updating the blog without having to set up a Jekyll environment, even allowing updates directly from the GitHub website.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Configure CentOS 6 NFS Service</title>
+      <link>https://blog.minifish.org/posts/how-to-configure-centos-6-nfs-service/</link>
+      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-configure-centos-6-nfs-service/</guid>
+      <description>1. Disable SeLinux Edit the configuration file:</description>
+      <content:encoded><![CDATA[<h2 id="server-side">Server Side</h2>
+<ol>
+<li>
+<p><strong>Disable SeLinux</strong><br>
+Edit the configuration file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/selinux/config
+</span></span></code></pre></div><p>Modify as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>#SELINUX=enforcing    # Comment out
+</span></span><span style="display:flex;"><span>#SELINUXTYPE=targeted # Comment out
+</span></span><span style="display:flex;"><span>SELINUX=disabled      # Add this line
+</span></span></code></pre></div><p>Then reboot the system:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>reboot  <span style="color:#75715e"># Restart the system</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Create a Directory</strong><br>
+Using the root user, create a directory named <code>/nfs</code>. Note: It&rsquo;s best to check which partition has the most space by running <code>df</code>, as the root (<code>/</code>) partition may not have the most space. In some automatic partitioning setups, the <code>/home</code> partition may have the most space.</p>
+</li>
+<li>
+<p><strong>Install NFS Utilities and RPC Bind</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yum -y install nfs-utils rpcbind
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Enable Services at Boot</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chkconfig nfs on
+</span></span><span style="display:flex;"><span>chkconfig rpcbind on
+</span></span><span style="display:flex;"><span>chkconfig nfslock on
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Configure Exports</strong><br>
+Edit the NFS exports file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/exports
+</span></span></code></pre></div><p>Add the following line:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>/home/nfs 192.168.1.0/24(rw,sync,no_all_squash)
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Start NFS Services</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service rpcbind start
+</span></span><span style="display:flex;"><span>service nfs start
+</span></span><span style="display:flex;"><span>service nfslock start
+</span></span><span style="display:flex;"><span>exportfs -a
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Configure NFS Ports</strong><br>
+Edit the NFS configuration file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/sysconfig/nfs
+</span></span></code></pre></div><p>Uncomment the following lines:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>LOCKD_TCPPORT=32803
+</span></span><span style="display:flex;"><span>LOCKD_UDPPORT=32769
+</span></span><span style="display:flex;"><span>MOUNTD_PORT=892
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Restart NFS Services</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service rpcbind restart
+</span></span><span style="display:flex;"><span>service nfs restart
+</span></span><span style="display:flex;"><span>service nfslock restart
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Verify RPC Services</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpcinfo -p localhost
+</span></span></code></pre></div><p>Note down the ports and their types.</p>
+</li>
+<li>
+<p><strong>Configure Firewall Rules</strong><br>
+Adjust the IP range according to your network:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>iptables -I INPUT -m state --state NEW -p tcp -m multiport --dport 111,892,2049,32803 -s 192.168.0.0/24 -j ACCEPT
+</span></span><span style="display:flex;"><span>iptables -I INPUT -m state --state NEW -p udp -m multiport --dport 111,892,2049,32769 -s 192.168.0.0/24 -j ACCEPT
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Save Firewall Rules</strong><br>
+Test from the client side. If successful, save the iptables configuration:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service iptables save
+</span></span></code></pre></div></li>
+</ol>
+<h2 id="client-side">Client Side</h2>
+<ol>
+<li>
+<p><strong>Create Mount Point</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir /nfs
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Check RPC Services on Server</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpcinfo -p <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Show NFS Exports</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>showmount -e <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Mount NFS Share</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mount -t nfs -o soft,intr,bg,rw <span style="color:#f92672">[</span>server_ip<span style="color:#f92672">]</span>:/home/nfs /nfs
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Unmount NFS Share</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>umount /nfs
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Configure Automatic Mounting</strong><br>
+Edit the fstab file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vi /etc/fstab
+</span></span></code></pre></div><p>Add the following line:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[server_ip]:/home/nfs /nfs nfs soft,intr,bg,rw 0 0
+</span></span></code></pre></div></li>
+</ol>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Configure CentOS KVM Network Bridging Mode</title>
+      <link>https://blog.minifish.org/posts/how-to-configure-centos-kvm-network-bridging-mode/</link>
+      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-configure-centos-kvm-network-bridging-mode/</guid>
+      <description>Bridging highly simulates a network card, making the router believe that the virtual machine&amp;#39;s network card truly exists. Personally, I feel it&amp;#39;s similar to resistors connected in...</description>
+      <content:encoded><![CDATA[<h2 id="what-is-bridging">What Is Bridging</h2>
+<p>Bridging highly simulates a network card, making the router believe that the virtual machine&rsquo;s network card truly exists. Personally, I feel it&rsquo;s similar to resistors connected in parallel, whereas NAT (another common virtual machine network connection method) is more like parasitizing on the host&rsquo;s network card.</p>
+<h2 id="why-use-bridging">Why Use Bridging</h2>
+<p>It allows you to treat the virtual machine as a completely independent machine, enabling mutual access with the external network (which is not possible with NAT).</p>
+<h2 id="how-to-configure-bridging">How to Configure Bridging</h2>
+<p>In CentOS 6, refer to the command-line method in <a href="http://www.techotopia.com/index.php/Creating_a_CentOS_6_KVM_Networked_Bridge_Interface">this article</a>.</p>
+<p>We don&rsquo;t use the GUI method because:</p>
+<ul>
+<li>We&rsquo;re unsure which options to fill in on the last screen.</li>
+<li>We don&rsquo;t know how to reset if we make a wrong selection.</li>
+</ul>
+<p>Command-line steps:</p>
+<ol>
+<li>
+<p><strong>Check if <code>bridge-utils</code> is installed:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rpm -q bridge-utils
+</span></span></code></pre></div><p>Usually, it&rsquo;s already installed. If not, install it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su -
+</span></span><span style="display:flex;"><span>yum install bridge-utils
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Verify your network interfaces:</strong></p>
+<p>Run <code>ifconfig</code> to ensure you have at least three network interfaces:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>eth0      Link encap:Ethernet  HWaddr 00:18:E7:16:DA:65
+</span></span><span style="display:flex;"><span>          inet addr:192.168.0.117  Bcast:192.168.0.255  Mask:255.255.255.0
+</span></span><span style="display:flex;"><span>          inet6 addr: fe80::218:e7ff:fe16:da65/64 Scope:Link
+</span></span><span style="display:flex;"><span>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span></span><span style="display:flex;"><span>          RX packets:556 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>          TX packets:414 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>          collisions:0 txqueuelen:1000
+</span></span><span style="display:flex;"><span>          RX bytes:222834 (217.6 KiB)  TX bytes:48430 (47.2 KiB)
+</span></span><span style="display:flex;"><span>          Interrupt:16 Base address:0x4f00
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lo        Link encap:Local Loopback
+</span></span><span style="display:flex;"><span>          inet addr:127.0.0.1  Mask:255.0.0.0
+</span></span><span style="display:flex;"><span>          inet6 addr: ::1/128 Scope:Host
+</span></span><span style="display:flex;"><span>          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+</span></span><span style="display:flex;"><span>          RX packets:8 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>          TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>          collisions:0 txqueuelen:0
+</span></span><span style="display:flex;"><span>          RX bytes:480 (480.0 b)  TX bytes:480 (480.0 b)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>virbr0    Link encap:Ethernet  HWaddr 52:54:00:2A:C1:7E
+</span></span><span style="display:flex;"><span>          inet addr:192.168.122.1  Bcast:192.168.122.255  Mask:255.255.255.0
+</span></span><span style="display:flex;"><span>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span></span><span style="display:flex;"><span>          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span style="display:flex;"><span>          TX packets:13 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span style="display:flex;"><span>          collisions:0 txqueuelen:0
+</span></span><span style="display:flex;"><span>          RX bytes:0 (0.0 b)  TX bytes:2793 (2.7 KiB)
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Navigate to the network scripts directory:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>su –
+</span></span><span style="display:flex;"><span>cd /etc/sysconfig/network-scripts
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Bring down the <code>eth0</code> interface:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifdown eth0
+</span></span></code></pre></div><p><em>This step is crucial and must be performed locally.</em> When I first configured this, I didn&rsquo;t shut down the network (since I was working remotely). I didn&rsquo;t realize that updating the <code>ifcfg-eth0</code> configuration without restarting the network would immediately apply changes, resulting in loss of network connectivity.</p>
+</li>
+<li>
+<p><strong>Edit <code>ifcfg-eth0</code>:</strong></p>
+<p>In the <code>ifcfg-eth0</code> file, include:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=eth0
+</span></span><span style="display:flex;"><span>ONBOOT=yes
+</span></span><span style="display:flex;"><span>BRIDGE=br0
+</span></span></code></pre></div><p>Keep only these three lines in the file. There&rsquo;s no need to configure an IP address here. Bridging seems to replace the original network card with the bridge, so you can delegate the configuration to the bridge.</p>
+</li>
+<li>
+<p><strong>Create a new file <code>ifcfg-br0</code>:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>DEVICE=br0
+</span></span><span style="display:flex;"><span>ONBOOT=yes
+</span></span><span style="display:flex;"><span>TYPE=Bridge
+</span></span><span style="display:flex;"><span>BOOTPROTO=static
+</span></span><span style="display:flex;"><span>IPADDR=xxx.xxx.xxx.xxx   # Use the IP you originally had in ifcfg-eth0
+</span></span><span style="display:flex;"><span>GATEWAY=xxx.xxx.xxx.xxx  # Your gateway address
+</span></span><span style="display:flex;"><span>NETMASK=255.255.255.0    # Your netmask
+</span></span><span style="display:flex;"><span>DNS1=xxx.xxx.xxx.xxx     # Your primary DNS server
+</span></span><span style="display:flex;"><span>DNS2=xxx.xxx.xxx.xxx     # Your secondary DNS server (if any)
+</span></span><span style="display:flex;"><span>STP=on
+</span></span><span style="display:flex;"><span>DELAY=0
+</span></span></code></pre></div><p><em>Note:</em> Replace <code>xxx.xxx.xxx.xxx</code> with your actual network settings.</p>
+</li>
+<li>
+<p><strong>Bring up the interfaces:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ifup br0
+</span></span><span style="display:flex;"><span>ifup eth0
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Verify the bridge interface:</strong></p>
+<p>Check <code>ifconfig</code> to ensure that <code>br0</code> is now present.</p>
+</li>
+<li>
+<p><strong>Update firewall rules:</strong></p>
+<p>Edit <code>/etc/sysconfig/iptables</code> and add:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>-A INPUT -i br0 -j ACCEPT
+</span></span></code></pre></div><p><em>(This is a general example; you may need to adjust it based on your specific firewall configuration.)</em></p>
+</li>
+<li>
+<p><strong>Restart the firewall:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>service iptables restart
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Configure bridging in <code>virt-manager</code>:</strong></p>
+<p>When creating a new virtual machine using <code>virt-manager</code>, you can now select <code>br0</code> for the network interface. Without this bridge, the bridging option would not be available.</p>
+</li>
+</ol>
+<p><strong>Note:</strong> When configuring the IP inside the virtual machine, be sure to specify the <code>GATEWAY</code>. Otherwise, the virtual machine will only be able to access the internal network and not the external network. At this point, the virtual machine won&rsquo;t automatically discover the gateway.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>How to Install CentOS as a Virtualization Host</title>
+      <link>https://blog.minifish.org/posts/how-to-install-centos-as-a-virtualization-host/</link>
+      <pubDate>Thu, 05 Jun 2014 22:21:06 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/how-to-install-centos-as-a-virtualization-host/</guid>
+      <description>Installed Version: CentOS 6.3</description>
+      <content:encoded><![CDATA[<h2 id="installation-process">Installation Process</h2>
+<p>Installed Version: CentOS 6.3</p>
+<ol>
+<li>Using Win32DiskImager to create a USB flash drive image was unsuccessful; installing from an external USB optical drive was successful.</li>
+<li>During the installation process, make sure to select the &ldquo;Virtual Host&rdquo; installation mode.</li>
+<li>The rest can be set to default or slightly modified, such as choosing the time zone.</li>
+<li>After installation, it will include the KVM suite and SSH.</li>
+</ol>
+<h2 id="installation-notes">Installation Notes</h2>
+<ul>
+<li>No internet connection is needed throughout the process, which is much better than Debian and Ubuntu.</li>
+<li>You&rsquo;re not forced to set up a non-root user.</li>
+<li>Before installation, be sure to check whether your CPU supports virtualization and enable the motherboard&rsquo;s virtualization setting. If the motherboard supports virtualization but doesn&rsquo;t have a virtualization option, you can still use virtualization as it&rsquo;s definitely enabled by default. There&rsquo;s a saying that Intel CPUs with a &lsquo;K&rsquo; cannot perform virtualization. &lsquo;K&rsquo; means Intel CPUs that can be overclocked. It seems that faster and newer CPUs are not necessarily better.</li>
+</ul>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

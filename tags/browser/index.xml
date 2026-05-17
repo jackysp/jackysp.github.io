@@ -19,10 +19,7 @@
       <link>https://blog.minifish.org/posts/introduction-to-webvm/</link>
       <pubDate>Mon, 13 Jan 2025 19:54:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/introduction-to-webvm/</guid>
-      <description>&lt;h2 id=&#34;what-is-webvm&#34;&gt;What is WebVM?&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/leaningtech/webvm&#34;&gt;WebVM&lt;/a&gt; is a virtual machine (VM) that executes entirely within a web browser. It&amp;rsquo;s an innovative project that brings the power of a Linux environment straight to your browser, eliminating the need for traditional virtual machine setups. WebVM operates within a sandboxed environment, ensuring secure execution of applications without affecting the host system.&lt;/p&gt;
-&lt;h2 id=&#34;understanding-webvm&#34;&gt;Understanding WebVM&lt;/h2&gt;
-&lt;p&gt;The source repository provides a frontend for the WebVM demo. By forking the repository and following the instructions outlined in the GitHub Actions, you can build an image using the Dockerfile located at:&lt;/p&gt;</description>
+      <description>WebVM is a virtual machine (VM) that executes entirely within a web browser. It&amp;#39;s an innovative project that brings the power of a Linux environment straight to your browser,...</description>
       <content:encoded><![CDATA[<h2 id="what-is-webvm">What is WebVM?</h2>
 <p><a href="https://github.com/leaningtech/webvm">WebVM</a> is a virtual machine (VM) that executes entirely within a web browser. It&rsquo;s an innovative project that brings the power of a Linux environment straight to your browser, eliminating the need for traditional virtual machine setups. WebVM operates within a sandboxed environment, ensuring secure execution of applications without affecting the host system.</p>
 <h2 id="understanding-webvm">Understanding WebVM</h2>

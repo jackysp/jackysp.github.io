@@ -19,10 +19,7 @@
       <link>https://blog.minifish.org/posts/how-to-deploy-an-https-proxy-service/</link>
       <pubDate>Sun, 12 Jan 2020 19:43:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-deploy-an-https-proxy-service/</guid>
-      <description>&lt;h2 id=&#34;preface&#34;&gt;Preface&lt;/h2&gt;
-&lt;p&gt;One day, I came across an article by Chen Hao on Twitter. Having benefited from several of his blog posts, I instinctively felt it was reliable, so I read it and decided to write this practical guide.&lt;/p&gt;
-&lt;h2 id=&#34;why-use-an-https-proxy&#34;&gt;Why Use an HTTPS Proxy&lt;/h2&gt;
-&lt;p&gt;In the &lt;a href=&#34;https://haoel.github.io/&#34;&gt;guide&lt;/a&gt;, it’s clearly explained why, plus my own experiences of several shadowsocks being banned, I felt it was necessary to switch to a more secure proxy method.&lt;/p&gt;</description>
+      <description>One day, I came across an article by Chen Hao on Twitter. Having benefited from several of his blog posts, I instinctively felt it was reliable, so I read it and decided to write...</description>
       <content:encoded><![CDATA[<h2 id="preface">Preface</h2>
 <p>One day, I came across an article by Chen Hao on Twitter. Having benefited from several of his blog posts, I instinctively felt it was reliable, so I read it and decided to write this practical guide.</p>
 <h2 id="why-use-an-https-proxy">Why Use an HTTPS Proxy</h2>
@@ -98,8 +95,7 @@
       <link>https://blog.minifish.org/posts/how-to-deploy-a-shadowsocks-server/</link>
       <pubDate>Thu, 27 Sep 2018 15:48:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/how-to-deploy-a-shadowsocks-server/</guid>
-      <description>&lt;p&gt;There are multiple versions of the Shadowsocks server side implementation. The original version was written in Python, and later, enthusiasts implemented it in various programming languages of their liking.&lt;/p&gt;
-&lt;p&gt;Among all these implementations, I personally think the most reliable and stable one is the original Python version. The reason is simple - it has the most users. The Golang version is said to have the most features and also performs very well, making it quite powerful. This might be due to Golang’s inherent high performance and ease of implementation. There&amp;rsquo;s also an implementation using libev, a pure C implementation, which also offers good performance and is very lightweight.&lt;/p&gt;</description>
+      <description>There are multiple versions of the Shadowsocks server side implementation. The original version was written in Python, and later, enthusiasts implemented it in various programming...</description>
       <content:encoded><![CDATA[<p>There are multiple versions of the Shadowsocks server side implementation. The original version was written in Python, and later, enthusiasts implemented it in various programming languages of their liking.</p>
 <p>Among all these implementations, I personally think the most reliable and stable one is the original Python version. The reason is simple - it has the most users. The Golang version is said to have the most features and also performs very well, making it quite powerful. This might be due to Golang’s inherent high performance and ease of implementation. There&rsquo;s also an implementation using libev, a pure C implementation, which also offers good performance and is very lightweight.</p>
 <p>Additionally, updating the server is a necessary task for Shadowsocks users due to well-known reasons. The server should be updated frequently. If you’re using the Python implementation, you might be able to install updates via pip, although I haven’t confirmed this. The Golang version may require a Golang build environment, and then you can use <code>go get -u</code>. For updating libev, you can use apt on Debian-based systems, as apt includes shadowsocks-libev. I haven’t checked if it is available in the Red Hat-based yum repositories.</p>

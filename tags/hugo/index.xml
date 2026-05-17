@@ -19,7 +19,7 @@
       <link>https://blog.minifish.org/posts/symphony-solo-dev-blog/</link>
       <pubDate>Fri, 20 Mar 2026 21:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/symphony-solo-dev-blog/</guid>
-      <description>Hands-on Symphony setup plus an unapologetic thesis: orchestration collapses the PM–engineer relay; B2B should route first-hand demand straight into automated build, test, and ship. Checklists and links included.</description>
+      <description>A hands-on report on running OpenAI Symphony with Linear, GitHub, and Codex across two personal repositories.</description>
       <content:encoded><![CDATA[<p>I recently spent a session getting <a href="https://github.com/openai/symphony">OpenAI Symphony</a> working on two personal repositories in a solo-developer setup. The goal was simple: use <a href="https://linear.app/">Linear</a> as the task queue, let Symphony pick up issues automatically, and have Codex make code changes with as little manual coordination as possible.</p>
 <p>This post is intentionally sanitized. I am not including tokens, local machine details, private paths, secrets, or any internal repository configuration that should not be published.</p>
 <h2 id="official-symphony-resources">Official Symphony resources</h2>
