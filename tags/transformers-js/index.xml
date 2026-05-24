@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Transformers-Js on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/transformers-js/</link>
+    <description>Recent content in Transformers-Js on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.161.1</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
+    <lastBuildDate>Sun, 24 May 2026 20:05:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/transformers-js/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PocketBabel: Browser Translation Without a Backend</title>
+      <link>https://blog.minifish.org/posts/pocketbabel-browser-translation/</link>
+      <pubDate>Sun, 24 May 2026 20:05:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/pocketbabel-browser-translation/</guid>
+      <description>A project note on PocketBabel, a frontend-only English-Chinese translation app powered by transformers.js and designed for offline reuse.</description>
+      <content:encoded><![CDATA[<p>PocketBabel is a frontend-only English-Chinese translation app. It uses <code>@huggingface/transformers</code> in the browser, targets Cloudflare Pages, and is designed to keep working after the model has been downloaded and cached.</p>
+<p>The important constraint is that there is no backend inference service. The browser is not just the UI; it is also the runtime.</p>
+<h2 id="why-build-it">Why build it</h2>
+<p>Most translation tools are service-shaped: text goes to a server, the server runs a model, and the result comes back. That is fine for many cases, but it is also more infrastructure than I wanted for a narrow personal tool.</p>
+<p>PocketBabel asks a smaller question: if the scope is only English to Chinese and Chinese to English, can the whole product be a static site?</p>
+<p>That decision makes the system easier to reason about:</p>
+<ul>
+<li>no API key</li>
+<li>no account system</li>
+<li>no backend deployment</li>
+<li>no request logging</li>
+<li>no server-side scaling problem</li>
+</ul>
+<p>The cost is that the first model download matters and browser performance becomes part of the product.</p>
+<h2 id="product-boundary">Product boundary</h2>
+<p>The project intentionally avoids becoming a general translation platform. The current shape is narrow:</p>
+<ul>
+<li>English to Chinese</li>
+<li>Chinese to English</li>
+<li>text input and output</li>
+<li>desktop and mobile browser support</li>
+<li>PWA shell and offline reuse</li>
+</ul>
+<p>It does not try to support OCR, speech, synced history, arbitrary language pairs, or collaborative workflows. Those features are tempting, but they would change the project from a useful small app into a maintenance surface.</p>
+<h2 id="technical-shape">Technical shape</h2>
+<p>The implementation is a React and Vite app. Translation is handled by transformers.js with browser-side model loading and caching. Deployment is static, which makes Cloudflare Pages a natural fit.</p>
+<p>The UI challenge is not only making a textarea and a button. The app needs to explain model state without becoming noisy:</p>
+<ul>
+<li>model not downloaded yet</li>
+<li>model loading</li>
+<li>translation running</li>
+<li>offline reuse available</li>
+<li>failure state when the browser cannot support the runtime well</li>
+</ul>
+<p>For an app like this, good status text is part of the architecture. If users do not know whether the model is downloading, warming up, or stuck, the app feels broken even when the code is doing the right thing.</p>
+<h2 id="what-i-learned">What I learned</h2>
+<p>Browser AI is practical when the product scope is narrow. It is much less practical when you pretend the browser is a free replacement for a server.</p>
+<p>The useful pattern is:</p>
+<ol>
+<li>choose a task with a clear input and output</li>
+<li>constrain the model set</li>
+<li>make loading and caching behavior visible</li>
+<li>avoid account and sync features unless they are essential</li>
+</ol>
+<p>PocketBabel works because it does not try to be Google Translate. It is a small translation surface for a small set of language directions.</p>
+<h2 id="open-source-status">Open source status</h2>
+<p>PocketBabel is public because the architecture is self-contained and does not rely on private infrastructure. It is also a good example of the kind of project that benefits from being inspectable: the privacy story is stronger when the code path is visible.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

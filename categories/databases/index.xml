@@ -9,11 +9,70 @@
       <url>https://blog.minifish.org/android-chrome-512x512.png</url>
       <link>https://blog.minifish.org/android-chrome-512x512.png</link>
     </image>
-    <generator>Hugo -- 0.158.0</generator>
+    <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sat, 17 Jan 2026 10:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 20:25:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/categories/databases/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OB Sizer: Turning Migration Sizing into a Browser Tool</title>
+      <link>https://blog.minifish.org/posts/ob-sizer-capacity-estimator/</link>
+      <pubDate>Sun, 24 May 2026 20:25:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/ob-sizer-capacity-estimator/</guid>
+      <description>A project note on OB Sizer, a browser-based OceanBase migration capacity estimator for common source databases and workload assumptions.</description>
+      <content:encoded><![CDATA[<p>OB Sizer is an OceanBase migration capacity estimator. It helps solution architects turn rough source-system facts into an initial OceanBase cluster sizing conversation.</p>
+<p>It is a pure frontend tool. All calculations run in the browser, and the estimate can be shared through encoded URLs.</p>
+<h2 id="why-build-it">Why build it</h2>
+<p>Sizing discussions often begin with incomplete information:</p>
+<ul>
+<li>source database type</li>
+<li>data size</li>
+<li>growth expectations</li>
+<li>workload style</li>
+<li>read/write ratio</li>
+<li>availability requirement</li>
+<li>target deployment shape</li>
+</ul>
+<p>The first estimate is rarely final. But without a structured model, the conversation quickly becomes a spreadsheet with hidden assumptions.</p>
+<p>OB Sizer makes the assumptions visible.</p>
+<h2 id="supported-shape">Supported shape</h2>
+<p>The tool covers common migration sources:</p>
+<ul>
+<li>MySQL</li>
+<li>Oracle</li>
+<li>PostgreSQL</li>
+<li>TiDB</li>
+<li>Aurora</li>
+<li>SQL Server</li>
+</ul>
+<p>It models OceanBase replica choices such as <code>2F1A</code> and <code>3F</code>, real OB Cloud SKU shapes, and workload differences across OLTP, HTAP, and mixed patterns.</p>
+<p>The important design choice is that it is not only a calculator. It includes methodology in the app, so users can see why a number appears.</p>
+<h2 id="product-boundary">Product boundary</h2>
+<p>OB Sizer should not pretend to replace a real sizing engagement. The correct role is earlier:</p>
+<ul>
+<li>make first-pass estimates consistent</li>
+<li>expose assumptions</li>
+<li>help compare scenarios</li>
+<li>create a common language for follow-up questions</li>
+</ul>
+<p>That boundary keeps the tool useful without making it misleading.</p>
+<h2 id="why-browser-only">Why browser-only</h2>
+<p>A browser-only tool is easy to share and easy to run in customer-facing discussions. It also avoids collecting workload information on a backend.</p>
+<p>The tradeoff is that the model and SKU tables have to ship with the app. That is acceptable because the tool is a discussion aid, not a real-time pricing or provisioning system.</p>
+<h2 id="what-i-learned">What I learned</h2>
+<p>Capacity estimation tools are part engineering and part communication. A technically clever formula is not useful if the user cannot see its assumptions.</p>
+<p>The best parts of OB Sizer are the ones that make uncertainty explicit:</p>
+<ul>
+<li>workload multipliers</li>
+<li>replica mode impact</li>
+<li>CPU and memory assumptions</li>
+<li>storage overhead</li>
+<li>write amplification</li>
+<li>safety margins</li>
+</ul>
+<p>For database migration work, that transparency matters more than pretending the first number is exact.</p>
+]]></content:encoded>
+    </item>
     <item>
       <title>OceanBase Internals: Transactions, Replay, SQL Engine, and Unit Placement</title>
       <link>https://blog.minifish.org/posts/oceanbase-internals-transaction-replay-sql-unit-placement/</link>

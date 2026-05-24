@@ -2,19 +2,133 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://blog.minifish.org/tags/capacity-planning/</loc>
+    <lastmod>2026-05-24T20:25:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/</loc>
+    <lastmod>2026-05-24T20:25:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/database/</loc>
+    <lastmod>2026-05-24T20:25:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/databases/</loc>
+    <lastmod>2026-05-24T20:25:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/frontend-tool/</loc>
+    <lastmod>2026-05-24T20:25:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/migration/</loc>
+    <lastmod>2026-05-24T20:25:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/</loc>
+    <lastmod>2026-05-24T20:25:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/ob-sizer-capacity-estimator/</loc>
+    <lastmod>2026-05-24T20:25:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/oceanbase/</loc>
+    <lastmod>2026-05-24T20:25:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/</loc>
+    <lastmod>2026-05-24T20:25:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/</loc>
+    <lastmod>2026-05-24T20:25:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/engineering/</loc>
+    <lastmod>2026-05-24T20:20:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/ipad/</loc>
+    <lastmod>2026-05-24T20:20:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/offline-first/</loc>
+    <lastmod>2026-05-24T20:20:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/pwa/</loc>
+    <lastmod>2026-05-24T20:20:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/tapsurge/</loc>
+    <lastmod>2026-05-24T20:20:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/tapsurge-ipad-tap-test/</loc>
+    <lastmod>2026-05-24T20:20:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/typescript/</loc>
+    <lastmod>2026-05-24T20:20:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/ai-tools/</loc>
+    <lastmod>2026-05-24T20:15:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/apple-silicon/</loc>
+    <lastmod>2026-05-24T20:15:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/local-llm/</loc>
+    <lastmod>2026-05-24T20:15:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/mlx/</loc>
+    <lastmod>2026-05-24T20:15:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/openai-compatible/</loc>
+    <lastmod>2026-05-24T20:15:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/qwen-local/</loc>
+    <lastmod>2026-05-24T20:15:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/qwen-local-on-apple-silicon/</loc>
+    <lastmod>2026-05-24T20:15:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/ai-gateway/</loc>
+    <lastmod>2026-05-24T20:10:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/tailgate/</loc>
+    <lastmod>2026-05-24T20:10:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/tailgate-private-ai-gateway/</loc>
+    <lastmod>2026-05-24T20:10:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/tailscale/</loc>
+    <lastmod>2026-05-24T20:10:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/browser-ai/</loc>
+    <lastmod>2026-05-24T20:05:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/pocketbabel/</loc>
+    <lastmod>2026-05-24T20:05:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/pocketbabel-browser-translation/</loc>
+    <lastmod>2026-05-24T20:05:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/transformers-js/</loc>
+    <lastmod>2026-05-24T20:05:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/translation/</loc>
+    <lastmod>2026-05-24T20:05:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/ai-tools/</loc>
+    <lastmod>2026-05-24T20:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/databases/</loc>
+    <lastmod>2026-05-24T20:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/minifish-lab-projects/</loc>
+    <lastmod>2026-05-24T20:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/minifish-lab/</loc>
+    <lastmod>2026-05-24T20:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/personal-tools/</loc>
+    <lastmod>2026-05-24T20:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/projects/</loc>
+    <lastmod>2026-05-24T20:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/tags/agents/</loc>
     <lastmod>2026-03-20T21:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/ai/</loc>
     <lastmod>2026-03-20T21:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/categories/ai-tools/</loc>
-    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/automation/</loc>
-    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/categories/</loc>
     <lastmod>2026-03-20T21:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/codex/</loc>
@@ -29,22 +143,13 @@
     <loc>https://blog.minifish.org/tags/linear/</loc>
     <lastmod>2026-03-20T21:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/</loc>
-    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/openai/</loc>
-    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/posts/</loc>
     <lastmod>2026-03-20T21:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/symphony-solo-dev-blog/</loc>
     <lastmod>2026-03-20T21:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/symphony/</loc>
-    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/</loc>
     <lastmod>2026-03-20T21:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/blog-publishing/</loc>
@@ -83,16 +188,7 @@
     <loc>https://blog.minifish.org/categories/reviews/</loc>
     <lastmod>2026-01-18T10:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/tags/database/</loc>
-    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/categories/databases/</loc>
-    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/distributed-systems/</loc>
-    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/oceanbase/</loc>
     <lastmod>2026-01-17T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/oceanbase-internals-transaction-replay-sql-unit-placement/</loc>
@@ -140,9 +236,6 @@
     <loc>https://blog.minifish.org/posts/my-recent-purchases-a-review-of-three-sanrenmu-folding-knives/</loc>
     <lastmod>2024-11-28T16:10:43+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/categories/engineering/</loc>
-    <lastmod>2024-11-28T15:41:19+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/golang/</loc>
     <lastmod>2024-11-28T15:41:19+08:00</lastmod>
   </url><url>
@@ -165,9 +258,6 @@
     <lastmod>2024-11-27T18:18:38+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/networking/</loc>
-    <lastmod>2024-11-27T18:18:38+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/tailscale/</loc>
     <lastmod>2024-11-27T18:18:38+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/vpn/</loc>

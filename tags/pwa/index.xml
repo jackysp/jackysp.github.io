@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Pwa on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/pwa/</link>
+    <description>Recent content in Pwa on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.161.1</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
+    <lastBuildDate>Sun, 24 May 2026 20:20:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/pwa/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TapSurge: An iPad Tap-Speed Tool Built for Competition Use</title>
+      <link>https://blog.minifish.org/posts/tapsurge-ipad-tap-test/</link>
+      <pubDate>Sun, 24 May 2026 20:20:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/tapsurge-ipad-tap-test/</guid>
+      <description>A project note on TapSurge, a Vite and TypeScript tap-speed competition tool designed for iPad, offline use, and raw timestamp export.</description>
+      <content:encoded><![CDATA[<p>TapSurge is an offline-first multi-finger click-speed test for iPad competition use. It is built with Vite, TypeScript, native DOM APIs, and Canvas.</p>
+<p>The product sounds tiny: count taps for 10, 30, or 60 seconds. The interesting part is making that count credible.</p>
+<h2 id="why-a-custom-tool">Why a custom tool</h2>
+<p>Most tap-speed apps are built for casual play. Competition use has different requirements:</p>
+<ul>
+<li>work offline</li>
+<li>run well on an iPad</li>
+<li>avoid accidental browser gestures</li>
+<li>count multi-finger input correctly</li>
+<li>preserve enough raw data to audit a run</li>
+<li>keep history locally without accounts</li>
+</ul>
+<p>For this use case, simplicity matters more than visual novelty.</p>
+<h2 id="input-model">Input model</h2>
+<p>TapSurge uses <code>pointerdown</code> and active pointer tracking. The key rule is that holding a finger down should not count repeatedly. A tap is a new press, not a frame, animation event, or repeated touch state.</p>
+<p>The app records:</p>
+<ul>
+<li>total taps</li>
+<li>average CPS</li>
+<li>one-second live CPS</li>
+<li>maximum live CPS</li>
+<li>maximum simultaneous fingers</li>
+<li>raw timestamps and pointer IDs</li>
+</ul>
+<p>That raw data is important. It lets a run be inspected after the fact instead of trusting only the final number.</p>
+<h2 id="offline-design">Offline design</h2>
+<p>The app is intended to work in a PWA-like mode. It has a local app shell, a service worker, and no backend dependency during play.</p>
+<p>This is one of those projects where offline support is not a nice extra. It is part of the user story. If the tool is used at a booth, in a classroom, or during a small event, network dependency is unnecessary risk.</p>
+<h2 id="ui-constraints">UI constraints</h2>
+<p>The UI has to be obvious under pressure. A player should not be reading instructions while the timer is running.</p>
+<p>The controls are intentionally few:</p>
+<ul>
+<li>choose duration</li>
+<li>start</li>
+<li>tap</li>
+<li>see result</li>
+<li>review history</li>
+<li>export evidence if needed</li>
+</ul>
+<p>The harder work is preventing the browser from interfering: double-tap zoom, scroll gestures, safe-area issues, and fullscreen behavior all matter more on a real iPad than in a desktop browser.</p>
+<h2 id="what-i-learned">What I learned</h2>
+<p>Small event tools benefit from being boring. The best version is not the most animated one; it is the one that produces trustworthy results with minimal setup.</p>
+<p>TapSurge is a good example of a private tool that could be public, but does not need a large roadmap. Its scope is the feature.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>PocketBabel: Browser Translation Without a Backend</title>
+      <link>https://blog.minifish.org/posts/pocketbabel-browser-translation/</link>
+      <pubDate>Sun, 24 May 2026 20:05:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/pocketbabel-browser-translation/</guid>
+      <description>A project note on PocketBabel, a frontend-only English-Chinese translation app powered by transformers.js and designed for offline reuse.</description>
+      <content:encoded><![CDATA[<p>PocketBabel is a frontend-only English-Chinese translation app. It uses <code>@huggingface/transformers</code> in the browser, targets Cloudflare Pages, and is designed to keep working after the model has been downloaded and cached.</p>
+<p>The important constraint is that there is no backend inference service. The browser is not just the UI; it is also the runtime.</p>
+<h2 id="why-build-it">Why build it</h2>
+<p>Most translation tools are service-shaped: text goes to a server, the server runs a model, and the result comes back. That is fine for many cases, but it is also more infrastructure than I wanted for a narrow personal tool.</p>
+<p>PocketBabel asks a smaller question: if the scope is only English to Chinese and Chinese to English, can the whole product be a static site?</p>
+<p>That decision makes the system easier to reason about:</p>
+<ul>
+<li>no API key</li>
+<li>no account system</li>
+<li>no backend deployment</li>
+<li>no request logging</li>
+<li>no server-side scaling problem</li>
+</ul>
+<p>The cost is that the first model download matters and browser performance becomes part of the product.</p>
+<h2 id="product-boundary">Product boundary</h2>
+<p>The project intentionally avoids becoming a general translation platform. The current shape is narrow:</p>
+<ul>
+<li>English to Chinese</li>
+<li>Chinese to English</li>
+<li>text input and output</li>
+<li>desktop and mobile browser support</li>
+<li>PWA shell and offline reuse</li>
+</ul>
+<p>It does not try to support OCR, speech, synced history, arbitrary language pairs, or collaborative workflows. Those features are tempting, but they would change the project from a useful small app into a maintenance surface.</p>
+<h2 id="technical-shape">Technical shape</h2>
+<p>The implementation is a React and Vite app. Translation is handled by transformers.js with browser-side model loading and caching. Deployment is static, which makes Cloudflare Pages a natural fit.</p>
+<p>The UI challenge is not only making a textarea and a button. The app needs to explain model state without becoming noisy:</p>
+<ul>
+<li>model not downloaded yet</li>
+<li>model loading</li>
+<li>translation running</li>
+<li>offline reuse available</li>
+<li>failure state when the browser cannot support the runtime well</li>
+</ul>
+<p>For an app like this, good status text is part of the architecture. If users do not know whether the model is downloading, warming up, or stuck, the app feels broken even when the code is doing the right thing.</p>
+<h2 id="what-i-learned">What I learned</h2>
+<p>Browser AI is practical when the product scope is narrow. It is much less practical when you pretend the browser is a free replacement for a server.</p>
+<p>The useful pattern is:</p>
+<ol>
+<li>choose a task with a clear input and output</li>
+<li>constrain the model set</li>
+<li>make loading and caching behavior visible</li>
+<li>avoid account and sync features unless they are essential</li>
+</ol>
+<p>PocketBabel works because it does not try to be Google Translate. It is a small translation surface for a small set of language directions.</p>
+<h2 id="open-source-status">Open source status</h2>
+<p>PocketBabel is public because the architecture is self-contained and does not rely on private infrastructure. It is also a good example of the kind of project that benefits from being inspectable: the privacy story is stronger when the code path is visible.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

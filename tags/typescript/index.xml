@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Typescript on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/typescript/</link>
+    <description>Recent content in Typescript on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.161.1</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
+    <lastBuildDate>Sun, 24 May 2026 20:20:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/typescript/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TapSurge: An iPad Tap-Speed Tool Built for Competition Use</title>
+      <link>https://blog.minifish.org/posts/tapsurge-ipad-tap-test/</link>
+      <pubDate>Sun, 24 May 2026 20:20:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/tapsurge-ipad-tap-test/</guid>
+      <description>A project note on TapSurge, a Vite and TypeScript tap-speed competition tool designed for iPad, offline use, and raw timestamp export.</description>
+      <content:encoded><![CDATA[<p>TapSurge is an offline-first multi-finger click-speed test for iPad competition use. It is built with Vite, TypeScript, native DOM APIs, and Canvas.</p>
+<p>The product sounds tiny: count taps for 10, 30, or 60 seconds. The interesting part is making that count credible.</p>
+<h2 id="why-a-custom-tool">Why a custom tool</h2>
+<p>Most tap-speed apps are built for casual play. Competition use has different requirements:</p>
+<ul>
+<li>work offline</li>
+<li>run well on an iPad</li>
+<li>avoid accidental browser gestures</li>
+<li>count multi-finger input correctly</li>
+<li>preserve enough raw data to audit a run</li>
+<li>keep history locally without accounts</li>
+</ul>
+<p>For this use case, simplicity matters more than visual novelty.</p>
+<h2 id="input-model">Input model</h2>
+<p>TapSurge uses <code>pointerdown</code> and active pointer tracking. The key rule is that holding a finger down should not count repeatedly. A tap is a new press, not a frame, animation event, or repeated touch state.</p>
+<p>The app records:</p>
+<ul>
+<li>total taps</li>
+<li>average CPS</li>
+<li>one-second live CPS</li>
+<li>maximum live CPS</li>
+<li>maximum simultaneous fingers</li>
+<li>raw timestamps and pointer IDs</li>
+</ul>
+<p>That raw data is important. It lets a run be inspected after the fact instead of trusting only the final number.</p>
+<h2 id="offline-design">Offline design</h2>
+<p>The app is intended to work in a PWA-like mode. It has a local app shell, a service worker, and no backend dependency during play.</p>
+<p>This is one of those projects where offline support is not a nice extra. It is part of the user story. If the tool is used at a booth, in a classroom, or during a small event, network dependency is unnecessary risk.</p>
+<h2 id="ui-constraints">UI constraints</h2>
+<p>The UI has to be obvious under pressure. A player should not be reading instructions while the timer is running.</p>
+<p>The controls are intentionally few:</p>
+<ul>
+<li>choose duration</li>
+<li>start</li>
+<li>tap</li>
+<li>see result</li>
+<li>review history</li>
+<li>export evidence if needed</li>
+</ul>
+<p>The harder work is preventing the browser from interfering: double-tap zoom, scroll gestures, safe-area issues, and fullscreen behavior all matter more on a real iPad than in a desktop browser.</p>
+<h2 id="what-i-learned">What I learned</h2>
+<p>Small event tools benefit from being boring. The best version is not the most animated one; it is the one that produces trustworthy results with minimal setup.</p>
+<p>TapSurge is a good example of a private tool that could be public, but does not need a large roadmap. Its scope is the feature.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

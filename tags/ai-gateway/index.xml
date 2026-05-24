@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Ai-Gateway on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/ai-gateway/</link>
+    <description>Recent content in Ai-Gateway on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.161.1</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
+    <lastBuildDate>Sun, 24 May 2026 20:10:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/ai-gateway/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Tailgate: A Private AI Gateway for Local and Remote Models</title>
+      <link>https://blog.minifish.org/posts/tailgate-private-ai-gateway/</link>
+      <pubDate>Sun, 24 May 2026 20:10:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/tailgate-private-ai-gateway/</guid>
+      <description>A project note on tailgate, a private AI gateway that centralizes model routing, secrets, provider selection, and local model integration.</description>
+      <content:encoded><![CDATA[<p>Tailgate is a personal OpenAI-compatible AI gateway. It gives tools like Codex, Cursor, SDK clients, and local agents one private <code>base_url</code>, while provider keys and routing rules stay on a server I control.</p>
+<p>It is not meant to be a public model marketplace. The point is not to replace OpenRouter or any other provider. The point is to make my own AI workflow less scattered.</p>
+<h2 id="the-problem">The problem</h2>
+<p>Once you use multiple model providers, the configuration spreads quickly:</p>
+<ul>
+<li>local model endpoint</li>
+<li>hosted model provider keys</li>
+<li>fallback behavior</li>
+<li>model names</li>
+<li>pricing assumptions</li>
+<li>tool-specific environment variables</li>
+<li>different capabilities for chat, embeddings, speech, and transcription</li>
+</ul>
+<p>Every client wants a slightly different setup. That is annoying for normal use and worse for agents, because agent configuration should be boring and repeatable.</p>
+<p>Tailgate puts that complexity behind one OpenAI-compatible surface.</p>
+<h2 id="design-shape">Design shape</h2>
+<p>The core API follows familiar endpoints:</p>
+<ul>
+<li><code>GET /v1/models</code></li>
+<li><code>POST /v1/chat/completions</code></li>
+<li><code>POST /v1/embeddings</code></li>
+<li><code>POST /v1/audio/speech</code></li>
+<li><code>POST /v1/audio/transcriptions</code></li>
+</ul>
+<p>Behind that surface, the gateway can route requests to local <code>qwen-local</code>, DeepSeek, OpenRouter, or future compatible providers. It tracks provider health, supports streaming passthrough, and can apply simple route selection rules.</p>
+<p>The most useful rule is not fancy AI logic. It is policy:</p>
+<ul>
+<li>prefer local when the task fits</li>
+<li>keep secrets off client machines</li>
+<li>avoid sending private work to external providers accidentally</li>
+<li>fall back only when the route explicitly allows it</li>
+</ul>
+<h2 id="why-private">Why private</h2>
+<p>Tailgate contains too many assumptions about my own environment to be a clean open source project. It is shaped around private networking, provider credentials, model preferences, and operational defaults.</p>
+<p>The public lesson is still useful: an AI gateway does not need to start as a large platform. For one person, it can simply be a policy boundary.</p>
+<h2 id="what-i-learned">What I learned</h2>
+<p>The biggest value of a gateway is not only key management. It is reducing mental overhead.</p>
+<p>Before the gateway, every tool needed to know too much. After the gateway, tools only need:</p>
+<ul>
+<li>one base URL</li>
+<li>one API key or private network policy</li>
+<li>normal OpenAI-compatible request shapes</li>
+</ul>
+<p>That makes experiments cheaper. I can change the provider map without editing every client.</p>
+<p>The second lesson is that local models need protection. A small local model service may only handle one heavy inference at a time. A gateway can enforce concurrency and fallback rules so clients do not accidentally overload the local runtime.</p>
+<h2 id="current-status">Current status</h2>
+<p>Tailgate is active and private. I expect it to stay private unless the configuration model becomes generic enough to be useful outside my own setup.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>
