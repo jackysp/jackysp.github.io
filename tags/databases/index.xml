@@ -75,77 +75,77 @@
           <td>Agent runtime</td>
           <td>Private</td>
           <td>Experimental</td>
-          <td><a href="/posts/agentd-wasm-agent-runtime/">agentd: A Wasm-Native Harness for Personal Agents</a></td>
+          <td>Scheduled: 2026-05-26</td>
       </tr>
       <tr>
           <td><code>tegdb</code></td>
           <td>Database</td>
           <td>Public</td>
           <td>Experimental</td>
-          <td><a href="/posts/tegdb-embedded-database/">TegDB: Notes from Building a Small Embedded Database</a></td>
+          <td>Scheduled: 2026-05-27</td>
       </tr>
       <tr>
           <td><code>ob-skills</code></td>
           <td>AI workflow / Database</td>
           <td>Public</td>
           <td>Active</td>
-          <td><a href="/posts/ob-skills-oceanbase-agent-skills/">ob-skills: Packaging OceanBase Knowledge as Agent Skills</a></td>
+          <td>Scheduled: 2026-05-28</td>
       </tr>
       <tr>
           <td><code>quacklake</code></td>
           <td>Analytics</td>
           <td>Private</td>
           <td>Prototype</td>
-          <td><a href="/posts/quacklake-wasm-analytics-prototype/">QuackLake: A DuckDB-WASM Analytics Prototype</a></td>
+          <td>Scheduled: 2026-05-29</td>
       </tr>
       <tr>
           <td><code>scale-kv</code></td>
           <td>Storage systems</td>
           <td>Private</td>
           <td>Experimental</td>
-          <td><a href="/posts/scale-kv-storage-experiment/">scale-kv: A Storage Experiment About Complexity</a></td>
+          <td>Scheduled: 2026-05-30</td>
       </tr>
       <tr>
           <td><code>cta-guard</code></td>
           <td>Trading systems</td>
           <td>Private</td>
           <td>Sensitive</td>
-          <td><a href="/posts/cta-guard-trading-risk-system/">cta-guard: Risk Controls Before Trading Logic</a></td>
+          <td>Scheduled: 2026-05-31</td>
       </tr>
       <tr>
           <td><code>tegdb-server</code></td>
           <td>Database server</td>
           <td>Public</td>
           <td>Experimental</td>
-          <td><a href="/posts/tegdb-server-postgres-compatible/">tegdb-server: Putting a PostgreSQL-Compatible Protocol in Front of TegDB</a></td>
+          <td>Scheduled: 2026-06-01</td>
       </tr>
       <tr>
           <td><code>bedrock-lab</code></td>
           <td>Game modding</td>
           <td>Private</td>
           <td>Small tool</td>
-          <td><a href="/posts/bedrock-lab-behavior-pack/">Bedrock Lab: A Behavior Pack as a Small Rules Sandbox</a></td>
+          <td>Scheduled: 2026-06-02</td>
       </tr>
       <tr>
           <td><code>aeroplay</code></td>
           <td>Offline games</td>
           <td>Public</td>
           <td>Template-ready</td>
-          <td><a href="/posts/aeroplay-offline-game-hub/">AeroPlay: A Flight-Mode Game Hub</a></td>
+          <td>Scheduled: 2026-06-03</td>
       </tr>
       <tr>
           <td><code>map-ask</code></td>
           <td>Maps / AI</td>
           <td>Private</td>
           <td>Prototype</td>
-          <td><a href="/posts/map-ask-natural-language-geosearch/">map-ask: Natural-Language Geospatial Search</a></td>
+          <td>Scheduled: 2026-06-04</td>
       </tr>
       <tr>
           <td><code>good-fishing-day</code></td>
           <td>Personal dashboard</td>
           <td>Private</td>
           <td>Personal utility</td>
-          <td><a href="/posts/good-fishing-day-dashboard/">good-fishing-day: A Fishing Weather Dashboard</a></td>
+          <td>Scheduled: 2026-06-05</td>
       </tr>
   </tbody>
 </table>
