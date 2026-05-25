@@ -12,55 +12,8 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 09:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 09 May 2021 18:13:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/postgresql/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>tegdb-server: Putting a PostgreSQL-Compatible Protocol in Front of TegDB</title>
-      <link>https://blog.minifish.org/posts/tegdb-server-postgres-compatible/</link>
-      <pubDate>Sun, 24 May 2026 09:00:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/posts/tegdb-server-postgres-compatible/</guid>
-      <description>A project note on tegdb-server, a Rust server that puts a PostgreSQL-compatible protocol and network boundary in front of the TegDB embedded database.</description>
-      <content:encoded><![CDATA[<p><code>tegdb-server</code> is a PostgreSQL-compatible database server built on top of TegDB. It explores what changes when an embedded database becomes a networked service.</p>
-<p>The project is small, but the architectural jump is large.</p>
-<h2 id="why-add-a-server">Why add a server</h2>
-<p>An embedded database can keep many assumptions local:</p>
-<ul>
-<li>one process owns access</li>
-<li>file paths are local</li>
-<li>query state is in-process</li>
-<li>errors are library errors</li>
-<li>clients are application code</li>
-</ul>
-<p>A server changes the boundary. Now there are connections, protocol messages, authentication questions, configuration, network errors, allocation pressure, and client compatibility expectations.</p>
-<p>That is why this project exists: to study that boundary.</p>
-<h2 id="postgresql-compatibility">PostgreSQL compatibility</h2>
-<p>PostgreSQL compatibility is useful because it gives the project a familiar client surface. If a normal client can connect, the database becomes easier to test and demonstrate.</p>
-<p>But compatibility is also a trap. The PostgreSQL ecosystem expects a lot:</p>
-<ul>
-<li>protocol behavior</li>
-<li>type handling</li>
-<li>error responses</li>
-<li>transaction semantics</li>
-<li>SQL behavior</li>
-<li>metadata queries</li>
-</ul>
-<p>The right goal for a small project is progressive compatibility, not pretending to be PostgreSQL.</p>
-<h2 id="storage-boundary">Storage boundary</h2>
-<p><code>tegdb-server</code> keeps TegDB as the storage engine and adds a server layer in front. That separation is useful:</p>
-<ul>
-<li>TegDB owns on-disk behavior</li>
-<li>the server owns connections and protocol handling</li>
-<li>configuration stays explicit</li>
-<li>future distribution experiments have a place to attach</li>
-</ul>
-<p>The project README frames this as progressive scalability from single-node to more distributed deployment shapes. That is ambitious, but it starts with a concrete first step: one server in front of one storage engine.</p>
-<h2 id="what-i-learned">What I learned</h2>
-<p>The protocol path has different performance concerns from the storage path. Per-query allocations, message parsing, response construction, and connection lifecycle can dominate before the storage engine becomes interesting.</p>
-<p>This is a useful reminder: a database is not only its storage engine. It is also a wire protocol, client contract, operations surface, and set of compatibility promises.</p>
-<h2 id="open-source-status">Open source status</h2>
-<p><code>tegdb-server</code> is public because it pairs naturally with the public TegDB experiment. It is best read as a learning project about database server boundaries.</p>
-]]></content:encoded>
-    </item>
     <item>
       <title>How to Compare Data Consistency between MySQL and PostgreSQL</title>
       <link>https://blog.minifish.org/posts/how-to-compare-data-consistency-between-mysql-and-postgresql/</link>

@@ -12,66 +12,8 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 08:30:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 20 Mar 2026 21:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/agents/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>agentd: A Wasm-Native Harness for Personal Agents</title>
-      <link>https://blog.minifish.org/posts/agentd-wasm-agent-runtime/</link>
-      <pubDate>Sun, 24 May 2026 08:30:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/posts/agentd-wasm-agent-runtime/</guid>
-      <description>A project note on agentd, a Wasm-native single-host agent harness with host capabilities for messaging, schedules, memory, artifacts, web access, and LLM calls.</description>
-      <content:encoded><![CDATA[<p><code>agentd</code> is a Wasm-native single-host agent harness and control plane. It is an experiment in making small personal agents run behind explicit host capabilities instead of giving every agent direct access to the whole machine.</p>
-<p>The current direction separates three layers:</p>
-<ul>
-<li>Wasm agent components</li>
-<li>native host capability facade</li>
-<li>backend execution adapters</li>
-</ul>
-<p>That shape is more important than any single feature.</p>
-<h2 id="why-wasm">Why Wasm</h2>
-<p>Agent code can become messy quickly. It wants tools, memory, context, schedules, datasets, artifacts, web access, and LLM calls. If everything is just native code with direct access, boundaries blur.</p>
-<p>Wasm gives the project a useful constraint: agent logic runs in a sandboxed component and reaches the outside world through capabilities.</p>
-<p>That makes the runtime ask better questions:</p>
-<ul>
-<li>what can this agent do?</li>
-<li>which tools are stable host APIs?</li>
-<li>what state belongs to the host?</li>
-<li>what should be passed into a run?</li>
-<li>what should be persisted after a run?</li>
-</ul>
-<h2 id="capability-surface">Capability surface</h2>
-<p>The active design exposes host-facing capabilities such as:</p>
-<ul>
-<li><code>im.*</code></li>
-<li><code>run.*</code></li>
-<li><code>schedule.*</code></li>
-<li><code>dataset.*</code></li>
-<li><code>artifact.*</code></li>
-<li><code>memory.*</code></li>
-<li><code>context.*</code></li>
-<li><code>web.*</code></li>
-<li><code>clock.*</code></li>
-<li><code>llm.*</code></li>
-</ul>
-<p>This is deliberately explicit. Instead of an agent inventing arbitrary side effects, it asks the host for specific operations.</p>
-<h2 id="example-app">Example app</h2>
-<p>The repo includes a minimal Telegram bot app. It uses an <code>agentd</code>-backed Telegram session runtime, provider integration, memory/context handling, artifacts, schedules, and messaging.</p>
-<p>The interesting part is not that it can reply to Telegram. The interesting part is that a chat turn becomes an agent run with a lane, scope, memory policy, and host-managed capabilities.</p>
-<h2 id="what-i-learned">What I learned</h2>
-<p>Agents need less magic and more runtime discipline. A personal bot is still a distributed system in miniature:</p>
-<ul>
-<li>messages arrive concurrently</li>
-<li>context scopes matter</li>
-<li>retries can duplicate work</li>
-<li>memory needs indexing and pruning</li>
-<li>tools need permission boundaries</li>
-<li>failures need artifacts and logs</li>
-</ul>
-<p>The Wasm boundary helps keep those concerns visible.</p>
-<h2 id="current-status">Current status</h2>
-<p><code>agentd</code> is experimental and private. It is useful as a lab for runtime shape, but I do not consider it a public platform yet. The public lesson is the architecture: put capabilities between agents and the host before the tool surface grows without control.</p>
-]]></content:encoded>
-    </item>
     <item>
       <title>Running OpenAI Symphony as a Solo Developer Across Two Repos</title>
       <link>https://blog.minifish.org/posts/symphony-solo-dev-blog/</link>

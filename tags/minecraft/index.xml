@@ -12,47 +12,8 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 09:05:00 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 02 May 2022 19:05:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/minecraft/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Bedrock Lab: A Behavior Pack as a Small Rules Sandbox</title>
-      <link>https://blog.minifish.org/posts/bedrock-lab-behavior-pack/</link>
-      <pubDate>Sun, 24 May 2026 09:05:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/posts/bedrock-lab-behavior-pack/</guid>
-      <description>A project note on Bedrock Lab, a Minecraft Bedrock behavior pack with sprint regeneration, random effects, custom drops, and fishing loot changes.</description>
-      <content:encoded><![CDATA[<p>Bedrock Lab is a behavior-only sandbox for Minecraft Bedrock Edition. It packages small gameplay rule experiments into a behavior pack that can be imported and activated without experimental toggles.</p>
-<p>The project is not meant to be a large mod. It is a rules sandbox.</p>
-<h2 id="what-it-changes">What it changes</h2>
-<p>The pack includes features such as:</p>
-<ul>
-<li>sprint regeneration</li>
-<li>random player effects</li>
-<li>torch drops on non-player entity death</li>
-<li>local snow effect on player death</li>
-<li>random material drops from broken blocks</li>
-<li>adjusted fishing loot weights</li>
-</ul>
-<p>These are intentionally playful mechanics. The point is to test how small rule changes affect the feel of a world.</p>
-<h2 id="why-behavior-only-matters">Why behavior-only matters</h2>
-<p>Keeping the pack behavior-only lowers the setup cost. There is no custom client asset pipeline and no experimental toggle requirement.</p>
-<p>That makes it easier to share across devices:</p>
-<ul>
-<li>package as <code>.mcpack</code></li>
-<li>import on iOS or Windows</li>
-<li>activate in world settings</li>
-<li>play immediately</li>
-</ul>
-<p>For a small personal pack, install friction matters more than architectural elegance.</p>
-<h2 id="the-design-lesson">The design lesson</h2>
-<p>Game modding is a good reminder that systems can be fun without being complicated. A simple rule like “breaking blocks produces random materials” changes the entire resource economy.</p>
-<p>The engineering lesson is to make each rule easy to remove. If a mechanic stops being fun, it should not be tangled with the rest of the pack.</p>
-<h2 id="what-i-learned">What I learned</h2>
-<p>Small game experiments should be packaged early. A mechanic that only works in a local development folder is not really tested. It needs to be imported, activated, and played in the actual environment.</p>
-<p>Bedrock Lab&rsquo;s value is that it turns ideas into a package quickly. That makes it easier to decide whether a mechanic is worth keeping.</p>
-<h2 id="current-status">Current status</h2>
-<p>Bedrock Lab is private and small. It is the kind of project that is more useful as a personal sandbox than as a maintained public mod.</p>
-]]></content:encoded>
-    </item>
     <item>
       <title>How to Set Up a Minecraft Bedrock Server Using Multipass</title>
       <link>https://blog.minifish.org/posts/how-to-set-up-a-minecraft-bedrock-server-using-multipass/</link>

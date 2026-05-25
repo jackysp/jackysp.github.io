@@ -12,46 +12,8 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 08:40:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 08:25:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/oceanbase/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>ob-skills: Packaging OceanBase Knowledge as Agent Skills</title>
-      <link>https://blog.minifish.org/posts/ob-skills-oceanbase-agent-skills/</link>
-      <pubDate>Sun, 24 May 2026 08:40:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/posts/ob-skills-oceanbase-agent-skills/</guid>
-      <description>A project note on ob-skills, a set of OceanBase Cursor agent skills for solution architecture, DDL syntax checking, and embedded validation workflows.</description>
-      <content:encoded><![CDATA[<p><code>ob-skills</code> packages OceanBase knowledge as agent skills. It is not an application in the usual sense. It is a set of reusable instructions and workflows for database architecture, DDL review, and tooling guidance.</p>
-<p>The project exists because raw prompting is not enough for repeated technical work.</p>
-<h2 id="what-is-inside">What is inside</h2>
-<p>The repo contains skills such as:</p>
-<ul>
-<li>OceanBase solution architect guidance</li>
-<li>OceanBase DDL syntax checking</li>
-<li>seekdb-backed DDL validation</li>
-</ul>
-<p>Each skill tries to narrow the agent&rsquo;s behavior for a specific kind of work. Instead of asking a general model to “help with OceanBase,” the skill defines what kind of answer is expected, which constraints matter, and which validation path should be used.</p>
-<h2 id="why-skills-instead-of-notes">Why skills instead of notes</h2>
-<p>Traditional notes help humans. Skills help agents act more consistently.</p>
-<p>That difference matters. A good skill should:</p>
-<ul>
-<li>define the task boundary</li>
-<li>mention common failure modes</li>
-<li>route to validation where possible</li>
-<li>make assumptions explicit</li>
-<li>avoid generic advice when concrete checks exist</li>
-</ul>
-<p>For database work, this is especially useful because the cost of vague answers is high. A DDL suggestion that sounds plausible but violates grammar or deployment constraints is worse than no suggestion.</p>
-<h2 id="the-useful-pattern">The useful pattern</h2>
-<p>The best skills are not huge knowledge dumps. They are small operational wrappers around repeatable judgment.</p>
-<p>For example, a DDL validation skill should not merely explain DDL. It should push the agent toward an actual validation path and make clear when offline validation is possible.</p>
-<p>That is the difference between “LLM as autocomplete” and “LLM as a guided operator.”</p>
-<h2 id="what-i-learned">What I learned</h2>
-<p>Agent quality improves when domain knowledge is packaged close to the workflow. It is not enough to rely on the model remembering a product correctly.</p>
-<p>Skills are also easier to maintain than long prompts embedded in many tools. If a rule changes, update the skill. If a validation command improves, update the skill. The agent workflows that use it inherit the better behavior.</p>
-<h2 id="open-source-status">Open source status</h2>
-<p><code>ob-skills</code> is public because the project is mostly guidance and validation workflow. It is a good fit for sharing: others can inspect the assumptions, reuse the structure, or adapt the skill pattern to their own database work.</p>
-]]></content:encoded>
-    </item>
     <item>
       <title>OB Sizer: Turning Migration Sizing into a Browser Tool</title>
       <link>https://blog.minifish.org/posts/ob-sizer-capacity-estimator/</link>

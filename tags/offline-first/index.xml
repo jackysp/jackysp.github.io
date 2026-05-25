@@ -12,57 +12,8 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 09:10:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 08:20:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/offline-first/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>AeroPlay: A Flight-Mode Game Hub</title>
-      <link>https://blog.minifish.org/posts/aeroplay-offline-game-hub/</link>
-      <pubDate>Sun, 24 May 2026 09:10:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/posts/aeroplay-offline-game-hub/</guid>
-      <description>A project note on AeroPlay, a pure frontend offline game hub with mini games, localStorage progress, service worker caching, and add-to-home-screen support.</description>
-      <content:encoded><![CDATA[<p>AeroPlay is a pure-frontend, mobile-first game hub optimized for flight-mode use. It includes small games like Snake, Tetris, 2048, Flappy Bird, Maze, Match-3, Sudoku, and Lights Out.</p>
-<p>The whole point is that it should keep working with no network.</p>
-<h2 id="why-build-it">Why build it</h2>
-<p>Airplane mode is a useful product constraint. It removes a lot of lazy assumptions:</p>
-<ul>
-<li>no backend calls</li>
-<li>no CDN dependency during play</li>
-<li>no login</li>
-<li>no remote save</li>
-<li>no ads</li>
-<li>no analytics requirement</li>
-</ul>
-<p>What remains is the app itself: local assets, local state, and games that are worth playing in short sessions.</p>
-<h2 id="template-shape">Template shape</h2>
-<p>AeroPlay is also designed as a template. The repo can be used to bootstrap another offline game hub without carrying old issues or unrelated history.</p>
-<p>That makes the project more useful than a single app. It becomes a base pattern:</p>
-<ul>
-<li>Vite and TypeScript</li>
-<li>local game modules</li>
-<li>service worker</li>
-<li>manifest</li>
-<li><code>localStorage</code> progress</li>
-<li>mobile-first layout</li>
-</ul>
-<h2 id="product-boundary">Product boundary</h2>
-<p>The project should not become a general gaming platform. Its strength is the opposite: a small set of local games, predictable input, and no network requirement.</p>
-<p>For this kind of app, “more features” can easily make the experience worse. If the user opens it in flight mode, the app should not show half-broken online features.</p>
-<h2 id="what-i-learned">What I learned</h2>
-<p>Offline-first is easiest when it is a requirement from the beginning. Retrofitting offline behavior onto an app that assumed servers and remote assets is much harder.</p>
-<p>AeroPlay also shows that simple games still need polish:</p>
-<ul>
-<li>touch controls</li>
-<li>stable layout</li>
-<li>saved state</li>
-<li>fast startup</li>
-<li>no accidental scroll</li>
-<li>clear pause and restart behavior</li>
-</ul>
-<p>Those details matter more on a phone than in a desktop demo.</p>
-<h2 id="open-source-status">Open source status</h2>
-<p>AeroPlay is public because it is self-contained, harmless to share, and useful as a template. It is a good example of a small project whose constraints make it more reusable.</p>
-]]></content:encoded>
-    </item>
     <item>
       <title>TapSurge: An iPad Tap-Speed Tool Built for Competition Use</title>
       <link>https://blog.minifish.org/posts/tapsurge-ipad-tap-test/</link>
