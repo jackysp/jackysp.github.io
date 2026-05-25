@@ -12,20 +12,356 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 20:25:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 21:20:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Capacity-Planning</title>
-      <link>https://blog.minifish.org/tags/capacity-planning/</link>
-      <pubDate>Sun, 24 May 2026 20:25:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/capacity-planning/</guid>
+      <title>Astro</title>
+      <link>https://blog.minifish.org/tags/astro/</link>
+      <pubDate>Sun, 24 May 2026 21:20:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/astro/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Cloudflare-Workers</title>
+      <link>https://blog.minifish.org/tags/cloudflare-workers/</link>
+      <pubDate>Sun, 24 May 2026 21:20:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/cloudflare-workers/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Fishing</title>
+      <link>https://blog.minifish.org/tags/fishing/</link>
+      <pubDate>Sun, 24 May 2026 21:20:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/fishing/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Personal-Dashboard</title>
+      <link>https://blog.minifish.org/tags/personal-dashboard/</link>
+      <pubDate>Sun, 24 May 2026 21:20:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/personal-dashboard/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Weather</title>
+      <link>https://blog.minifish.org/tags/weather/</link>
+      <pubDate>Sun, 24 May 2026 21:20:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/weather/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Geospatial</title>
+      <link>https://blog.minifish.org/tags/geospatial/</link>
+      <pubDate>Sun, 24 May 2026 21:15:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/geospatial/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Llm</title>
+      <link>https://blog.minifish.org/tags/llm/</link>
+      <pubDate>Sun, 24 May 2026 21:15:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/llm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Map-Ask</title>
+      <link>https://blog.minifish.org/tags/map-ask/</link>
+      <pubDate>Sun, 24 May 2026 21:15:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/map-ask/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Maps</title>
+      <link>https://blog.minifish.org/tags/maps/</link>
+      <pubDate>Sun, 24 May 2026 21:15:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/maps/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Openstreetmap</title>
+      <link>https://blog.minifish.org/tags/openstreetmap/</link>
+      <pubDate>Sun, 24 May 2026 21:15:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/openstreetmap/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Aeroplay</title>
+      <link>https://blog.minifish.org/tags/aeroplay/</link>
+      <pubDate>Sun, 24 May 2026 21:10:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/aeroplay/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Games</title>
+      <link>https://blog.minifish.org/tags/games/</link>
+      <pubDate>Sun, 24 May 2026 21:10:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/games/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Offline-First</title>
+      <link>https://blog.minifish.org/tags/offline-first/</link>
+      <pubDate>Sun, 24 May 2026 21:10:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/offline-first/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pwa</title>
+      <link>https://blog.minifish.org/tags/pwa/</link>
+      <pubDate>Sun, 24 May 2026 21:10:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/pwa/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Typescript</title>
+      <link>https://blog.minifish.org/tags/typescript/</link>
+      <pubDate>Sun, 24 May 2026 21:10:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/typescript/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Bedrock</title>
+      <link>https://blog.minifish.org/tags/bedrock/</link>
+      <pubDate>Sun, 24 May 2026 21:05:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/bedrock/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Behavior-Pack</title>
+      <link>https://blog.minifish.org/tags/behavior-pack/</link>
+      <pubDate>Sun, 24 May 2026 21:05:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/behavior-pack/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Game-Modding</title>
+      <link>https://blog.minifish.org/tags/game-modding/</link>
+      <pubDate>Sun, 24 May 2026 21:05:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/game-modding/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Minecraft</title>
+      <link>https://blog.minifish.org/tags/minecraft/</link>
+      <pubDate>Sun, 24 May 2026 21:05:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/minecraft/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Scripting</title>
+      <link>https://blog.minifish.org/tags/scripting/</link>
+      <pubDate>Sun, 24 May 2026 21:05:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/scripting/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Database-Server</title>
+      <link>https://blog.minifish.org/tags/database-server/</link>
+      <pubDate>Sun, 24 May 2026 21:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/database-server/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Postgresql</title>
+      <link>https://blog.minifish.org/tags/postgresql/</link>
+      <pubDate>Sun, 24 May 2026 21:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/postgresql/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Protocol</title>
+      <link>https://blog.minifish.org/tags/protocol/</link>
+      <pubDate>Sun, 24 May 2026 21:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/protocol/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rust</title>
+      <link>https://blog.minifish.org/tags/rust/</link>
+      <pubDate>Sun, 24 May 2026 21:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/rust/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tegdb-Server</title>
+      <link>https://blog.minifish.org/tags/tegdb-server/</link>
+      <pubDate>Sun, 24 May 2026 21:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/tegdb-server/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Backtesting</title>
+      <link>https://blog.minifish.org/tags/backtesting/</link>
+      <pubDate>Sun, 24 May 2026 20:55:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/backtesting/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Cta-Guard</title>
+      <link>https://blog.minifish.org/tags/cta-guard/</link>
+      <pubDate>Sun, 24 May 2026 20:55:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/cta-guard/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Risk-Control</title>
+      <link>https://blog.minifish.org/tags/risk-control/</link>
+      <pubDate>Sun, 24 May 2026 20:55:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/risk-control/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Trading-Systems</title>
+      <link>https://blog.minifish.org/tags/trading-systems/</link>
+      <pubDate>Sun, 24 May 2026 20:55:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/trading-systems/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Distributed-Systems</title>
+      <link>https://blog.minifish.org/tags/distributed-systems/</link>
+      <pubDate>Sun, 24 May 2026 20:50:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/distributed-systems/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Kv-Store</title>
+      <link>https://blog.minifish.org/tags/kv-store/</link>
+      <pubDate>Sun, 24 May 2026 20:50:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/kv-store/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Scale-Kv</title>
+      <link>https://blog.minifish.org/tags/scale-kv/</link>
+      <pubDate>Sun, 24 May 2026 20:50:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/scale-kv/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Storage</title>
+      <link>https://blog.minifish.org/tags/storage/</link>
+      <pubDate>Sun, 24 May 2026 20:50:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/storage/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Analytics</title>
+      <link>https://blog.minifish.org/tags/analytics/</link>
+      <pubDate>Sun, 24 May 2026 20:45:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/analytics/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Duckdb</title>
+      <link>https://blog.minifish.org/tags/duckdb/</link>
+      <pubDate>Sun, 24 May 2026 20:45:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/duckdb/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Object-Storage</title>
+      <link>https://blog.minifish.org/tags/object-storage/</link>
+      <pubDate>Sun, 24 May 2026 20:45:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/object-storage/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Wasm</title>
+      <link>https://blog.minifish.org/tags/wasm/</link>
+      <pubDate>Sun, 24 May 2026 20:45:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/wasm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Agent-Skills</title>
+      <link>https://blog.minifish.org/tags/agent-skills/</link>
+      <pubDate>Sun, 24 May 2026 20:40:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/agent-skills/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Cursor</title>
+      <link>https://blog.minifish.org/tags/cursor/</link>
+      <pubDate>Sun, 24 May 2026 20:40:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/cursor/</guid>
       <description></description>
     </item>
     <item>
       <title>Database</title>
       <link>https://blog.minifish.org/tags/database/</link>
-      <pubDate>Sun, 24 May 2026 20:25:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 20:40:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/database/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ddl</title>
+      <link>https://blog.minifish.org/tags/ddl/</link>
+      <pubDate>Sun, 24 May 2026 20:40:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/ddl/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Oceanbase</title>
+      <link>https://blog.minifish.org/tags/oceanbase/</link>
+      <pubDate>Sun, 24 May 2026 20:40:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/oceanbase/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Embedded-Database</title>
+      <link>https://blog.minifish.org/tags/embedded-database/</link>
+      <pubDate>Sun, 24 May 2026 20:35:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/embedded-database/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Storage-Engine</title>
+      <link>https://blog.minifish.org/tags/storage-engine/</link>
+      <pubDate>Sun, 24 May 2026 20:35:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/storage-engine/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tegdb</title>
+      <link>https://blog.minifish.org/tags/tegdb/</link>
+      <pubDate>Sun, 24 May 2026 20:35:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/tegdb/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Agentd</title>
+      <link>https://blog.minifish.org/tags/agentd/</link>
+      <pubDate>Sun, 24 May 2026 20:30:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/agentd/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Agents</title>
+      <link>https://blog.minifish.org/tags/agents/</link>
+      <pubDate>Sun, 24 May 2026 20:30:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/agents/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Runtime</title>
+      <link>https://blog.minifish.org/tags/runtime/</link>
+      <pubDate>Sun, 24 May 2026 20:30:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/runtime/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Wasmtime</title>
+      <link>https://blog.minifish.org/tags/wasmtime/</link>
+      <pubDate>Sun, 24 May 2026 20:30:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/wasmtime/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Capacity-Planning</title>
+      <link>https://blog.minifish.org/tags/capacity-planning/</link>
+      <pubDate>Sun, 24 May 2026 20:25:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/capacity-planning/</guid>
       <description></description>
     </item>
     <item>
@@ -43,13 +379,6 @@
       <description></description>
     </item>
     <item>
-      <title>Oceanbase</title>
-      <link>https://blog.minifish.org/tags/oceanbase/</link>
-      <pubDate>Sun, 24 May 2026 20:25:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/oceanbase/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Ipad</title>
       <link>https://blog.minifish.org/tags/ipad/</link>
       <pubDate>Sun, 24 May 2026 20:20:00 +0800</pubDate>
@@ -57,31 +386,10 @@
       <description></description>
     </item>
     <item>
-      <title>Offline-First</title>
-      <link>https://blog.minifish.org/tags/offline-first/</link>
-      <pubDate>Sun, 24 May 2026 20:20:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/offline-first/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Pwa</title>
-      <link>https://blog.minifish.org/tags/pwa/</link>
-      <pubDate>Sun, 24 May 2026 20:20:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/pwa/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Tapsurge</title>
       <link>https://blog.minifish.org/tags/tapsurge/</link>
       <pubDate>Sun, 24 May 2026 20:20:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/tapsurge/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Typescript</title>
-      <link>https://blog.minifish.org/tags/typescript/</link>
-      <pubDate>Sun, 24 May 2026 20:20:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/typescript/</guid>
       <description></description>
     </item>
     <item>
@@ -204,13 +512,6 @@
       <description></description>
     </item>
     <item>
-      <title>Agents</title>
-      <link>https://blog.minifish.org/tags/agents/</link>
-      <pubDate>Fri, 20 Mar 2026 21:00:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/agents/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Ai</title>
       <link>https://blog.minifish.org/tags/ai/</link>
       <pubDate>Fri, 20 Mar 2026 21:00:00 +0800</pubDate>
@@ -330,13 +631,6 @@
       <description></description>
     </item>
     <item>
-      <title>Distributed-Systems</title>
-      <link>https://blog.minifish.org/tags/distributed-systems/</link>
-      <pubDate>Sat, 17 Jan 2026 10:00:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/distributed-systems/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Browser</title>
       <link>https://blog.minifish.org/tags/browser/</link>
       <pubDate>Mon, 13 Jan 2025 19:54:00 +0800</pubDate>
@@ -407,13 +701,6 @@
       <description></description>
     </item>
     <item>
-      <title>Llm</title>
-      <link>https://blog.minifish.org/tags/llm/</link>
-      <pubDate>Wed, 27 Nov 2024 18:26:14 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/llm/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Ollama</title>
       <link>https://blog.minifish.org/tags/ollama/</link>
       <pubDate>Wed, 27 Nov 2024 18:26:14 +0800</pubDate>
@@ -446,13 +733,6 @@
       <link>https://blog.minifish.org/tags/vietnam/</link>
       <pubDate>Wed, 27 Nov 2024 18:13:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/vietnam/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Fishing</title>
-      <link>https://blog.minifish.org/tags/fishing/</link>
-      <pubDate>Wed, 27 Nov 2024 17:46:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/fishing/</guid>
       <description></description>
     </item>
     <item>
@@ -491,13 +771,6 @@
       <description></description>
     </item>
     <item>
-      <title>Minecraft</title>
-      <link>https://blog.minifish.org/tags/minecraft/</link>
-      <pubDate>Mon, 02 May 2022 19:05:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/minecraft/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Server</title>
       <link>https://blog.minifish.org/tags/server/</link>
       <pubDate>Mon, 02 May 2022 19:05:00 +0800</pubDate>
@@ -523,13 +796,6 @@
       <link>https://blog.minifish.org/tags/mysql/</link>
       <pubDate>Sun, 09 May 2021 18:13:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/mysql/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Postgresql</title>
-      <link>https://blog.minifish.org/tags/postgresql/</link>
-      <pubDate>Sun, 09 May 2021 18:13:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/postgresql/</guid>
       <description></description>
     </item>
     <item>
@@ -719,13 +985,6 @@
       <link>https://blog.minifish.org/tags/travis/</link>
       <pubDate>Mon, 16 Oct 2017 22:21:06 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/travis/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Protocol</title>
-      <link>https://blog.minifish.org/tags/protocol/</link>
-      <pubDate>Wed, 16 Aug 2017 00:00:00 +0000</pubDate>
-      <guid>https://blog.minifish.org/tags/protocol/</guid>
       <description></description>
     </item>
     <item>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Trading-Systems on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/trading-systems/</link>
+    <description>Recent content in Trading-Systems on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.161.1</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
+    <lastBuildDate>Sun, 24 May 2026 20:55:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/trading-systems/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>cta-guard: Risk Controls Before Trading Logic</title>
+      <link>https://blog.minifish.org/posts/cta-guard-trading-risk-system/</link>
+      <pubDate>Sun, 24 May 2026 20:55:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/cta-guard-trading-risk-system/</guid>
+      <description>A sanitized project note on cta-guard, a Rust trading runtime and research tool focused on risk controls, ingestion, backtesting, and operational guardrails.</description>
+      <content:encoded><![CDATA[<p><code>cta-guard</code> is a private trading-system project. It includes a runtime loop, ingestion tools, backtesting, walk-forward validation, health checks, and venue integration.</p>
+<p>This is the kind of project where the most useful public topic is not the trading strategy. It is the guardrail design.</p>
+<h2 id="why-risk-first">Why risk first</h2>
+<p>Trading code has a dangerous failure mode: a bug can become a position.</p>
+<p>That changes the engineering priority. Before clever strategy logic, the system needs operational controls:</p>
+<ul>
+<li>dry-run mode</li>
+<li>explicit venue adapters</li>
+<li>heartbeat checks</li>
+<li>halted state</li>
+<li>read-only mode</li>
+<li>data freshness checks</li>
+<li>position and exposure constraints</li>
+<li>clear separation between research and live execution</li>
+</ul>
+<p>The project name reflects that priority. The guard matters before the CTA.</p>
+<h2 id="system-shape">System shape</h2>
+<p>The maintained path is a modular trader stack:</p>
+<ul>
+<li>runtime orchestration</li>
+<li>risk app service</li>
+<li>strategy app service</li>
+<li>backtest app service</li>
+<li>domain models and ports</li>
+<li>SQLite repositories</li>
+<li>venue adapters and stubs</li>
+</ul>
+<p>There are separate binaries for live or dry-run runtime, health checks, ingestion, historical import, backtest, and walk-forward validation.</p>
+<p>That separation is important. A backtest binary should not have the same operational authority as a live execution process.</p>
+<h2 id="what-should-stay-private">What should stay private</h2>
+<p>Some details are not appropriate for a public blog:</p>
+<ul>
+<li>strategy parameters</li>
+<li>production configuration</li>
+<li>account or venue details</li>
+<li>exact deployment topology</li>
+<li>operational thresholds</li>
+<li>anything that could imply a trade recommendation</li>
+</ul>
+<p>The safe public layer is architecture: how to keep execution constrained, observable, and stoppable.</p>
+<h2 id="what-i-learned">What I learned</h2>
+<p>Risk control is not one module. It is a state machine that should shape the whole runtime.</p>
+<p>A good trading system needs to answer boring questions quickly:</p>
+<ul>
+<li>is data fresh?</li>
+<li>is the venue reachable?</li>
+<li>is the runtime allowed to trade?</li>
+<li>what happens after an error?</li>
+<li>can the system stop without making things worse?</li>
+<li>can research code accidentally reach execution?</li>
+</ul>
+<p>If those answers are unclear, the system is not ready for live use.</p>
+<h2 id="current-status">Current status</h2>
+<p><code>cta-guard</code> is private. I may continue writing about its engineering lessons, but only at the level of risk design, runtime isolation, and validation workflow.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

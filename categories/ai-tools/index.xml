@@ -12,8 +12,150 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 20:15:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 21:15:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/categories/ai-tools/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>map-ask: Natural-Language Geospatial Search</title>
+      <link>https://blog.minifish.org/posts/map-ask-natural-language-geosearch/</link>
+      <pubDate>Sun, 24 May 2026 21:15:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/map-ask-natural-language-geosearch/</guid>
+      <description>A project note on map-ask, a natural-language geospatial search prototype using open map data, POI search, routing, environment lookup, and weather enrichment.</description>
+      <content:encoded><![CDATA[<p><code>map-ask</code> is a natural-language geospatial search prototype. The user asks a map question in plain English, and the system converts it into structured actions such as POI search, routing, environment lookup, or weather enrichment.</p>
+<p>The interesting constraint is that it aims to use open data and avoid API keys where possible.</p>
+<h2 id="why-maps-are-hard-for-language-models">Why maps are hard for language models</h2>
+<p>Map questions sound simple:</p>
+<ul>
+<li>find coffee near me</li>
+<li>show quiet parks nearby</li>
+<li>route to a place with shade</li>
+<li>find restaurants within walking distance</li>
+</ul>
+<p>But those questions mix language, location, distance, categories, freshness, and user context. A language model can understand the request, but it should not invent geography.</p>
+<p>The system needs tools.</p>
+<h2 id="open-data-shape">Open-data shape</h2>
+<p>The project uses sources such as OpenStreetMap, Nominatim, Overpass, Wikimedia REST, and related open endpoints. The map UI is built around Leaflet and React.</p>
+<p>The model&rsquo;s role is to translate intent into geospatial operations:</p>
+<ul>
+<li>what is the user looking for?</li>
+<li>what radius or location matters?</li>
+<li>is this a route, POI search, or environment query?</li>
+<li>what enrichment should be added?</li>
+</ul>
+<p>The tools then fetch actual data.</p>
+<h2 id="product-boundary">Product boundary</h2>
+<p>The app should be honest about uncertainty. Open geospatial data is uneven. Names change, POI tags are inconsistent, and “quiet” or “hipster” are semantic hints rather than guaranteed database fields.</p>
+<p>That means the UI should show results as interpreted matches, not absolute truth.</p>
+<h2 id="what-i-learned">What I learned</h2>
+<p>Natural-language interfaces work best when they produce inspectable structured plans. If the app can show the interpreted action, it becomes much easier to debug:</p>
+<ul>
+<li>searched category</li>
+<li>center point</li>
+<li>radius</li>
+<li>data source</li>
+<li>filters</li>
+<li>enrichment steps</li>
+</ul>
+<p>This is especially important for maps because wrong answers can look visually convincing.</p>
+<h2 id="current-status">Current status</h2>
+<p><code>map-ask</code> is private and prototype-stage. It is safe to discuss as an architecture pattern: use an LLM for intent shaping, then rely on real geospatial tools for facts.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>ob-skills: Packaging OceanBase Knowledge as Agent Skills</title>
+      <link>https://blog.minifish.org/posts/ob-skills-oceanbase-agent-skills/</link>
+      <pubDate>Sun, 24 May 2026 20:40:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/ob-skills-oceanbase-agent-skills/</guid>
+      <description>A project note on ob-skills, a set of OceanBase Cursor agent skills for solution architecture, DDL syntax checking, and embedded validation workflows.</description>
+      <content:encoded><![CDATA[<p><code>ob-skills</code> packages OceanBase knowledge as agent skills. It is not an application in the usual sense. It is a set of reusable instructions and workflows for database architecture, DDL review, and tooling guidance.</p>
+<p>The project exists because raw prompting is not enough for repeated technical work.</p>
+<h2 id="what-is-inside">What is inside</h2>
+<p>The repo contains skills such as:</p>
+<ul>
+<li>OceanBase solution architect guidance</li>
+<li>OceanBase DDL syntax checking</li>
+<li>seekdb-backed DDL validation</li>
+</ul>
+<p>Each skill tries to narrow the agent&rsquo;s behavior for a specific kind of work. Instead of asking a general model to “help with OceanBase,” the skill defines what kind of answer is expected, which constraints matter, and which validation path should be used.</p>
+<h2 id="why-skills-instead-of-notes">Why skills instead of notes</h2>
+<p>Traditional notes help humans. Skills help agents act more consistently.</p>
+<p>That difference matters. A good skill should:</p>
+<ul>
+<li>define the task boundary</li>
+<li>mention common failure modes</li>
+<li>route to validation where possible</li>
+<li>make assumptions explicit</li>
+<li>avoid generic advice when concrete checks exist</li>
+</ul>
+<p>For database work, this is especially useful because the cost of vague answers is high. A DDL suggestion that sounds plausible but violates grammar or deployment constraints is worse than no suggestion.</p>
+<h2 id="the-useful-pattern">The useful pattern</h2>
+<p>The best skills are not huge knowledge dumps. They are small operational wrappers around repeatable judgment.</p>
+<p>For example, a DDL validation skill should not merely explain DDL. It should push the agent toward an actual validation path and make clear when offline validation is possible.</p>
+<p>That is the difference between “LLM as autocomplete” and “LLM as a guided operator.”</p>
+<h2 id="what-i-learned">What I learned</h2>
+<p>Agent quality improves when domain knowledge is packaged close to the workflow. It is not enough to rely on the model remembering a product correctly.</p>
+<p>Skills are also easier to maintain than long prompts embedded in many tools. If a rule changes, update the skill. If a validation command improves, update the skill. The agent workflows that use it inherit the better behavior.</p>
+<h2 id="open-source-status">Open source status</h2>
+<p><code>ob-skills</code> is public because the project is mostly guidance and validation workflow. It is a good fit for sharing: others can inspect the assumptions, reuse the structure, or adapt the skill pattern to their own database work.</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>agentd: A Wasm-Native Harness for Personal Agents</title>
+      <link>https://blog.minifish.org/posts/agentd-wasm-agent-runtime/</link>
+      <pubDate>Sun, 24 May 2026 20:30:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/agentd-wasm-agent-runtime/</guid>
+      <description>A project note on agentd, a Wasm-native single-host agent harness with host capabilities for messaging, schedules, memory, artifacts, web access, and LLM calls.</description>
+      <content:encoded><![CDATA[<p><code>agentd</code> is a Wasm-native single-host agent harness and control plane. It is an experiment in making small personal agents run behind explicit host capabilities instead of giving every agent direct access to the whole machine.</p>
+<p>The current direction separates three layers:</p>
+<ul>
+<li>Wasm agent components</li>
+<li>native host capability facade</li>
+<li>backend execution adapters</li>
+</ul>
+<p>That shape is more important than any single feature.</p>
+<h2 id="why-wasm">Why Wasm</h2>
+<p>Agent code can become messy quickly. It wants tools, memory, context, schedules, datasets, artifacts, web access, and LLM calls. If everything is just native code with direct access, boundaries blur.</p>
+<p>Wasm gives the project a useful constraint: agent logic runs in a sandboxed component and reaches the outside world through capabilities.</p>
+<p>That makes the runtime ask better questions:</p>
+<ul>
+<li>what can this agent do?</li>
+<li>which tools are stable host APIs?</li>
+<li>what state belongs to the host?</li>
+<li>what should be passed into a run?</li>
+<li>what should be persisted after a run?</li>
+</ul>
+<h2 id="capability-surface">Capability surface</h2>
+<p>The active design exposes host-facing capabilities such as:</p>
+<ul>
+<li><code>im.*</code></li>
+<li><code>run.*</code></li>
+<li><code>schedule.*</code></li>
+<li><code>dataset.*</code></li>
+<li><code>artifact.*</code></li>
+<li><code>memory.*</code></li>
+<li><code>context.*</code></li>
+<li><code>web.*</code></li>
+<li><code>clock.*</code></li>
+<li><code>llm.*</code></li>
+</ul>
+<p>This is deliberately explicit. Instead of an agent inventing arbitrary side effects, it asks the host for specific operations.</p>
+<h2 id="example-app">Example app</h2>
+<p>The repo includes a minimal Telegram bot app. It uses an <code>agentd</code>-backed Telegram session runtime, provider integration, memory/context handling, artifacts, schedules, and messaging.</p>
+<p>The interesting part is not that it can reply to Telegram. The interesting part is that a chat turn becomes an agent run with a lane, scope, memory policy, and host-managed capabilities.</p>
+<h2 id="what-i-learned">What I learned</h2>
+<p>Agents need less magic and more runtime discipline. A personal bot is still a distributed system in miniature:</p>
+<ul>
+<li>messages arrive concurrently</li>
+<li>context scopes matter</li>
+<li>retries can duplicate work</li>
+<li>memory needs indexing and pruning</li>
+<li>tools need permission boundaries</li>
+<li>failures need artifacts and logs</li>
+</ul>
+<p>The Wasm boundary helps keep those concerns visible.</p>
+<h2 id="current-status">Current status</h2>
+<p><code>agentd</code> is experimental and private. It is useful as a lab for runtime shape, but I do not consider it a public platform yet. The public lesson is the architecture: put capabilities between agents and the host before the tool surface grows without control.</p>
+]]></content:encoded>
+    </item>
     <item>
       <title>qwen-local: Running an OpenAI-Compatible Model Service on Apple Silicon</title>
       <link>https://blog.minifish.org/posts/qwen-local-on-apple-silicon/</link>

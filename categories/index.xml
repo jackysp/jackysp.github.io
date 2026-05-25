@@ -12,28 +12,35 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 20:25:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 21:20:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Databases</title>
-      <link>https://blog.minifish.org/categories/databases/</link>
-      <pubDate>Sun, 24 May 2026 20:25:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/categories/databases/</guid>
-      <description>Database internals, benchmarks, protocols, and practical notes from TiDB, OceanBase, CockroachDB, MySQL, and PostgreSQL.</description>
-    </item>
-    <item>
-      <title>Engineering</title>
-      <link>https://blog.minifish.org/categories/engineering/</link>
-      <pubDate>Sun, 24 May 2026 20:20:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/categories/engineering/</guid>
-      <description>Programming, debugging, architecture, developer workflow, and general engineering models.</description>
+      <title>Field Notes</title>
+      <link>https://blog.minifish.org/categories/field-notes/</link>
+      <pubDate>Sun, 24 May 2026 21:20:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/categories/field-notes/</guid>
+      <description>Practical observations from travel, business trips, and real-world situations.</description>
     </item>
     <item>
       <title>AI Tools</title>
       <link>https://blog.minifish.org/categories/ai-tools/</link>
-      <pubDate>Sun, 24 May 2026 20:15:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 21:15:00 +0800</pubDate>
       <guid>https://blog.minifish.org/categories/ai-tools/</guid>
       <description>Hands-on notes about AI workflows, agents, MCP, local LLMs, and automation.</description>
+    </item>
+    <item>
+      <title>Engineering</title>
+      <link>https://blog.minifish.org/categories/engineering/</link>
+      <pubDate>Sun, 24 May 2026 21:10:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/categories/engineering/</guid>
+      <description>Programming, debugging, architecture, developer workflow, and general engineering models.</description>
+    </item>
+    <item>
+      <title>Databases</title>
+      <link>https://blog.minifish.org/categories/databases/</link>
+      <pubDate>Sun, 24 May 2026 21:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/categories/databases/</guid>
+      <description>Database internals, benchmarks, protocols, and practical notes from TiDB, OceanBase, CockroachDB, MySQL, and PostgreSQL.</description>
     </item>
     <item>
       <title>Reviews</title>
@@ -48,13 +55,6 @@
       <pubDate>Mon, 13 Jan 2025 19:54:00 +0800</pubDate>
       <guid>https://blog.minifish.org/categories/infrastructure/</guid>
       <description>Linux, networking, VPN, proxy, CI/CD, servers, security, and deployment notes.</description>
-    </item>
-    <item>
-      <title>Field Notes</title>
-      <link>https://blog.minifish.org/categories/field-notes/</link>
-      <pubDate>Wed, 27 Nov 2024 18:13:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/categories/field-notes/</guid>
-      <description>Practical observations from travel, business trips, and real-world situations.</description>
     </item>
   </channel>
 </rss>

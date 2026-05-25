@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Openstreetmap on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/openstreetmap/</link>
+    <description>Recent content in Openstreetmap on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.161.1</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
+    <lastBuildDate>Sun, 24 May 2026 21:15:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/openstreetmap/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>map-ask: Natural-Language Geospatial Search</title>
+      <link>https://blog.minifish.org/posts/map-ask-natural-language-geosearch/</link>
+      <pubDate>Sun, 24 May 2026 21:15:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/map-ask-natural-language-geosearch/</guid>
+      <description>A project note on map-ask, a natural-language geospatial search prototype using open map data, POI search, routing, environment lookup, and weather enrichment.</description>
+      <content:encoded><![CDATA[<p><code>map-ask</code> is a natural-language geospatial search prototype. The user asks a map question in plain English, and the system converts it into structured actions such as POI search, routing, environment lookup, or weather enrichment.</p>
+<p>The interesting constraint is that it aims to use open data and avoid API keys where possible.</p>
+<h2 id="why-maps-are-hard-for-language-models">Why maps are hard for language models</h2>
+<p>Map questions sound simple:</p>
+<ul>
+<li>find coffee near me</li>
+<li>show quiet parks nearby</li>
+<li>route to a place with shade</li>
+<li>find restaurants within walking distance</li>
+</ul>
+<p>But those questions mix language, location, distance, categories, freshness, and user context. A language model can understand the request, but it should not invent geography.</p>
+<p>The system needs tools.</p>
+<h2 id="open-data-shape">Open-data shape</h2>
+<p>The project uses sources such as OpenStreetMap, Nominatim, Overpass, Wikimedia REST, and related open endpoints. The map UI is built around Leaflet and React.</p>
+<p>The model&rsquo;s role is to translate intent into geospatial operations:</p>
+<ul>
+<li>what is the user looking for?</li>
+<li>what radius or location matters?</li>
+<li>is this a route, POI search, or environment query?</li>
+<li>what enrichment should be added?</li>
+</ul>
+<p>The tools then fetch actual data.</p>
+<h2 id="product-boundary">Product boundary</h2>
+<p>The app should be honest about uncertainty. Open geospatial data is uneven. Names change, POI tags are inconsistent, and “quiet” or “hipster” are semantic hints rather than guaranteed database fields.</p>
+<p>That means the UI should show results as interpreted matches, not absolute truth.</p>
+<h2 id="what-i-learned">What I learned</h2>
+<p>Natural-language interfaces work best when they produce inspectable structured plans. If the app can show the interpreted action, it becomes much easier to debug:</p>
+<ul>
+<li>searched category</li>
+<li>center point</li>
+<li>radius</li>
+<li>data source</li>
+<li>filters</li>
+<li>enrichment steps</li>
+</ul>
+<p>This is especially important for maps because wrong answers can look visually convincing.</p>
+<h2 id="current-status">Current status</h2>
+<p><code>map-ask</code> is private and prototype-stage. It is safe to discuss as an architecture pattern: use an LLM for intent shaping, then rely on real geospatial tools for facts.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>
