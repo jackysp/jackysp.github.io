@@ -12,12 +12,12 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 20:50:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 08:50:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/scale-kv/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>scale-kv: A Storage Experiment About Complexity</title>
       <link>https://blog.minifish.org/posts/scale-kv-storage-experiment/</link>
-      <pubDate>Sun, 24 May 2026 20:50:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:50:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/scale-kv-storage-experiment/</guid>
       <description>A project note on scale-kv, a Rust experiment with transactional KV storage, page B&#43;trees, quorum commit paths, Cap&amp;#39;n Proto RPC, and storage-system design notes.</description>
       <content:encoded><![CDATA[<p><code>scale-kv</code> is a Rust storage experiment. It contains transactional KV code, page structures, quorum client paths, Cap&rsquo;n Proto RPC, performance notes, and a growing set of documents about capacity, observability, fault drills, and roadmap choices.</p>

@@ -12,12 +12,12 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 21:05:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 09:05:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/bedrock/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Bedrock Lab: A Behavior Pack as a Small Rules Sandbox</title>
       <link>https://blog.minifish.org/posts/bedrock-lab-behavior-pack/</link>
-      <pubDate>Sun, 24 May 2026 21:05:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 09:05:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/bedrock-lab-behavior-pack/</guid>
       <description>A project note on Bedrock Lab, a Minecraft Bedrock behavior pack with sprint regeneration, random effects, custom drops, and fishing loot changes.</description>
       <content:encoded><![CDATA[<p>Bedrock Lab is a behavior-only sandbox for Minecraft Bedrock Edition. It packages small gameplay rule experiments into a behavior pack that can be imported and activated without experimental toggles.</p>

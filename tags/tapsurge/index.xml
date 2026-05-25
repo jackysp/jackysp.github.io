@@ -12,12 +12,12 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 20:20:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 08:20:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/tapsurge/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TapSurge: An iPad Tap-Speed Tool Built for Competition Use</title>
       <link>https://blog.minifish.org/posts/tapsurge-ipad-tap-test/</link>
-      <pubDate>Sun, 24 May 2026 20:20:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:20:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/tapsurge-ipad-tap-test/</guid>
       <description>A project note on TapSurge, a Vite and TypeScript tap-speed competition tool designed for iPad, offline use, and raw timestamp export.</description>
       <content:encoded><![CDATA[<p>TapSurge is an offline-first multi-finger click-speed test for iPad competition use. It is built with Vite, TypeScript, native DOM APIs, and Canvas.</p>

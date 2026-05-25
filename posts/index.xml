@@ -12,12 +12,12 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 21:20:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 09:20:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>good-fishing-day: A Fishing Weather Dashboard</title>
       <link>https://blog.minifish.org/posts/good-fishing-day-dashboard/</link>
-      <pubDate>Sun, 24 May 2026 21:20:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 09:20:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/good-fishing-day-dashboard/</guid>
       <description>A project note on good-fishing-day, a Cloudflare Workers and Astro dashboard that combines tide, weather, caching, and a simple fishing suitability score.</description>
       <content:encoded><![CDATA[<p><code>good-fishing-day</code> is a personal fishing-weather dashboard. It combines tide data and weather forecasts to answer a practical question: is today, or the next few days, good for fishing?</p>
@@ -50,7 +50,7 @@
     <item>
       <title>map-ask: Natural-Language Geospatial Search</title>
       <link>https://blog.minifish.org/posts/map-ask-natural-language-geosearch/</link>
-      <pubDate>Sun, 24 May 2026 21:15:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 09:15:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/map-ask-natural-language-geosearch/</guid>
       <description>A project note on map-ask, a natural-language geospatial search prototype using open map data, POI search, routing, environment lookup, and weather enrichment.</description>
       <content:encoded><![CDATA[<p><code>map-ask</code> is a natural-language geospatial search prototype. The user asks a map question in plain English, and the system converts it into structured actions such as POI search, routing, environment lookup, or weather enrichment.</p>
@@ -96,7 +96,7 @@
     <item>
       <title>AeroPlay: A Flight-Mode Game Hub</title>
       <link>https://blog.minifish.org/posts/aeroplay-offline-game-hub/</link>
-      <pubDate>Sun, 24 May 2026 21:10:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 09:10:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/aeroplay-offline-game-hub/</guid>
       <description>A project note on AeroPlay, a pure frontend offline game hub with mini games, localStorage progress, service worker caching, and add-to-home-screen support.</description>
       <content:encoded><![CDATA[<p>AeroPlay is a pure-frontend, mobile-first game hub optimized for flight-mode use. It includes small games like Snake, Tetris, 2048, Flappy Bird, Maze, Match-3, Sudoku, and Lights Out.</p>
@@ -145,7 +145,7 @@
     <item>
       <title>Bedrock Lab: A Behavior Pack as a Small Rules Sandbox</title>
       <link>https://blog.minifish.org/posts/bedrock-lab-behavior-pack/</link>
-      <pubDate>Sun, 24 May 2026 21:05:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 09:05:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/bedrock-lab-behavior-pack/</guid>
       <description>A project note on Bedrock Lab, a Minecraft Bedrock behavior pack with sprint regeneration, random effects, custom drops, and fishing loot changes.</description>
       <content:encoded><![CDATA[<p>Bedrock Lab is a behavior-only sandbox for Minecraft Bedrock Edition. It packages small gameplay rule experiments into a behavior pack that can be imported and activated without experimental toggles.</p>
@@ -184,7 +184,7 @@
     <item>
       <title>tegdb-server: Putting a PostgreSQL-Compatible Protocol in Front of TegDB</title>
       <link>https://blog.minifish.org/posts/tegdb-server-postgres-compatible/</link>
-      <pubDate>Sun, 24 May 2026 21:00:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 09:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/tegdb-server-postgres-compatible/</guid>
       <description>A project note on tegdb-server, a Rust server that puts a PostgreSQL-compatible protocol and network boundary in front of the TegDB embedded database.</description>
       <content:encoded><![CDATA[<p><code>tegdb-server</code> is a PostgreSQL-compatible database server built on top of TegDB. It explores what changes when an embedded database becomes a networked service.</p>
@@ -231,7 +231,7 @@
     <item>
       <title>cta-guard: Risk Controls Before Trading Logic</title>
       <link>https://blog.minifish.org/posts/cta-guard-trading-risk-system/</link>
-      <pubDate>Sun, 24 May 2026 20:55:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:55:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/cta-guard-trading-risk-system/</guid>
       <description>A sanitized project note on cta-guard, a Rust trading runtime and research tool focused on risk controls, ingestion, backtesting, and operational guardrails.</description>
       <content:encoded><![CDATA[<p><code>cta-guard</code> is a private trading-system project. It includes a runtime loop, ingestion tools, backtesting, walk-forward validation, health checks, and venue integration.</p>
@@ -293,7 +293,7 @@
     <item>
       <title>scale-kv: A Storage Experiment About Complexity</title>
       <link>https://blog.minifish.org/posts/scale-kv-storage-experiment/</link>
-      <pubDate>Sun, 24 May 2026 20:50:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:50:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/scale-kv-storage-experiment/</guid>
       <description>A project note on scale-kv, a Rust experiment with transactional KV storage, page B&#43;trees, quorum commit paths, Cap&amp;#39;n Proto RPC, and storage-system design notes.</description>
       <content:encoded><![CDATA[<p><code>scale-kv</code> is a Rust storage experiment. It contains transactional KV code, page structures, quorum client paths, Cap&rsquo;n Proto RPC, performance notes, and a growing set of documents about capacity, observability, fault drills, and roadmap choices.</p>
@@ -337,7 +337,7 @@
     <item>
       <title>QuackLake: A DuckDB-WASM Analytics Prototype</title>
       <link>https://blog.minifish.org/posts/quacklake-wasm-analytics-prototype/</link>
-      <pubDate>Sun, 24 May 2026 20:45:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:45:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/quacklake-wasm-analytics-prototype/</guid>
       <description>A project note on QuackLake, a prototype combining DuckDB-WASM compute, MinIO object storage, a Rust API, and an HTTP range gateway.</description>
       <content:encoded><![CDATA[<p>QuackLake is a WASM-first analytics prototype. It combines DuckDB-WASM compute, MinIO object storage, a Rust control plane, and an HTTP range gateway.</p>
@@ -381,7 +381,7 @@
     <item>
       <title>ob-skills: Packaging OceanBase Knowledge as Agent Skills</title>
       <link>https://blog.minifish.org/posts/ob-skills-oceanbase-agent-skills/</link>
-      <pubDate>Sun, 24 May 2026 20:40:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:40:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/ob-skills-oceanbase-agent-skills/</guid>
       <description>A project note on ob-skills, a set of OceanBase Cursor agent skills for solution architecture, DDL syntax checking, and embedded validation workflows.</description>
       <content:encoded><![CDATA[<p><code>ob-skills</code> packages OceanBase knowledge as agent skills. It is not an application in the usual sense. It is a set of reusable instructions and workflows for database architecture, DDL review, and tooling guidance.</p>
@@ -419,7 +419,7 @@
     <item>
       <title>TegDB: Notes from Building a Small Embedded Database</title>
       <link>https://blog.minifish.org/posts/tegdb-embedded-database/</link>
-      <pubDate>Sun, 24 May 2026 20:35:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:35:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/tegdb-embedded-database/</guid>
       <description>A project note on TegDB, a lightweight embedded database engine with ACID transactions, WAL recovery, B&#43;tree indexing, and a SQL-like interface.</description>
       <content:encoded><![CDATA[<p>TegDB is a lightweight embedded database engine with a SQL-like interface. It is written in Rust and focuses on simplicity, reliability, and predictable behavior.</p>
@@ -468,7 +468,7 @@
     <item>
       <title>agentd: A Wasm-Native Harness for Personal Agents</title>
       <link>https://blog.minifish.org/posts/agentd-wasm-agent-runtime/</link>
-      <pubDate>Sun, 24 May 2026 20:30:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:30:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/agentd-wasm-agent-runtime/</guid>
       <description>A project note on agentd, a Wasm-native single-host agent harness with host capabilities for messaging, schedules, memory, artifacts, web access, and LLM calls.</description>
       <content:encoded><![CDATA[<p><code>agentd</code> is a Wasm-native single-host agent harness and control plane. It is an experiment in making small personal agents run behind explicit host capabilities instead of giving every agent direct access to the whole machine.</p>
@@ -526,7 +526,7 @@
     <item>
       <title>OB Sizer: Turning Migration Sizing into a Browser Tool</title>
       <link>https://blog.minifish.org/posts/ob-sizer-capacity-estimator/</link>
-      <pubDate>Sun, 24 May 2026 20:25:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:25:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/ob-sizer-capacity-estimator/</guid>
       <description>A project note on OB Sizer, a browser-based OceanBase migration capacity estimator for common source databases and workload assumptions.</description>
       <content:encoded><![CDATA[<p>OB Sizer is an OceanBase migration capacity estimator. It helps solution architects turn rough source-system facts into an initial OceanBase cluster sizing conversation.</p>
@@ -585,7 +585,7 @@
     <item>
       <title>TapSurge: An iPad Tap-Speed Tool Built for Competition Use</title>
       <link>https://blog.minifish.org/posts/tapsurge-ipad-tap-test/</link>
-      <pubDate>Sun, 24 May 2026 20:20:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:20:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/tapsurge-ipad-tap-test/</guid>
       <description>A project note on TapSurge, a Vite and TypeScript tap-speed competition tool designed for iPad, offline use, and raw timestamp export.</description>
       <content:encoded><![CDATA[<p>TapSurge is an offline-first multi-finger click-speed test for iPad competition use. It is built with Vite, TypeScript, native DOM APIs, and Canvas.</p>
@@ -636,7 +636,7 @@
     <item>
       <title>qwen-local: Running an OpenAI-Compatible Model Service on Apple Silicon</title>
       <link>https://blog.minifish.org/posts/qwen-local-on-apple-silicon/</link>
-      <pubDate>Sun, 24 May 2026 20:15:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:15:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/qwen-local-on-apple-silicon/</guid>
       <description>A project note on qwen-local, a local OpenAI-compatible AI service for Apple Silicon using MLX, Qwen, Kokoro, and Whisper.</description>
       <content:encoded><![CDATA[<p><code>qwen-local</code> is an OpenAI-compatible local model service for a 16 GB Apple Silicon Mac. It wraps local MLX models behind a FastAPI service and exposes chat, embeddings, text-to-speech, and speech-to-text through one local endpoint.</p>
@@ -686,7 +686,7 @@
     <item>
       <title>Tailgate: A Private AI Gateway for Local and Remote Models</title>
       <link>https://blog.minifish.org/posts/tailgate-private-ai-gateway/</link>
-      <pubDate>Sun, 24 May 2026 20:10:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:10:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/tailgate-private-ai-gateway/</guid>
       <description>A project note on tailgate, a private AI gateway that centralizes model routing, secrets, provider selection, and local model integration.</description>
       <content:encoded><![CDATA[<p>Tailgate is a personal OpenAI-compatible AI gateway. It gives tools like Codex, Cursor, SDK clients, and local agents one private <code>base_url</code>, while provider keys and routing rules stay on a server I control.</p>
@@ -741,7 +741,7 @@
     <item>
       <title>PocketBabel: Browser Translation Without a Backend</title>
       <link>https://blog.minifish.org/posts/pocketbabel-browser-translation/</link>
-      <pubDate>Sun, 24 May 2026 20:05:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:05:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/pocketbabel-browser-translation/</guid>
       <description>A project note on PocketBabel, a frontend-only English-Chinese translation app powered by transformers.js and designed for offline reuse.</description>
       <content:encoded><![CDATA[<p>PocketBabel is a frontend-only English-Chinese translation app. It uses <code>@huggingface/transformers</code> in the browser, targets Cloudflare Pages, and is designed to keep working after the model has been downloaded and cached.</p>
@@ -796,7 +796,7 @@
     <item>
       <title>Minifish Lab Projects</title>
       <link>https://blog.minifish.org/posts/minifish-lab-projects/</link>
-      <pubDate>Sun, 24 May 2026 20:00:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/minifish-lab-projects/</guid>
       <description>A living index of Minifish Lab projects, with short notes on what each project does, its current status, and the project notes in this series.</description>
       <content:encoded><![CDATA[<p>This is a living index of the projects I keep under Minifish Lab. Some of them are public. Some are private because they contain personal operations, deployment assumptions, trading workflow details, or code that is useful to me but not ready to be maintained for other people.</p>

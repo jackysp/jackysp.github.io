@@ -12,12 +12,12 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 21:10:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 09:10:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/games/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AeroPlay: A Flight-Mode Game Hub</title>
       <link>https://blog.minifish.org/posts/aeroplay-offline-game-hub/</link>
-      <pubDate>Sun, 24 May 2026 21:10:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 09:10:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/aeroplay-offline-game-hub/</guid>
       <description>A project note on AeroPlay, a pure frontend offline game hub with mini games, localStorage progress, service worker caching, and add-to-home-screen support.</description>
       <content:encoded><![CDATA[<p>AeroPlay is a pure-frontend, mobile-first game hub optimized for flight-mode use. It includes small games like Snake, Tetris, 2048, Flappy Bird, Maze, Match-3, Sudoku, and Lights Out.</p>

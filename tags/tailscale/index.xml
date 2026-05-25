@@ -12,12 +12,12 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 20:10:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 08:10:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/tailscale/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Tailgate: A Private AI Gateway for Local and Remote Models</title>
       <link>https://blog.minifish.org/posts/tailgate-private-ai-gateway/</link>
-      <pubDate>Sun, 24 May 2026 20:10:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:10:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/tailgate-private-ai-gateway/</guid>
       <description>A project note on tailgate, a private AI gateway that centralizes model routing, secrets, provider selection, and local model integration.</description>
       <content:encoded><![CDATA[<p>Tailgate is a personal OpenAI-compatible AI gateway. It gives tools like Codex, Cursor, SDK clients, and local agents one private <code>base_url</code>, while provider keys and routing rules stay on a server I control.</p>

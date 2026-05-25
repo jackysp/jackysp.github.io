@@ -12,12 +12,12 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 20:15:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 08:15:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/qwen-local/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>qwen-local: Running an OpenAI-Compatible Model Service on Apple Silicon</title>
       <link>https://blog.minifish.org/posts/qwen-local-on-apple-silicon/</link>
-      <pubDate>Sun, 24 May 2026 20:15:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:15:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/qwen-local-on-apple-silicon/</guid>
       <description>A project note on qwen-local, a local OpenAI-compatible AI service for Apple Silicon using MLX, Qwen, Kokoro, and Whisper.</description>
       <content:encoded><![CDATA[<p><code>qwen-local</code> is an OpenAI-compatible local model service for a 16 GB Apple Silicon Mac. It wraps local MLX models behind a FastAPI service and exposes chat, embeddings, text-to-speech, and speech-to-text through one local endpoint.</p>

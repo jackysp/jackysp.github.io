@@ -12,12 +12,12 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 20:35:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 08:35:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/storage-engine/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TegDB: Notes from Building a Small Embedded Database</title>
       <link>https://blog.minifish.org/posts/tegdb-embedded-database/</link>
-      <pubDate>Sun, 24 May 2026 20:35:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:35:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/tegdb-embedded-database/</guid>
       <description>A project note on TegDB, a lightweight embedded database engine with ACID transactions, WAL recovery, B&#43;tree indexing, and a SQL-like interface.</description>
       <content:encoded><![CDATA[<p>TegDB is a lightweight embedded database engine with a SQL-like interface. It is written in Rust and focuses on simplicity, reliability, and predictable behavior.</p>

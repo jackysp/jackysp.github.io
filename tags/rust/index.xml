@@ -12,12 +12,12 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 21:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 09:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/rust/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>tegdb-server: Putting a PostgreSQL-Compatible Protocol in Front of TegDB</title>
       <link>https://blog.minifish.org/posts/tegdb-server-postgres-compatible/</link>
-      <pubDate>Sun, 24 May 2026 21:00:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 09:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/tegdb-server-postgres-compatible/</guid>
       <description>A project note on tegdb-server, a Rust server that puts a PostgreSQL-compatible protocol and network boundary in front of the TegDB embedded database.</description>
       <content:encoded><![CDATA[<p><code>tegdb-server</code> is a PostgreSQL-compatible database server built on top of TegDB. It explores what changes when an embedded database becomes a networked service.</p>
@@ -64,7 +64,7 @@
     <item>
       <title>cta-guard: Risk Controls Before Trading Logic</title>
       <link>https://blog.minifish.org/posts/cta-guard-trading-risk-system/</link>
-      <pubDate>Sun, 24 May 2026 20:55:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:55:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/cta-guard-trading-risk-system/</guid>
       <description>A sanitized project note on cta-guard, a Rust trading runtime and research tool focused on risk controls, ingestion, backtesting, and operational guardrails.</description>
       <content:encoded><![CDATA[<p><code>cta-guard</code> is a private trading-system project. It includes a runtime loop, ingestion tools, backtesting, walk-forward validation, health checks, and venue integration.</p>
@@ -126,7 +126,7 @@
     <item>
       <title>scale-kv: A Storage Experiment About Complexity</title>
       <link>https://blog.minifish.org/posts/scale-kv-storage-experiment/</link>
-      <pubDate>Sun, 24 May 2026 20:50:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:50:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/scale-kv-storage-experiment/</guid>
       <description>A project note on scale-kv, a Rust experiment with transactional KV storage, page B&#43;trees, quorum commit paths, Cap&amp;#39;n Proto RPC, and storage-system design notes.</description>
       <content:encoded><![CDATA[<p><code>scale-kv</code> is a Rust storage experiment. It contains transactional KV code, page structures, quorum client paths, Cap&rsquo;n Proto RPC, performance notes, and a growing set of documents about capacity, observability, fault drills, and roadmap choices.</p>
@@ -170,7 +170,7 @@
     <item>
       <title>QuackLake: A DuckDB-WASM Analytics Prototype</title>
       <link>https://blog.minifish.org/posts/quacklake-wasm-analytics-prototype/</link>
-      <pubDate>Sun, 24 May 2026 20:45:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:45:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/quacklake-wasm-analytics-prototype/</guid>
       <description>A project note on QuackLake, a prototype combining DuckDB-WASM compute, MinIO object storage, a Rust API, and an HTTP range gateway.</description>
       <content:encoded><![CDATA[<p>QuackLake is a WASM-first analytics prototype. It combines DuckDB-WASM compute, MinIO object storage, a Rust control plane, and an HTTP range gateway.</p>
@@ -214,7 +214,7 @@
     <item>
       <title>TegDB: Notes from Building a Small Embedded Database</title>
       <link>https://blog.minifish.org/posts/tegdb-embedded-database/</link>
-      <pubDate>Sun, 24 May 2026 20:35:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:35:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/tegdb-embedded-database/</guid>
       <description>A project note on TegDB, a lightweight embedded database engine with ACID transactions, WAL recovery, B&#43;tree indexing, and a SQL-like interface.</description>
       <content:encoded><![CDATA[<p>TegDB is a lightweight embedded database engine with a SQL-like interface. It is written in Rust and focuses on simplicity, reliability, and predictable behavior.</p>

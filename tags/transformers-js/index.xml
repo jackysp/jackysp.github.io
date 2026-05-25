@@ -12,12 +12,12 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 20:05:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 08:05:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/transformers-js/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>PocketBabel: Browser Translation Without a Backend</title>
       <link>https://blog.minifish.org/posts/pocketbabel-browser-translation/</link>
-      <pubDate>Sun, 24 May 2026 20:05:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:05:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/pocketbabel-browser-translation/</guid>
       <description>A project note on PocketBabel, a frontend-only English-Chinese translation app powered by transformers.js and designed for offline reuse.</description>
       <content:encoded><![CDATA[<p>PocketBabel is a frontend-only English-Chinese translation app. It uses <code>@huggingface/transformers</code> in the browser, targets Cloudflare Pages, and is designed to keep working after the model has been downloaded and cached.</p>

@@ -12,12 +12,12 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 21:15:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 09:15:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/llm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>map-ask: Natural-Language Geospatial Search</title>
       <link>https://blog.minifish.org/posts/map-ask-natural-language-geosearch/</link>
-      <pubDate>Sun, 24 May 2026 21:15:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 09:15:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/map-ask-natural-language-geosearch/</guid>
       <description>A project note on map-ask, a natural-language geospatial search prototype using open map data, POI search, routing, environment lookup, and weather enrichment.</description>
       <content:encoded><![CDATA[<p><code>map-ask</code> is a natural-language geospatial search prototype. The user asks a map question in plain English, and the system converts it into structured actions such as POI search, routing, environment lookup, or weather enrichment.</p>

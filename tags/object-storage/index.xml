@@ -12,12 +12,12 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 20:45:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 08:45:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/object-storage/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>QuackLake: A DuckDB-WASM Analytics Prototype</title>
       <link>https://blog.minifish.org/posts/quacklake-wasm-analytics-prototype/</link>
-      <pubDate>Sun, 24 May 2026 20:45:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:45:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/quacklake-wasm-analytics-prototype/</guid>
       <description>A project note on QuackLake, a prototype combining DuckDB-WASM compute, MinIO object storage, a Rust API, and an HTTP range gateway.</description>
       <content:encoded><![CDATA[<p>QuackLake is a WASM-first analytics prototype. It combines DuckDB-WASM compute, MinIO object storage, a Rust control plane, and an HTTP range gateway.</p>

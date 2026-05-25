@@ -12,12 +12,12 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 20:25:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 08:25:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/frontend-tool/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>OB Sizer: Turning Migration Sizing into a Browser Tool</title>
       <link>https://blog.minifish.org/posts/ob-sizer-capacity-estimator/</link>
-      <pubDate>Sun, 24 May 2026 20:25:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:25:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/ob-sizer-capacity-estimator/</guid>
       <description>A project note on OB Sizer, a browser-based OceanBase migration capacity estimator for common source databases and workload assumptions.</description>
       <content:encoded><![CDATA[<p>OB Sizer is an OceanBase migration capacity estimator. It helps solution architects turn rough source-system facts into an initial OceanBase cluster sizing conversation.</p>

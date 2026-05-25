@@ -12,12 +12,12 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 20:30:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 08:30:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/agentd/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>agentd: A Wasm-Native Harness for Personal Agents</title>
       <link>https://blog.minifish.org/posts/agentd-wasm-agent-runtime/</link>
-      <pubDate>Sun, 24 May 2026 20:30:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 08:30:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/agentd-wasm-agent-runtime/</guid>
       <description>A project note on agentd, a Wasm-native single-host agent harness with host capabilities for messaging, schedules, memory, artifacts, web access, and LLM calls.</description>
       <content:encoded><![CDATA[<p><code>agentd</code> is a Wasm-native single-host agent harness and control plane. It is an experiment in making small personal agents run behind explicit host capabilities instead of giving every agent direct access to the whole machine.</p>

@@ -12,12 +12,12 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 21:20:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2026 09:20:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/fishing/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>good-fishing-day: A Fishing Weather Dashboard</title>
       <link>https://blog.minifish.org/posts/good-fishing-day-dashboard/</link>
-      <pubDate>Sun, 24 May 2026 21:20:00 +0800</pubDate>
+      <pubDate>Sun, 24 May 2026 09:20:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/good-fishing-day-dashboard/</guid>
       <description>A project note on good-fishing-day, a Cloudflare Workers and Astro dashboard that combines tide, weather, caching, and a simple fishing suitability score.</description>
       <content:encoded><![CDATA[<p><code>good-fishing-day</code> is a personal fishing-weather dashboard. It combines tide data and weather forecasts to answer a practical question: is today, or the next few days, good for fishing?</p>
