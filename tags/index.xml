@@ -12,8 +12,43 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 08:25:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 26 May 2026 09:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Agentd</title>
+      <link>https://blog.minifish.org/tags/agentd/</link>
+      <pubDate>Tue, 26 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/agentd/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Agents</title>
+      <link>https://blog.minifish.org/tags/agents/</link>
+      <pubDate>Tue, 26 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/agents/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Runtime</title>
+      <link>https://blog.minifish.org/tags/runtime/</link>
+      <pubDate>Tue, 26 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/runtime/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Wasm</title>
+      <link>https://blog.minifish.org/tags/wasm/</link>
+      <pubDate>Tue, 26 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/wasm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Wasmtime</title>
+      <link>https://blog.minifish.org/tags/wasmtime/</link>
+      <pubDate>Tue, 26 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/wasmtime/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Capacity-Planning</title>
       <link>https://blog.minifish.org/tags/capacity-planning/</link>
@@ -201,13 +236,6 @@
       <link>https://blog.minifish.org/tags/projects/</link>
       <pubDate>Sun, 24 May 2026 08:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/projects/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Agents</title>
-      <link>https://blog.minifish.org/tags/agents/</link>
-      <pubDate>Fri, 20 Mar 2026 21:00:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/agents/</guid>
       <description></description>
     </item>
     <item>

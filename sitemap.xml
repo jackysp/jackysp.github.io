@@ -2,10 +2,40 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://blog.minifish.org/tags/capacity-planning/</loc>
-    <lastmod>2026-05-24T08:25:00+08:00</lastmod>
+    <loc>https://blog.minifish.org/tags/agentd/</loc>
+    <lastmod>2026-05-26T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/agentd-wasm-agent-runtime/</loc>
+    <lastmod>2026-05-26T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/agents/</loc>
+    <lastmod>2026-05-26T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/ai-tools/</loc>
+    <lastmod>2026-05-26T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/categories/</loc>
+    <lastmod>2026-05-26T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/</loc>
+    <lastmod>2026-05-26T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/</loc>
+    <lastmod>2026-05-26T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/runtime/</loc>
+    <lastmod>2026-05-26T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/</loc>
+    <lastmod>2026-05-26T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/wasm/</loc>
+    <lastmod>2026-05-26T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/wasmtime/</loc>
+    <lastmod>2026-05-26T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/capacity-planning/</loc>
     <lastmod>2026-05-24T08:25:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/database/</loc>
@@ -20,19 +50,10 @@
     <loc>https://blog.minifish.org/tags/migration/</loc>
     <lastmod>2026-05-24T08:25:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/</loc>
-    <lastmod>2026-05-24T08:25:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/posts/ob-sizer-capacity-estimator/</loc>
     <lastmod>2026-05-24T08:25:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/oceanbase/</loc>
-    <lastmod>2026-05-24T08:25:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/posts/</loc>
-    <lastmod>2026-05-24T08:25:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/</loc>
     <lastmod>2026-05-24T08:25:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/categories/engineering/</loc>
@@ -55,9 +76,6 @@
   </url><url>
     <loc>https://blog.minifish.org/tags/typescript/</loc>
     <lastmod>2026-05-24T08:20:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/categories/ai-tools/</loc>
-    <lastmod>2026-05-24T08:15:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/apple-silicon/</loc>
     <lastmod>2026-05-24T08:15:00+08:00</lastmod>
@@ -121,9 +139,6 @@
   </url><url>
     <loc>https://blog.minifish.org/tags/projects/</loc>
     <lastmod>2026-05-24T08:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/agents/</loc>
-    <lastmod>2026-03-20T21:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/ai/</loc>
     <lastmod>2026-03-20T21:00:00+08:00</lastmod>
