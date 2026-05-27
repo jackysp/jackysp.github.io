@@ -12,8 +12,43 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Tue, 26 May 2026 09:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 27 May 2026 09:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Database</title>
+      <link>https://blog.minifish.org/tags/database/</link>
+      <pubDate>Wed, 27 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/database/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Embedded-Database</title>
+      <link>https://blog.minifish.org/tags/embedded-database/</link>
+      <pubDate>Wed, 27 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/embedded-database/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rust</title>
+      <link>https://blog.minifish.org/tags/rust/</link>
+      <pubDate>Wed, 27 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/rust/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Storage-Engine</title>
+      <link>https://blog.minifish.org/tags/storage-engine/</link>
+      <pubDate>Wed, 27 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/storage-engine/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tegdb</title>
+      <link>https://blog.minifish.org/tags/tegdb/</link>
+      <pubDate>Wed, 27 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/tegdb/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Agentd</title>
       <link>https://blog.minifish.org/tags/agentd/</link>
@@ -54,13 +89,6 @@
       <link>https://blog.minifish.org/tags/capacity-planning/</link>
       <pubDate>Sun, 24 May 2026 08:25:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/capacity-planning/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Database</title>
-      <link>https://blog.minifish.org/tags/database/</link>
-      <pubDate>Sun, 24 May 2026 08:25:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/database/</guid>
       <description></description>
     </item>
     <item>
