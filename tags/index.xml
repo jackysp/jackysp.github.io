@@ -12,13 +12,41 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Wed, 27 May 2026 09:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 28 May 2026 09:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Agent-Skills</title>
+      <link>https://blog.minifish.org/tags/agent-skills/</link>
+      <pubDate>Thu, 28 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/agent-skills/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Cursor</title>
+      <link>https://blog.minifish.org/tags/cursor/</link>
+      <pubDate>Thu, 28 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/cursor/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Database</title>
       <link>https://blog.minifish.org/tags/database/</link>
-      <pubDate>Wed, 27 May 2026 09:00:00 +0800</pubDate>
+      <pubDate>Thu, 28 May 2026 09:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/database/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ddl</title>
+      <link>https://blog.minifish.org/tags/ddl/</link>
+      <pubDate>Thu, 28 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/ddl/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Oceanbase</title>
+      <link>https://blog.minifish.org/tags/oceanbase/</link>
+      <pubDate>Thu, 28 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/oceanbase/</guid>
       <description></description>
     </item>
     <item>
@@ -103,13 +131,6 @@
       <link>https://blog.minifish.org/tags/migration/</link>
       <pubDate>Sun, 24 May 2026 08:25:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/migration/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Oceanbase</title>
-      <link>https://blog.minifish.org/tags/oceanbase/</link>
-      <pubDate>Sun, 24 May 2026 08:25:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/oceanbase/</guid>
       <description></description>
     </item>
     <item>
