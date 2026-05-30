@@ -12,8 +12,43 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Fri, 29 May 2026 09:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 30 May 2026 09:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Distributed-Systems</title>
+      <link>https://blog.minifish.org/tags/distributed-systems/</link>
+      <pubDate>Sat, 30 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/distributed-systems/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Kv-Store</title>
+      <link>https://blog.minifish.org/tags/kv-store/</link>
+      <pubDate>Sat, 30 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/kv-store/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rust</title>
+      <link>https://blog.minifish.org/tags/rust/</link>
+      <pubDate>Sat, 30 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/rust/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Scale-Kv</title>
+      <link>https://blog.minifish.org/tags/scale-kv/</link>
+      <pubDate>Sat, 30 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/scale-kv/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Storage</title>
+      <link>https://blog.minifish.org/tags/storage/</link>
+      <pubDate>Sat, 30 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/storage/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Analytics</title>
       <link>https://blog.minifish.org/tags/analytics/</link>
@@ -33,13 +68,6 @@
       <link>https://blog.minifish.org/tags/object-storage/</link>
       <pubDate>Fri, 29 May 2026 09:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/object-storage/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Rust</title>
-      <link>https://blog.minifish.org/tags/rust/</link>
-      <pubDate>Fri, 29 May 2026 09:00:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/rust/</guid>
       <description></description>
     </item>
     <item>
@@ -425,13 +453,6 @@
       <link>https://blog.minifish.org/tags/moka/</link>
       <pubDate>Sun, 18 Jan 2026 10:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/moka/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Distributed-Systems</title>
-      <link>https://blog.minifish.org/tags/distributed-systems/</link>
-      <pubDate>Sat, 17 Jan 2026 10:00:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/distributed-systems/</guid>
       <description></description>
     </item>
     <item>

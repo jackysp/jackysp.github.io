@@ -2,34 +2,49 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://blog.minifish.org/tags/analytics/</loc>
-    <lastmod>2026-05-29T09:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/categories/</loc>
-    <lastmod>2026-05-29T09:00:00+08:00</lastmod>
+    <lastmod>2026-05-30T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/categories/databases/</loc>
+    <lastmod>2026-05-30T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/distributed-systems/</loc>
+    <lastmod>2026-05-30T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/kv-store/</loc>
+    <lastmod>2026-05-30T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/</loc>
+    <lastmod>2026-05-30T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/</loc>
+    <lastmod>2026-05-30T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/rust/</loc>
+    <lastmod>2026-05-30T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/scale-kv/</loc>
+    <lastmod>2026-05-30T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/scale-kv-storage-experiment/</loc>
+    <lastmod>2026-05-30T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/storage/</loc>
+    <lastmod>2026-05-30T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/</loc>
+    <lastmod>2026-05-30T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/analytics/</loc>
     <lastmod>2026-05-29T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/duckdb/</loc>
     <lastmod>2026-05-29T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/</loc>
-    <lastmod>2026-05-29T09:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/object-storage/</loc>
     <lastmod>2026-05-29T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/posts/</loc>
-    <lastmod>2026-05-29T09:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/posts/quacklake-wasm-analytics-prototype/</loc>
-    <lastmod>2026-05-29T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/rust/</loc>
-    <lastmod>2026-05-29T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/</loc>
     <lastmod>2026-05-29T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/wasm/</loc>
@@ -241,9 +256,6 @@
   </url><url>
     <loc>https://blog.minifish.org/categories/reviews/</loc>
     <lastmod>2026-01-18T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/distributed-systems/</loc>
-    <lastmod>2026-01-17T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/oceanbase-internals-transaction-replay-sql-unit-placement/</loc>
     <lastmod>2026-01-17T10:00:00+08:00</lastmod>
