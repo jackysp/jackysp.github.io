@@ -12,8 +12,15 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sat, 30 May 2026 09:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 31 May 2026 09:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Engineering</title>
+      <link>https://blog.minifish.org/categories/engineering/</link>
+      <pubDate>Sun, 31 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/categories/engineering/</guid>
+      <description>Programming, debugging, architecture, developer workflow, and general engineering models.</description>
+    </item>
     <item>
       <title>Databases</title>
       <link>https://blog.minifish.org/categories/databases/</link>
@@ -27,13 +34,6 @@
       <pubDate>Thu, 28 May 2026 09:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/categories/ai-tools/</guid>
       <description>Hands-on notes about AI workflows, agents, MCP, local LLMs, and automation.</description>
-    </item>
-    <item>
-      <title>Engineering</title>
-      <link>https://blog.minifish.org/categories/engineering/</link>
-      <pubDate>Sun, 24 May 2026 08:20:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/categories/engineering/</guid>
-      <description>Programming, debugging, architecture, developer workflow, and general engineering models.</description>
     </item>
     <item>
       <title>Reviews</title>
