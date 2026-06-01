@@ -2,10 +2,40 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://blog.minifish.org/tags/backtesting/</loc>
-    <lastmod>2026-05-31T09:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/categories/</loc>
+    <lastmod>2026-06-01T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/database-server/</loc>
+    <lastmod>2026-06-01T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/databases/</loc>
+    <lastmod>2026-06-01T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/</loc>
+    <lastmod>2026-06-01T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/postgresql/</loc>
+    <lastmod>2026-06-01T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/</loc>
+    <lastmod>2026-06-01T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/protocol/</loc>
+    <lastmod>2026-06-01T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/rust/</loc>
+    <lastmod>2026-06-01T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/</loc>
+    <lastmod>2026-06-01T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/tegdb-server/</loc>
+    <lastmod>2026-06-01T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/tegdb-server-postgres-compatible/</loc>
+    <lastmod>2026-06-01T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/backtesting/</loc>
     <lastmod>2026-05-31T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/cta-guard/</loc>
@@ -17,26 +47,11 @@
     <loc>https://blog.minifish.org/categories/engineering/</loc>
     <lastmod>2026-05-31T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/</loc>
-    <lastmod>2026-05-31T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/posts/</loc>
-    <lastmod>2026-05-31T09:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/risk-control/</loc>
-    <lastmod>2026-05-31T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/rust/</loc>
-    <lastmod>2026-05-31T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/</loc>
     <lastmod>2026-05-31T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/trading-systems/</loc>
     <lastmod>2026-05-31T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/categories/databases/</loc>
-    <lastmod>2026-05-30T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/distributed-systems/</loc>
     <lastmod>2026-05-30T09:00:00+08:00</lastmod>
@@ -413,9 +428,6 @@
     <loc>https://blog.minifish.org/tags/mysql/</loc>
     <lastmod>2021-05-09T18:13:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/tags/postgresql/</loc>
-    <lastmod>2021-05-09T18:13:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/posts/how-to-configure-a-chinese-latex-environment-on-windows/</loc>
     <lastmod>2021-03-31T00:00:00+00:00</lastmod>
   </url><url>
@@ -573,9 +585,6 @@
     <lastmod>2017-10-16T22:21:06+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/how-to-implement-mysql-x-protocol-on-tidb/</loc>
-    <lastmod>2017-08-16T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/protocol/</loc>
     <lastmod>2017-08-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/centos/</loc>
