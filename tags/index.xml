@@ -12,8 +12,43 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Mon, 01 Jun 2026 09:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 02 Jun 2026 09:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bedrock</title>
+      <link>https://blog.minifish.org/tags/bedrock/</link>
+      <pubDate>Tue, 02 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/bedrock/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Behavior-Pack</title>
+      <link>https://blog.minifish.org/tags/behavior-pack/</link>
+      <pubDate>Tue, 02 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/behavior-pack/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Game-Modding</title>
+      <link>https://blog.minifish.org/tags/game-modding/</link>
+      <pubDate>Tue, 02 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/game-modding/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Minecraft</title>
+      <link>https://blog.minifish.org/tags/minecraft/</link>
+      <pubDate>Tue, 02 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/minecraft/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Scripting</title>
+      <link>https://blog.minifish.org/tags/scripting/</link>
+      <pubDate>Tue, 02 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/scripting/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Database-Server</title>
       <link>https://blog.minifish.org/tags/database-server/</link>
@@ -663,13 +698,6 @@
       <link>https://blog.minifish.org/tags/gateway/</link>
       <pubDate>Wed, 12 Oct 2022 21:07:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/gateway/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Minecraft</title>
-      <link>https://blog.minifish.org/tags/minecraft/</link>
-      <pubDate>Mon, 02 May 2022 19:05:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/minecraft/</guid>
       <description></description>
     </item>
     <item>
