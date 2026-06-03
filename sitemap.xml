@@ -2,6 +2,39 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://blog.minifish.org/tags/aeroplay/</loc>
+    <lastmod>2026-06-03T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/aeroplay-offline-game-hub/</loc>
+    <lastmod>2026-06-03T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/</loc>
+    <lastmod>2026-06-03T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/engineering/</loc>
+    <lastmod>2026-06-03T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/games/</loc>
+    <lastmod>2026-06-03T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/</loc>
+    <lastmod>2026-06-03T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/offline-first/</loc>
+    <lastmod>2026-06-03T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/</loc>
+    <lastmod>2026-06-03T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/pwa/</loc>
+    <lastmod>2026-06-03T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/</loc>
+    <lastmod>2026-06-03T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/typescript/</loc>
+    <lastmod>2026-06-03T09:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/tags/bedrock/</loc>
     <lastmod>2026-06-02T09:00:00+08:00</lastmod>
   </url><url>
@@ -11,28 +44,13 @@
     <loc>https://blog.minifish.org/tags/behavior-pack/</loc>
     <lastmod>2026-06-02T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/categories/</loc>
-    <lastmod>2026-06-02T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/categories/engineering/</loc>
-    <lastmod>2026-06-02T09:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/game-modding/</loc>
     <lastmod>2026-06-02T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/minecraft/</loc>
     <lastmod>2026-06-02T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/</loc>
-    <lastmod>2026-06-02T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/posts/</loc>
-    <lastmod>2026-06-02T09:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/scripting/</loc>
-    <lastmod>2026-06-02T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/</loc>
     <lastmod>2026-06-02T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/database-server/</loc>
@@ -164,19 +182,10 @@
     <loc>https://blog.minifish.org/tags/ipad/</loc>
     <lastmod>2026-05-24T08:20:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/tags/offline-first/</loc>
-    <lastmod>2026-05-24T08:20:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/pwa/</loc>
-    <lastmod>2026-05-24T08:20:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/tapsurge/</loc>
     <lastmod>2026-05-24T08:20:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/tapsurge-ipad-tap-test/</loc>
-    <lastmod>2026-05-24T08:20:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/typescript/</loc>
     <lastmod>2026-05-24T08:20:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/apple-silicon/</loc>
