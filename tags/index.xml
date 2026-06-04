@@ -12,8 +12,43 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Wed, 03 Jun 2026 09:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 04 Jun 2026 09:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Geospatial</title>
+      <link>https://blog.minifish.org/tags/geospatial/</link>
+      <pubDate>Thu, 04 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/geospatial/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Llm</title>
+      <link>https://blog.minifish.org/tags/llm/</link>
+      <pubDate>Thu, 04 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/llm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Map-Ask</title>
+      <link>https://blog.minifish.org/tags/map-ask/</link>
+      <pubDate>Thu, 04 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/map-ask/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Maps</title>
+      <link>https://blog.minifish.org/tags/maps/</link>
+      <pubDate>Thu, 04 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/maps/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Openstreetmap</title>
+      <link>https://blog.minifish.org/tags/openstreetmap/</link>
+      <pubDate>Thu, 04 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/openstreetmap/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Aeroplay</title>
       <link>https://blog.minifish.org/tags/aeroplay/</link>
@@ -628,13 +663,6 @@
       <link>https://blog.minifish.org/tags/programming/</link>
       <pubDate>Thu, 28 Nov 2024 15:41:19 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/programming/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Llm</title>
-      <link>https://blog.minifish.org/tags/llm/</link>
-      <pubDate>Wed, 27 Nov 2024 18:26:14 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/llm/</guid>
       <description></description>
     </item>
     <item>
