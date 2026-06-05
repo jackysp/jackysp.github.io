@@ -2,10 +2,40 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://blog.minifish.org/categories/ai-tools/</loc>
-    <lastmod>2026-06-04T09:00:00+08:00</lastmod>
+    <loc>https://blog.minifish.org/tags/astro/</loc>
+    <lastmod>2026-06-05T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/categories/</loc>
+    <lastmod>2026-06-05T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/cloudflare-workers/</loc>
+    <lastmod>2026-06-05T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/field-notes/</loc>
+    <lastmod>2026-06-05T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/fishing/</loc>
+    <lastmod>2026-06-05T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/good-fishing-day-dashboard/</loc>
+    <lastmod>2026-06-05T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/</loc>
+    <lastmod>2026-06-05T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/personal-dashboard/</loc>
+    <lastmod>2026-06-05T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/</loc>
+    <lastmod>2026-06-05T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/</loc>
+    <lastmod>2026-06-05T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/weather/</loc>
+    <lastmod>2026-06-05T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/ai-tools/</loc>
     <lastmod>2026-06-04T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/geospatial/</loc>
@@ -23,16 +53,7 @@
     <loc>https://blog.minifish.org/tags/maps/</loc>
     <lastmod>2026-06-04T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/</loc>
-    <lastmod>2026-06-04T09:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/openstreetmap/</loc>
-    <lastmod>2026-06-04T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/posts/</loc>
-    <lastmod>2026-06-04T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/</loc>
     <lastmod>2026-06-04T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/aeroplay/</loc>
@@ -401,9 +422,6 @@
     <loc>https://blog.minifish.org/tags/vpn/</loc>
     <lastmod>2024-11-27T18:18:38+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/categories/field-notes/</loc>
-    <lastmod>2024-11-27T18:13:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/posts/tips-for-traveling-in-vietnam-my-personal-experiences/</loc>
     <lastmod>2024-11-27T18:13:00+08:00</lastmod>
   </url><url>
@@ -412,9 +430,6 @@
   </url><url>
     <loc>https://blog.minifish.org/tags/vietnam/</loc>
     <lastmod>2024-11-27T18:13:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/fishing/</loc>
-    <lastmod>2024-11-27T17:46:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/how-to-choose-the-right-fishing-gear-tips-from-my-fishing-experiences/</loc>
     <lastmod>2024-11-27T17:46:00+08:00</lastmod>
