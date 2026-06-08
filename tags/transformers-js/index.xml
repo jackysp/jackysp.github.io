@@ -43,7 +43,7 @@
 <li>desktop and mobile browser support</li>
 <li>PWA shell and offline reuse</li>
 </ul>
-<p>It does not try to support OCR, speech, synced history, arbitrary language pairs, or collaborative workflows. Those features are tempting, but they would change the project from a useful small app into a maintenance surface.</p>
+<p>It does not try to support OCR, speech input, synced history, arbitrary language pairs, or collaborative workflows. Those features are tempting, but they would change the project from a useful small app into a maintenance surface.</p>
 <h2 id="technical-shape">Technical shape</h2>
 <p>The implementation is a React and Vite app. Translation is handled by transformers.js with browser-side model loading and caching. Deployment is static, which makes Cloudflare Pages a natural fit.</p>
 <p>The UI challenge is not only making a textarea and a button. The app needs to explain model state without becoming noisy:</p>
@@ -65,6 +65,10 @@
 <li>avoid account and sync features unless they are essential</li>
 </ol>
 <p>PocketBabel works because it does not try to be Google Translate. It is a small translation surface for a small set of language directions.</p>
+<h2 id="june-2026-update">June 2026 update</h2>
+<p>The pushed version has grown in two small but useful directions without changing the core product boundary.</p>
+<p>First, short word or phrase inputs can now use dictionary-style prompts. That makes PocketBabel more useful for vocabulary lookup: instead of treating every short input as a sentence, the app can ask for meanings, part-of-speech style structure, and usage notes.</p>
+<p>Second, translated output can be read aloud through the browser&rsquo;s <code>speechSynthesis</code> API when the browser supports it. This is deliberately output speech, not speech input or speech translation. It keeps the app frontend-only while making the translated result easier to check.</p>
 <h2 id="open-source-status">Open source status</h2>
 <p>PocketBabel is public because the architecture is self-contained and does not rely on private infrastructure. It is also a good example of the kind of project that benefits from being inspectable: the privacy story is stronger when the code path is visible.</p>
 ]]></content:encoded>

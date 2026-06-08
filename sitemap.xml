@@ -200,10 +200,13 @@
     <loc>https://blog.minifish.org/tags/agents/</loc>
     <lastmod>2026-05-26T09:00:00+08:00</lastmod>
   </url><url>
+    <loc>https://blog.minifish.org/tags/mcp/</loc>
+    <lastmod>2026-05-26T09:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/tags/runtime/</loc>
     <lastmod>2026-05-26T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/tags/wasmtime/</loc>
+    <loc>https://blog.minifish.org/tags/seekdb/</loc>
     <lastmod>2026-05-26T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/capacity-planning/</loc>
@@ -327,9 +330,6 @@
     <lastmod>2026-01-19T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/github-actions/</loc>
-    <lastmod>2026-01-19T10:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/mcp/</loc>
     <lastmod>2026-01-19T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/brikka/</loc>
