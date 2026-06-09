@@ -12,8 +12,49 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Fri, 10 Jan 2025 18:07:06 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 09 Jun 2026 09:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/cycling/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Canopy: Local MCP Routing for Singapore PCN Loops</title>
+      <link>https://blog.minifish.org/posts/canopy-singapore-pcn-routing/</link>
+      <pubDate>Tue, 09 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/canopy-singapore-pcn-routing/</guid>
+      <description>A project note on Canopy, a self-hosted MCP routing service for Singapore cycling and walking route planning with GraphHopper, OneMap, GPX export, and route audits.</description>
+      <content:encoded><![CDATA[<p>Canopy is a local MCP server for Singapore cycling and walking route planning. It is built for agents, not for end users. Claude, Codex, LangChain, or another MCP client can call Canopy tools; the agent remains responsible for conversation and presentation.</p>
+<p>The useful distinction is that Canopy does not try to be a map app. It is a route-planning capability.</p>
+<h2 id="why-this-exists">Why this exists</h2>
+<p>Singapore cycling routes are not only about shortest path. A good route often means:</p>
+<ul>
+<li>prefer PCN-like paths</li>
+<li>avoid high-car roads</li>
+<li>keep loops close to a target distance</li>
+<li>export a track that can be followed elsewhere</li>
+<li>explain how much of the route is car-free or on-road</li>
+</ul>
+<p>General routing APIs are not always good at expressing those preferences. Canopy uses a self-hosted GraphHopper service with a custom bike profile that strongly prefers cycleways, PCN-like paths, and low-car links while penalizing motor roads.</p>
+<p>OneMap is used for geocoding and POIs, not routing.</p>
+<h2 id="tool-surface">Tool surface</h2>
+<p>The MCP server exposes tools such as:</p>
+<ul>
+<li><code>geocode(query)</code></li>
+<li><code>plan_loop(start, distance_km, direction?, prefer=&quot;pcn&quot;)</code></li>
+<li><code>route(origin, destination, prefer=&quot;pcn&quot;)</code></li>
+<li><code>pois_along(geometry, types=[...])</code></li>
+<li><code>audit_route(geometry)</code></li>
+<li><code>export_gpx(geometry, name)</code></li>
+</ul>
+<p>That gives an agent a clean workflow: resolve a place, plan a route, audit the result, find POIs along the corridor, and export GPX.</p>
+<h2 id="honest-boundaries">Honest boundaries</h2>
+<p>Canopy optimizes for low-car and away-from-traffic routing. It does not avoid pedestrians, because Singapore PCNs are shared paths.</p>
+<p>Round-trip distance is also approximate in GraphHopper. Canopy tries multiple seeds and scaled requests, then returns the actual distance instead of pretending the target was exact.</p>
+<p>The project also intentionally avoids building turn-by-turn navigation. A downstream app can load the generated GPX track into something like OsmAnd or CoMaps.</p>
+<h2 id="what-i-learned">What I learned</h2>
+<p>MCP is a good fit when the tool is specific and verifiable. Route planning should not be hidden inside a chat answer. The agent should call a tool that returns geometry, distance, audit percentages, and a GPX path.</p>
+<p>For location work, the agent&rsquo;s job is orchestration. The route engine should still be a route engine.</p>
+<h2 id="current-status">Current status</h2>
+<p>Canopy is private and active. It is tied to local Singapore routing data, OneMap credentials, and a local GraphHopper runtime, so the repo is not a clean general-purpose hosted service.</p>
+]]></content:encoded>
+    </item>
     <item>
       <title>Notes on Modifying a Brompton Clone Bike</title>
       <link>https://blog.minifish.org/posts/brompton-clone-bike-modification/</link>

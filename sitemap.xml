@@ -2,10 +2,40 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://blog.minifish.org/tags/astro/</loc>
-    <lastmod>2026-06-05T09:00:00+08:00</lastmod>
+    <loc>https://blog.minifish.org/categories/ai-tools/</loc>
+    <lastmod>2026-06-09T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/canopy/</loc>
+    <lastmod>2026-06-09T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/canopy-singapore-pcn-routing/</loc>
+    <lastmod>2026-06-09T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/categories/</loc>
+    <lastmod>2026-06-09T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/cycling/</loc>
+    <lastmod>2026-06-09T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/graphhopper/</loc>
+    <lastmod>2026-06-09T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/mcp/</loc>
+    <lastmod>2026-06-09T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/</loc>
+    <lastmod>2026-06-09T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/</loc>
+    <lastmod>2026-06-09T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/singapore/</loc>
+    <lastmod>2026-06-09T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/</loc>
+    <lastmod>2026-06-09T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/astro/</loc>
     <lastmod>2026-06-05T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/cloudflare-workers/</loc>
@@ -20,23 +50,11 @@
     <loc>https://blog.minifish.org/posts/good-fishing-day-dashboard/</loc>
     <lastmod>2026-06-05T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/</loc>
-    <lastmod>2026-06-05T09:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/personal-dashboard/</loc>
-    <lastmod>2026-06-05T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/posts/</loc>
-    <lastmod>2026-06-05T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/</loc>
     <lastmod>2026-06-05T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/weather/</loc>
     <lastmod>2026-06-05T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/categories/ai-tools/</loc>
-    <lastmod>2026-06-04T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/geospatial/</loc>
     <lastmod>2026-06-04T09:00:00+08:00</lastmod>
@@ -198,9 +216,6 @@
     <lastmod>2026-05-26T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/agents/</loc>
-    <lastmod>2026-05-26T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/mcp/</loc>
     <lastmod>2026-05-26T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/runtime/</loc>
@@ -375,9 +390,6 @@
     <lastmod>2025-01-10T18:07:06+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/brompton/</loc>
-    <lastmod>2025-01-10T18:07:06+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/cycling/</loc>
     <lastmod>2025-01-10T18:07:06+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/brompton-clone-bike-modification/</loc>
