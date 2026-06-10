@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Werewolf on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/werewolf/</link>
+    <description>Recent content in Werewolf on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.161.1</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
+    <lastBuildDate>Wed, 10 Jun 2026 09:00:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/werewolf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Nightfall: A Browser Referee for AI Werewolf</title>
+      <link>https://blog.minifish.org/posts/nightfall-ai-werewolf-referee/</link>
+      <pubDate>Wed, 10 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/nightfall-ai-werewolf-referee/</guid>
+      <description>A project note on Nightfall, an AI Werewolf prototype with a browser referee, projected per-seat views, an agentd-backed turn API, and a shared engine for CLI and UI runs.</description>
+      <content:encoded><![CDATA[<p>Nightfall is a web-based AI Werewolf platform. Every seat is an AI player; the human is an operator or spectator. The browser is the referee.</p>
+<p>That referee boundary is the most important design choice. The game engine holds the authoritative state and decides what each seat is allowed to see. The AI players only receive projected views.</p>
+<h2 id="why-the-browser-is-the-referee">Why the browser is the referee</h2>
+<p>Werewolf is an information game. The system must know the full state, but each player must see only a slice of it. If the AI seat receives hidden information by accident, the whole experiment is meaningless.</p>
+<p>Nightfall keeps that boundary explicit:</p>
+<ul>
+<li><code>engine/</code> owns state, phase transitions, view projection, resolution, victory checks, and deterministic replay</li>
+<li><code>orchestrator/</code> runs the environment-independent game loop</li>
+<li><code>agentd-client/</code> calls <code>POST /v1/turns</code></li>
+<li><code>app/</code> renders the spectator UI without owning game rules</li>
+</ul>
+<p>The same engine can drive a Node CLI transcript or the browser spectator.</p>
+<h2 id="agentd-integration">agentd integration</h2>
+<p>Nightfall does not embed agent logic. It calls an external <code>agentd</code> runtime. The werewolf, seer, and villager agents live on the agentd side as personas and model choices. Nightfall only maps roles to <code>agent_ref</code> values and sends the projected view for the current seat and phase.</p>
+<p>That separation matters. The game should own rules; agentd should own agent execution.</p>
+<h2 id="game-shape">Game shape</h2>
+<p>The current board is intentionally small:</p>
+<ul>
+<li>6 seats</li>
+<li>2 wolves</li>
+<li>1 seer</li>
+<li>3 villagers</li>
+<li>no role reveal on death</li>
+<li>loop: night seer, night wolf, day discussion, day vote</li>
+</ul>
+<p>Victory is checked after deaths: wolves eliminated means good wins; all villagers dead means wolves win. Killing the seer does not end the game, it only removes the good side&rsquo;s information source.</p>
+<h2 id="what-i-learned">What I learned</h2>
+<p>Games are useful agent testbeds because they force state discipline. A chat bot can hide vague behavior behind language. A game cannot. The engine needs phases, legal actions, projected views, victory rules, and reproducible transcripts.</p>
+<p>Nightfall is also a reminder that a good agent integration is often just a clean boundary. The AI seat should not know the whole game. It should know what that player would know.</p>
+<h2 id="current-status">Current status</h2>
+<p>Nightfall is private and experimental. It is useful as an AI interaction lab, especially for testing information hiding, role-specific personas, and multi-agent turn orchestration.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

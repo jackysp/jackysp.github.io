@@ -2,16 +2,43 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://blog.minifish.org/tags/agents/</loc>
+    <lastmod>2026-06-10T09:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/categories/ai-tools/</loc>
-    <lastmod>2026-06-09T09:00:00+08:00</lastmod>
+    <lastmod>2026-06-10T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/</loc>
+    <lastmod>2026-06-10T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/game-ai/</loc>
+    <lastmod>2026-06-10T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/</loc>
+    <lastmod>2026-06-10T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/nightfall/</loc>
+    <lastmod>2026-06-10T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/nightfall-ai-werewolf-referee/</loc>
+    <lastmod>2026-06-10T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/</loc>
+    <lastmod>2026-06-10T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/react/</loc>
+    <lastmod>2026-06-10T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/</loc>
+    <lastmod>2026-06-10T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/werewolf/</loc>
+    <lastmod>2026-06-10T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/canopy/</loc>
     <lastmod>2026-06-09T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/canopy-singapore-pcn-routing/</loc>
-    <lastmod>2026-06-09T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/categories/</loc>
     <lastmod>2026-06-09T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/cycling/</loc>
@@ -23,16 +50,7 @@
     <loc>https://blog.minifish.org/tags/mcp/</loc>
     <lastmod>2026-06-09T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/</loc>
-    <lastmod>2026-06-09T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/posts/</loc>
-    <lastmod>2026-06-09T09:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/singapore/</loc>
-    <lastmod>2026-06-09T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/</loc>
     <lastmod>2026-06-09T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/astro/</loc>
@@ -213,9 +231,6 @@
     <lastmod>2026-05-26T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/agentd-wasm-agent-runtime/</loc>
-    <lastmod>2026-05-26T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/agents/</loc>
     <lastmod>2026-05-26T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/runtime/</loc>
