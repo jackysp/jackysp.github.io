@@ -12,8 +12,44 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Wed, 03 Jun 2026 09:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 11 Jun 2026 09:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/categories/engineering/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>driftloop: Browser Generative Music Without a Backend</title>
+      <link>https://blog.minifish.org/posts/driftloop-browser-generative-music/</link>
+      <pubDate>Thu, 11 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/driftloop-browser-generative-music/</guid>
+      <description>A project note on driftloop, a browser-based generative music app using algorithmic composition, FluidSynth in WebAssembly, and optional Magenta melody generation.</description>
+      <content:encoded><![CDATA[<p>driftloop is a pure-frontend web app that streams continuous generative background music in the browser. Click play, and the music starts. Switch style buttons, and the arrangement morphs without a hard cut.</p>
+<p>The important constraint is that every note is composed and synthesized live in the browser. There are no prerecorded loops, no server, no account, and no backend generation job.</p>
+<h2 id="why-it-is-not-mainly-an-ai-app">Why it is not mainly an AI app</h2>
+<p>The interesting origin story is that driftloop came after an earlier model-first attempt. That earlier direction tried to distill a multi-instrument music model and sample from it for the listening experience. The output was structurally chaotic in a way that sampling tweaks did not fix.</p>
+<p>driftloop starts from a different premise: for continuous background music, structure matters more than model capacity.</p>
+<p>Algorithmic composition handles the load-bearing parts:</p>
+<ul>
+<li>chord progression</li>
+<li>voice leading</li>
+<li>bass motion</li>
+<li>rhythm</li>
+<li>drum pattern</li>
+<li>section shape</li>
+</ul>
+<p>A small model can still help with lead melody, but it should not be responsible for making the whole piece coherent.</p>
+<h2 id="runtime-shape">Runtime shape</h2>
+<p>The app has two layers:</p>
+<ol>
+<li>Vanilla JavaScript composition logic that keeps the music in key, on grid, and structurally coherent.</li>
+<li>An optional MelodyRNN path through TensorFlow.js for lead melody.</li>
+</ol>
+<p>Synthesis uses <code>js-synthesizer</code>, a WebAssembly port of FluidSynth, with a General MIDI SoundFont through the WebAudio API.</p>
+<p>The SoundFont is large, so deployment has a practical constraint: Cloudflare Pages has a single-file size limit smaller than the SoundFont. The app fetches the SoundFont from a public upstream mirror on first launch, then the service worker caches it for offline reuse.</p>
+<h2 id="what-i-learned">What I learned</h2>
+<p>Generative music is not only generation. It is arrangement, continuity, transitions, repetition management, and sound rendering.</p>
+<p>The most important product question is not “is it AI?” It is “can I leave this playing without getting annoyed?” That favors simple, controllable structure over model novelty.</p>
+<h2 id="current-status">Current status</h2>
+<p>driftloop is private but product-shaped. It is a static PWA candidate, and the current architecture is intentionally deployable without backend secrets or runtime infrastructure.</p>
+]]></content:encoded>
+    </item>
     <item>
       <title>AeroPlay: A Flight-Mode Game Hub</title>
       <link>https://blog.minifish.org/posts/aeroplay-offline-game-hub/</link>

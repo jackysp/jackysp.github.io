@@ -2,19 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://blog.minifish.org/categories/</loc>
+    <lastmod>2026-06-11T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/driftloop/</loc>
+    <lastmod>2026-06-11T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/driftloop-browser-generative-music/</loc>
+    <lastmod>2026-06-11T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/engineering/</loc>
+    <lastmod>2026-06-11T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/generative-music/</loc>
+    <lastmod>2026-06-11T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/</loc>
+    <lastmod>2026-06-11T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/music-ai/</loc>
+    <lastmod>2026-06-11T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/</loc>
+    <lastmod>2026-06-11T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/pwa/</loc>
+    <lastmod>2026-06-11T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/</loc>
+    <lastmod>2026-06-11T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/webaudio/</loc>
+    <lastmod>2026-06-11T09:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/tags/agents/</loc>
     <lastmod>2026-06-10T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/categories/ai-tools/</loc>
     <lastmod>2026-06-10T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/categories/</loc>
-    <lastmod>2026-06-10T09:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/game-ai/</loc>
-    <lastmod>2026-06-10T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/</loc>
     <lastmod>2026-06-10T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/nightfall/</loc>
@@ -23,13 +50,7 @@
     <loc>https://blog.minifish.org/posts/nightfall-ai-werewolf-referee/</loc>
     <lastmod>2026-06-10T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/posts/</loc>
-    <lastmod>2026-06-10T09:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/react/</loc>
-    <lastmod>2026-06-10T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/</loc>
     <lastmod>2026-06-10T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/werewolf/</loc>
@@ -98,16 +119,10 @@
     <loc>https://blog.minifish.org/posts/aeroplay-offline-game-hub/</loc>
     <lastmod>2026-06-03T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/categories/engineering/</loc>
-    <lastmod>2026-06-03T09:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/games/</loc>
     <lastmod>2026-06-03T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/offline-first/</loc>
-    <lastmod>2026-06-03T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/pwa/</loc>
     <lastmod>2026-06-03T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/typescript/</loc>

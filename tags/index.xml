@@ -12,8 +12,43 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Wed, 10 Jun 2026 09:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 11 Jun 2026 09:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Driftloop</title>
+      <link>https://blog.minifish.org/tags/driftloop/</link>
+      <pubDate>Thu, 11 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/driftloop/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Generative-Music</title>
+      <link>https://blog.minifish.org/tags/generative-music/</link>
+      <pubDate>Thu, 11 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/generative-music/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Music-Ai</title>
+      <link>https://blog.minifish.org/tags/music-ai/</link>
+      <pubDate>Thu, 11 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/music-ai/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pwa</title>
+      <link>https://blog.minifish.org/tags/pwa/</link>
+      <pubDate>Thu, 11 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/pwa/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Webaudio</title>
+      <link>https://blog.minifish.org/tags/webaudio/</link>
+      <pubDate>Thu, 11 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/webaudio/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Agents</title>
       <link>https://blog.minifish.org/tags/agents/</link>
@@ -173,13 +208,6 @@
       <link>https://blog.minifish.org/tags/offline-first/</link>
       <pubDate>Wed, 03 Jun 2026 09:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/offline-first/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Pwa</title>
-      <link>https://blog.minifish.org/tags/pwa/</link>
-      <pubDate>Wed, 03 Jun 2026 09:00:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/pwa/</guid>
       <description></description>
     </item>
     <item>
