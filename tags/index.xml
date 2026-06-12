@@ -12,8 +12,43 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Thu, 11 Jun 2026 09:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 12 Jun 2026 09:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Apple-Silicon</title>
+      <link>https://blog.minifish.org/tags/apple-silicon/</link>
+      <pubDate>Fri, 12 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/apple-silicon/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Midi</title>
+      <link>https://blog.minifish.org/tags/midi/</link>
+      <pubDate>Fri, 12 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/midi/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mlx</title>
+      <link>https://blog.minifish.org/tags/mlx/</link>
+      <pubDate>Fri, 12 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/mlx/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mood-Midi-Mlx</title>
+      <link>https://blog.minifish.org/tags/mood-midi-mlx/</link>
+      <pubDate>Fri, 12 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/mood-midi-mlx/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Music-Ai</title>
+      <link>https://blog.minifish.org/tags/music-ai/</link>
+      <pubDate>Fri, 12 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/music-ai/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Driftloop</title>
       <link>https://blog.minifish.org/tags/driftloop/</link>
@@ -26,13 +61,6 @@
       <link>https://blog.minifish.org/tags/generative-music/</link>
       <pubDate>Thu, 11 Jun 2026 09:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/generative-music/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Music-Ai</title>
-      <link>https://blog.minifish.org/tags/music-ai/</link>
-      <pubDate>Thu, 11 Jun 2026 09:00:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/music-ai/</guid>
       <description></description>
     </item>
     <item>
@@ -484,24 +512,10 @@
       <description></description>
     </item>
     <item>
-      <title>Apple-Silicon</title>
-      <link>https://blog.minifish.org/tags/apple-silicon/</link>
-      <pubDate>Sun, 24 May 2026 08:15:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/apple-silicon/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Local-Llm</title>
       <link>https://blog.minifish.org/tags/local-llm/</link>
       <pubDate>Sun, 24 May 2026 08:15:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/local-llm/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Mlx</title>
-      <link>https://blog.minifish.org/tags/mlx/</link>
-      <pubDate>Sun, 24 May 2026 08:15:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/mlx/</guid>
       <description></description>
     </item>
     <item>

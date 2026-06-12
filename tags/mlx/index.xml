@@ -12,8 +12,48 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sun, 24 May 2026 08:15:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 12 Jun 2026 09:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/mlx/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>mood-midi-mlx: A Small MLX Loop for Symbolic MIDI Generation</title>
+      <link>https://blog.minifish.org/posts/mood-midi-mlx-symbolic-generation/</link>
+      <pubDate>Fri, 12 Jun 2026 09:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/mood-midi-mlx-symbolic-generation/</guid>
+      <description>A project note on mood-midi-mlx, a local Apple MLX symbolic MIDI generation experiment with toy data, tokenization, training, generation, evaluation, MAESTRO import, and a small UI server.</description>
+      <content:encoded><![CDATA[<p><code>mood-midi-mlx</code> is a first-pass Apple MLX project for symbolic MIDI generation. It builds a closed loop: generate or import MIDI, tokenize it, train a small decoder-only Transformer, generate tokens from mood controls, export MIDI, and evaluate the result.</p>
+<p>It is not trying to solve music generation all at once. It is trying to make the loop inspectable.</p>
+<h2 id="why-symbolic-midi">Why symbolic MIDI</h2>
+<p>Audio generation is expensive and hard to inspect. MIDI is smaller, structured, and easier to evaluate. For early experiments, that matters.</p>
+<p>The project starts with controls such as:</p>
+<ul>
+<li>mood</li>
+<li>energy</li>
+<li>density</li>
+<li>brightness</li>
+</ul>
+<p>Those controls are simple, but they are useful enough to test whether the model responds to conditioning at all.</p>
+<h2 id="training-path">Training path</h2>
+<p>The first phase can generate toy piano MIDI without external datasets. It then tokenizes MIDI events, trains with MLX on Apple Silicon, and writes checkpoints plus training logs.</p>
+<p>The repo also includes a MAESTRO import path. Since MAESTRO does not have mood labels, the importer creates heuristic weak labels from features such as tempo, density, velocity, silence, repetition, and pitch range.</p>
+<p>That is the right level of honesty for the project: the labels are weak labels, not ground truth.</p>
+<h2 id="generation-and-preview">Generation and preview</h2>
+<p>Generated tokens can be exported back to MIDI. The project also has a local UI server that can generate and download MIDI files, with an optional audio-rendering path using FluidSynth and a local SoundFont.</p>
+<p>This makes the experiment audible without turning it into a full production app.</p>
+<h2 id="what-i-learned">What I learned</h2>
+<p>For music ML projects, the training loop is only one part of the system. The useful loop includes:</p>
+<ul>
+<li>dataset construction</li>
+<li>tokenization</li>
+<li>checkpointing</li>
+<li>generation controls</li>
+<li>structural evaluation</li>
+<li>audible preview</li>
+</ul>
+<p>If any part is missing, it becomes hard to tell whether the model is improving or just producing plausible-looking tokens.</p>
+<h2 id="current-status">Current status</h2>
+<p><code>mood-midi-mlx</code> is private and experimental. It is a research workbench for Apple Silicon rather than a finished listening product. That separation is useful: <code>mood-midi-mlx</code> can explore models, while <code>driftloop</code> can focus on a coherent listening experience.</p>
+]]></content:encoded>
+    </item>
     <item>
       <title>qwen-local: Running an OpenAI-Compatible Model Service on Apple Silicon</title>
       <link>https://blog.minifish.org/posts/qwen-local-on-apple-silicon/</link>
