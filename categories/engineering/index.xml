@@ -12,7 +12,7 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Thu, 11 Jun 2026 09:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 15 Aug 2026 13:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/categories/engineering/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>driftloop: Browser Generative Music Without a Backend</title>
@@ -308,10 +308,10 @@
           <td><a href="/posts/ob-sizer-capacity-estimator/">OB Sizer: Turning Migration Sizing into a Browser Tool</a></td>
       </tr>
       <tr>
-          <td><code>agentd</code></td>
+          <td><a href="https://github.com/minifish-org/agentd"><code>agentd</code></a></td>
           <td>Agent runtime</td>
-          <td>Private</td>
-          <td>Experimental</td>
+          <td>Public</td>
+          <td>Experimental alpha</td>
           <td><a href="/posts/agentd-wasm-agent-runtime/">agentd: A Transport-Neutral Runtime for Personal Agents</a></td>
       </tr>
       <tr>

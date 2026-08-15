@@ -12,7 +12,7 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Tue, 09 Jun 2026 09:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 15 Aug 2026 13:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/mcp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Canopy: Local MCP Routing for Singapore PCN Loops</title>
@@ -60,45 +60,257 @@
       <link>https://blog.minifish.org/posts/agentd-wasm-agent-runtime/</link>
       <pubDate>Tue, 26 May 2026 09:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/posts/agentd-wasm-agent-runtime/</guid>
-      <description>A project note on agentd, a single-host agent runtime with a transport-neutral turn API, a built-in generic agent, SeekDB-backed state, and explicit host tools.</description>
-      <content:encoded><![CDATA[<p><code>agentd</code> is a single-host agent runtime and control plane. Its current shape is transport-neutral: external systems drive agents through <code>POST /v1/turns</code>, then read results back through the run output API. The runtime owns state, tools, scheduling, memory, artifacts, and the generic agent loop.</p>
-<p>That is a different direction from the first version of this note, which described <code>agentd</code> mainly as a Wasm-native harness. The pushed version is now more concrete: an <code>Agent</code> is a manifest with a system prompt, visible tool catalog, resource limits, and a model choice. The actual handler is the built-in generic agent.</p>
-<h2 id="turn-api">Turn API</h2>
-<p>A caller submits:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>POST /v1/turns
-</span></span></code></pre></div><p>with a tenant, <code>agent_ref</code>, scope, and payload. The runtime creates an <code>AgentRun</code>, resolves a lane, assembles the visible tools, invokes the generic agent, and records a structured <code>final_decision</code>.</p>
-<p>There is no push side. A Telegram bot, a browser game, or another transport bridge should call the API and render the result itself. That keeps <code>agentd</code> from becoming coupled to a specific messaging system.</p>
-<h2 id="capability-surface">Capability surface</h2>
-<p>The current public tool surface includes:</p>
+      <description>A systems-level look at agentd, a durable single-host runtime for personal agents with scoped execution, explicit capabilities, inspectable traces, and transactional delivery.</description>
+      <content:encoded><![CDATA[<blockquote>
+<p><strong>Updated August 15, 2026:</strong> The first version of this note described an
+earlier private prototype centered on Wasm. This rewrite follows the public
+<a href="https://github.com/minifish-org/agentd/releases/tag/v0.1.0-alpha.1"><code>v0.1.0-alpha.1</code></a>
+runtime. I kept the original URL so existing links continue to work.</p>
+</blockquote>
+<p>Most personal-agent demos begin with a chat surface: receive a message, call a
+model, perhaps execute a tool, and send the answer back. That is enough to show
+the interaction. It does not define what should happen when two messages arrive
+for the same conversation, a process restarts, a delivery attempt times out, or
+a model invokes a capability with side effects.</p>
+<p><a href="https://github.com/minifish-org/agentd"><code>agentd</code></a> is my attempt to put those
+questions behind a small runtime contract. It is an experimental, multi-tenant,
+single-agent runtime for one host. The model still decides what to do. The host
+runtime owns the less glamorous parts: persistence, scheduling, scoped
+serialization, capability boundaries, raw traces, and a pull delivery outbox.</p>
+<p>The goal is not to build a universal agent framework. The narrower goal is to
+make one turn durable and inspectable without coupling execution to Telegram,
+a browser, a game, or any other user interface.</p>
+<h2 id="the-boundary-starts-with-a-turn">The boundary starts with a turn</h2>
+<p>External systems submit work through one transport-neutral endpoint:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>POST /v1/tenants/:tenant/turns
+</span></span></code></pre></div><p>A request identifies an agent, a scope, a payload, and optionally a delivery
+destination and <code>request_id</code>. Submission returns <code>202</code> with a queued <code>run_id</code>.
+The caller can wait for the canonical result, inspect the trace, cancel the run,
+or consume delivery through a separate adapter.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>REST turn / due schedule
+</span></span><span style="display:flex;"><span>          |
+</span></span><span style="display:flex;"><span>          v
+</span></span><span style="display:flex;"><span>      queued run -- transactional (tenant, agent, scope) claim
+</span></span><span style="display:flex;"><span>          |
+</span></span><span style="display:flex;"><span>          v
+</span></span><span style="display:flex;"><span>  context -&gt; model &lt;-&gt; allowed built-in/MCP tools
+</span></span><span style="display:flex;"><span>          |
+</span></span><span style="display:flex;"><span>          v
+</span></span><span style="display:flex;"><span> transaction: output + terminal trace + context + optional delivery
+</span></span></code></pre></div><p>This separation matters because a transport and a runtime answer different
+questions. Telegram knows webhook authentication, chat identifiers, message
+formatting, and Telegram&rsquo;s retry behavior. The runtime knows run state, context,
+capabilities, and final output. Neither component needs to absorb the other&rsquo;s
+failure model.</p>
+<h2 id="scope-is-both-context-ownership-and-a-concurrency-key">Scope is both context ownership and a concurrency key</h2>
+<p>Every run moves through five states:</p>
+<table>
+  <thead>
+      <tr>
+          <th>State</th>
+          <th>Meaning</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>queued</code></td>
+          <td>Durable work exists but has not acquired its execution lane.</td>
+      </tr>
+      <tr>
+          <td><code>running</code></td>
+          <td>The run owns its <code>(tenant, agent, scope)</code> lane.</td>
+      </tr>
+      <tr>
+          <td><code>succeeded</code></td>
+          <td>Canonical output and related durable state were finalized.</td>
+      </tr>
+      <tr>
+          <td><code>failed</code></td>
+          <td>Execution ended without a successful result.</td>
+      </tr>
+      <tr>
+          <td><code>cancelled</code></td>
+          <td>Cancellation won and successful finalization is no longer allowed.</td>
+      </tr>
+  </tbody>
+</table>
+<p>The tuple <code>(tenant, agent, scope)</code> is the serialization boundary. Runs for the
+same tuple execute one at a time; unrelated scopes can run concurrently. The
+claim is transactional, and the database also enforces that at most one run for
+a scope is <code>running</code>.</p>
+<p>Using scope for both rolling context and serialization is deliberate. If two
+turns can modify the same conversation history concurrently, the runtime needs
+a merge policy or a clear winner. <code>agentd</code> avoids inventing one: a scope has one
+active owner. A Telegram chat can use <code>tg:&lt;chat_id&gt;</code>; a game can use a match and
+seat identifier; another caller can define a different stable boundary.</p>
+<p>This is not distributed locking. It is single-database coordination for one
+host. There is no multi-process lease protocol, failover, or replication claim.</p>
+<p>A process restart also has an explicit, conservative outcome. On startup,
+persisted runs that were <code>running</code> become <code>failed</code> with an <code>agentd restarted</code>
+error, while durable queued work remains available to the dispatcher. The
+runtime does not try to reconstruct the interrupted model/tool loop or silently
+execute it again. That avoids pretending an in-flight external effect is safe to
+repeat, at the cost of requiring a caller or operator to decide whether a failed
+turn should be resubmitted. More sophisticated recovery would need an explicit
+side-effect protocol, not just a different status update.</p>
+<h2 id="submission-idempotency-is-not-replay">Submission idempotency is not replay</h2>
+<p>An optional <code>request_id</code> is unique within a tenant. Repeating the same
+submission returns the existing run instead of creating another one. This is
+useful when an HTTP client cannot tell whether its first request succeeded.</p>
+<p>But request deduplication does not make the whole agent execution replayable.
+During a run, the model can call tools, an MCP server can affect another system,
+and a transport can deliver a message. Those effects do not become reversible
+because the initial request had an idempotency key.</p>
+<p>The raw <code>run_log</code> records model, tool, output, status, and error observations.
+It is an inspection trace, not a deterministic re-execution engine. There is no
+side-effect ledger, rollback protocol, or replay simulator. Calling these
+different properties by different names prevents a comforting but false
+exactly-once story.</p>
+<h2 id="the-model-chooses-the-host-constrains">The model chooses; the host constrains</h2>
+<p>An agent is configuration rather than executable plugin code: persona, model,
+allowed capability families, limits, temperature, token budget, and context
+window. The native loop sends visible schemas to an OpenAI-compatible provider,
+validates the returned tool call, executes it in host code, records the result,
+and continues until the model produces final JSON or reaches a boundary.</p>
+<p>The public alpha has 15 built-in capabilities across artifacts, memory,
+schedules, clock, bounded public-web access, and arithmetic. It intentionally
+has no generic shell, arbitrary HTTP request, hidden filesystem handle, approval
+queue, or operator execute endpoint.</p>
+<p>MCP extends the tool catalog without changing that ownership model. Servers
+belong to a tenant, discovery is explicit, exposed names must be unique, and an
+allowlist can narrow the discovered catalog. Secret configuration stores the
+names of environment variables rather than their values.</p>
+<p>That is a capability boundary, not a sandbox. An operator-configured stdio MCP
+process runs with the <code>agentd</code> OS user&rsquo;s host and network permissions. A model
+can also be persuaded by a malicious prompt or tool result to call any capability
+it can see. The safe rule is therefore simple: expose only side effects that are
+acceptable without human approval, and isolate untrusted MCP servers outside
+the runtime.</p>
+<h2 id="successful-finalization-has-one-transaction-boundary">Successful finalization has one transaction boundary</h2>
+<p>The most important write path happens after the model loop has produced a
+successful result. One database transaction commits:</p>
 <ul>
-<li><code>plan.*</code></li>
-<li><code>run.*</code></li>
-<li><code>schedule.*</code></li>
-<li><code>artifact.*</code></li>
-<li><code>memory.*</code></li>
-<li><code>context.*</code></li>
-<li><code>web.*</code></li>
-<li><code>clock.*</code></li>
-<li><code>llm.*</code></li>
-<li><code>output.*</code></li>
+<li>the canonical output and <code>succeeded</code> run status;</li>
+<li>the terminal trace event;</li>
+<li>the bounded rolling context;</li>
+<li>and, when explicitly requested, one pending delivery referencing the run.</li>
 </ul>
-<p>The important pattern is that tools carry reliability metadata: maturity, idempotency, side-effect scope, failure classes, replay expectations, and delivery semantics. That metadata is part of making agent behavior inspectable instead of magical.</p>
-<h2 id="storage-model">Storage model</h2>
-<p>Durable state now lives in SeekDB, a MySQL-compatible OceanBase-derived database. Control-plane state, context, artifacts, and memory all use that one database boundary. Memory is per tenant and uses native vector plus full-text retrieval.</p>
-<p>This is a pragmatic simplification. There is no MinIO, S3, Litestream, or separate object store in the core path.</p>
-<h2 id="what-i-learned">What I learned</h2>
-<p>Agents need less magic and more runtime discipline. Even a personal agent runtime has to answer boring operational questions:</p>
+<p>If cancellation has already changed the run state, successful finalization is
+rejected. A cancelled run cannot leave behind successful output, updated
+context, or a delivery row. A second finalization is rejected as well.</p>
+<p>This transaction does not roll back external tool effects that occurred before
+it. Its guarantee is narrower: readers do not observe a successful run whose
+output, terminal trace, context, and delivery intent disagree with one another.
+That is the consistency boundary the runtime can actually own.</p>
+<h2 id="delivery-is-durable-intent-not-a-callback-hidden-in-execution">Delivery is durable intent, not a callback hidden in execution</h2>
+<p>Every successful result is pullable. Delivery exists only when the caller
+provides an explicit destination such as <code>tg:42</code>; scope is never silently
+treated as an address.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Telegram -&gt; webhook -&gt; turn with explicit tg:&lt;chat_id&gt; destination
+</span></span><span style="display:flex;"><span>agentd    -&gt; atomic run finalization -&gt; delivery outbox
+</span></span><span style="display:flex;"><span>adapter   -&gt; claim -&gt; Telegram API -&gt; acknowledge
+</span></span></code></pre></div><p>Delivery rows reference the run instead of copying its output. An adapter
+claims pending work with a random token and expiry, performs the remote side
+effect, and acknowledges one of <code>delivered</code>, <code>retry</code>, or <code>failed</code>. An expired
+claim can be issued again; a retry updates the same row rather than inserting a
+new delivery.</p>
+<p>The independent
+<a href="https://github.com/minifish-org/agentd-telegram-adapter"><code>agentd-telegram-adapter</code></a>
+uses exactly this interface. Its webhook path submits a turn and asks for an
+explicit Telegram destination. It does not send a direct reply from the webhook
+handler and does not fall back to polling run output as a second delivery path.
+This removes two easy sources of duplicate messages.</p>
+<p>The outbox still cannot prove that a remote system performed an effect if the
+adapter crashes before acknowledgement. Claim expiry and retry make recovery
+possible; they do not manufacture exactly-once semantics from an external API.</p>
+<h2 id="state-is-separated-by-meaning-not-by-service-count">State is separated by meaning, not by service count</h2>
+<p>The runtime uses one libSQL database. The schema separates responsibilities:</p>
 <ul>
-<li>context scopes matter</li>
-<li>retries can duplicate work</li>
-<li>memory needs indexing and pruning</li>
-<li>tools need permission boundaries</li>
-<li>failures need artifacts and logs</li>
-<li>callers need a stable way to wait for output</li>
+<li>runs own activation, status, canonical output, and requested destination;</li>
+<li><code>run_log</code> owns raw execution observations;</li>
+<li>contexts own recent messages for a scope;</li>
+<li>memory owns explicit durable facts plus lexical and semantic indexes;</li>
+<li>artifacts own larger payloads;</li>
+<li>deliveries own remote-delivery state and retry fields;</li>
+<li>schedules and MCP registrations remain tenant-scoped resources.</li>
 </ul>
-<p>The useful boundary is no longer just Wasm. It is the turn contract plus explicit host capabilities.</p>
-<h2 id="current-status">Current status</h2>
-<p><code>agentd</code> is experimental and private. It is useful as a lab for runtime shape, but I do not consider it a public platform yet. The public lesson is the architecture: keep transports outside the core runtime, keep tool capabilities explicit, and make every run produce inspectable output.</p>
+<p>This is intentionally less infrastructure than earlier prototypes. There is no
+separate object store, vector service, audit database, or replay database. The
+memory implementation keeps canonical text, an FTS5 index, and a pinned
+384-dimension E5 embedding together; lexical and semantic ranks are fused with
+RRF.</p>
+<p>The trade-off is equally explicit: this pre-1.0 runtime does not preserve schema
+or HTTP compatibility. Runtime data is treated as disposable. A schema mismatch
+requires <code>--reset-data</code>, not a migration. That is acceptable for the current
+personal-runtime scope, but it would not be an acceptable default for a mature
+multi-user platform.</p>
+<h2 id="design-claims-should-point-to-executable-evidence">Design claims should point to executable evidence</h2>
+<p>The repository includes a
+<a href="https://github.com/minifish-org/agentd/blob/main/docs/reliability.md"><code>reliability matrix</code></a>
+that maps each important property to a named test. The current suite covers
+tenant-scoped request deduplication, same-scope serialization, failed-agent lane
+release, atomic finalization, cancellation races, pull-only success, delivery
+reclaim and acknowledgement, MCP scoping, public-web network boundaries, memory
+scoping, schema mismatch, and non-loopback authentication requirements.</p>
+<p>There is also a credential-free deterministic demo:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>git clone https://github.com/minifish-org/agentd.git
+</span></span><span style="display:flex;"><span>cd agentd
+</span></span><span style="display:flex;"><span>./scripts/demo-e2e.sh
+</span></span></code></pre></div><p>It starts a loopback OpenAI-compatible fixture, starts <code>agentd</code> with a fresh
+database, creates a tenant and agent, submits a turn, waits for the result,
+inspects the trace, verifies pull-only behavior, and exercises artifact storage.
+The first run downloads about 448 MiB of revision- and checksum-pinned embedding
+assets.</p>
+<p>The fixture proves the documented runtime and API path. It does not prove model
+quality, real-provider tool compatibility, prompt-injection resistance,
+streaming behavior, or production latency. The release workflow separately runs
+the real embedding smoke test and builds and inspects the complete container
+image.</p>
+<h2 id="the-gaps-are-part-of-the-design-document">The gaps are part of the design document</h2>
+<p>The public alpha does not claim evidence for:</p>
+<ul>
+<li>process-kill fault injection at every transaction boundary;</li>
+<li>multi-process or multi-host coordination, failover, or replication;</li>
+<li>compatibility across database schema or HTTP versions;</li>
+<li>load, soak, latency, quota, or denial-of-service limits;</li>
+<li>deterministic replay or rollback of external tool effects;</li>
+<li>sandboxing of operator-configured MCP processes;</li>
+<li>behavior against every provider, MCP server, or transport adapter;</li>
+<li>model safety or factual correctness.</li>
+</ul>
+<p>Its bearer token is an instance-wide operator credential, not end-user
+authentication. Tenants provide resource namespaces; they do not isolate
+mutually distrustful users who share that token. TLS termination, rate limits,
+backups, and host-level resource isolation remain deployment responsibilities.
+The full boundary is documented in the
+<a href="https://github.com/minifish-org/agentd/blob/main/docs/threat-model.md"><code>threat model</code></a>.</p>
+<p>Publishing these gaps is useful because an experimental system is easiest to
+overstate precisely where its tests end. A reliability matrix should show both
+the properties under test and the empty cells.</p>
+<h2 id="what-building-it-changed-for-me">What building it changed for me</h2>
+<p>My distributed-database background makes me look for ownership, monotonic
+boundaries, and failure states before adding features. <code>agentd</code> applies those
+habits at a smaller scale:</p>
+<ol>
+<li>A conversation scope needs an execution owner, not just a string in a prompt.</li>
+<li>Idempotent submission, deterministic replay, and external-effect recovery are
+separate problems.</li>
+<li>Successful output is not complete until related durable state agrees at one
+transaction boundary.</li>
+<li>Transport integration belongs outside the runtime, but its delivery intent
+must still participate in finalization.</li>
+<li>A tool catalog is a security boundary only when the host validates it and the
+deployment respects what the host cannot isolate.</li>
+<li>Tests and explicit omissions are stronger project documentation than a long
+feature list.</li>
+</ol>
+<p><code>agentd</code> remains experimental. It is not a general workflow engine, an HA agent
+platform, or a sandbox for untrusted code. It is a public attempt to make one
+personal-agent turn durable, scoped, inspectable, and deliverable—and to state
+precisely where those guarantees stop.</p>
+<p>Source, release notes, and the reproducible demo are available in the
+<a href="https://github.com/minifish-org/agentd"><code>minifish-org/agentd</code></a> repository under
+Apache-2.0.</p>
 ]]></content:encoded>
     </item>
     <item>
