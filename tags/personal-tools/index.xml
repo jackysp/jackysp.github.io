@@ -12,7 +12,7 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sat, 15 Aug 2026 13:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 15 Aug 2026 16:11:02 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/personal-tools/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Minifish Lab Projects</title>
@@ -75,7 +75,7 @@
           <td>Agent runtime</td>
           <td>Public</td>
           <td>Experimental alpha</td>
-          <td><a href="/posts/agentd-wasm-agent-runtime/">agentd: A Transport-Neutral Runtime for Personal Agents</a></td>
+          <td><a href="/posts/agentd-transport-neutral-runtime/">agentd: A Transport-Neutral Runtime for Personal Agents</a></td>
       </tr>
       <tr>
           <td><code>canopy</code></td>

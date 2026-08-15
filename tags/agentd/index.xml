@@ -12,21 +12,15 @@
     <generator>Hugo -- 0.161.1</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sat, 15 Aug 2026 13:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 15 Aug 2026 16:11:02 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/agentd/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>agentd: A Transport-Neutral Runtime for Personal Agents</title>
-      <link>https://blog.minifish.org/posts/agentd-wasm-agent-runtime/</link>
-      <pubDate>Tue, 26 May 2026 09:00:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/posts/agentd-wasm-agent-runtime/</guid>
+      <link>https://blog.minifish.org/posts/agentd-transport-neutral-runtime/</link>
+      <pubDate>Sat, 15 Aug 2026 16:11:02 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/agentd-transport-neutral-runtime/</guid>
       <description>A systems-level look at agentd, a durable single-host runtime for personal agents with scoped execution, explicit capabilities, inspectable traces, and transactional delivery.</description>
-      <content:encoded><![CDATA[<blockquote>
-<p><strong>Updated August 15, 2026:</strong> The first version of this note described an
-earlier private prototype centered on Wasm. This rewrite follows the public
-<a href="https://github.com/minifish-org/agentd/releases/tag/v0.1.0-alpha.1"><code>v0.1.0-alpha.1</code></a>
-runtime. I kept the original URL so existing links continue to work.</p>
-</blockquote>
-<p>Most personal-agent demos begin with a chat surface: receive a message, call a
+      <content:encoded><![CDATA[<p>Most personal-agent demos begin with a chat surface: receive a message, call a
 model, perhaps execute a tool, and send the answer back. That is enough to show
 the interaction. It does not define what should happen when two messages arrive
 for the same conversation, a process restarts, a delivery attempt times out, or

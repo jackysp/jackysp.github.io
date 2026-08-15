@@ -2,20 +2,47 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://blog.minifish.org/tags/agentd/</loc>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/agentd-transport-neutral-runtime/</loc>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/agents/</loc>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/</loc>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/distributed-systems/</loc>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/infrastructure/</loc>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/mcp/</loc>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/</loc>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/</loc>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/runtime/</loc>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/</loc>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/categories/ai-tools/</loc>
     <lastmod>2026-06-12T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/apple-silicon/</loc>
     <lastmod>2026-06-12T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/categories/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/midi/</loc>
     <lastmod>2026-06-12T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/mlx/</loc>
     <lastmod>2026-06-12T09:00:00+08:00</lastmod>
@@ -29,12 +56,6 @@
     <loc>https://blog.minifish.org/tags/music-ai/</loc>
     <lastmod>2026-06-12T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/posts/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/driftloop/</loc>
     <lastmod>2026-06-11T09:00:00+08:00</lastmod>
   </url><url>
@@ -42,7 +63,7 @@
     <lastmod>2026-06-11T09:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/categories/engineering/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/generative-music/</loc>
     <lastmod>2026-06-11T09:00:00+08:00</lastmod>
@@ -52,9 +73,6 @@
   </url><url>
     <loc>https://blog.minifish.org/tags/webaudio/</loc>
     <lastmod>2026-06-11T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/agents/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/game-ai/</loc>
     <lastmod>2026-06-10T09:00:00+08:00</lastmod>
@@ -82,9 +100,6 @@
   </url><url>
     <loc>https://blog.minifish.org/tags/graphhopper/</loc>
     <lastmod>2026-06-09T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/mcp/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/singapore/</loc>
     <lastmod>2026-06-09T09:00:00+08:00</lastmod>
@@ -197,9 +212,6 @@
     <loc>https://blog.minifish.org/tags/trading-systems/</loc>
     <lastmod>2026-05-31T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/tags/distributed-systems/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/kv-store/</loc>
     <lastmod>2026-05-30T09:00:00+08:00</lastmod>
   </url><url>
@@ -256,18 +268,6 @@
   </url><url>
     <loc>https://blog.minifish.org/posts/tegdb-embedded-database/</loc>
     <lastmod>2026-05-27T09:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/agentd/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/posts/agentd-wasm-agent-runtime/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/categories/infrastructure/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/runtime/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/capacity-planning/</loc>
     <lastmod>2026-05-24T08:25:00+08:00</lastmod>
@@ -330,22 +330,22 @@
     <lastmod>2026-05-24T08:05:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/ai-tools/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/databases/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/minifish-lab-projects/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/minifish-lab/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/personal-tools/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/projects/</loc>
-    <lastmod>2026-08-15T13:00:00+08:00</lastmod>
+    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/ai/</loc>
     <lastmod>2026-03-20T21:00:00+08:00</lastmod>
