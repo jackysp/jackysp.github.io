@@ -9,7 +9,7 @@
       <url>https://blog.minifish.org/android-chrome-512x512.png</url>
       <link>https://blog.minifish.org/android-chrome-512x512.png</link>
     </image>
-    <generator>Hugo -- 0.161.1</generator>
+    <generator>Hugo -- 0.165.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
     <lastBuildDate>Sat, 15 Aug 2026 16:11:02 +0800</lastBuildDate>
@@ -58,34 +58,34 @@ failure model.</p>
 <h2 id="scope-is-both-context-ownership-and-a-concurrency-key">Scope is both context ownership and a concurrency key</h2>
 <p>Every run moves through five states:</p>
 <table>
-  <thead>
-      <tr>
-          <th>State</th>
-          <th>Meaning</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><code>queued</code></td>
-          <td>Durable work exists but has not acquired its execution lane.</td>
-      </tr>
-      <tr>
-          <td><code>running</code></td>
-          <td>The run owns its <code>(tenant, agent, scope)</code> lane.</td>
-      </tr>
-      <tr>
-          <td><code>succeeded</code></td>
-          <td>Canonical output and related durable state were finalized.</td>
-      </tr>
-      <tr>
-          <td><code>failed</code></td>
-          <td>Execution ended without a successful result.</td>
-      </tr>
-      <tr>
-          <td><code>cancelled</code></td>
-          <td>Cancellation won and successful finalization is no longer allowed.</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>State</th>
+					<th>Meaning</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>queued</code></td>
+					<td>Durable work exists but has not acquired its execution lane.</td>
+			</tr>
+			<tr>
+					<td><code>running</code></td>
+					<td>The run owns its <code>(tenant, agent, scope)</code> lane.</td>
+			</tr>
+			<tr>
+					<td><code>succeeded</code></td>
+					<td>Canonical output and related durable state were finalized.</td>
+			</tr>
+			<tr>
+					<td><code>failed</code></td>
+					<td>Execution ended without a successful result.</td>
+			</tr>
+			<tr>
+					<td><code>cancelled</code></td>
+					<td>Cancellation won and successful finalization is no longer allowed.</td>
+			</tr>
+	</tbody>
 </table>
 <p>The tuple <code>(tenant, agent, scope)</code> is the serialization boundary. Runs for the
 same tuple execute one at a time; unrelated scopes can run concurrently. The
@@ -483,41 +483,41 @@ Apache-2.0.</p>
 <h3 id="a-simplified-workflowmd-sanitized">A simplified <code>WORKFLOW.md</code> (sanitized)</h3>
 <p>Below is the <strong>shape</strong> of the workflow file I run. Values such as the Linear project slug, workspace directory, and git remote are <strong>placeholders</strong>—replace them with your own. Do not copy real identifiers from this post into production without checking them in Linear and Git.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span>---
-</span></span><span style="display:flex;"><span>tracker:
-</span></span><span style="display:flex;"><span>  kind: linear
-</span></span><span style="display:flex;"><span>  project_slug: &#34;your-linear-project-slug&#34;
-</span></span><span style="display:flex;"><span>  active_states:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Todo
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> In Progress
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Rework
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Merging
-</span></span><span style="display:flex;"><span>  terminal_states:
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Done
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Canceled
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Cancelled
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">-</span> Duplicate
+</span></span><span style="display:flex;"><span><span style="color:#f92672">tracker</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">kind</span>: <span style="color:#ae81ff">linear</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">project_slug</span>: <span style="color:#e6db74">&#34;your-linear-project-slug&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">active_states</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">Todo</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">In Progress</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">Rework</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">Merging</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">terminal_states</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">Done</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">Canceled</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">Cancelled</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">Duplicate</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>polling:
-</span></span><span style="display:flex;"><span>  interval_ms: 5000
+</span></span><span style="display:flex;"><span><span style="color:#f92672">polling</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">interval_ms</span>: <span style="color:#ae81ff">5000</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>workspace:
-</span></span><span style="display:flex;"><span>  root: ~/symphony-workspaces/your-repo-short-name
+</span></span><span style="display:flex;"><span><span style="color:#f92672">workspace</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">root</span>: <span style="color:#ae81ff">~/symphony-workspaces/your-repo-short-name</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>hooks:
-</span></span><span style="display:flex;"><span>  after_create: |
-</span></span><span style="display:flex;"><span>    git clone --depth 1 https://github.com/your-org/your-repo.git .
-</span></span><span style="display:flex;"><span>    npm install
+</span></span><span style="display:flex;"><span><span style="color:#f92672">hooks</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">after_create</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    git clone --depth 1 https://github.com/your-org/your-repo.git .
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    npm install</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>agent:
-</span></span><span style="display:flex;"><span>  max_concurrent_agents: 1
-</span></span><span style="display:flex;"><span>  max_turns: 20
+</span></span><span style="display:flex;"><span><span style="color:#f92672">agent</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">max_concurrent_agents</span>: <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">max_turns</span>: <span style="color:#ae81ff">20</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>codex:
-</span></span><span style="display:flex;"><span>  command: codex app-server
-</span></span><span style="display:flex;"><span>  approval_policy: never
-</span></span><span style="display:flex;"><span>  thread_sandbox: workspace-write
-</span></span><span style="display:flex;"><span>  turn_sandbox_policy:
-</span></span><span style="display:flex;"><span>    type: workspaceWrite
+</span></span><span style="display:flex;"><span><span style="color:#f92672">codex</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">command</span>: <span style="color:#ae81ff">codex app-server</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">approval_policy</span>: <span style="color:#ae81ff">never</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">thread_sandbox</span>: <span style="color:#ae81ff">workspace-write</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">turn_sandbox_policy</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">type</span>: <span style="color:#ae81ff">workspaceWrite</span>
 </span></span><span style="display:flex;"><span>---
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>You are working on a Linear issue {{ issue.identifier }}.

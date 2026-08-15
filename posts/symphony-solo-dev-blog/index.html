@@ -29,41 +29,41 @@
 </span></span><span style=display:flex><span>cd /path/to/openai/symphony/elixir
 </span></span><span style=display:flex><span>mise exec -- ./bin/symphony /path/to/your/automated/repo/WORKFLOW.md
 </span></span></code></pre></div><p>Then verify:</p><ul><li>The process stays running and polls on the interval you set (<code>polling.interval_ms</code> in the template).</li><li>If you passed <code>--port</code>, you can hit the dashboard/API URLs documented in the Elixir README for live state.</li></ul><h3 id=5-first-linear-issue-the-mistake-that-looks-like-symphony-is-broken>5. First Linear issue (the mistake that looks like “Symphony is broken”)<a hidden class=anchor aria-hidden=true href=#5-first-linear-issue-the-mistake-that-looks-like-symphony-is-broken>#</a></h3><p>Do this in order or you will get silent no-ops:</p><ol><li>Create or pick a <strong>Linear project</strong> whose slug matches <strong><code>tracker.project_slug</code></strong> exactly.</li><li>Create the issue <strong>inside that project</strong>, not as a free-floating team issue.</li><li>Put the issue in an <strong>active</strong> state listed under <code>active_states</code> in <code>WORKFLOW.md</code> (for the default template, something like <code>Todo</code> or <code>In Progress</code>—not <code>Backlog</code> if your prompt tells the agent to ignore <code>Backlog</code>).</li></ol><p>If Symphony polls successfully but your issue never enters the watched project, you will see healthy logs and zero useful work—this is the <code>project_slug</code> lesson from later in this post.</p><h3 id=6-two-repos-repeat-the-pattern>6. Two repos (repeat the pattern)<a hidden class=anchor aria-hidden=true href=#6-two-repos-repeat-the-pattern>#</a></h3><p>For each codebase, maintain <strong>its own</strong> <code>WORKFLOW.md</code>, <strong>its own</strong> Linear project (and slug), <strong>its own</strong> <code>workspace.root</code>, and run <strong>its own</strong> <code>./bin/symphony .../WORKFLOW.md</code> process. Trying to multiplex multiple repositories through one workflow file is how you get accidental coupling and confusing failures.</p><hr><p>If you want the upstream one-liner to bootstrap with Codex inside your repo, the FAQ in the Elixir README suggests pointing Codex at <a href=https://github.com/openai/symphony/blob/main/elixir/README.md><code>elixir/README.md</code></a> and asking it to wire files for your codebase—still verify <code>project_slug</code>, workspace paths, and git remotes yourself.</p><h2 id=why-i-tried-this>Why I tried this<a hidden class=anchor aria-hidden=true href=#why-i-tried-this>#</a></h2><p>What interested me most about Symphony was not “AI that writes code” in isolation. I already have coding tools for that. The interesting part was orchestration:</p><ul><li>a task source</li><li>a state machine</li><li>an isolated workspace per task</li><li>an agent runtime</li><li>a repeatable loop from issue to code change</li></ul><p>That is a different shape of workflow from normal editor-assisted coding.</p><h2 id=why-i-used-linear-instead-of-github-issues>Why I used Linear instead of GitHub Issues<a hidden class=anchor aria-hidden=true href=#why-i-used-linear-instead-of-github-issues>#</a></h2><p>One thing became clear very quickly: Symphony is designed around Linear as the source of truth for work. It does not naturally start from GitHub Issues. Instead, the workflow looks more like this:</p><ol><li>Create a Linear issue</li><li>Symphony polls the configured Linear project</li><li>Symphony creates a dedicated workspace for that issue</li><li>Codex works inside that workspace</li><li>The workflow advances by issue state</li></ol><p>At first this felt a little strange, because I am used to GitHub Issues being the center of project work. But after testing it, I could see the logic. Linear is the task system. GitHub is the code system.</p><h2 id=the-first-practical-lesson-project-scoping-matters>The first practical lesson: project scoping matters<a hidden class=anchor aria-hidden=true href=#the-first-practical-lesson-project-scoping-matters>#</a></h2><p>A surprisingly easy mistake was creating an issue in the wrong place.</p><p>I had a Linear workspace and a correctly configured project, but the first issue I created was not actually attached to the project that Symphony was watching. From the outside it looked like “nothing is happening,” but the real problem was much simpler: Symphony was correctly polling the configured project and my issue was outside that scope.</p><p>That was a good reminder that in this setup, <code>project_slug</code> is not a decorative field. It is the queue boundary.</p><h2 id=making-workflowmd-actually-usable>Making <code>WORKFLOW.md</code> actually usable<a hidden class=anchor aria-hidden=true href=#making-workflowmd-actually-usable>#</a></h2><p>The <a href=https://github.com/openai/symphony/blob/main/elixir/WORKFLOW.md>stock <code>elixir/WORKFLOW.md</code></a> in the Symphony repository is intentionally large: long status maps, PR sweeps, workpad templates, and guardrails meant for serious team-style orchestration. For solo maintenance on a small repo, that is often more surface area than you want to own on day one.</p><p>What I actually wanted was a <strong>small YAML front matter</strong> plus a <strong>short agent brief</strong> that still respects Linear state and runs a tight validate loop.</p><p>The elements I kept in practice:</p><ul><li>one Linear project per repository</li><li>one Symphony process per repository</li><li>one workspace root per repository</li><li>explicit active and terminal states (only the ones I really use)</li><li>explicit install/setup commands in <code>after_create</code></li><li>explicit validation before completion (<code>npm</code> in my case)</li><li><code>codex app-server</code> with sandbox left at workspace write, approval policy set explicitly so the run does not stall on prompts</li></ul><h3 id=a-simplified-workflowmd-sanitized>A simplified <code>WORKFLOW.md</code> (sanitized)<a hidden class=anchor aria-hidden=true href=#a-simplified-workflowmd-sanitized>#</a></h3><p>Below is the <strong>shape</strong> of the workflow file I run. Values such as the Linear project slug, workspace directory, and git remote are <strong>placeholders</strong>—replace them with your own. Do not copy real identifiers from this post into production without checking them in Linear and Git.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-md data-lang=md><span style=display:flex><span>---
-</span></span><span style=display:flex><span>tracker:
-</span></span><span style=display:flex><span>  kind: linear
-</span></span><span style=display:flex><span>  project_slug: &#34;your-linear-project-slug&#34;
-</span></span><span style=display:flex><span>  active_states:
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>-</span> Todo
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>-</span> In Progress
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>-</span> Rework
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>-</span> Merging
-</span></span><span style=display:flex><span>  terminal_states:
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>-</span> Done
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>-</span> Canceled
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>-</span> Cancelled
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>-</span> Duplicate
+</span></span><span style=display:flex><span><span style=color:#f92672>tracker</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>linear</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>project_slug</span>: <span style=color:#e6db74>&#34;your-linear-project-slug&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>active_states</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Todo</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>In Progress</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Rework</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Merging</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>terminal_states</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Done</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Canceled</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Cancelled</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Duplicate</span>
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>polling:
-</span></span><span style=display:flex><span>  interval_ms: 5000
+</span></span><span style=display:flex><span><span style=color:#f92672>polling</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>interval_ms</span>: <span style=color:#ae81ff>5000</span>
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>workspace:
-</span></span><span style=display:flex><span>  root: ~/symphony-workspaces/your-repo-short-name
+</span></span><span style=display:flex><span><span style=color:#f92672>workspace</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>root</span>: <span style=color:#ae81ff>~/symphony-workspaces/your-repo-short-name</span>
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>hooks:
-</span></span><span style=display:flex><span>  after_create: |
-</span></span><span style=display:flex><span>    git clone --depth 1 https://github.com/your-org/your-repo.git .
-</span></span><span style=display:flex><span>    npm install
+</span></span><span style=display:flex><span><span style=color:#f92672>hooks</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>after_create</span>: |<span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    git clone --depth 1 https://github.com/your-org/your-repo.git .
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    npm install</span>
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>agent:
-</span></span><span style=display:flex><span>  max_concurrent_agents: 1
-</span></span><span style=display:flex><span>  max_turns: 20
+</span></span><span style=display:flex><span><span style=color:#f92672>agent</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>max_concurrent_agents</span>: <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>max_turns</span>: <span style=color:#ae81ff>20</span>
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>codex:
-</span></span><span style=display:flex><span>  command: codex app-server
-</span></span><span style=display:flex><span>  approval_policy: never
-</span></span><span style=display:flex><span>  thread_sandbox: workspace-write
-</span></span><span style=display:flex><span>  turn_sandbox_policy:
-</span></span><span style=display:flex><span>    type: workspaceWrite
+</span></span><span style=display:flex><span><span style=color:#f92672>codex</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>command</span>: <span style=color:#ae81ff>codex app-server</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>approval_policy</span>: <span style=color:#ae81ff>never</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>thread_sandbox</span>: <span style=color:#ae81ff>workspace-write</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>turn_sandbox_policy</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>type</span>: <span style=color:#ae81ff>workspaceWrite</span>
 </span></span><span style=display:flex><span>---
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>You are working on a Linear issue {{ issue.identifier }}.

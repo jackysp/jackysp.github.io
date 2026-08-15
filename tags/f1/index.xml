@@ -9,7 +9,7 @@
       <url>https://blog.minifish.org/android-chrome-512x512.png</url>
       <link>https://blog.minifish.org/android-chrome-512x512.png</link>
     </image>
-    <generator>Hugo -- 0.161.1</generator>
+    <generator>Hugo -- 0.165.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
     <lastBuildDate>Mon, 25 Dec 2017 22:21:06 +0800</lastBuildDate>
@@ -40,18 +40,18 @@
 </ul>
 <p>Summarized in a table:</p>
 <table>
-  <thead>
-      <tr>
-          <th>delete only</th>
-          <th>write only</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>Tables and columns can only be deleted; indexes can be updated (tables not really)</td>
-          <td>Columns and indexes can be deleted, updated, and inserted</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>delete only</th>
+					<th>write only</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Tables and columns can only be deleted; indexes can be updated (tables not really)</td>
+					<td>Columns and indexes can be deleted, updated, and inserted</td>
+			</tr>
+	</tbody>
 </table>
 <p>The first state is rather peculiar, and the second one even more so—&ldquo;can not read&rdquo; might have been a better name for it. It&rsquo;s said that this design allows two concurrent states to behave consistently, specifically pairs like (absent and delete only), (delete only and write only), and (write only and public).</p>
 <p>Examples:</p>

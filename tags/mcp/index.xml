@@ -9,7 +9,7 @@
       <url>https://blog.minifish.org/android-chrome-512x512.png</url>
       <link>https://blog.minifish.org/android-chrome-512x512.png</link>
     </image>
-    <generator>Hugo -- 0.161.1</generator>
+    <generator>Hugo -- 0.165.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
     <lastBuildDate>Sat, 15 Aug 2026 16:11:02 +0800</lastBuildDate>
@@ -58,34 +58,34 @@ failure model.</p>
 <h2 id="scope-is-both-context-ownership-and-a-concurrency-key">Scope is both context ownership and a concurrency key</h2>
 <p>Every run moves through five states:</p>
 <table>
-  <thead>
-      <tr>
-          <th>State</th>
-          <th>Meaning</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><code>queued</code></td>
-          <td>Durable work exists but has not acquired its execution lane.</td>
-      </tr>
-      <tr>
-          <td><code>running</code></td>
-          <td>The run owns its <code>(tenant, agent, scope)</code> lane.</td>
-      </tr>
-      <tr>
-          <td><code>succeeded</code></td>
-          <td>Canonical output and related durable state were finalized.</td>
-      </tr>
-      <tr>
-          <td><code>failed</code></td>
-          <td>Execution ended without a successful result.</td>
-      </tr>
-      <tr>
-          <td><code>cancelled</code></td>
-          <td>Cancellation won and successful finalization is no longer allowed.</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>State</th>
+					<th>Meaning</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>queued</code></td>
+					<td>Durable work exists but has not acquired its execution lane.</td>
+			</tr>
+			<tr>
+					<td><code>running</code></td>
+					<td>The run owns its <code>(tenant, agent, scope)</code> lane.</td>
+			</tr>
+			<tr>
+					<td><code>succeeded</code></td>
+					<td>Canonical output and related durable state were finalized.</td>
+			</tr>
+			<tr>
+					<td><code>failed</code></td>
+					<td>Execution ended without a successful result.</td>
+			</tr>
+			<tr>
+					<td><code>cancelled</code></td>
+					<td>Cancellation won and successful finalization is no longer allowed.</td>
+			</tr>
+	</tbody>
 </table>
 <p>The tuple <code>(tenant, agent, scope)</code> is the serialization boundary. Runs for the
 same tuple execute one at a time; unrelated scopes can run concurrently. The
