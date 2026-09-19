@@ -12,13 +12,55 @@
     <generator>Hugo -- 0.165.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sat, 15 Aug 2026 16:11:02 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 19 Sep 2026 18:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Agentd</title>
       <link>https://blog.minifish.org/tags/agentd/</link>
-      <pubDate>Sat, 15 Aug 2026 16:11:02 +0800</pubDate>
+      <pubDate>Sat, 19 Sep 2026 18:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/agentd/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Disaster-Recovery</title>
+      <link>https://blog.minifish.org/tags/disaster-recovery/</link>
+      <pubDate>Sat, 19 Sep 2026 18:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/disaster-recovery/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Homelab</title>
+      <link>https://blog.minifish.org/tags/homelab/</link>
+      <pubDate>Sat, 19 Sep 2026 18:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/homelab/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Lightsail</title>
+      <link>https://blog.minifish.org/tags/lightsail/</link>
+      <pubDate>Sat, 19 Sep 2026 18:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/lightsail/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Local-Ai</title>
+      <link>https://blog.minifish.org/tags/local-ai/</link>
+      <pubDate>Sat, 19 Sep 2026 18:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/local-ai/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Self-Hosting</title>
+      <link>https://blog.minifish.org/tags/self-hosting/</link>
+      <pubDate>Sat, 19 Sep 2026 18:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/self-hosting/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tailscale</title>
+      <link>https://blog.minifish.org/tags/tailscale/</link>
+      <pubDate>Sat, 19 Sep 2026 18:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/tailscale/</guid>
       <description></description>
     </item>
     <item>
@@ -537,13 +579,6 @@
       <link>https://blog.minifish.org/tags/tailgate/</link>
       <pubDate>Sun, 24 May 2026 08:10:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/tailgate/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tailscale</title>
-      <link>https://blog.minifish.org/tags/tailscale/</link>
-      <pubDate>Sun, 24 May 2026 08:10:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/tailscale/</guid>
       <description></description>
     </item>
     <item>

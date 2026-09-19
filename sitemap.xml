@@ -3,7 +3,43 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://blog.minifish.org/tags/agentd/</loc>
-    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
+    <lastmod>2026-09-19T18:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/</loc>
+    <lastmod>2026-09-19T18:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/disaster-recovery/</loc>
+    <lastmod>2026-09-19T18:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/homelab/</loc>
+    <lastmod>2026-09-19T18:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/infrastructure/</loc>
+    <lastmod>2026-09-19T18:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/gmk-lightsail-homelab-architecture/</loc>
+    <lastmod>2026-09-19T18:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/lightsail/</loc>
+    <lastmod>2026-09-19T18:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/local-ai/</loc>
+    <lastmod>2026-09-19T18:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/</loc>
+    <lastmod>2026-09-19T18:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/</loc>
+    <lastmod>2026-09-19T18:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/self-hosting/</loc>
+    <lastmod>2026-09-19T18:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/</loc>
+    <lastmod>2026-09-19T18:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/tailscale/</loc>
+    <lastmod>2026-09-19T18:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/agentd-transport-neutral-runtime/</loc>
     <lastmod>2026-08-15T16:11:02+08:00</lastmod>
@@ -11,28 +47,13 @@
     <loc>https://blog.minifish.org/tags/agents/</loc>
     <lastmod>2026-08-15T16:11:02+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/categories/</loc>
-    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/distributed-systems/</loc>
-    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/categories/infrastructure/</loc>
     <lastmod>2026-08-15T16:11:02+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/mcp/</loc>
     <lastmod>2026-08-15T16:11:02+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/</loc>
-    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/posts/</loc>
-    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/runtime/</loc>
-    <lastmod>2026-08-15T16:11:02+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/</loc>
     <lastmod>2026-08-15T16:11:02+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/categories/ai-tools/</loc>
@@ -309,9 +330,6 @@
     <lastmod>2026-05-24T08:10:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/tailgate-private-ai-gateway/</loc>
-    <lastmod>2026-05-24T08:10:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/tailscale/</loc>
     <lastmod>2026-05-24T08:10:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/browser-ai/</loc>
