@@ -304,7 +304,7 @@ Apache-2.0.</p>
 <p>MCP is a good fit when the tool is specific and verifiable. Route planning should not be hidden inside a chat answer. The agent should call a tool that returns geometry, distance, audit percentages, and a GPX path.</p>
 <p>For location work, the agent&rsquo;s job is orchestration. The route engine should still be a route engine.</p>
 <h2 id="current-status">Current status</h2>
-<p>Canopy is private and active. It is tied to local Singapore routing data, OneMap credentials, and a local GraphHopper runtime, so the repo is not a clean general-purpose hosted service.</p>
+<p>As of September 22, 2026, <a href="https://github.com/minifish-org/canopy">Canopy is public</a> under AGPL-3.0-or-later. It remains focused on Singapore routes and includes a Docker Compose quick start, offline tests, and map-data attribution notes. Coordinate-based routing can run without OneMap credentials; operators configure their own OneMap access for address lookup and theme POIs. The MCP endpoint is intended for local or private-network use.</p>
 ]]></content:encoded>
     </item>
     <item>

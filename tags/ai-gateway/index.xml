@@ -52,9 +52,9 @@
 <li>avoid sending private work to external providers accidentally</li>
 <li>fall back only when the route explicitly allows it</li>
 </ul>
-<h2 id="why-private">Why private</h2>
-<p>Tailgate contains too many assumptions about my own environment to be a clean open source project. It is shaped around private networking, provider credentials, model preferences, and operational defaults.</p>
-<p>The public lesson is still useful: an AI gateway does not need to start as a large platform. For one person, it can simply be a policy boundary.</p>
+<h2 id="from-a-private-deployment-to-public-code">From a private deployment to public code</h2>
+<p>Tailgate started with assumptions about my own environment: private networking, provider credentials, model preferences, and operational defaults. On September 22, 2026, I opened the <a href="https://github.com/minifish-org/tailgate">repository</a> after generalizing the setup examples and documenting the supported Rust runtime. Credentials and live deployment configuration stay outside the repository.</p>
+<p>The running gateway remains a private service. The reusable part is the policy boundary: centralized credentials, explicit routing, and protection for local inference.</p>
 <h2 id="what-i-learned">What I learned</h2>
 <p>The biggest value of a gateway is not only key management. It is reducing mental overhead.</p>
 <p>Before the gateway, every tool needed to know too much. After the gateway, tools only need:</p>
@@ -69,7 +69,7 @@
 <p>The pushed version has a clearer premium route. <code>premium/chat</code> now prefers the configured DeepSeek premium model before falling back to the configured OpenRouter premium model. Config order is also used as a tiebreaker when candidates have the same price ranking, which keeps routing behavior predictable instead of surprising.</p>
 <p>This is a good example of the gateway&rsquo;s real job: not to be clever, but to make model policy explicit. A client can ask for <code>premium/chat</code>; Tailgate decides which concrete upstream model should satisfy that tier.</p>
 <h2 id="current-status">Current status</h2>
-<p>Tailgate is active and private. I expect it to stay private unless the configuration model becomes generic enough to be useful outside my own setup.</p>
+<p>As of September 22, 2026, <a href="https://github.com/minifish-org/tailgate">Tailgate is public</a> under AGPL-3.0-only. The repository includes a localhost-first configuration, Rust setup instructions, automated tests, and secret scanning. It remains an experimental self-hosted gateway; operators supply their own inference endpoints and provider accounts.</p>
 ]]></content:encoded>
     </item>
   </channel>
