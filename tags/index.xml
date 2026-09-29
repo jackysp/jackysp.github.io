@@ -12,8 +12,50 @@
     <generator>Hugo -- 0.165.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Sat, 19 Sep 2026 18:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 29 Sep 2026 18:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Agents</title>
+      <link>https://blog.minifish.org/tags/agents/</link>
+      <pubDate>Tue, 29 Sep 2026 18:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/agents/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Code Migration</title>
+      <link>https://blog.minifish.org/tags/code-migration/</link>
+      <pubDate>Tue, 29 Sep 2026 18:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/code-migration/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>DeepSeek</title>
+      <link>https://blog.minifish.org/tags/deepseek/</link>
+      <pubDate>Tue, 29 Sep 2026 18:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/deepseek/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Go</title>
+      <link>https://blog.minifish.org/tags/go/</link>
+      <pubDate>Tue, 29 Sep 2026 18:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/go/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pi</title>
+      <link>https://blog.minifish.org/tags/pi/</link>
+      <pubDate>Tue, 29 Sep 2026 18:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/pi/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>TypeScript</title>
+      <link>https://blog.minifish.org/tags/typescript/</link>
+      <pubDate>Tue, 29 Sep 2026 18:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/typescript/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Agentd</title>
       <link>https://blog.minifish.org/tags/agentd/</link>
@@ -61,13 +103,6 @@
       <link>https://blog.minifish.org/tags/tailscale/</link>
       <pubDate>Sat, 19 Sep 2026 18:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/tailscale/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Agents</title>
-      <link>https://blog.minifish.org/tags/agents/</link>
-      <pubDate>Sat, 15 Aug 2026 16:11:02 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/agents/</guid>
       <description></description>
     </item>
     <item>
@@ -299,13 +334,6 @@
       <link>https://blog.minifish.org/tags/offline-first/</link>
       <pubDate>Wed, 03 Jun 2026 09:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/offline-first/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Typescript</title>
-      <link>https://blog.minifish.org/tags/typescript/</link>
-      <pubDate>Wed, 03 Jun 2026 09:00:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/typescript/</guid>
       <description></description>
     </item>
     <item>
