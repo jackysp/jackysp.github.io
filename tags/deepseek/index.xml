@@ -28,6 +28,7 @@
 </ul>
 <p>The first migration plan is complete: <strong>26 accepted steps across three modules</strong>. Pith builds without CGO and produces native command-line programs. That is a useful milestone, but it is not proof of complete Pi compatibility or a production-ready agent.</p>
 <p>This is the record of what we built, how we checked it, and where the experiment goes next.</p>
+<p><strong>Follow-up, October 14, 2026:</strong> <a href="../portsmith-go-incremental-pi-migration/">From One-Time Porting to Incremental Updates: Portsmith Go and Pith</a> covers the Go executor and two accepted upstream increments that followed this first port.</p>
 <h2 id="why-port-instead-of-starting-over">Why port instead of starting over?</h2>
 <p>The attraction of Pi was its separation of model access, agent execution, and tools. I did not want to reinvent every streaming edge case or every interaction in an agent loop before I could build a useful product.</p>
 <p>Go appealed to me because of its build workflow and distribution model. A compiled Go program can be a convenient artifact for a server or a user&rsquo;s computer. That does not eliminate operating-system differences, and a shell tool still needs a shell. It does reduce the runtime setup I need to explain to someone else.</p>

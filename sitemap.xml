@@ -3,39 +3,48 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://blog.minifish.org/tags/agents/</loc>
-    <lastmod>2026-09-29T18:00:00+08:00</lastmod>
+    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/categories/</loc>
-    <lastmod>2026-09-29T18:00:00+08:00</lastmod>
+    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/code-migration/</loc>
-    <lastmod>2026-09-29T18:00:00+08:00</lastmod>
+    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/engineering/</loc>
+    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/portsmith-go-incremental-pi-migration/</loc>
+    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/go/</loc>
+    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/</loc>
+    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/pi/</loc>
+    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/pith/</loc>
+    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/portsmith/</loc>
+    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/</loc>
+    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/</loc>
+    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/typescript/</loc>
+    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/deepseek/</loc>
     <lastmod>2026-09-29T18:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/categories/engineering/</loc>
-    <lastmod>2026-09-29T18:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/go/</loc>
-    <lastmod>2026-09-29T18:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/</loc>
-    <lastmod>2026-09-29T18:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/pi/</loc>
-    <lastmod>2026-09-29T18:00:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/posts/porting-pi-to-go-with-portsmith/</loc>
-    <lastmod>2026-09-29T18:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/posts/</loc>
-    <lastmod>2026-09-29T18:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/</loc>
-    <lastmod>2026-09-29T18:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/typescript/</loc>
     <lastmod>2026-09-29T18:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/agentd/</loc>

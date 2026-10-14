@@ -12,8 +12,103 @@
     <generator>Hugo -- 0.165.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Tue, 29 Sep 2026 18:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 14 Oct 2026 22:45:00 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>From One-Time Porting to Incremental Updates: Portsmith Go and Pith</title>
+      <link>https://blog.minifish.org/posts/portsmith-go-incremental-pi-migration/</link>
+      <pubDate>Wed, 14 Oct 2026 22:45:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/portsmith-go-incremental-pi-migration/</guid>
+      <description>A field report on using a Go port of Pi to execute its own upstream updates, with concrete commits, independent acceptance records, and the limits of the bootstrap.</description>
+      <content:encoded><![CDATA[<p>I used Pi to help port selected Pi components from TypeScript to Go. Then I used the resulting Go SDK, Pith, to power the tool that performs later Pi-to-Pith updates.</p>
+<p>That second part was the experiment I wanted to run after the first migration. Translating a pinned version gives you a starting point. Upstream keeps changing, and the Go implementation acquires its own callers, tests, and design choices. How do you update it without treating every release as another rewrite?</p>
+<p><a href="../porting-pi-to-go-with-portsmith/">My first report</a> covered the initial migration: a TypeScript workbench called Portsmith, powered by Pi Coding Agent, accepted 26 steps across AI, agent core, and tools. It ended with a plan to let Pith help maintain Pith. This follow-up covers the Go executor and two accepted upstream increments that followed.</p>
+<p>The result is a bootstrapped maintenance workflow. Pith runs the implementation agent inside Portsmith Go; Portsmith Go checks and integrates updates to Pith. A developer or an external coding assistant still prepares and reviews the behavior contracts and acceptance tests.</p>
+<h2 id="moving-the-migration-executor-to-pith">Moving the migration executor to Pith</h2>
+<p><a href="https://github.com/minifish-org/portsmith-go">Portsmith Go</a> is a Go port of the original migration workbench. Its <a href="https://github.com/minifish-org/portsmith-go/blob/710f8b91843d691ecb00fd7d0a8bf9c3354ab3ae/migration/results/portsmith.json">original acceptance receipt</a> records seven accepted steps, delivered in commit <a href="https://github.com/minifish-org/portsmith-go/commit/710f8b91843d691ecb00fd7d0a8bf9c3354ab3ae"><code>710f8b9</code></a>. The original TypeScript executor produced that port. Incremental sync and integration repair were subsequent native Go additions.</p>
+<p>The important change is in the execution backend. In <a href="https://github.com/minifish-org/portsmith-go/blob/932b7c3e68379c7349074809bff00ae2d9b20faf/internal/portsmith/agent.go#L590"><code>agent.go</code></a>, <code>RunPort</code> opens a durable Pith session, constructs a tool registry, and calls <code>codingagent.CreateAgentSession</code>. It supplies the selected model, resources, session manager, and retry and compaction policy. This is a library call inside the Go process.</p>
+<p>The agent gets Pith&rsquo;s native read, write, edit, shell, and search tools, plus Portsmith&rsquo;s <code>verify_candidate</code> tool. It can implement a candidate, receive compiler and independent-test diagnostics, and repair the code in the same conversation. Portsmith owns acceptance, integration, and commits. The agent&rsquo;s final message is not the acceptance decision.</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart TD
+    PI[Upstream Pi revisions] --&gt; REVIEW[Reviewed increment and frozen tests]
+    REVIEW --&gt; GO[Portsmith Go]
+    PITH[Pith Go SDK] --&gt;|Runs implementation agent| GO
+    GO --&gt;|Verifies and integrates updates| PITH
+</code></pre><p>This is the bootstrap: the migrated runtime becomes a dependency of the tool that updates that runtime. It also creates a practical version boundary. Portsmith Go links a pinned Pith revision through <code>go.mod</code>; accepting new Pith source does not replace the executor already running. Updating the consumer&rsquo;s dependency and rebuilding it is a separate step.</p>
+<p>The Go product runs without a Node or Pi installation. It still needs Go and Git to compile, verify, and integrate target projects. Its TypeScript analyzer embeds the TypeScript compiler in Goja, a JavaScript interpreter implemented in Go. The analyzer has not itself been rewritten as a Go TypeScript compiler.</p>
+<h2 id="two-accepted-upstream-increments">Two accepted upstream increments</h2>
+<p>The Pith history contains two useful milestones after the initial port. Dates below use Singapore time, UTC+8.</p>
+<table>
+	<thead>
+			<tr>
+					<th>Accepted commit</th>
+					<th>Date</th>
+					<th>Upstream revision</th>
+					<th>Scope</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><a href="https://github.com/minifish-org/pith/commit/0044a030ed7a2f4f60dde3f486965bbb182c6edf"><code>0044a03</code></a></td>
+					<td>October 1, 2026</td>
+					<td><code>002fc8385268</code></td>
+					<td>Three steps for provider stream events, agent observation, and SDK observation</td>
+			</tr>
+			<tr>
+					<td><a href="https://github.com/minifish-org/pith/commit/2f7f735997b70395888e222a24bc44756119a500"><code>2f7f735</code></a></td>
+					<td>October 3, 2026</td>
+					<td><code>a13d35a742c6</code></td>
+					<td>Nine steps for the selected Pi 1.0 SDK capabilities</td>
+			</tr>
+	</tbody>
+</table>
+<p>The first increment exercised the route from provider adapters through the agent and into the embedded SDK. Its <a href="https://github.com/minifish-org/pith/blob/0044a030ed7a2f4f60dde3f486965bbb182c6edf/migration/results/pi-002fc8385268.json">receipt</a> identifies <code>portsmith-native-go-v1</code> as the verifier. It was already using the native Go workflow.</p>
+<p>The Pi 1.0 increment expanded the scope substantially. Its <a href="https://github.com/minifish-org/pith/blob/2f7f735997b70395888e222a24bc44756119a500/migration/sync/pi-1.0/README.md">reviewed plan</a> covered model foundations and catalogs, model operations, streaming protocols, authentication, agent core, MCP, Codemode, SDK integration, and delivery.</p>
+<p>The <a href="https://github.com/minifish-org/pith/blob/2f7f735997b70395888e222a24bc44756119a500/migration/sync/pi-1.0/workflow.json">workflow</a> authorized changes to <strong>234 existing files</strong>, kept <strong>815 baseline files read-only</strong>, and named <strong>26 independent acceptance tests</strong> across nine steps. Those counts describe the prepared scope: they are not a count of files actually changed or proof that every upstream behavior was covered.</p>
+<p>The <a href="https://github.com/minifish-org/pith/blob/2f7f735997b70395888e222a24bc44756119a500/migration/results/pi-a13d35a742c6.json">final receipt</a> records all nine steps. Both increment receipts report successful compilation, vet, candidate tests, and independent behavior tests. Both retain <code>fullParityProven: false</code>. Unlike the original Portsmith Go port receipt, these two final increment receipts do not list a race phase.</p>
+<p>The accepted code commit and the upstream-baseline commit are distinct. After the Pi 1.0 module was accepted, <a href="https://github.com/minifish-org/pith/commit/a569953ad8f8ac9daa40f90b509c224c6d195df7"><code>a569953</code></a> advanced the tracked revision. This distinction matters when execution is interrupted between delivering code and recording the next starting point.</p>
+<h2 id="finding-the-go-code-affected-by-an-upstream-change">Finding the Go code affected by an upstream change</h2>
+<p>An incremental port needs more than a diff. A TypeScript file may map to several Go packages, and a shared type change can affect code that upstream did not edit directly.</p>
+<p>Portsmith Go keeps explicit source ownership: each watched TypeScript source maps to its Go outputs. Initialization imports existing migration records and source maps; that ownership is reviewed and committed before preparing a new increment. Reference-only inputs are tracked separately so that a changed reference does not automatically authorize edits to unrelated implementation files.</p>
+<p>The <a href="https://github.com/minifish-org/portsmith-go/blob/932b7c3e68379c7349074809bff00ae2d9b20faf/internal/portsmith/sync.go#L790"><code>sync</code> implementation</a> analyzes both the old and new source trees and builds a reverse import graph. It starts with changed sources and follows their dependents. Looking at both revisions matters for removed imports and deleted files. Configuration JSON changes conservatively include all mapped source.</p>
+<p>That produces a draft containing exact changes, affected sources, unmapped inputs, and proposed Go output ownership. It makes no model calls at this stage. A reviewer then resolves the semantic questions: which behavior changes, which APIs remain compatible, which new sources need owners, and which upstream changes are outside the chosen SDK scope.</p>
+<p>One concrete decision in the Pi 1.0 <a href="https://github.com/minifish-org/pith/blob/2f7f735997b70395888e222a24bc44756119a500/migration/sync/pi-1.0/contracts/core.md">core contract</a> was to retain Pith&rsquo;s existing experimental harness and compatibility APIs even though upstream had removed its harness. Upstream deletion did not authorize deleting APIs already exposed by the Go library. Durable was deferred from this particular increment.</p>
+<p>That is why I want a reviewed migration plan between the diff and the implementation agent. A source dependency graph can identify likely impact. It cannot decide the compatibility policy for downstream applications.</p>
+<h2 id="protecting-existing-code-and-acceptance-tests">Protecting existing code and acceptance tests</h2>
+<p>The initial migration mostly created outputs. An increment must replace existing implementation while preserving everything outside its reviewed scope.</p>
+<p>Version-2 workflows separate existing files into two sets. <code>baseline.files</code> are frozen dependencies. <code>updates.files</code> are existing files explicitly authorized for replacement. Both are tied to a target Git commit and content hashes. Independent judges, manifests, and historical receipts stay outside the writable update set.</p>
+<p>The candidate begins with the authorized original implementation. Other baseline material is available as read-only input. Verification runs the frozen independent tests alongside candidate self-tests; later steps accumulate the earlier acceptance gates. Passing a later step does not allow the implementation agent to weaken an earlier contract.</p>
+<p>For Pi 1.0, the acceptance tests ask specific questions: do model identities distinguish operation kinds, do nested tool hooks preserve structured replacements, can MCP transports return the expected content, and does deferred tool activation compose with SDK routing? Those questions are narrow enough to execute. Their value depends on how well the reviewer chose them.</p>
+<p>Hashes and ownership checks protect the workflow&rsquo;s inputs and integration decisions. They do not turn a model-controlled shell into an operating-system sandbox. The executor runs in the local user&rsquo;s environment.</p>
+<h2 id="repairing-a-candidate-that-fails-after-integration">Repairing a candidate that fails after integration</h2>
+<p>An isolated candidate can pass its own acceptance suite and still break an existing caller. Portsmith Go gained automatic whole-project integration repair in <a href="https://github.com/minifish-org/portsmith-go/commit/8055d84e69775f8f8b3cd355b9bb4460a170b978"><code>8055d84</code></a>, on October 3, after the Pi 1.0 acceptance commit. This is a later executor improvement, separate from the evidence in those two increment receipts.</p>
+<p>When the target project&rsquo;s regression suite fails, the executor archives the diagnostics and persists a rollback transaction. It restores recorded original files, removes recorded additions, and reopens the final implementation step with the failure as feedback. Earlier accepted checkpoints remain. The repaired candidate must pass cumulative acceptance and the project suite before the module is committed.</p>
+<p>The <a href="https://github.com/minifish-org/portsmith-go/blob/932b7c3e68379c7349074809bff00ae2d9b20faf/internal/portsmith/integration_repair_test.go#L113"><code>TestWorkflowV2IntegrationFailureRepairsCandidate</code> regression</a> makes this boundary visible. A two-step candidate passes isolated checks but misses a marker required by a historical project test. The deterministic generator adds that marker during repair. The test checks that the first step stays accepted, the historical test is unchanged, the failure report survives, and exactly one module commit is created.</p>
+<p>This fixture tests the executor&rsquo;s recovery behavior without asking a live model to reproduce a particular mistake. A separate <a href="https://github.com/minifish-org/portsmith-go/blob/932b7c3e68379c7349074809bff00ae2d9b20faf/internal/portsmith/portsmith_judge_backend_test.go">Pith backend test</a> drives failure diagnostics, a file repair, successful verification, and session resume through the actual Pith tool loop using a deterministic model stream.</p>
+<p>Recovery must also distinguish interrupted work from an external edit. It accepts the recorded old bytes or verified new bytes; an unexpected third hash stops recovery and preserves the edit. Tests cover this refusal and recovery of the separate metadata commit. A recovery mechanism that overwrites unrelated work would be a poor trade for automation.</p>
+<h2 id="trying-the-workflow">Trying the workflow</h2>
+<p>The <a href="https://github.com/minifish-org/portsmith-go/blob/932b7c3e68379c7349074809bff00ae2d9b20faf/docs/INCREMENTAL.md">incremental migration guide</a> documents initialization, ownership, review, execution, and recovery. For a project with a committed sync configuration, the sequence is:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># Build Portsmith Go from its checkout.</span>
+</span></span><span style="display:flex;"><span>CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> go build -mod<span style="color:#f92672">=</span>readonly -trimpath -o bin/portsmith ./cmd/portsmith
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Prepare a draft for a chosen full upstream Git commit.</span>
+</span></span><span style="display:flex;"><span>./bin/portsmith sync --project ../target --upstream &lt;full-upstream-commit&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Review and complete the draft&#39;s ownership, contracts, and independent tests.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Check the prepared plan without making model calls.</span>
+</span></span><span style="display:flex;"><span>./bin/portsmith sync --project ../target --upstream &lt;full-upstream-commit&gt; --check
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Execute with local provider credentials and commit accepted results.</span>
+</span></span><span style="display:flex;"><span>./bin/portsmith sync --project ../target --upstream &lt;full-upstream-commit&gt; <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>  --commit --env-file .env
+</span></span></code></pre></div><p>The default draft preparation exits with code 2 when review is needed. That is an expected preparation state. The execution command resumes from durable progress when repeated; a partial run keeps the old accepted upstream baseline. Git push remains an operator action.</p>
+<p>These commands describe the workflow for an existing configured target. Repeating the historical Pi 1.0 run requires the pinned starting tree and reviewed materials, rather than today&rsquo;s already-updated Pith checkout.</p>
+<h2 id="what-the-bootstrap-gives-me">What the bootstrap gives me</h2>
+<p>The two increments establish something more useful than another successful translation: the Go runtime can execute a real migration tool, and that tool can apply reviewed upstream updates to the runtime itself. Maintenance now has explicit source ownership, acceptance gates, checkpoints, and a recorded starting revision for the next increment.</p>
+<p>The same SDK has a separate consumer in <a href="https://github.com/minifish-org/pith-desk">Pith Desk</a>. Its <a href="https://github.com/minifish-org/pith-desk/blob/828629d31f462bc5240206958d7a23170866f022/internal/desk/run_execution.go#L172">run execution code</a> also constructs a Pith agent session directly. Portsmith Go tests the SDK as a migration engine; Desk uses it as a desktop application&rsquo;s runtime. That makes compatibility decisions consequential beyond the migration repository.</p>
+<p>I have included a compact <a href="incremental-migration-evidence.json">evidence summary</a> with pinned commits, receipt hashes, acceptance phase results, plan counts, and the focused offline checks run for this report. The original receipts and reviewed plans remain linked above. The checks prove the exercised behaviors; neither a complete receipt nor the bootstrap establishes full Pi compatibility or reliable unattended handling of every future change.</p>
+<p>The next question for me is how much judgment can be made reusable. Source mappings and recovery can be mechanized. Deciding what a changed upstream behavior should mean for existing Go callers still requires a contract. The useful measure is whether the next reviewed increment can preserve those callers and leave enough evidence to explain why it was accepted.</p>
+]]></content:encoded>
+    </item>
     <item>
       <title>Porting Pi to Go: Building Portsmith and Pith</title>
       <link>https://blog.minifish.org/posts/porting-pi-to-go-with-portsmith/</link>
@@ -28,6 +123,7 @@
 </ul>
 <p>The first migration plan is complete: <strong>26 accepted steps across three modules</strong>. Pith builds without CGO and produces native command-line programs. That is a useful milestone, but it is not proof of complete Pi compatibility or a production-ready agent.</p>
 <p>This is the record of what we built, how we checked it, and where the experiment goes next.</p>
+<p><strong>Follow-up, October 14, 2026:</strong> <a href="../portsmith-go-incremental-pi-migration/">From One-Time Porting to Incremental Updates: Portsmith Go and Pith</a> covers the Go executor and two accepted upstream increments that followed this first port.</p>
 <h2 id="why-port-instead-of-starting-over">Why port instead of starting over?</h2>
 <p>The attraction of Pi was its separation of model access, agent execution, and tools. I did not want to reinvent every streaming edge case or every interaction in an agent loop before I could build a useful product.</p>
 <p>Go appealed to me because of its build workflow and distribution model. A compiled Go program can be a convenient artifact for a server or a user&rsquo;s computer. That does not eliminate operating-system differences, and a shell tool still needs a shell. It does reduce the runtime setup I need to explain to someone else.</p>
