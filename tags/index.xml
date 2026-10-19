@@ -12,8 +12,50 @@
     <generator>Hugo -- 0.165.0</generator>
     <language>en-US</language>
     <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
-    <lastBuildDate>Wed, 14 Oct 2026 22:45:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 20 Oct 2026 01:19:50 +0800</lastBuildDate>
     <atom:link href="https://blog.minifish.org/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Homelab</title>
+      <link>https://blog.minifish.org/tags/homelab/</link>
+      <pubDate>Tue, 20 Oct 2026 01:19:50 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/homelab/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>I3</title>
+      <link>https://blog.minifish.org/tags/i3/</link>
+      <pubDate>Tue, 20 Oct 2026 01:19:50 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/i3/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Pith-Desk</title>
+      <link>https://blog.minifish.org/tags/pith-desk/</link>
+      <pubDate>Tue, 20 Oct 2026 01:19:50 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/pith-desk/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Remote-Desktop</title>
+      <link>https://blog.minifish.org/tags/remote-desktop/</link>
+      <pubDate>Tue, 20 Oct 2026 01:19:50 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/remote-desktop/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rustdesk</title>
+      <link>https://blog.minifish.org/tags/rustdesk/</link>
+      <pubDate>Tue, 20 Oct 2026 01:19:50 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/rustdesk/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Software-Design</title>
+      <link>https://blog.minifish.org/tags/software-design/</link>
+      <pubDate>Tue, 20 Oct 2026 01:19:50 +0800</pubDate>
+      <guid>https://blog.minifish.org/tags/software-design/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Agents</title>
       <link>https://blog.minifish.org/tags/agents/</link>
@@ -82,13 +124,6 @@
       <link>https://blog.minifish.org/tags/disaster-recovery/</link>
       <pubDate>Sat, 19 Sep 2026 18:00:00 +0800</pubDate>
       <guid>https://blog.minifish.org/tags/disaster-recovery/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Homelab</title>
-      <link>https://blog.minifish.org/tags/homelab/</link>
-      <pubDate>Sat, 19 Sep 2026 18:00:00 +0800</pubDate>
-      <guid>https://blog.minifish.org/tags/homelab/</guid>
       <description></description>
     </item>
     <item>

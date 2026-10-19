@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>I3 on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/i3/</link>
+    <description>Recent content in I3 on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.165.0</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
+    <lastBuildDate>Tue, 20 Oct 2026 01:19:50 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/i3/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Keeping Pith Desk Small with RustDesk and i3</title>
+      <link>https://blog.minifish.org/posts/pith-desk-rustdesk-i3/</link>
+      <pubDate>Tue, 20 Oct 2026 01:19:50 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/pith-desk-rustdesk-i3/</guid>
+      <description>Why I chose RustDesk and i3 for a remote Pith Desk workspace after exploring a browser server mode and embedded tools.</description>
+      <content:encoded><![CDATA[<p>I wanted to use Pith Desk on my home server from another device. Since its interface was already built with web technology, opening it in a browser seemed like a small extension.</p>
+<p>The discussion soon included remote authentication, independent client views, file uploads, interactive terminals, browser sessions, and application previews. I was starting to design an entire remote workstation around an agent application.</p>
+<p>I ended up running the Linux desktop version of Pith Desk alongside a browser and a terminal, arranging their windows with i3, and accessing the desktop through RustDesk.</p>
+<p>The resulting layout is straightforward:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>My device
+</span></span><span style="display:flex;"><span>    |
+</span></span><span style="display:flex;"><span>    | RustDesk
+</span></span><span style="display:flex;"><span>    v
+</span></span><span style="display:flex;"><span>Linux desktop on the home server
+</span></span><span style="display:flex;"><span>    |
+</span></span><span style="display:flex;"><span>    +-- i3 window layout -------------------------------+
+</span></span><span style="display:flex;"><span>    |                                                  |
+</span></span><span style="display:flex;"><span>    |  Pith Desk       Chromium          Terminal      |
+</span></span><span style="display:flex;"><span>    |  conversation    websites          shell         |
+</span></span><span style="display:flex;"><span>    |  approvals       app previews      manual checks |
+</span></span><span style="display:flex;"><span>    |                                                  |
+</span></span><span style="display:flex;"><span>    +--------------------------------------------------+
+</span></span></code></pre></div><p>Pith Desk remains a desktop application in this arrangement. The remote desktop supplies the surrounding working environment.</p>
+<h2 id="why-browser-access-looked-like-a-small-change">Why browser access looked like a small change</h2>
+<p><a href="https://github.com/minifish-org/pith-desk">Pith Desk</a> uses the <a href="https://github.com/minifish-org/pith">Pith</a> Go library for agent execution and <a href="https://github.com/egoist/mygo">MyGo</a> for its native window. Its web interface communicates with the Go service over HTTP and WebSocket connections. A browser preview mode already exists.</p>
+<p>The service also owns the running task. Losing a browser subscription does not, by itself, stop the agent. That was a useful starting point for remote access.</p>
+<p>However, the local service was designed around a loopback address and a trusted desktop interface. Making it remotely accessible introduces a different set of questions. Which device receives a copied response? Where does a save dialog appear? When a user selects a workspace, whose filesystem are they browsing?</p>
+<p>There was also shared navigation state. In the implementation I started with, the selected conversation belonged to the service. A phone switching to conversation B could change the view shown on the desktop. Locks around task execution would not make those two interfaces independent.</p>
+<p>One person using a laptop and a phone is enough to encounter a multiple-client problem.</p>
+<h2 id="a-chat-page-grew-into-a-workstation">A chat page grew into a workstation</h2>
+<p>I considered keeping server and desktop operation separate. Each instance would own its execution environment and data, which would reduce the coordination required between a local desktop and a remote backend.</p>
+<p>That clarified where work would happen. It also made the next requirement obvious: if the browser page was my only interface to the server, it needed to support the rest of the work.</p>
+<table>
+	<thead>
+			<tr>
+					<th>During a task</th>
+					<th>What I needed beyond the conversation</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>The agent changes a project</td>
+					<td>Browse files, inspect source, and review changes</td>
+			</tr>
+			<tr>
+					<td>A command needs manual investigation</td>
+					<td>Open an interactive terminal and type into it</td>
+			</tr>
+			<tr>
+					<td>A development server starts</td>
+					<td>Open the running application in a browser</td>
+			</tr>
+			<tr>
+					<td>A website requires a login</td>
+					<td>Take over the browser, sign in, and let the agent continue</td>
+			</tr>
+			<tr>
+					<td>A document is produced</td>
+					<td>Find it, preview it, and transfer it to my device</td>
+			</tr>
+	</tbody>
+</table>
+<p>Each item has a reasonable implementation. Together, they substantially expand the application.</p>
+<p>An agent command log does not give me an interactive shell. A terminal needs its own process, input handling, resizing, and connection lifecycle. A file link needs a defined relationship to the server workspace. A browser used by an agent needs persistent state and a way for a person to take over.</p>
+<p>These details become part of the product once users depend on them.</p>
+<h2 id="reusing-components-still-left-integration-work">Reusing components still left integration work</h2>
+<p>I explored reusing a visible Chromium container with Playwright MCP, ttyd with tmux for a terminal, and the existing Go service for file transfer. A remote browser could also open development services inside the server environment.</p>
+<p>Embedding the browser viewer and terminal inside Pith Desk was feasible. It would have given me a conversation on one side and a tool panel on the other, without switching to separate pages.</p>
+<p>Even with those components, Desk would still need to coordinate authentication, workspace paths, keyboard focus, clipboard behavior, resizing, and connection recovery. Hiding a panel would need to stop unnecessary streaming while preserving the underlying browser or terminal session.</p>
+<p>I could reuse the terminal emulator and the remote display software. The integration would remain mine to maintain.</p>
+<p>At that point, a desktop became a much more appealing place to compose the tools.</p>
+<h2 id="trying-a-browser-desktop-exposed-the-interaction-problem">Trying a browser desktop exposed the interaction problem</h2>
+<p>My <a href="/posts/gmk-lightsail-homelab-architecture/">GMK homelab</a> already had a remote desktop environment based on <a href="https://docs.linuxserver.io/images/docker-webtop/">LinuxServer Webtop</a>. It provided a Linux desktop through a browser, with a terminal, Chromium, and ordinary file tools available in the same environment.</p>
+<p>Running the Linux build of Pith Desk there let me use existing applications for the surrounding work. The agent application could stay focused on conversations, execution, and approvals.</p>
+<p>The phone experience was less comfortable. Small window controls, pointer movement, scrolling, and the space consumed by the software keyboard all mattered. A desktop streamed to a narrow screen still has desktop interaction patterns.</p>
+<p>This also exposed a useful debugging trap. I initially treated tiny window buttons as an application problem, and the work expanded into Linux window decoration adjustments. I later realized that the remote display resolution had made the controls appear too small. The display configuration deserved attention before adding more application behavior.</p>
+<p>The experience made me separate two goals: convenient access to a conversation from a phone, and access to a complete development environment. They benefit from different interfaces.</p>
+<h2 id="rustdesk-handles-access-and-i3-handles-the-layout">RustDesk handles access and i3 handles the layout</h2>
+<p>The setup I settled on uses <a href="https://rustdesk.com/docs/en/client/">RustDesk</a> for remote desktop access and <a href="https://i3wm.org/">i3</a> to arrange the application windows.</p>
+<p>i3 is a tiling window manager. Its role here is specific: keep Pith Desk, Chromium, and a terminal visible together, with predictable placement and a way to give one application more space when needed.</p>
+<p>That directly addresses my reluctance to keep opening separate pages. The conversation, browser, and terminal are separate applications, but they occupy one working surface. I can read an agent reply, inspect the running application, and enter a command without leaving the remote environment.</p>
+<p>RustDesk carries my display and input. It does not add browser automation tools to Pith. Any agent access to a browser still depends on the configured tools or MCP connection. Keeping that distinction clear helps avoid confusing human remote access with agent computer control.</p>
+<p>The desktop also gives a development service a natural place to be viewed: a browser running in the same remote environment. A separate public preview gateway can wait until I need to open that application directly on my own device.</p>
+<p>File transfer remains a distinct concern as well. Placing windows next to each other does not move files between machines. Existing Desk downloads and the chosen transfer channel can handle that without turning the application into a general file hosting service.</p>
+<h2 id="the-maintenance-savings-have-a-resource-cost">The maintenance savings have a resource cost</h2>
+<p>This arrangement keeps a graphical session, a browser, terminal processes, and remote display software running on the server. It still needs persistent application data, browser profiles, working directories, and a reliable startup procedure.</p>
+<p>The savings are in the responsibilities I keep inside Pith Desk. I can use the desktop&rsquo;s window management and existing applications instead of adding a terminal session manager and an embedded browser viewer to the product.</p>
+<p>A shared desktop also has shared focus. Two connected devices can interfere with the same pointer, keyboard, and windows. I accept that for a personal workspace where I take turns between devices. Independent simultaneous use would require a different design.</p>
+<p>I also keep the phone limitation in perspective. RustDesk gives me another way to operate the desktop; it does not make the applications into native mobile interfaces. Long conversations and quick approvals may still justify a small, purpose-built web interface later.</p>
+<h2 id="what-i-would-ask-of-a-future-server-mode">What I would ask of a future server mode</h2>
+<p>A future server mode should start with a narrower job. Reading progress, sending a message, and approving an action from a phone could be enough to justify it. Those actions would still need clear client state, authentication, and retry behavior, but they would leave the full desktop workflow where it already works.</p>
+<p>For the broader development workflow, I now have Pith Desk, a browser, and a terminal together on the server. i3 supplies the layout, and RustDesk supplies access to it. That lets me spend more of the application&rsquo;s maintenance budget on agent execution, permissions, history, and recovery.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

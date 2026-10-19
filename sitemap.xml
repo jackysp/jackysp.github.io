@@ -2,25 +2,52 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://blog.minifish.org/categories/</loc>
+    <lastmod>2026-10-20T01:19:50+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/categories/engineering/</loc>
+    <lastmod>2026-10-20T01:19:50+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/homelab/</loc>
+    <lastmod>2026-10-20T01:19:50+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/i3/</loc>
+    <lastmod>2026-10-20T01:19:50+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/pith-desk-rustdesk-i3/</loc>
+    <lastmod>2026-10-20T01:19:50+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/</loc>
+    <lastmod>2026-10-20T01:19:50+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/pith-desk/</loc>
+    <lastmod>2026-10-20T01:19:50+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/posts/</loc>
+    <lastmod>2026-10-20T01:19:50+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/remote-desktop/</loc>
+    <lastmod>2026-10-20T01:19:50+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/rustdesk/</loc>
+    <lastmod>2026-10-20T01:19:50+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/software-design/</loc>
+    <lastmod>2026-10-20T01:19:50+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.minifish.org/tags/</loc>
+    <lastmod>2026-10-20T01:19:50+08:00</lastmod>
+  </url><url>
     <loc>https://blog.minifish.org/tags/agents/</loc>
     <lastmod>2026-10-14T22:45:00+08:00</lastmod>
   </url><url>
-    <loc>https://blog.minifish.org/categories/</loc>
-    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
-  </url><url>
     <loc>https://blog.minifish.org/tags/code-migration/</loc>
-    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/categories/engineering/</loc>
     <lastmod>2026-10-14T22:45:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/posts/portsmith-go-incremental-pi-migration/</loc>
     <lastmod>2026-10-14T22:45:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/go/</loc>
-    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/</loc>
     <lastmod>2026-10-14T22:45:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/pi/</loc>
@@ -30,12 +57,6 @@
     <lastmod>2026-10-14T22:45:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/portsmith/</loc>
-    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/posts/</loc>
-    <lastmod>2026-10-14T22:45:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/</loc>
     <lastmod>2026-10-14T22:45:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/typescript/</loc>
@@ -51,9 +72,6 @@
     <lastmod>2026-09-19T18:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/tags/disaster-recovery/</loc>
-    <lastmod>2026-09-19T18:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.minifish.org/tags/homelab/</loc>
     <lastmod>2026-09-19T18:00:00+08:00</lastmod>
   </url><url>
     <loc>https://blog.minifish.org/categories/infrastructure/</loc>
