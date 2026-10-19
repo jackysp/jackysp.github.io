@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Code Review on Mini Fish</title>
+    <link>https://blog.minifish.org/tags/code-review/</link>
+    <description>Recent content in Code Review on Mini Fish</description>
+    <image>
+      <title>Mini Fish</title>
+      <url>https://blog.minifish.org/android-chrome-512x512.png</url>
+      <link>https://blog.minifish.org/android-chrome-512x512.png</link>
+    </image>
+    <generator>Hugo -- 0.165.0</generator>
+    <language>en-US</language>
+    <copyright>Mini Fish 2014-present. Licensed under CC-BY-NC</copyright>
+    <lastBuildDate>Tue, 20 Oct 2026 00:00:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.minifish.org/tags/code-review/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Constrained UI Components for AI Assembly and Human Review</title>
+      <link>https://blog.minifish.org/posts/constrained-ui-for-ai-and-review/</link>
+      <pubDate>Tue, 20 Oct 2026 00:00:00 +0800</pubDate>
+      <guid>https://blog.minifish.org/posts/constrained-ui-for-ai-and-review/</guid>
+      <description>A practical method for building UI with coding agents through constrained components, source-based migration contracts, executable assembly recipes, and a reviewable showroom.</description>
+      <content:encoded><![CDATA[<p>I wanted a coding agent to assemble an interface without making a fresh decision about fonts, spacing, button shapes, and animation every time it added a control. I wanted the resulting code to be easier for me to review, too.</p>
+<p>My preferred appearance is fairly ordinary: consistent, simple, and predictable. A new settings form should look and behave as though it belongs to the same application. Reviewing it should mostly involve its content, state, and business actions.</p>
+<p>That led to a specific boundary in <a href="https://github.com/minifish-org/pith-ui">Pith UI</a>: small components with fixed presentation and bounded semantic options. The application assembles those components and connects its own state and callbacks. The extraction shipped in Pith UI 0.6.3 and Pith Desk rc.28 is a useful case study because several earlier attempts got this boundary wrong.</p>
+<h2 id="a-component-library-did-not-preserve-the-product">A component library did not preserve the product</h2>
+<p>I initially asked a coding agent to rebuild the frontend using React and shadcn components. The result covered the main features, but the palette and logo changed, and previously fixed behavior resurfaced. I eventually rolled back that rewrite.</p>
+<p>A later attempt exposed a different failure. The library offered smaller parts, and the application still had its callbacks, but the assembled screen lost its centered conversation column, action grouping, compact navigation, and some icons. Individual components looked correct in the showroom while the application layout was broken. The <a href="https://chatgpt.com/s/cx_6ad6508921a88191b9d9cda926db3817">conversation that led to this extraction</a> records both problems.</p>
+<p>These were failures in how I specified and accepted the migration. Choosing a component framework had left many application decisions open. Reducing component size had also removed structure that the application still needed.</p>
+<p>An established UI contains more specification than a feature list reveals. Its source records which controls share a row, where an error appears, which action remains available during a request, and what happens when an old response arrives after the user switches targets. Those decisions need an explicit home during extraction.</p>
+<h2 id="restrict-presentation-and-keep-composition-useful">Restrict presentation and keep composition useful</h2>
+<p>The public component API should describe the choices an application needs to make.</p>
+<table>
+	<thead>
+			<tr>
+					<th>Application choice</th>
+					<th>Library decision</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Button label, icon, and action purpose</td>
+					<td>Font, padding, shape, color, and feedback</td>
+			</tr>
+			<tr>
+					<td>Value, error, disabled, and read-only state</td>
+					<td>Native control presentation and interaction rules</td>
+			</tr>
+			<tr>
+					<td>Children in documented slots</td>
+					<td>Slot structure, alignment, and spacing</td>
+			</tr>
+			<tr>
+					<td>Selected item and available options</td>
+					<td>Selection presentation and keyboard behavior</td>
+			</tr>
+			<tr>
+					<td>Business callback and target identity</td>
+					<td>Control lifecycle and local pending feedback</td>
+			</tr>
+	</tbody>
+</table>
+<p>For example, this application-local helper uses the <a href="https://github.com/minifish-org/pith-ui/blob/8fd33e3893eb509df6b6ef72901b5a981a35be0c/src/parts/button.ts">0.6.3 button API</a>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> {<span style="color:#a6e22e">createButtonPart</span>} <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#39;pith-ui&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">saveAction</span>(<span style="color:#a6e22e">saveDraft</span><span style="color:#f92672">:</span> () <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">Promise</span>&lt;<span style="color:#f92672">void</span>&gt;) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">button</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">createButtonPart</span>({
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Save&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">variant</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;primary&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">onAction</span>: <span style="color:#66d9ef">saveDraft</span>,
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">part</span>: <span style="color:#66d9ef">button</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">setUnavailable</span>(<span style="color:#a6e22e">unavailable</span>: <span style="color:#66d9ef">boolean</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">button</span>.<span style="color:#a6e22e">update</span>({
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">label</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Save&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">variant</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;primary&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">disabled</span>: <span style="color:#66d9ef">unavailable</span>,
+</span></span><span style="display:flex;"><span>      });
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The returned part can enter a documented parent slot, which then owns its lifetime. The caller has no <code>className</code>, <code>style</code>, padding, font, or animation argument. Local asynchronous pending behavior belongs to the button implementation; the application supplies authoritative availability.</p>
+<p>The same restriction must apply to composition. A slot that accepts arbitrary HTML or a native node gives the caller another route to invent its own interface. Pith UI uses opaque part handles and checks that children are genuine library-created parts. Ownership rules reject reusing a part in two parents and retire removed children. These handles do not require an extra DOM wrapper around every existing element. The <a href="https://github.com/minifish-org/pith-ui/blob/8fd33e3893eb509df6b6ef72901b5a981a35be0c/src/parts/ownership.ts">ownership implementation</a> keeps native nodes private.</p>
+<p>This is an API constraint. A host page still controls the browser&rsquo;s CSS cascade, so the consuming project also needs checks against style overrides and generated-node access. Type declarations guide normal use, runtime validation catches unsupported options, and consumer checks enforce the agreed boundary.</p>
+<h2 id="prove-that-the-parts-can-express-the-existing-interface">Prove that the parts can express the existing interface</h2>
+<p>My first small-parts migration assumed that a stack and a toolbar were sufficient layout vocabulary. They were insufficient for the existing screen. The missing capabilities included a centered reading column, separate action groups, and compact rows.</p>
+<p>Removing the old templates before proving their replacements made the application the place where those omissions became visible. The safer order starts with the old implementation.</p>
+<p>For each region, I needed to read its template, the relevant CSS cascade, its state updates, and the actual Desk caller together. The <a href="https://github.com/minifish-org/pith-ui/blob/8fd33e3893eb509df6b6ef72901b5a981a35be0c/docs/contracts/rc27-ui-022.md">frozen contract</a> uses Pith UI 0.2.2 and Desk rc.27 as its baselines. It covers nested dialogs, menus, previews, loading surfaces, and shared behavior as well as the initial workspace.</p>
+<p>The old source determines the required structure. Screenshots help find omissions and confirm the result, but they cannot tell me which conversation owns a download or whether a failed save should retain a draft.</p>
+<p>I then assembled the old regions internally using only the proposed public parts. Whenever an assembly needed a layout capability that the parts could not express, that was a concrete library gap. It required a bounded capability with a defined purpose. Adding arbitrary CSS to Desk would have hidden the gap and weakened the interface I was trying to establish.</p>
+<p>The resulting assembly descriptions include the part tree, construction code, state projection, callbacks, and disposal rules. They are executable documentation. In the 0.6.3 package, those sources were bundled for the consumer to adopt locally, while the export map exposed only the parts entry and its stylesheet. There was no public whole-application or scene entry.</p>
+<p>That distinction kept the library responsible for component behavior and the application responsible for assembling its product.</p>
+<h2 id="state-propagation-is-part-of-the-assembly">State propagation is part of the assembly</h2>
+<p>A resource editor exposed one of the easiest details to miss.</p>
+<p>The old editor&rsquo;s Save button participated in a <a href="https://github.com/minifish-org/pith-ui/blob/897f46a83c637a3385adf91e281161cec157cf13/src/workspace.ts#L256">shared availability updater</a>. That updater selected controls by internal markers and applied global, conversation, workspace, or active-target availability. Reading only the editor constructor would miss part of its behavior. The dependency lived outside the component being extracted.</p>
+<p>The replacement therefore needed more than an initial <code>disabled</code> value. The application had to retain the open editor&rsquo;s target and project later availability changes into its state. Its <a href="https://github.com/minifish-org/pith-ui/blob/8fd33e3893eb509df6b6ef72901b5a981a35be0c/examples/assemblies/desk.ts">local coordinator</a> does that explicitly; the <a href="https://github.com/minifish-org/pith-ui/blob/8fd33e3893eb509df6b6ef72901b5a981a35be0c/examples/assemblies/resource-editor.ts">editor assembly</a> applies the additional Save restriction while retaining the established editing and Delete rules.</p>
+<p>This matters because availability has several owners. A button may have a local request pending while the host sends a new snapshot. That snapshot must not accidentally re-enable the action. Conversely, a broad rule that disables every control during host activity can change behavior that was intentionally available.</p>
+<p>Target changes introduce another boundary. A request started for one resource must not update or close the editor that replaced it. Ordinary state updates should preserve current input; changing the target may require an explicit reset or a new owned instance. Disposal needs to invalidate late callbacks as well as remove visible elements.</p>
+<p>For extraction work, I now trace these paths before adding more tests. Existing correct assertions remain the baseline. A focused regression is useful when it captures an actual omitted state transition. A growing test count cannot compensate for an assembly that no longer forwards the old state.</p>
+<h2 id="give-the-agent-and-reviewer-the-same-catalog">Give the agent and reviewer the same catalog</h2>
+<p>The showroom is part of the public contract. If it displays internal implementation fragments alongside supported components, a coding agent or developer can reasonably choose something that the application is not allowed to use.</p>
+<p>For this extraction, the public showroom was reduced to formal parts, their specifications, legal states, and interactions. Large application assemblies remained in internal validation and assembly documentation.</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart TD
+    PARTS[Reviewed component implementations] --&gt; CATALOG[&#34;Public catalog&lt;br/&gt;and typed API&#34;]
+    CATALOG --&gt; AI[&#34;AI selects parts&lt;br/&gt;and assembles&#34;]
+    CATALOG --&gt; HUMAN[&#34;Human reviews states&lt;br/&gt;and interactions&#34;]
+    AI --&gt; APP[&#34;Application composition&lt;br/&gt;and business wiring&#34;]
+    HUMAN --&gt; APP
+</code></pre><p>The package&rsquo;s short <a href="https://github.com/minifish-org/pith-ui/blob/8fd33e3893eb509df6b6ef72901b5a981a35be0c/AI.md">AI guide</a> explains how to choose parts, compose ownership, update state, and release the tree. Its API reference supplies the detailed types. Assembly recipes show how those rules reconstruct a real region.</p>
+<p>These need to agree. A convincing screenshot with an example that does not compile is a poor guide for an agent. A compiling example that depends on an unexported helper is also unusable by a real consumer. The package verification compiled the recipes and documentation examples from an independently installed tarball, using the package&rsquo;s actual public surface.</p>
+<p>A missing capability now has a visible route: identify the required native behavior or layout, add the smallest useful library capability, review its legal states, and publish it. Application code can then consume that reviewed version.</p>
+<h2 id="review-the-decisions-at-their-owning-layer">Review the decisions at their owning layer</h2>
+<p>The useful review boundary follows the kind of change.</p>
+<p>When a part changes, I review its visual and interaction contract in the library: typography, spacing, icons, focus, keyboard behavior, pending and error states, and lifecycle. A change there can affect many screens, so its supported variants need inspection together.</p>
+<p>When an application composition changes, the review centers on a smaller set of questions:</p>
+<ul>
+<li>Does the part tree preserve the required grouping, order, and slots?</li>
+<li>Do labels, action purposes, and error locations communicate the right meaning?</li>
+<li>Does each callback retain the correct target and revision?</li>
+<li>Are updates, resets, replacement openings, and destruction connected correctly?</li>
+<li>Does the application stay within the public parts API?</li>
+</ul>
+<p>Visual inspection still matters. The intended benefit is that a composition change introduces fewer independent visual decisions. I can follow the arrangement and business wiring without also accepting a new set of local font sizes and CSS exceptions.</p>
+<p>This gives AI a more specific task as well. It can select approved parts, supply content and state, connect callbacks, and compose a documented tree. A request for a different spacing rule becomes a library change that can be reviewed where that rule is owned.</p>
+<h2 id="what-the-migration-established">What the migration established</h2>
+<p>The <a href="https://github.com/minifish-org/pith-ui/blob/8fd33e3893eb509df6b6ef72901b5a981a35be0c/docs/assemblies/coverage.md">coverage map</a> connects 36 old regions to assembly sources and behavior checks. The published 0.6.3 package included 32 compiling assembly sources and 33 compiling documentation examples.</p>
+<p>After verifying the published package, Desk installed that exact npm version and adopted the assemblies. The <a href="https://github.com/minifish-org/pith-desk/commit/3347d71dea6d313ef7f4ef65885e91515ded4761">migration commit</a> preserved the existing business controller bodies, host boundary, configuration, conversations, palette, and logo. It introduced no copied legacy HTML/CSS or application style overrides.</p>
+<p>Behavior checks ran in Chromium and WebKit. Across 56 comparison scenarios, the captured geometry and style values matched the baseline. Forty-nine screenshots were pixel-identical; the remaining differences were small Chromium antialiasing variations. That establishes the result of this migration. It leaves long-term maintenance savings to be judged through subsequent changes.</p>
+<p>The approach has costs. Missing variants require library work. Too many narrowly named parts can make the catalog hard to navigate. Application-local recipes can also accumulate duplication, and a helper that merely forwards arguments may add little value. I would keep checking whether each boundary captures a repeated rule or an important behavior.</p>
+<p>For a product with an established visual language, I prefer making those rules explicit. The library gives both the coding agent and the reviewer a finite vocabulary. The application code then shows how that vocabulary is used to express the product&rsquo;s state and actions.</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>
